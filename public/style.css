@@ -610,40 +610,206 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   overflow-y: auto;
 }
 
-/* Responsive: premium slide transition on mobile */
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — Premium slide drawer experience
+═══════════════════════════════════════════════════════════ */
 .mobile-only { display: none !important; }
 
 @media (max-width: 800px) {
   .mobile-only { display: inline-flex !important; }
-  
+
+  /* ── Slide layout ── */
   .boards-split-layout {
     display: flex !important;
     width: 200vw !important;
     max-width: none !important;
     grid-template-columns: none !important;
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
+    border-top: none;
   }
-  
   .boards-left-panel,
   .boards-right-panel {
     width: 100vw !important;
+    min-width: 100vw !important;
     flex-shrink: 0 !important;
-    max-height: calc(100vh - var(--nav-h));
-    overflow-y: auto;
-    position: static;
+    max-height: none !important;
+    height: auto !important;
+    overflow-y: visible !important;
+    position: static !important;
   }
-  
-  /* Slide in active right panel content */
   .boards-split-layout.show-right {
     transform: translateX(-100vw);
   }
-  
+
+  /* ── Left panel filter bar ── */
+  .boards-filter-bar {
+    padding: .75rem 1rem;
+    gap: .6rem;
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 10;
+    background: var(--card-bg);
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+  }
+  .sidebar-pills {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: .3rem;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .sidebar-pills::-webkit-scrollbar { display: none; }
+  .class-pill, .subject-pill {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: .35rem .85rem;
+    font-size: .82rem;
+  }
+  .class-pill.active, .subject-pill.active {
+    box-shadow: 0 2px 10px rgba(58,123,213,.25);
+  }
+
+  /* ── Board content panel (left chapter list) ── */
+  .board-content-panel {
+    padding: .75rem 1rem 2rem;
+  }
+
+  /* ── Chapter items — touch friendly ── */
+  .chapter-header {
+    padding: .95rem 1rem !important;
+    min-height: 52px;
+  }
+  .ch-num {
+    width: 32px; height: 32px;
+    font-size: .8rem;
+  }
+  .ch-title {
+    font-size: .93rem !important;
+  }
+  .chapter-item {
+    margin-bottom: .3rem;
+  }
+  .book-header {
+    padding: .9rem 1rem !important;
+  }
+
+  /* ── Right panel ── */
+  .boards-right-panel {
+    background: var(--bg-soft);
+    padding: 1rem !important;
+  }
+  .rp-ch-header {
+    padding: 1rem 1.1rem !important;
+  }
+  .rp-ch-title {
+    font-size: 1.12rem !important;
+  }
+  .rp-ch-body {
+    padding: 1rem 1.1rem !important;
+  }
   .rp-options-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: .55rem !important;
+  }
+  .rp-opt-btn {
+    padding: .65rem .75rem !important;
+    gap: .5rem !important;
+  }
+  .rp-opt-icon {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 1rem !important;
+  }
+  .rp-opt-name {
+    font-size: .82rem !important;
+  }
+  .rp-opt-sub {
+    font-size: .68rem !important;
+  }
+
+  /* ── Right panel summary & PDF viewer ── */
+  .rp-summary-header {
+    padding: .85rem 1rem !important;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .rp-summary-body {
+    padding: 1rem !important;
+    max-height: none !important;
+  }
+  
+  /* Mobile PDF iframe height */
+  .rp-summary-wrap > div[style*="height:calc"] {
+    height: 65vh !important;
+  }
+  
+  /* ── Resource cards ── */
+  .resource-row {
     grid-template-columns: 1fr !important;
+  }
+  .resource-card {
+    padding: .8rem 1rem !important;
+  }
+
+  /* ── Summary content ── */
+  .summary-viewer-wrap {
+    padding: .25rem 0 !important;
+  }
+  .summary-point-item {
+    padding: .75rem !important;
+  }
+  .summary-text-hindi {
+    font-size: .88rem !important;
+  }
+  .summary-section-title {
+    font-size: 1rem !important;
+  }
+  .summary-intro-box {
+    font-size: .88rem !important;
+  }
+
+  /* ── Test sheets ── */
+  .test-papers-grid { grid-template-columns: 1fr; }
+
+  /* ── PYQs ── */
+  .pyq-grid { grid-template-columns: 1fr !important; }
+  
+  /* ── Boards detail empty ── */
+  .boards-detail-empty {
+    min-height: 250px !important;
+    padding: 2rem 1rem;
+  }
+
+  /* ── Back button bigger on mobile ── */
+  .rp-summary-back {
+    padding: .4rem .8rem !important;
+    font-size: .84rem !important;
+    min-height: 36px;
+  }
+  
+  /* ── Default view ── */
+  .rp-default-view {
+    padding: .25rem 0;
   }
 }
 
+@media (max-width: 480px) {
+  .rp-options-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .rp-ch-title {
+    font-size: 1rem !important;
+  }
+  .boards-filter-bar {
+    padding: .6rem .8rem;
+  }
+}
+
+
+/* Subject info banner on left panel */
 .subject-info-banner {
   transition: all var(--t);
 }
@@ -651,9 +817,25 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
   border-color: var(--accent) !important;
+  background: var(--accent-bg) !important;
 }
 
-
+/* Worksheet buttons */
+.ws-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .25rem;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text-body);
+  cursor: pointer;
+  font-size: .75rem;
+  font-weight: 600;
+  transition: all var(--t);
+}
+.ws-btn.download:hover { background: var(--accent); color: white; border-color: var(--accent); }
+.ws-btn.upload:hover   { background: #27AE60; color: white; border-color: #27AE60; }
 
 /* Coming soon */
 .resources-coming-soon { text-align: center; padding: var(--sp-xl) var(--sp-md); }
