@@ -1385,12 +1385,12 @@ function openDocViewer(title, url) {
             <span style="font-weight:700;color:var(--text-primary)">${title}</span>
           </div>
           <div style="display:flex;gap:.4rem;align-items:center;">
-            <a href="${absoluteUrl}" download target="_blank" class="rp-summary-back" style="text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;font-size:.78rem;">
+            <button class="rp-summary-back" onclick="handleDownload('${title.replace(/'/g,"\\'")}', '${absoluteUrl}')" style="font-size:.78rem;">
               📥 Download
-            </a>
-            <a href="${absoluteUrl}" target="_blank" rel="noopener" class="rp-summary-back" style="text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;font-size:.78rem;">
+            </button>
+            <button class="rp-summary-back" onclick="window.open('${absoluteUrl}', '_blank')" style="font-size:.78rem;">
               ↗ Open Tab
-            </a>
+            </button>
           </div>
         </div>
         <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
