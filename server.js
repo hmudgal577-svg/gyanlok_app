@@ -163,6 +163,25 @@ const JWT_SECRET = process.env.JWT_SECRET || 'gyanlok_super_secret_jwt_2026!';
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 
+// ─── JSON file-storage helpers (fallback when DB is unavailable) ─────────────
+const DATA_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+function readJson(filename, defaultVal = []) {
+  try {
+    const file = path.join(DATA_DIR, filename);
+    if (!fs.existsSync(file)) return defaultVal;
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch { return defaultVal; }
+}
+
+function writeJson(filename, data) {
+  try {
+    fs.writeFileSync(path.join(DATA_DIR, filename), JSON.stringify(data, null, 2));
+  } catch (e) { console.error('[writeJson]', e.message); }
+}
+
+
 // ─── Security Middleware ────────────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
@@ -491,8 +510,17 @@ app.get('/api/resources', async (req, res) => {
           for (const book of booksRes.rows) {
             const chaptersRes = await db.query('SELECT * FROM chapters WHERE book_id = $1 ORDER BY num', [book.id]);
             booksData.push({
-              id: book.id, name: book.name, subtitle: book.subtitle, color: book.color,
-              chapters: chaptersRes.rows.map(c => ({ num: c.num, title: c.title, worksheets: c.worksheets }))
+              id: book.id,
+              name: book.name,
+              subtitle: book.subtitle,
+              color: book.color,
+              file_url: book.file_url,
+              chapters: chaptersRes.rows.map(c => ({
+                num: c.num,
+                title: c.title,
+                worksheets: c.worksheets,
+                file_url: c.file_url
+              }))
             });
           }
 

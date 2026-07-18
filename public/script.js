@@ -20,7 +20,7 @@
 /* ══════════════════════════════════════════
    1. DATA — SCHOOL BOARDS
 ══════════════════════════════════════════ */
-const BOARDS_DATA = {
+let BOARDS_DATA = {
   CBSE: {
     classes: [6, 7, 8, 9, 10],
     subjectsByClass: {
@@ -578,11 +578,64 @@ function observeFade(el) {
 /* ══════════════════════════════════════════
    6. SCHOOL BOARDS SECTION
 ══════════════════════════════════════════ */
-function initBoardsSection() {
+async function initBoardsSection() {
   /* Board tab clicks */
   document.querySelectorAll('.board-tab').forEach(tab => {
     tab.addEventListener('click', () => selectBoard(tab.dataset.board));
   });
+
+  // Try loading live resources from database
+  try {
+    const res = await fetch('/api/resources');
+    if (res.ok) {
+      const dbData = await res.json();
+      if (dbData && Object.keys(dbData).length > 0) {
+        // Merge database data into BOARDS_DATA
+        for (const board in dbData) {
+          if (!BOARDS_DATA[board]) {
+            BOARDS_DATA[board] = dbData[board];
+          } else {
+            if (dbData[board].classes && dbData[board].classes.length > 0) {
+              dbData[board].classes.forEach(c => {
+                if (!BOARDS_DATA[board].classes.includes(c)) {
+                  BOARDS_DATA[board].classes.push(c);
+                }
+              });
+              BOARDS_DATA[board].classes.sort((a, b) => a - b);
+            }
+            if (dbData[board].subjectsByClass && Object.keys(dbData[board].subjectsByClass).length > 0) {
+              for (const cls in dbData[board].subjectsByClass) {
+                if (!BOARDS_DATA[board].subjectsByClass[cls]) {
+                  BOARDS_DATA[board].subjectsByClass[cls] = dbData[board].subjectsByClass[cls];
+                } else {
+                  dbData[board].subjectsByClass[cls].forEach(s => {
+                    if (!BOARDS_DATA[board].subjectsByClass[cls].includes(s)) {
+                      BOARDS_DATA[board].subjectsByClass[cls].push(s);
+                    }
+                  });
+                }
+              }
+            }
+            if (dbData[board].resources && Object.keys(dbData[board].resources).length > 0) {
+              // Deep merge resources to preserve fallback keys if database has missing sub-keys
+              for (const cls in dbData[board].resources) {
+                if (!BOARDS_DATA[board].resources[cls]) {
+                  BOARDS_DATA[board].resources[cls] = dbData[board].resources[cls];
+                } else {
+                  for (const subj in dbData[board].resources[cls]) {
+                    BOARDS_DATA[board].resources[cls][subj] = dbData[board].resources[cls][subj];
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Failed to load resources from API:', err);
+  }
+
   renderClassPills();
   renderSubjectPills();
   renderBoardContent();
@@ -727,24 +780,67 @@ function renderBoardContent() {
   });
 }
 
+// ─── Chapter intro descriptions ─────────────────────────────────────────────
+const CHAPTER_INTROS = {
+  'स्पर्श (भाग-2)': {
+    1:  { hi: 'कबीर के दोहे (साखी) — संत कबीर द्वारा रचित दोहे जो जीवन की सच्चाई, भक्ति और मानवता का संदेश देते हैं। ये दोहे आज भी उतने ही प्रासंगिक हैं जितने सदियों पहले थे।', en: 'Kabir ke Dohe — Sakhis by Saint Kabir conveying truths of life, devotion and humanity.' },
+    2:  { hi: 'मीरा के पद — मीराबाई की कृष्ण-भक्ति की अनूठी अभिव्यक्ति। इन पदों में मीरा ने कृष्ण के प्रति अपनी अनन्य श्रद्धा और प्रेम को व्यक्त किया है।', en: 'Meera ke Pad — Unique expression of Mirabai\'s devotion to Lord Krishna through soulful verses.' },
+    3:  { hi: 'मनुष्यता — मैथिलीशरण गुप्त की यह कविता मानवता, परोपकार और एकता का संदेश देती है। कवि कहते हैं कि सच्ची मनुष्यता दूसरों की सेवा में है।', en: 'Manushyata — A poem by Maithilisharan Gupt emphasizing humanity, sacrifice and unity.' },
+    4:  { hi: 'पर्वत प्रदेश में पावस — सुमित्रानंदन पंत की यह कविता पहाड़ी क्षेत्र में बरसात के मनोरम दृश्य का अत्यंत सुंदर चित्रण प्रस्तुत करती है।', en: 'Parvat Pradesh Mein Pavas — Sumitranandan Pant\'s vivid description of monsoon in the hills.' },
+    5:  { hi: 'तोप — वीरेन डंगवाल की यह व्यंग्यात्मक कविता एक पुरानी तोप के माध्यम से युद्ध, ताकत और इतिहास पर सवाल उठाती है।', en: 'Top — A satirical poem by Viren Dangwal questioning war and power through an old cannon.' },
+    6:  { hi: 'कर चले हम फ़िदा — कैफ़ी आज़मी की यह देशभक्ति कविता सैनिकों की वीरता और बलिदान को श्रद्धांजलि देती है।', en: 'Kar Chale Hum Fida — Kaifi Azmi\'s patriotic poem paying tribute to the bravery of soldiers.' },
+    7:  { hi: 'आत्मत्राण — रवींद्रनाथ ठाकुर की यह कविता ईश्वर से मुसीबतों को हटाने की नहीं बल्कि उनसे लड़ने की शक्ति माँगती है।', en: 'Aatmtran — Rabindranath Tagore\'s prayer for strength to face difficulties, not to escape them.' },
+    8:  { hi: 'बड़े भाई साहब — प्रेमचंद की इस कहानी में छोटे भाई की शरारतें और बड़े भाई के उपदेशों के माध्यम से शिक्षा और जीवन का मार्मिक चित्रण है।', en: 'Bade Bhai Sahab — Premchand\'s story depicting the contrast between bookish education and practical wisdom.' },
+    9:  { hi: 'डायरी का एक पन्ना — सीताराम सेकसरिया की डायरी का यह अंश 26 जनवरी 1931 को कलकत्ता में हुए ऐतिहासिक स्वतंत्रता आंदोलन का जीवंत विवरण प्रस्तुत करता है।', en: 'Diary Ka Ek Panna — An eyewitness account of the historic January 26, 1931 freedom movement in Calcutta.' },
+    10: { hi: 'तताँरा-वामीरो कथा — अंडमान-निकोबार द्वीप की एक सुंदर लोककथा जो प्रेम, त्याग और सामाजिक बंधनों की कहानी बताती है।', en: 'Tantara-Vamiro Katha — A beautiful folk tale from Andaman-Nicobar islands about love and social constraints.' },
+    11: { hi: 'तीसरी कसम के शिल्पकार शैलेंद्र — गीतकार शैलेंद्र के जीवन और उनकी फिल्म "तीसरी कसम" के निर्माण की प्रेरक कहानी।', en: 'Teesri Kasam ke Shilpkar Shailendra — The inspiring story of lyricist Shailendra and the making of the film Teesri Kasam.' },
+    12: { hi: 'अब कहाँ दूसरे के दुख से दुखी होने वाले — निदा फ़ाज़ली का यह पाठ पर्यावरण संरक्षण और मानवता के क्षरण पर विचार करता है।', en: 'Ab Kahan Doosre ke Dukh se Dukhi Hone Wale — Nida Fazli\'s reflection on environmental degradation and loss of empathy.' },
+    13: { hi: 'पतझर में टूटी पत्तियाँ — रवींद्र केलेकर के दो लघु निबंध: "गिन्नी का सोना" और "झेन की देन" जो जीवन दर्शन की गहरी बातें सरल भाषा में कहते हैं।', en: 'Patahar Mein Tooti Pattiyan — Two short essays on life philosophy: Ginni Ka Sona and Zen Ki Den.' },
+    14: { hi: 'कारतूस — हबीब तनवीर का यह एकांकी वज़ीर अली की बहादुरी और अंग्रेजों के विरुद्ध उनके साहस की रोमांचक कहानी प्रस्तुत करता है।', en: 'Kartoos — Habib Tanvir\'s one-act play depicting the bravery of Wazir Ali against the British.' },
+  },
+  'संचयन (भाग-2)': {
+    1: { hi: 'हरिहर काका — मिथिलेश्वर की इस कहानी में एक निःसंतान बुजुर्ग की ज़मीन को लेकर परिवार और ठाकुरबारी के बीच की स्वार्थपूर्ण लड़ाई का मार्मिक चित्रण है।', en: 'Harihar Kaka — A poignant story about an old childless man caught between the greed of his family and a temple.' },
+    2: { hi: 'सपनों के-से दिन — गुरदयाल सिंह की यह कहानी बचपन की मासूमियत, स्कूल की यादें और जीवन की पहली सीख को बड़े ही आत्मीय ढंग से प्रस्तुत करती है।', en: 'Sapno ke-se Din — Gurdayal Singh\'s nostalgic story about childhood innocence and school memories.' },
+    3: { hi: 'टोपी शुक्ला — राही मासूम रज़ा की यह कहानी हिंदू-मुस्लिम मित्रता के माध्यम से सांप्रदायिक सद्भाव और बचपन की निश्छल दोस्ती का संदेश देती है।', en: 'Topi Shukla — A story about Hindu-Muslim friendship conveying communal harmony through children\'s innocent bond.' },
+  }
+};
+
+function getIntroData(bookName, chNum) {
+  const name = bookName.toLowerCase();
+  let bookKey = null;
+  if (name.includes('स्पर्श') || name.includes('sparsh')) {
+    bookKey = 'स्पर्श (भाग-2)';
+  } else if (name.includes('संचयन') || name.includes('sanchayan')) {
+    bookKey = 'संचयन (भाग-2)';
+  }
+  if (!bookKey) return null;
+  return (CHAPTER_INTROS[bookKey] || {})[chNum] || null;
+}
+
 function renderChapter(book, ch) {
   const chId = `ch-${book.name.replace(/\s/g,'-')}-${ch.num}`;
-  const wsRows = Array.from({ length: ch.worksheets }, (_, i) => `
-    <div class="worksheet-item">
-      <span class="ws-name">Practice Worksheet ${i + 1}</span>
-      <div class="ws-actions">
-        <button class="ws-btn download" onclick="handleDownload('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.dl} Download</button>
-        <button class="ws-btn upload" onclick="openUploadModal('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.up} Upload</button>
-      </div>
-    </div>`).join('');
+  const introData = getIntroData(book.name, ch.num);
+  const introHi = introData ? introData.hi : '';
+  const introEn = introData ? introData.en : '';
 
-  const resources = [
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')` },
-    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
-    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Muhavare / Word Meanings',       action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')` },
-    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Questions and Answers',          action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')` },
-    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Additional Practice Questions',  action: `openDocViewer('${book.name} Ch.${ch.num} — Additional Qs')` },
-    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'Previous Year Questions (PYQ)',  action: `openDocViewer('${book.name} Ch.${ch.num} — PYQ')` },
+  // Left column: quick text links
+  const quickLinks = [
+    { label: `${ch.title.split('—')[1] ? ch.title.split('—')[1].trim() : ch.title} — पाठ PDF`, action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
+    { label: 'पाठ सारांश (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: '📝' },
+    { label: 'प्रश्न-उत्तर (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')`, icon: '❓' },
+    { label: 'मुहावरे / शब्द-अर्थ', action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')`, icon: '📖' },
+    { label: 'पिछले वर्ष के प्रश्न (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num} — PYQ')`, icon: '🕐' },
+    { label: 'अतिरिक्त अभ्यास प्रश्न', action: `openDocViewer('${book.name} Ch.${ch.num} — Additional Qs')`, icon: '⭐' },
+  ];
+
+  // Right column: sidebar resource buttons
+  const sidebarOptions = [
+    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'पाठ का सार',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
+    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'प्रश्न-उत्तर',        action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')` },
+    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'शब्द अर्थ',          action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')` },
+    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'पिछले वर्ष प्रश्न',   action: `openDocViewer('${book.name} Ch.${ch.num} — PYQ')` },
+    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'अभ्यास प्रश्न',      action: `openDocViewer('${book.name} Ch.${ch.num} — Additional Qs')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'पाठ डाउनलोड',       action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')` },
   ];
 
   return `
@@ -756,18 +852,56 @@ function renderChapter(book, ch) {
       </div>
       <div class="chapter-body">
         <div class="chapter-body-inner">
-          <div class="ch-resources">
-            ${resources.map(r => `
-              <div class="ch-res-item" role="button" tabindex="0" onclick="${r.action}">
-                <div class="ch-res-icon" style="background:${r.bg};color:${r.color}">${r.icon}</div>
-                <span class="ch-res-label">${r.label}</span>
-                <span class="ch-res-action">Open →</span>
-              </div>`).join('')}
+          <div class="ch-two-col">
+
+            <!-- LEFT: intro + quick links -->
+            <div class="ch-left">
+              ${introHi ? `
+              <div class="ch-intro">
+                <p class="ch-intro-hi">${introHi}</p>
+                ${introEn ? `<p class="ch-intro-en">${introEn}</p>` : ''}
+              </div>` : ''}
+
+              <div class="ch-links-block">
+                <p class="ch-links-label">इस अध्याय में:</p>
+                <ul class="ch-links-list">
+                  ${quickLinks.map(l => `
+                    <li>
+                      <span class="ch-link-icon">${l.icon}</span>
+                      <a href="#" class="ch-link" onclick="event.preventDefault();${l.action}">${l.label}</a>
+                    </li>`).join('')}
+                </ul>
+              </div>
+
+              ${ch.worksheets > 0 ? `
+              <div class="ch-ws-block">
+                <p class="ch-links-label">अभ्यास पत्रक (Worksheets):</p>
+                <div class="ch-ws-row">
+                  ${Array.from({ length: ch.worksheets }, (_, i) => `
+                    <button class="ws-btn download" onclick="handleDownload('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.dl} Worksheet ${i+1}</button>
+                    <button class="ws-btn upload" onclick="openUploadModal('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.up} Upload</button>
+                  `).join('')}
+                </div>
+              </div>` : ''}
+            </div>
+
+            <!-- RIGHT: option buttons -->
+            <div class="ch-right">
+              <p class="ch-right-label">Quick Access</p>
+              <div class="ch-sidebar-opts">
+                ${sidebarOptions.map(r => `
+                  <div class="ch-opt-btn" role="button" tabindex="0" onclick="${r.action}">
+                    <div class="ch-opt-icon" style="background:${r.bg};color:${r.color}">${r.icon}</div>
+                    <div class="ch-opt-text">
+                      <span class="ch-opt-label">${r.label}</span>
+                      <span class="ch-opt-sub">${r.sublabel}</span>
+                    </div>
+                    <span class="ch-opt-arrow">→</span>
+                  </div>`).join('')}
+              </div>
+            </div>
+
           </div>
-          ${ch.worksheets > 0 ? `
-            <div class="worksheets-label">Practice Worksheets</div>
-            ${wsRows}
-          ` : ''}
         </div>
       </div>
     </div>`;
@@ -1076,13 +1210,18 @@ async function fetchSummaries() {
   }
 }
 
-function getSummaryKey(bookName, chNum) {
+function getSummaryKey(bookName, chNum, chTitle = '') {
   const isSparsh = bookName.includes('स्पर्श') || bookName.toLowerCase().includes('sparsh');
   const isSanchayan = bookName.includes('संचयन') || bookName.toLowerCase().includes('sanchayan');
+  const title = (chTitle || '').toLowerCase();
   
-  if (isSparsh && chNum === 2) return 'meera_ke_pad';
-  if (isSanchayan && chNum === 1) return 'harihar_kaka';
-  if (isSparsh && chNum === 9) return 'dairy_ke_panne';
+  if (isSparsh) {
+    if (chNum === 2 || title.includes('मीरा') || title.includes('meera')) return 'meera_ke_pad';
+    if (chNum === 9 || chNum === 11 || title.includes('डायरी') || title.includes('diary')) return 'dairy_ke_panne';
+  }
+  if (isSanchayan) {
+    if (chNum === 1 || title.includes('हरिहर') || title.includes('harihar')) return 'harihar_kaka';
+  }
   return null;
 }
 
@@ -1191,7 +1330,10 @@ async function openSummary(bookName, chNum, chTitle) {
   openModal(modal);
 
   const summaries = await fetchSummaries();
-  const summaryKey = getSummaryKey(bookName, chNum);
+  const summaryKey = getSummaryKey(bookName, chNum, chTitle);
+  
+  console.log('[DEBUG] openSummary:', { bookName, chNum, chTitle, summaryKey });
+  console.log('[DEBUG] summaries loaded:', summaries ? Object.keys(summaries) : 'failed/null');
   
   if (!summaries || !summaryKey || !summaries[summaryKey]) {
     bodyEl.innerHTML = `
