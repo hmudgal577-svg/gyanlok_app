@@ -850,11 +850,113 @@ function getIntroData(bookName, chNum) {
 
 function renderChapter(book, ch) {
   const chId = `ch-${book.name.replace(/\s/g,'-')}-${ch.num}`;
+  const safeBook = book.name.replace(/'/g,"\\'");
+  const safeTitle = ch.title.replace(/'/g,"\\'");
+  const safeUrl = (ch.file_url || '').replace(/'/g,"\\'");
+  return `
+    <div class="chapter-item" id="${chId}">
+      <div class="chapter-header" role="button" tabindex="0" aria-expanded="false"
+           onclick="selectChapter('${safeBook}',${ch.num},'${safeTitle}','${safeUrl}')">
+        <div class="ch-num">${ch.num}</div>
+        <div class="ch-title">${ch.title}</div>
+        <div class="ch-toggle">${SVG.chevD}</div>
+      </div>
+    </div>`;
+}
+
+// Called when user clicks a chapter row — loads details in the right panel
+function selectChapter(bookName, chNum, chTitle, fileUrl) {
+  document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('open'));
+  const chId = `ch-${bookName.replace(/\s/g,'-')}-${chNum}`;
+  const item = document.getElementById(chId);
+  if (item) item.classList.add('open');
+
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
+
+  const introData = getIntroData(bookName, chNum);
+  const sBook = bookName.replace(/'/g,"\\'");
+  const sTitle = chTitle.replace(/'/g,"\\'");
+  const sUrl = (fileUrl||'').replace(/'/g,"\\'");
+
+  const opts = [
+    { icon:'📝', bg:'#E8F8F6', color:'#2BA899', name:'पाठ सारांश',   sub:'Summary',          action:`openSummary('${sBook}',${chNum},'${sTitle}')` },
+    { icon:'📄', bg:'#EBF3FD', color:'#3A7BD5', name:'पाठ PDF',       sub:'Chapter PDF',      action:`openRightPDF('${sBook}',${chNum},'${sTitle}','${sUrl}')` },
+    { icon:'❓', bg:'#FDE8E8', color:'#E05555', name:'प्रश्न-उत्तर', sub:'Q & A',             action:`openRightComingSoon('Q and A','${sTitle}')` },
+    { icon:'📖', bg:'#F5EFF9', color:'#9B59B6', name:'शब्द-अर्थ',    sub:'Word Meanings',    action:`openRightComingSoon('Muhavare','${sTitle}')` },
+    { icon:'🕐', bg:'#FFF4E0', color:'#E8900A', name:'PYQ',           sub:'पिछले वर्ष प्रश्न',action:`openRightComingSoon('PYQ','${sTitle}')` },
+    { icon:'⭐', bg:'#EAF7EF', color:'#27AE60', name:'अभ्यास प्रश्न',sub:'Extra Practice',   action:`openRightComingSoon('Practice','${sTitle}')` },
+  ];
+
+  panel.innerHTML = `
+    <div class="rp-chapter-card">
+      <div class="rp-ch-header">
+        <div class="rp-ch-breadcrumb">${bookName} &rsaquo; Chapter ${chNum}</div>
+        <h2 class="rp-ch-title">${chTitle}</h2>
+      </div>
+      <div class="rp-ch-body">
+        ${introData ? `
+        <div class="rp-intro">
+          <p class="rp-intro-hi">${introData.hi}</p>
+          ${introData.en ? `<p class="rp-intro-en">${introData.en}</p>` : ''}
+        </div>` : ''}
+        <p class="rp-options-label">इस अध्याय में देखें:</p>
+        <div class="rp-options-grid">
+          ${opts.map(o => `
+            <button class="rp-opt-btn" onclick="${o.action}">
+              <div class="rp-opt-icon" style="background:${o.bg};color:${o.color}">${o.icon}</div>
+              <div class="rp-opt-text">
+                <span class="rp-opt-name">${o.name}</span>
+                <span class="rp-opt-sub">${o.sub}</span>
+              </div>
+            </button>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function openRightComingSoon(type, chTitle) {
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="rp-summary-wrap">
+      <div class="rp-summary-header">
+        <span style="font-weight:700;color:var(--text-primary)">${type} — ${chTitle}</span>
+      </div>
+      <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
+        <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
+        <h3 style="color:var(--text-primary);margin-bottom:.5rem">जल्द आएगा!</h3>
+        <p style="color:var(--text-muted)">यह सामग्री तैयार की जा रही है।</p>
+      </div>
+    </div>`;
+}
+
+function openRightPDF(bookName, chNum, chTitle, fileUrl) {
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
+  const url = (fileUrl || '').trim();
+  if (!url) { openRightComingSoon('PDF', chTitle); return; }
+  const sBook = bookName.replace(/'/g,"\\'");
+  const sTitle = chTitle.replace(/'/g,"\\'");
+  panel.innerHTML = `
+    <div class="rp-summary-wrap">
+      <div class="rp-summary-header">
+        <span style="font-weight:700;color:var(--text-primary)">${chTitle} — PDF</span>
+        <a href="${url}" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--accent);font-weight:600">↗ नए टैब में खोलें</a>
+      </div>
+      <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
+        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
+          style="width:100%;height:100%;border:none" loading="lazy" title="${chTitle} PDF">
+        </iframe>
+      </div>
+    </div>`;
+}
+
+// Placeholder: these are no longer needed but kept for backward compat
+function _OLD_renderChapter_unused(book, ch) {
   const introData = getIntroData(book.name, ch.num);
   const introHi = introData ? introData.hi : '';
   const introEn = introData ? introData.en : '';
-
-  // Left column: quick text links
   const quickLinks = [
     { label: `${ch.title.split('—')[1] ? ch.title.split('—')[1].trim() : ch.title} — पाठ PDF`, action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
     { label: 'पाठ सारांश (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: '📝' },
@@ -1335,47 +1437,41 @@ function parseSummaryArray(arr, bookName, chNum, chTitle) {
 }
 
 async function openSummary(bookName, chNum, chTitle) {
-  const modal    = document.getElementById('doc-modal');
-  const titleEl  = document.getElementById('doc-modal-title');
-  const bodyEl   = document.getElementById('doc-viewer-body');
-  if (!modal) return;
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
 
-  titleEl.textContent = `${bookName} Ch.${chNum} — Summary`;
-  
-  if (!window._originalDocViewerHTML) {
-    window._originalDocViewerHTML = bodyEl.innerHTML;
-  }
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  // Setup download button - hide it since we're viewing a dynamic summary page
-  const dlBtn = document.getElementById('doc-download-btn');
-  if (dlBtn) {
-    dlBtn.style.display = 'none';
-  }
+  const sBook  = bookName.replace(/'/g,"\\'");
+  const sTitle = chTitle.replace(/'/g,"\\'");
 
-  bodyEl.innerHTML = `
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:1rem;">
-      <div class="loading-spinner" style="width:40px;height:40px;border:4px solid var(--border);border-top:4px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite;"></div>
-      <p style="color:var(--text-muted);font-weight:500;">Loading Summary...</p>
-    </div>
-  `;
-  openModal(modal);
+  panel.innerHTML = `
+    <div class="rp-summary-wrap">
+      <div class="rp-summary-header">
+        <span style="font-weight:700;color:var(--text-primary)">${bookName} Ch.${chNum} — Summary</span>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
+      </div>
+      <div class="rp-summary-body" style="display:flex;align-items:center;gap:.75rem;padding:2rem">
+        <div style="width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite"></div>
+        <p style="color:var(--text-muted);font-weight:500">Summary लोड हो रही है...</p>
+      </div>
+    </div>`;
 
   const summaries = await fetchSummaries();
   const summaryKey = getSummaryKey(bookName, chNum, chTitle);
-  
-  console.log('[DEBUG] openSummary:', { bookName, chNum, chTitle, summaryKey });
-  console.log('[DEBUG] summaries loaded:', summaries ? Object.keys(summaries) : 'failed/null');
-  
+
   if (!summaries || !summaryKey || !summaries[summaryKey]) {
-    bodyEl.innerHTML = `
-      <div class="doc-preview-placeholder">
-        <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="60" aria-hidden="true">
-          <rect x="5" y="5" width="70" height="90" rx="6" fill="#EBF3FD" stroke="#C8DFF5" stroke-width="2"/>
-          <circle cx="40" cy="50" r="15" fill="#90BEF0" opacity="0.3"/>
-          <path d="M40 42v10M36 48h8" stroke="#3A7BD5" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <p style="font-size: 1.1rem; color: var(--text-primary); font-weight: 600; margin-top: 1rem;">Summary Coming Soon</p>
-        <p class="doc-preview-note">Summary and revision material for <strong>${chTitle}</strong> is currently being prepared.<br/>Please check back in a short while!</p>
+    panel.innerHTML = `
+      <div class="rp-summary-wrap">
+        <div class="rp-summary-header">
+          <span style="font-weight:700;color:var(--text-primary)">${chTitle} — Summary</span>
+          <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
+        </div>
+        <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
+          <div style="font-size:2.5rem;margin-bottom:1rem">📝</div>
+          <h3 style="color:var(--text-primary);margin-bottom:.5rem">Summary जल्द आएगी</h3>
+          <p style="color:var(--text-muted)"><strong>${chTitle}</strong> का सारांश तैयार किया जा रहा है।</p>
+        </div>
       </div>`;
     return;
   }
@@ -1383,48 +1479,41 @@ async function openSummary(bookName, chNum, chTitle) {
   const rawData = summaries[summaryKey];
   const data = parseSummaryArray(rawData, bookName, chNum, chTitle);
 
-  let html = `
-    <div class="summary-viewer-wrap">
-      <div class="summary-header">
-        <h2 class="summary-title">${data.bookTitle || chTitle}</h2>
-        <div class="summary-meta">
-          <span><strong>Class:</strong> ${data.classInfo || 'Class 10 - Hindi Course B (' + bookName + ')'}</span>
-          ${data.author ? `<span>• <strong>Author:</strong> ${data.author}</span>` : ''}
-        </div>
-        <hr class="summary-divider">
-      </div>
-      
-      <h3 class="summary-section-title">1. पाठ का सार (Quick Revision Summary)</h3>
-  `;
-
+  let pts = '';
   if (data.introText) {
-    html += `
-      <div class="summary-intro-box">
-        <strong>${data.introTitle || 'अध्याय एक नज़र में (Chapter Introduction)'}:</strong><br/>
-        ${data.introText}
-      </div>
-    `;
+    pts += `<div class="summary-intro-box"><strong>${data.introTitle || 'अध्याय एक नज़र में'}:</strong><br/>${data.introText}</div>`;
   }
-
-  html += `<div class="summary-points-list">`;
-  
+  pts += `<div class="summary-points-list">`;
   data.points.forEach(pt => {
-    html += `
-      <div class="summary-point-item">
-        <div class="summary-point-title"><strong>${pt.title}</strong></div>
-        ${pt.hindi ? `<div class="summary-text-hindi">${pt.hindi}</div>` : ''}
-        ${pt.english ? `<div class="summary-text-english"><strong>English:</strong> ${pt.english}</div>` : ''}
-      </div>
-    `;
+    pts += `<div class="summary-point-item">
+      <div class="summary-point-title"><strong>${pt.title}</strong></div>
+      ${pt.hindi   ? `<div class="summary-text-hindi">${pt.hindi}</div>` : ''}
+      ${pt.english ? `<div class="summary-text-english"><strong>English:</strong> ${pt.english}</div>` : ''}
+    </div>`;
   });
+  pts += `</div>`;
 
-  html += `
+  panel.innerHTML = `
+    <div class="rp-summary-wrap">
+      <div class="rp-summary-header">
+        <div>
+          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} › Chapter ${chNum}</div>
+          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${data.bookTitle || chTitle}</span>
+        </div>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
       </div>
-    </div>
-  `;
-
-  bodyEl.innerHTML = html;
+      <div class="rp-summary-body">
+        <div class="summary-viewer-wrap">
+          <h3 class="summary-section-title">पाठ का सार (Quick Revision Summary)</h3>
+          ${pts}
+        </div>
+      </div>
+    </div>`;
 }
+
+
+
+
 
 /* ══════════════════════════════════════════
    11. UPLOAD ANSWER SHEET MODAL
