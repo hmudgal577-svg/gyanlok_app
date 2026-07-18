@@ -740,7 +740,7 @@ function renderChapter(book, ch) {
 
   const resources = [
     { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download Chapter',              action: `handleDownload('${book.name} — Chapter ${ch.num}', '${ch.file_url || ''}')` },
-    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openDocViewer('${book.name} Ch.${ch.num} — Summary')` },
+    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary and Objectives',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
     { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Muhavare / Word Meanings',       action: `openDocViewer('${book.name} Ch.${ch.num} — Muhavare')` },
     { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Questions and Answers',          action: `openDocViewer('${book.name} Ch.${ch.num} — Q&A')` },
     { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Additional Practice Questions',  action: `openDocViewer('${book.name} Ch.${ch.num} — Additional Qs')` },
@@ -1016,6 +1016,7 @@ function openDocViewer(title, url) {
   // Setup download button in header
   const dlBtn = document.getElementById('doc-download-btn');
   if (dlBtn) {
+    dlBtn.style.display = ''; // Reset display style
     const newDlBtn = dlBtn.cloneNode(true);
     dlBtn.parentNode.replaceChild(newDlBtn, dlBtn);
     newDlBtn.addEventListener('click', () => handleDownload(title, url));
@@ -1057,6 +1058,199 @@ function openDocViewer(title, url) {
   }
 
   openModal(modal);
+}
+
+// ─── Chapter Summary Viewer System ──────────────────────────────────────────
+let _summariesCache = null;
+
+async function fetchSummaries() {
+  if (_summariesCache) return _summariesCache;
+  try {
+    const res = await fetch('/summary_content.json');
+    if (!res.ok) throw new Error('Failed to load summaries');
+    _summariesCache = await res.json();
+    return _summariesCache;
+  } catch (err) {
+    console.error('Error fetching summaries:', err);
+    return null;
+  }
+}
+
+function getSummaryKey(bookName, chNum) {
+  const isSparsh = bookName.includes('स्पर्श') || bookName.toLowerCase().includes('sparsh');
+  const isSanchayan = bookName.includes('संचयन') || bookName.toLowerCase().includes('sanchayan');
+  
+  if (isSparsh && chNum === 2) return 'meera_ke_pad';
+  if (isSanchayan && chNum === 1) return 'harihar_kaka';
+  if (isSparsh && chNum === 9) return 'dairy_ke_panne';
+  return null;
+}
+
+function parseSummaryArray(arr, bookName, chNum, chTitle) {
+  if (!arr || arr.length === 0) return null;
+  
+  let bookTitle = chTitle;
+  let classInfo = 'Class 10 - Hindi Course B (' + bookName + ')';
+  let author = '';
+  let introTitle = '';
+  let introText = '';
+  let points = [];
+  
+  let currentIndex = 0;
+  
+  if (arr[currentIndex] === "पाठ का मुख्य विवरण (Quick Overview)") {
+    currentIndex++;
+  }
+  
+  while (currentIndex < arr.length) {
+    const line = arr[currentIndex].trim();
+    if (line.includes("पाठ का नाम:")) {
+      bookTitle = line.replace(/.*पाठ का नाम:\s*/, '').replace(/[•\s]/g, '').trim();
+      currentIndex++;
+    } else if (line.includes("कक्षा:")) {
+      classInfo = line.replace(/.*कक्षा:\s*/, '').replace(/[•\s]/g, '').trim();
+      currentIndex++;
+    } else if (line.includes("लेखक:")) {
+      author = line.replace(/.*लेखक:\s*/, '').replace(/[•\s]/g, '').trim();
+      currentIndex++;
+    } else if (line === "(SUMMARY)" || line === "SUMMARY") {
+      currentIndex++;
+    } else {
+      break;
+    }
+  }
+  
+  if (currentIndex < arr.length && (arr[currentIndex].includes("Introduction") || arr[currentIndex].includes("Overview"))) {
+    introTitle = arr[currentIndex];
+    introText = arr[currentIndex + 1];
+    currentIndex += 2;
+  }
+  
+  let currentPoint = null;
+  for (let i = currentIndex; i < arr.length; i++) {
+    const text = arr[i].trim();
+    if (!text) continue;
+    
+    if (text.startsWith("हिंदी:") || text.startsWith("हिंदी :")) {
+      if (currentPoint) {
+        currentPoint.hindi = text.replace(/^हिंदी\s*:\s*/, '').trim();
+      }
+    } else if (text.startsWith("English:") || text.startsWith("English :")) {
+      if (currentPoint) {
+        currentPoint.english = text.replace(/^English\s*:\s*/, '').trim();
+      }
+    } else {
+      if (currentPoint) {
+        points.push(currentPoint);
+      }
+      currentPoint = {
+        title: text.replace(/^\d+[\.\s\-]+/, '').trim(), // strip leading number like "1. "
+        hindi: "",
+        english: ""
+      };
+    }
+  }
+  if (currentPoint) {
+    points.push(currentPoint);
+  }
+  
+  return {
+    bookTitle,
+    classInfo,
+    author,
+    introTitle,
+    introText,
+    points
+  };
+}
+
+async function openSummary(bookName, chNum, chTitle) {
+  const modal    = document.getElementById('doc-modal');
+  const titleEl  = document.getElementById('doc-modal-title');
+  const bodyEl   = document.getElementById('doc-viewer-body');
+  if (!modal) return;
+
+  titleEl.textContent = `${bookName} Ch.${chNum} — Summary`;
+  
+  if (!window._originalDocViewerHTML) {
+    window._originalDocViewerHTML = bodyEl.innerHTML;
+  }
+
+  // Setup download button - hide it since we're viewing a dynamic summary page
+  const dlBtn = document.getElementById('doc-download-btn');
+  if (dlBtn) {
+    dlBtn.style.display = 'none';
+  }
+
+  bodyEl.innerHTML = `
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:1rem;">
+      <div class="loading-spinner" style="width:40px;height:40px;border:4px solid var(--border);border-top:4px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite;"></div>
+      <p style="color:var(--text-muted);font-weight:500;">Loading Summary...</p>
+    </div>
+  `;
+  openModal(modal);
+
+  const summaries = await fetchSummaries();
+  const summaryKey = getSummaryKey(bookName, chNum);
+  
+  if (!summaries || !summaryKey || !summaries[summaryKey]) {
+    bodyEl.innerHTML = `
+      <div class="doc-preview-placeholder">
+        <svg viewBox="0 0 80 100" fill="none" xmlns="http://www.w3.org/2000/svg" width="60" aria-hidden="true">
+          <rect x="5" y="5" width="70" height="90" rx="6" fill="#EBF3FD" stroke="#C8DFF5" stroke-width="2"/>
+          <circle cx="40" cy="50" r="15" fill="#90BEF0" opacity="0.3"/>
+          <path d="M40 42v10M36 48h8" stroke="#3A7BD5" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p style="font-size: 1.1rem; color: var(--text-primary); font-weight: 600; margin-top: 1rem;">Summary Coming Soon</p>
+        <p class="doc-preview-note">Summary and revision material for <strong>${chTitle}</strong> is currently being prepared.<br/>Please check back in a short while!</p>
+      </div>`;
+    return;
+  }
+
+  const rawData = summaries[summaryKey];
+  const data = parseSummaryArray(rawData, bookName, chNum, chTitle);
+
+  let html = `
+    <div class="summary-viewer-wrap">
+      <div class="summary-header">
+        <h2 class="summary-title">${data.bookTitle || chTitle}</h2>
+        <div class="summary-meta">
+          <span><strong>Class:</strong> ${data.classInfo || 'Class 10 - Hindi Course B (' + bookName + ')'}</span>
+          ${data.author ? `<span>• <strong>Author:</strong> ${data.author}</span>` : ''}
+        </div>
+        <hr class="summary-divider">
+      </div>
+      
+      <h3 class="summary-section-title">1. पाठ का सार (Quick Revision Summary)</h3>
+  `;
+
+  if (data.introText) {
+    html += `
+      <div class="summary-intro-box">
+        <strong>${data.introTitle || 'अध्याय एक नज़र में (Chapter Introduction)'}:</strong><br/>
+        ${data.introText}
+      </div>
+    `;
+  }
+
+  html += `<div class="summary-points-list">`;
+  
+  data.points.forEach(pt => {
+    html += `
+      <div class="summary-point-item">
+        <div class="summary-point-title"><strong>${pt.title}</strong></div>
+        ${pt.hindi ? `<div class="summary-text-hindi">${pt.hindi}</div>` : ''}
+        ${pt.english ? `<div class="summary-text-english"><strong>English:</strong> ${pt.english}</div>` : ''}
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  bodyEl.innerHTML = html;
 }
 
 /* ══════════════════════════════════════════

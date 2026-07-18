@@ -1272,3 +1272,104 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .upload-drop-area { margin: var(--sp-sm); }
   .upload-file-selected { margin: 0 var(--sp-sm) var(--sp-sm); }
 }
+
+/* ─── Premium Summary Viewer Styles ──────────────────────────────────────── */
+.summary-viewer-wrap {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.8;
+  padding: 1.5rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.summary-header {
+  margin-bottom: 1.5rem;
+}
+.summary-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+.summary-meta {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+}
+.summary-meta strong {
+  color: var(--text-primary);
+}
+.summary-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.5rem 0;
+  border: none;
+}
+.summary-section-title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #c05621;
+  margin-bottom: 1.5rem;
+}
+.summary-intro-box {
+  background: var(--bg-soft);
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem;
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  font-size: 0.975rem;
+  margin-bottom: 2rem;
+  line-height: 1.8;
+}
+.summary-points-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.summary-point-item {
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 1.5rem;
+}
+.summary-point-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.summary-point-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.summary-point-title::before {
+  content: "•";
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+.summary-text-hindi {
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+  line-height: 1.7;
+}
+.summary-text-english {
+  font-size: 0.95rem;
+  color: var(--text-body);
+  font-style: italic;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--border);
+  margin-left: 1.25rem;
+  line-height: 1.6;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
