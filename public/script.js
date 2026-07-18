@@ -938,14 +938,21 @@ function openRightPDF(bookName, chNum, chTitle, fileUrl) {
   if (!url) { openRightComingSoon('PDF', chTitle); return; }
   const sBook = bookName.replace(/'/g,"\\'");
   const sTitle = chTitle.replace(/'/g,"\\'");
+  
+  const isAbsoluteUrl = /^https?:\/\//i.test(url);
+  const absoluteUrl = isAbsoluteUrl ? url : `${window.location.origin}${url}`;
+
   panel.innerHTML = `
     <div class="rp-summary-wrap">
       <div class="rp-summary-header">
-        <span style="font-weight:700;color:var(--text-primary)">${chTitle} — PDF</span>
-        <a href="${url}" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--accent);font-weight:600">↗ नए टैब में खोलें</a>
+        <div>
+          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} &rsaquo; Chapter ${chNum}</div>
+          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${chTitle} — PDF</span>
+        </div>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','${url.replace(/'/g,"\\'")}')">← वापस</button>
       </div>
       <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
-        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
+        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
           style="width:100%;height:100%;border:none" loading="lazy" title="${chTitle} PDF">
         </iframe>
       </div>
@@ -1268,36 +1275,79 @@ function initDocModal() {
 }
 
 function openDocViewer(title, url) {
+  const panel = document.getElementById('boards-right-panel');
+  
+  // Decide if we should render inline inside right panel or open in modal
+  const isBoardsSection = title.includes('Syllabus') || 
+                          title.includes('Marking Scheme') || 
+                          title.includes('Book') || 
+                          title.includes('Ch.') || 
+                          title.includes('Chapter') || 
+                          title.includes('PDF') ||
+                          (panel && document.getElementById('school-boards') && document.getElementById('school-boards').contains(document.activeElement));
+
+  if (panel && isBoardsSection) {
+    const cleanUrl = (url || '').trim();
+    if (!cleanUrl) {
+      panel.innerHTML = `
+        <div class="rp-summary-wrap">
+          <div class="rp-summary-header">
+            <span style="font-weight:700;color:var(--text-primary)">${title}</span>
+          </div>
+          <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
+            <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
+            <h3 style="color:var(--text-primary);margin-bottom:.5rem">जल्द आएगा!</h3>
+            <p style="color:var(--text-muted)">यह सामग्री तैयार की जा रही है।</p>
+          </div>
+        </div>`;
+      return;
+    }
+
+    const isAbsoluteUrl = /^https?:\/\//i.test(cleanUrl);
+    const absoluteUrl = isAbsoluteUrl ? cleanUrl : `${window.location.origin}${cleanUrl}`;
+
+    panel.innerHTML = `
+      <div class="rp-summary-wrap">
+        <div class="rp-summary-header">
+          <span style="font-weight:700;color:var(--text-primary)">${title}</span>
+          <a href="${absoluteUrl}" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--accent);font-weight:600">↗ नए टैब में खोलें</a>
+        </div>
+        <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
+          <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
+            style="width:100%;height:100%;border:none" loading="lazy" title="${title}">
+          </iframe>
+        </div>
+      </div>`;
+    return;
+  }
+
+  // Fallback to standard modal behavior for other sections (like Test Sheets)
   const modal    = document.getElementById('doc-modal');
   const titleEl  = document.getElementById('doc-modal-title');
   const bodyEl   = document.getElementById('doc-viewer-body');
   if (!modal) return;
 
   titleEl.textContent = title;
-
-  // Backup original mock placeholder if we haven't already
   if (!window._originalDocViewerHTML) {
     window._originalDocViewerHTML = bodyEl.innerHTML;
   }
 
-  // Setup download button in header
   const dlBtn = document.getElementById('doc-download-btn');
   if (dlBtn) {
-    dlBtn.style.display = ''; // Reset display style
+    dlBtn.style.display = '';
     const newDlBtn = dlBtn.cloneNode(true);
     dlBtn.parentNode.replaceChild(newDlBtn, dlBtn);
     newDlBtn.addEventListener('click', () => handleDownload(title, url));
   }
 
   if (url) {
-    // Mobile detection — iOS Safari & Android Chrome can't render PDFs in iframes
+    const cleanUrl = url.trim();
+    const isAbsoluteUrl = /^https?:\/\//i.test(cleanUrl);
+    const absoluteUrl = isAbsoluteUrl ? cleanUrl : `${window.location.origin}${cleanUrl}`;
     const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-    const isAbsoluteUrl = /^https?:\/\//i.test(url);
-
-    let viewerUrl = url;
+    
+    let viewerUrl = absoluteUrl;
     if (isMobile) {
-      // Use Google Docs Viewer for mobile — works on all browsers
-      const absoluteUrl = isAbsoluteUrl ? url : `${window.location.origin}${url}`;
       viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true`;
     }
 
@@ -1326,6 +1376,7 @@ function openDocViewer(title, url) {
 
   openModal(modal);
 }
+
 
 // ─── Chapter Summary Viewer System ──────────────────────────────────────────
 let _summariesCache = null;
