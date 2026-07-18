@@ -764,7 +764,24 @@ function renderBoardContent() {
   }
 
   const { syllabus, markingScheme, books } = subjRes;
-  let html = '';
+  
+  // Reset slide position on mobile when subject changes
+  const layout = document.querySelector('.boards-split-layout');
+  if (layout) layout.classList.remove('show-right');
+
+  /* Subject info banner at the top of chapter navigation */
+  let html = `
+    <div class="subject-info-banner" onclick="showSubjectDetails()" style="display:flex; align-items:center; justify-content:space-between; background:var(--accent-bg); border:1px solid var(--accent-light); padding:.75rem 1rem; border-radius:var(--r-md); margin-bottom:1.25rem; cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:.5rem;">
+        <span style="font-size:1.25rem; margin-right:.15rem;">📋</span>
+        <div style="text-align:left;">
+          <strong style="font-size:.84rem; color:var(--accent-dark); display:block; line-height:1.2;">Syllabus &amp; Full Books</strong>
+          <span style="font-size:.72rem; color:var(--text-body); display:block; margin-top:2px;">Syllabus, Marking Scheme aur text books check karein</span>
+        </div>
+      </div>
+      <span style="color:var(--accent); font-weight:700; font-size:.9rem;">&rarr;</span>
+    </div>
+  `;
 
   /* Books list on the left side */
   books.forEach(book => {
@@ -923,6 +940,10 @@ function selectChapter(bookName, chNum, chTitle, fileUrl) {
   const panel = document.getElementById('boards-right-panel');
   if (!panel) return;
 
+  // Slide right panel into view on mobile
+  const layout = document.querySelector('.boards-split-layout');
+  if (layout) layout.classList.add('show-right');
+
   // Scroll right panel to top on selection
   panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -960,7 +981,10 @@ function selectChapter(bookName, chNum, chTitle, fileUrl) {
   panel.innerHTML = `
     <div class="rp-chapter-card">
       <div class="rp-ch-header">
-        <div class="rp-ch-breadcrumb">${bookName} &rsaquo; Chapter ${chNum}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem;">
+          <div class="rp-ch-breadcrumb">${bookName} &rsaquo; Chapter ${chNum}</div>
+          <button class="rp-summary-back mobile-only" onclick="goBackToChapters()" style="padding:.2rem .5rem; font-size:.72rem; border-color:var(--border-dark);">← Back</button>
+        </div>
         <h2 class="rp-ch-title">${chTitle}</h2>
       </div>
       <div class="rp-ch-body">
@@ -1875,4 +1899,18 @@ function showToast(message) {
     toast.style.transform = 'translateX(-50%) translateY(10px)';
     setTimeout(() => toast.remove(), 350);
   }, 4000);
+}
+
+// ─── Mobile Slide Layout helpers ───────────────────────────────────────────
+function showSubjectDetails() {
+  const layout = document.querySelector('.boards-split-layout');
+  if (layout) layout.classList.add('show-right');
+}
+
+function goBackToChapters() {
+  const layout = document.querySelector('.boards-split-layout');
+  if (layout) layout.classList.remove('show-right');
+  
+  // Clear left highlight when coming back to the list
+  document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('open'));
 }
