@@ -630,9 +630,19 @@ async function initBoardsSection() {
                       if (!BOARDS_DATA[board].resources[cls]) BOARDS_DATA[board].resources[cls] = {};
                       BOARDS_DATA[board].resources[cls][subj] = dbSubj;
                     } else {
-                      // Smart merge: update books list from DB but preserve file_urls from local fallback
-                      if (dbSubj.syllabus) localSubj.syllabus = dbSubj.syllabus;
-                      if (dbSubj.markingScheme) localSubj.markingScheme = dbSubj.markingScheme;
+                      // Smart merge: update books list from DB but preserve/prefer working file_urls from local fallback
+                      if (dbSubj.syllabus) {
+                        localSubj.syllabus = {
+                          ...dbSubj.syllabus,
+                          file_url: (localSubj.syllabus && localSubj.syllabus.file_url) || dbSubj.syllabus.file_url
+                        };
+                      }
+                      if (dbSubj.markingScheme) {
+                        localSubj.markingScheme = {
+                          ...dbSubj.markingScheme,
+                          file_url: (localSubj.markingScheme && localSubj.markingScheme.file_url) || dbSubj.markingScheme.file_url
+                        };
+                      }
                       if (dbSubj.books && dbSubj.books.length > 0) {
                         localSubj.books = dbSubj.books.map(dbBook => {
                           // Find matching local book by name (case-insensitive)
@@ -642,13 +652,13 @@ async function initBoardsSection() {
                           );
                           return {
                             ...dbBook,
-                            // Preserve local file_url if DB version is missing it
-                            file_url: dbBook.file_url || (localBook && localBook.file_url) || '',
+                            // Prefer local Vercel file_url over broken database URL
+                            file_url: (localBook && localBook.file_url) || dbBook.file_url || '',
                             chapters: (dbBook.chapters || []).map(dbCh => {
                               const localCh = localBook && (localBook.chapters || []).find(lc => lc.num === dbCh.num);
                               return {
                                 ...dbCh,
-                                file_url: dbCh.file_url || (localCh && localCh.file_url) || ''
+                                file_url: (localCh && localCh.file_url) || dbCh.file_url || ''
                               };
                             })
                           };
