@@ -623,7 +623,38 @@ async function initBoardsSection() {
                   BOARDS_DATA[board].resources[cls] = dbData[board].resources[cls];
                 } else {
                   for (const subj in dbData[board].resources[cls]) {
-                    BOARDS_DATA[board].resources[cls][subj] = dbData[board].resources[cls][subj];
+                    const dbSubj = dbData[board].resources[cls][subj];
+                    const localSubj = BOARDS_DATA[board].resources[cls] && BOARDS_DATA[board].resources[cls][subj];
+                    if (!localSubj) {
+                      // No local fallback — use database directly
+                      if (!BOARDS_DATA[board].resources[cls]) BOARDS_DATA[board].resources[cls] = {};
+                      BOARDS_DATA[board].resources[cls][subj] = dbSubj;
+                    } else {
+                      // Smart merge: update books list from DB but preserve file_urls from local fallback
+                      if (dbSubj.syllabus) localSubj.syllabus = dbSubj.syllabus;
+                      if (dbSubj.markingScheme) localSubj.markingScheme = dbSubj.markingScheme;
+                      if (dbSubj.books && dbSubj.books.length > 0) {
+                        localSubj.books = dbSubj.books.map(dbBook => {
+                          // Find matching local book by name (case-insensitive)
+                          const localBook = (localSubj.books || []).find(lb =>
+                            lb.name.toLowerCase().replace(/[^a-z]/g,'').includes(dbBook.name.toLowerCase().replace(/[^a-z]/g,'')) ||
+                            dbBook.name.toLowerCase().replace(/[^a-z]/g,'').includes(lb.name.toLowerCase().replace(/[^a-z]/g,''))
+                          );
+                          return {
+                            ...dbBook,
+                            // Preserve local file_url if DB version is missing it
+                            file_url: dbBook.file_url || (localBook && localBook.file_url) || '',
+                            chapters: (dbBook.chapters || []).map(dbCh => {
+                              const localCh = localBook && (localBook.chapters || []).find(lc => lc.num === dbCh.num);
+                              return {
+                                ...dbCh,
+                                file_url: dbCh.file_url || (localCh && localCh.file_url) || ''
+                              };
+                            })
+                          };
+                        });
+                      }
+                    }
                   }
                 }
               }
