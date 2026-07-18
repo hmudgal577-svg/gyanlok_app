@@ -721,9 +721,15 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .chapter-item {
   border: 1px solid var(--border); border-radius: var(--r-md);
   overflow: hidden; background: var(--card-bg);
-  transition: border-color var(--t);
+  transition: all var(--t);
 }
 .chapter-item:hover { border-color: var(--accent-light); }
+.chapter-item.open {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  box-shadow: var(--shadow-sm);
+}
+
 
 .chapter-header {
   display: flex; align-items: center; gap: .75rem;
