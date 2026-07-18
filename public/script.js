@@ -745,39 +745,7 @@ function renderBoardContent() {
   const { syllabus, markingScheme, books } = subjRes;
   let html = '';
 
-  /* Syllabus + Marking Scheme row */
-  html += `<div class="resource-row">`;
-  if (syllabus) {
-    html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">
-        <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
-        <div class="rc-info">
-          <strong>${syllabus.title} ${syllabus.isNew ? '<span class="new-badge">New</span>' : ''}</strong>
-          <span>Official Syllabus | PDF</span>
-        </div>
-        <div class="rc-actions">
-          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">${SVG.eye}</button>
-          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${syllabus.title}', '${syllabus.file_url || ''}')">${SVG.dl}</button>
-        </div>
-      </div>`;
-  }
-  if (markingScheme) {
-    html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">
-        <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
-        <div class="rc-info">
-          <strong>${markingScheme.title}</strong>
-          <span>Marking Scheme | PDF</span>
-        </div>
-        <div class="rc-actions">
-          <button class="rc-btn" title="View" onclick="event.stopPropagation();openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">${SVG.eye}</button>
-          <button class="rc-btn" title="Download" onclick="event.stopPropagation();handleDownload('${markingScheme.title}', '${markingScheme.file_url || ''}')">${SVG.dl}</button>
-        </div>
-      </div>`;
-  }
-  html += `</div>`;
-
-  /* Books */
+  /* Books list on the left side */
   books.forEach(book => {
     html += `
       <div class="book-section">
@@ -787,9 +755,6 @@ function renderBoardContent() {
             <h3>${book.name}</h3>
             <span>${book.subtitle}</span>
           </div>
-          <button class="full-book-btn" onclick="openDocViewer('${book.name} — Complete Book', '${book.file_url || ''}')">
-            ${SVG.dl} Complete Book
-          </button>
         </div>
         <div class="chapters-list">
           ${book.chapters.map(ch => renderChapter(book, ch)).join('')}
@@ -798,17 +763,80 @@ function renderBoardContent() {
   });
 
   panel.innerHTML = html;
+  
+  // Render default right panel content (Syllabus, Marking Scheme, Complete Book) on load
+  renderDefaultRightContent(subjRes);
+}
 
-  /* Accordion logic */
-  panel.querySelectorAll('.chapter-header').forEach(header => {
-    header.addEventListener('click', () => {
-      const item = header.closest('.chapter-item');
-      // close others in same book
-      const siblings = item.parentElement.querySelectorAll('.chapter-item');
-      siblings.forEach(s => { if (s !== item) s.classList.remove('open'); });
-      item.classList.toggle('open');
-    });
+function renderDefaultRightContent(subjRes) {
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
+
+  const { syllabus, markingScheme, books } = subjRes;
+  let html = `
+    <div class="rp-default-view">
+      <div class="rp-ch-header" style="margin-bottom: 1.25rem;">
+        <div class="rp-ch-breadcrumb">${state.board} &rsaquo; Class ${state.cls} &rsaquo; ${state.subj}</div>
+        <h2 class="rp-ch-title">विषय सामग्री (Subject Materials)</h2>
+      </div>
+      
+      <div class="rp-intro" style="background:var(--accent-bg); border-left-color:var(--accent); margin-bottom: 1.25rem;">
+        <p class="rp-intro-hi">इस विषय का Syllabus, Marking Scheme और Complete Textbook direct यहाँ से देखें या download करें।</p>
+      </div>
+
+      <p class="rp-options-label">Syllabus &amp; Marking Scheme:</p>
+      <div class="resource-row" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+  `;
+
+  if (syllabus) {
+    html += `
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">
+        <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
+        <div class="rc-info">
+          <strong>Syllabus</strong>
+          <span style="font-size: .78rem; color: var(--text-muted);">${syllabus.title}</span>
+        </div>
+      </div>`;
+  }
+  if (markingScheme) {
+    html += `
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">
+        <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
+        <div class="rc-info">
+          <strong>Marking Scheme</strong>
+          <span style="font-size: .78rem; color: var(--text-muted);">${markingScheme.title}</span>
+        </div>
+      </div>`;
+  }
+  if (!syllabus && !markingScheme) {
+    html += `<p style="color:var(--text-muted);font-size:.9rem;padding:0 .5rem;">Syllabus is being uploaded.</p>`;
+  }
+
+  html += `
+      </div>
+
+      <p class="rp-options-label">Complete Book Download/View:</p>
+      <div class="rp-options-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .8rem;">
+  `;
+
+  books.forEach(book => {
+    html += `
+      <button class="rp-opt-btn" onclick="openDocViewer('${book.name} — Complete Book', '${book.file_url || ''}')">
+        <div class="rp-opt-icon" style="background:${book.color || 'var(--accent)'};color:#fff">📚</div>
+        <div class="rp-opt-text">
+          <span class="rp-opt-name">${book.name}</span>
+          <span class="rp-opt-sub">Complete Book PDF</span>
+        </div>
+      </button>
+    `;
   });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  panel.innerHTML = html;
 }
 
 // ─── Chapter intro descriptions ─────────────────────────────────────────────
@@ -1309,8 +1337,17 @@ function openDocViewer(title, url) {
     panel.innerHTML = `
       <div class="rp-summary-wrap">
         <div class="rp-summary-header">
-          <span style="font-weight:700;color:var(--text-primary)">${title}</span>
-          <a href="${absoluteUrl}" target="_blank" rel="noopener" style="font-size:.8rem;color:var(--accent);font-weight:600">↗ नए टैब में खोलें</a>
+          <div>
+            <span style="font-weight:700;color:var(--text-primary)">${title}</span>
+          </div>
+          <div style="display:flex;gap:.4rem;align-items:center;">
+            <a href="${absoluteUrl}" download target="_blank" class="rp-summary-back" style="text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;font-size:.78rem;">
+              📥 Download
+            </a>
+            <a href="${absoluteUrl}" target="_blank" rel="noopener" class="rp-summary-back" style="text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:.3rem .6rem;font-size:.78rem;">
+              ↗ Open Tab
+            </a>
+          </div>
         </div>
         <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
           <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
