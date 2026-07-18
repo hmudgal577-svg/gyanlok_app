@@ -739,6 +739,17 @@ function renderBoardContent() {
         <p>Resources for this subject are being prepared and will be available soon.<br/>
         <a href="#contact" style="color:var(--accent);font-weight:600">Contact a mentor</a> for study material in the meantime.</p>
       </div>`;
+    
+    // Clear/Reset the right-hand panel view too!
+    const rightPanel = document.getElementById('boards-right-panel');
+    if (rightPanel) {
+      rightPanel.innerHTML = `
+        <div class="boards-detail-empty">
+          <div class="detail-empty-icon">⏳</div>
+          <h3>सामग्री जल्द आ रही है</h3>
+          <p>Class ${state.cls} (${state.board}) के लिए <strong>${state.subj}</strong> की अध्ययन सामग्री अभी तैयार की जा रही है।</p>
+        </div>`;
+    }
     return;
   }
 
@@ -902,10 +913,30 @@ function selectChapter(bookName, chNum, chTitle, fileUrl) {
   const panel = document.getElementById('boards-right-panel');
   if (!panel) return;
 
+  // Scroll right panel to top on selection
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
   const introData = getIntroData(bookName, chNum);
   const sBook = bookName.replace(/'/g,"\\'");
   const sTitle = chTitle.replace(/'/g,"\\'");
   const sUrl = (fileUrl||'').replace(/'/g,"\\'");
+
+  // Try finding worksheets for this chapter from BOARDS_DATA structure
+  let wsCount = 0;
+  try {
+    const boardRes = BOARDS_DATA[state.board].resources;
+    const clsRes   = boardRes && boardRes[state.cls];
+    const subjRes  = clsRes && clsRes[state.subj];
+    if (subjRes && subjRes.books) {
+      const bookObj = subjRes.books.find(b => b.name.toLowerCase().replace(/[^a-z]/g,'').includes(bookName.toLowerCase().replace(/[^a-z]/g,'')));
+      if (bookObj && bookObj.chapters) {
+        const chObj = bookObj.chapters.find(c => c.num === chNum);
+        if (chObj) wsCount = chObj.worksheets || 0;
+      }
+    }
+  } catch (e) {
+    console.error('Error finding worksheets:', e);
+  }
 
   const opts = [
     { icon:'📝', bg:'#E8F8F6', color:'#2BA899', name:'पाठ सारांश',   sub:'Summary',          action:`openSummary('${sBook}',${chNum},'${sTitle}')` },
@@ -939,6 +970,19 @@ function selectChapter(bookName, chNum, chTitle, fileUrl) {
               </div>
             </button>`).join('')}
         </div>
+        ${wsCount > 0 ? `
+        <div class="rp-ws-block" style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px dashed var(--border);">
+          <p class="rp-options-label" style="margin-bottom:.5rem">अभ्यास पत्रक (Worksheets):</p>
+          <div class="rp-ws-row" style="display:flex; flex-wrap:wrap; gap:.5rem;">
+            ${Array.from({ length: wsCount }, (_, i) => `
+              <div class="rp-ws-card" style="display:flex; align-items:center; gap:.5rem; background:var(--bg-soft); border:1px solid var(--border); padding:.4rem .8rem; border-radius:var(--r-md); max-width: 100%;">
+                <span style="font-size:.82rem; font-weight:600; color:var(--text-primary)">Worksheet ${i+1}</span>
+                <button class="ws-btn download" style="padding:.25rem .5rem; font-size:.72rem;" onclick="handleDownload('${sBook} Ch.${chNum} Worksheet ${i+1}')">${SVG.dl} Down</button>
+                <button class="ws-btn upload" style="padding:.25rem .5rem; font-size:.72rem;" onclick="openUploadModal('${sBook} Ch.${chNum} Worksheet ${i+1}')">${SVG.up} Up</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>` : ''}
       </div>
     </div>`;
 }
