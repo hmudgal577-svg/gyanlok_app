@@ -1,4 +1,4 @@
-﻿/**
+/**
  * GyanLok — script.js (v2)
  *
  * Sections:
@@ -470,7 +470,26 @@ document.addEventListener('DOMContentLoaded', () => {
   initDocModal();
   initUploadModal();
   initScrollTop();
+  checkReaderUrlParams();
 });
+
+// Auto-open reader when page is loaded via a direct shared link
+function checkReaderUrlParams() {
+  const p = new URLSearchParams(window.location.search);
+  const cat   = p.get('cat');
+  const book  = p.get('book');
+  const ch    = parseInt(p.get('ch'), 10);
+  const title = p.get('title');
+  if (cat && book && ch && title) {
+    setTimeout(() => {
+      if (cat === 'pdf') {
+        openRightPDF(book, ch, title, '');
+      } else {
+        openRightContent(book, ch, title, cat);
+      }
+    }, 600);
+  }
+}
 
 /* ══════════════════════════════════════════
    4. NAVBAR
@@ -914,22 +933,63 @@ function getIntroData(bookName, chNum) {
   return (CHAPTER_INTROS[bookKey] || {})[chNum] || null;
 }
 
-function renderChapter(book, ch) {
-  const chId = `ch-${book.name.replace(/\s/g,'-')}-${ch.num}`;
-  const safeBook = book.name.replace(/'/g,"\\'");
-  const safeTitle = ch.title.replace(/'/g,"\\'");
-  const safeUrl = (ch.file_url || '').replace(/'/g,"\\'");
-  return `
-    <div class="chapter-item" id="${chId}">
-      <div class="chapter-header" role="button" tabindex="0" aria-expanded="false"
-           onclick="openRightContent('${safeBook}',${ch.num},'${safeTitle}','summary')">
-        <div class="ch-num">${ch.num}</div>
-        <div class="ch-title">${ch.title}</div>
-        <div class="ch-toggle" style="font-size:.8rem;color:var(--accent);font-weight:600;">पढ़ें &rarr;</div>
-      </div>
-    </div>`;
+// Build a shareable URL for a chapter+category (for right-click "Open in New Tab")
+function buildReaderUrl(bookName, chNum, chTitle, cat) {
+  return '/?' + new URLSearchParams({ book: bookName, ch: chNum, title: chTitle, cat: cat }).toString();
 }
 
+// Toggle chapter dropdown accordion
+function toggleChapterDropdown(chId) {
+  var drop   = document.getElementById('drop-' + chId);
+  var header = document.querySelector('#' + chId + ' .chapter-header');
+  if (!drop) return;
+  var opening = drop.hidden;
+  document.querySelectorAll('.ch-dropdown').forEach(function(d) { d.hidden = true; });
+  document.querySelectorAll('.chapter-header').forEach(function(h) {
+    h.classList.remove('open');
+    h.setAttribute('aria-expanded','false');
+  });
+  if (opening) {
+    drop.hidden = false;
+    if (header) { header.classList.add('open'); header.setAttribute('aria-expanded','true'); }
+  }
+}
+
+function renderChapter(book, ch) {
+  var chId     = 'ch-' + book.name.replace(/\s/g,'-') + '-' + ch.num;
+  var safeBook = book.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var safeTitle= ch.title.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+  var opts = [
+    { icon:'\uD83D\uDCDD', label:'\u092A\u093E\u0920 \u0938\u093E\u0930\u093E\u0902\u0936', sub:'Summary',          cat:'summary',   color:'#2BA899' },
+    { icon:'\uD83D\uDCC4', label:'\u092A\u093E\u0920 PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
+    { icon:'\u2753',       label:'\u0928\u094B\u091F\u094D\u0938',     sub:'Notes',            cat:'notes',     color:'#E05555' },
+    { icon:'\uD83D\uDCD6', label:'\u092E\u0941\u0939\u093E\u0935\u0930\u0947',   sub:'Muhavre',          cat:'muhavre',   color:'#9B59B6' },
+    { icon:'\uD83D\uDD50', label:'PYQ',             sub:'\u092A\u093F\u091B\u0932\u0947 \u0935\u0930\u094D\u0937 \u092A\u094D\u0930\u0936\u094D\u0928', cat:'pyq',       color:'#E8900A' },
+    { icon:'\u2B50',       label:'\u0905\u092D\u094D\u092F\u093E\u0938 \u092A\u094D\u0930\u0936\u094D\u0928', sub:'Extra Practice',   cat:'additional',color:'#27AE60' },
+  ];
+
+  var linksHtml = opts.map(function(o) {
+    var href = buildReaderUrl(book.name, ch.num, ch.title, o.cat);
+    var clickCode = (o.cat === 'pdf')
+      ? 'openRightPDF(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + safeUrl + '\')'
+      : 'openRightContent(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + o.cat + '\')';
+    return '<a class="ch-link-item" href="' + href + '" onclick="event.preventDefault();' + clickCode + '">'
+      + '<span class="ch-link-ic" style="background:' + o.color + '20;color:' + o.color + '">' + o.icon + '</span>'
+      + '<span class="ch-link-text"><span class="ch-link-lbl">' + o.label + '</span><span class="ch-link-sub">' + o.sub + '</span></span>'
+      + '<span class="ch-link-arr">&rarr;</span></a>';
+  }).join('');
+
+  return '<div class="chapter-item" id="' + chId + '">'
+    + '<div class="chapter-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleChapterDropdown(\'' + chId + '\')">'
+    + '<div class="ch-num">' + ch.num + '</div>'
+    + '<div class="ch-title">' + ch.title + '</div>'
+    + '<div class="ch-toggle">\u25BE</div>'
+    + '</div>'
+    + '<div class="ch-dropdown" id="drop-' + chId + '" hidden>' + linksHtml + '</div>'
+    + '</div>';
+}
 // Called when user clicks a chapter row — loads details in the right panel
 function selectChapter(bookName, chNum, chTitle, fileUrl) {
   openRightContent(bookName, chNum, chTitle, 'summary');
@@ -1962,3 +2022,5 @@ function goBackToChapters() {
 }
 window.openRightContent = openRightContent;
 window.closeFsOverlay = closeFsOverlay;
+
+
