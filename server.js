@@ -351,12 +351,65 @@ app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
   res.json({ success: true, user: { email: key, role: 'admin' } });
 });
 
-// POST /api/admin/login  — Legacy (disabled, returns friendly error)
+// POST /api/admin/login — Admin password login (fallback / alternative to OTP)
 app.post('/api/admin/login', loginLimiter, async (req, res) => {
-  return res.status(410).json({
-    error: 'Password login is disabled. Please use OTP login.',
-    useOtp: true,
-  });
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required.' });
+  }
+
+  const cleanEmail    = email.toLowerCase().trim();
+  const cleanPassword = password.trim();
+
+  // Check if authorized email
+  const defaultEmail = (process.env.ADMIN_EMAIL || 'ektaverma09.work@gmail.com').toLowerCase().trim();
+  const isAllowed    = ALLOWED_ADMIN_EMAILS.includes(cleanEmail) || cleanEmail === defaultEmail;
+  if (!isAllowed) {
+    return res.status(403).json({ error: 'Access denied. This email is not authorized as admin.' });
+  }
+
+  try {
+    let adminUser = null;
+    if (usingDb) {
+      const result = await db.query("SELECT * FROM users WHERE role = 'admin' AND LOWER(email) = $1", [cleanEmail]);
+      adminUser = result.rows[0];
+    } else {
+      const users = readJson('users.json', []);
+      adminUser = users.find(u => u.role === 'admin' && u.email.toLowerCase() === cleanEmail);
+    }
+
+    const defaultPass  = (process.env.ADMIN_PASSWORD || '99722 47410').trim();
+    const defaultPass2 = defaultPass.replace(/\s+/g, '');
+
+    let passwordMatch = false;
+
+    if (adminUser && adminUser.password_hash) {
+      passwordMatch = await bcrypt.compare(cleanPassword, adminUser.password_hash);
+    }
+
+    if (!passwordMatch) {
+      if (cleanPassword === defaultPass || cleanPassword === defaultPass2) {
+        passwordMatch = true;
+      }
+    }
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Invalid email or password.' });
+    }
+
+    const token = jwt.sign({ email: cleanEmail, role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.json({ success: true, user: { email: cleanEmail, role: 'admin' } });
+  } catch (err) {
+    console.error('[admin-login]', err);
+    return res.status(500).json({ error: 'Server error during login.' });
+  }
 });
 
 

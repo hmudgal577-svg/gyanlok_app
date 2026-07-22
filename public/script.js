@@ -469,6 +469,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initRevisionNotify();
   initDocModal();
   initUploadModal();
+  initStudentAuthModal();
   initScrollTop();
   checkReaderUrlParams();
 });
@@ -2022,5 +2023,159 @@ function goBackToChapters() {
 }
 window.openRightContent = openRightContent;
 window.closeFsOverlay = closeFsOverlay;
+
+/* ══════════════════════════════════════════
+   12. STUDENT AUTH MODAL & PROFILE
+══════════════════════════════════════════ */
+function initStudentAuthModal() {
+  const trigger   = document.getElementById('student-auth-trigger');
+  const modal     = document.getElementById('student-auth-modal');
+  const closeBtn  = document.getElementById('student-auth-close');
+  const tabLogin  = document.getElementById('st-tab-login');
+  const tabReg    = document.getElementById('st-tab-reg');
+  const formLogin = document.getElementById('student-login-form');
+  const formReg   = document.getElementById('student-reg-form');
+
+  if (!modal) return;
+
+  // Restore logged-in student state on load
+  checkLoggedInStudent();
+
+  if (trigger) {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      const saved = localStorage.getItem('studentUser');
+      if (saved) {
+        if (confirm('Do you want to log out of your student account?')) {
+          logoutStudent();
+        }
+        return;
+      }
+      openModal(modal);
+    });
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', () => closeModal(modal));
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(modal); });
+
+  // Tab switching
+  if (tabLogin && tabReg) {
+    tabLogin.addEventListener('click', () => {
+      tabLogin.style.fontWeight = '700'; tabLogin.style.color = 'var(--accent)'; tabLogin.style.borderBottom = '2px solid var(--accent)';
+      tabReg.style.fontWeight = '600'; tabReg.style.color = 'var(--text-muted)'; tabReg.style.borderBottom = 'none';
+      formLogin.hidden = false;
+      formReg.hidden   = true;
+    });
+    tabReg.addEventListener('click', () => {
+      tabReg.style.fontWeight = '700'; tabReg.style.color = 'var(--accent)'; tabReg.style.borderBottom = '2px solid var(--accent)';
+      tabLogin.style.fontWeight = '600'; tabLogin.style.color = 'var(--text-muted)'; tabLogin.style.borderBottom = 'none';
+      formReg.hidden   = false;
+      formLogin.hidden = true;
+    });
+  }
+
+  // Submit Login
+  if (formLogin) {
+    formLogin.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('st-login-email').value.trim();
+      const password = document.getElementById('st-login-pass').value.trim();
+      const errBox = document.getElementById('st-login-error');
+      const btn = document.getElementById('st-login-btn');
+
+      errBox.hidden = true; btn.disabled = true; btn.textContent = 'Signing in...';
+
+      try {
+        const res = await fetch('/api/student/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          localStorage.setItem('studentUser', JSON.stringify(data.user));
+          closeModal(modal);
+          checkLoggedInStudent();
+          showDocToast(`👋 Welcome back, ${data.user.name}!`);
+        } else {
+          errBox.textContent = data.error || 'Invalid credentials.';
+          errBox.hidden = false;
+        }
+      } catch (err) {
+        errBox.textContent = 'Network error. Please try again.';
+        errBox.hidden = false;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Sign In';
+      }
+    });
+  }
+
+  // Submit Registration
+  if (formReg) {
+    formReg.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('st-reg-name').value.trim();
+      const email = document.getElementById('st-reg-email').value.trim();
+      const class_num = document.getElementById('st-reg-class').value;
+      const password = document.getElementById('st-reg-pass').value.trim();
+      const errBox = document.getElementById('st-reg-error');
+      const btn = document.getElementById('st-reg-btn');
+
+      errBox.hidden = true; btn.disabled = true; btn.textContent = 'Creating account...';
+
+      try {
+        const res = await fetch('/api/student/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ name, email, class_num, password }),
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          localStorage.setItem('studentUser', JSON.stringify(data.user));
+          closeModal(modal);
+          checkLoggedInStudent();
+          showDocToast(`🎉 Account created! Welcome, ${data.user.name}!`);
+        } else {
+          errBox.textContent = data.error || 'Failed to create account.';
+          errBox.hidden = false;
+        }
+      } catch (err) {
+        errBox.textContent = 'Network error. Please try again.';
+        errBox.hidden = false;
+      } finally {
+        btn.disabled = false; btn.textContent = 'Create Free Account';
+      }
+    });
+  }
+}
+
+function checkLoggedInStudent() {
+  const saved = localStorage.getItem('studentUser');
+  const trigger = document.getElementById('student-auth-trigger');
+  if (!trigger) return;
+
+  if (saved) {
+    try {
+      const u = JSON.parse(saved);
+      trigger.innerHTML = `👤 <strong>${u.name}</strong> <span style="font-size:.75rem;opacity:.8">(Class ${u.class_num})</span>`;
+      trigger.style.color = 'var(--accent)';
+      trigger.style.fontWeight = '600';
+    } catch(e) {
+      trigger.textContent = 'Login';
+    }
+  } else {
+    trigger.textContent = 'Login';
+    trigger.style.color = '';
+  }
+}
+
+async function logoutStudent() {
+  try { await fetch('/api/student/logout', { method: 'POST' }); } catch(e){}
+  localStorage.removeItem('studentUser');
+  checkLoggedInStudent();
+  showDocToast('Logged out successfully.');
+}
 
 
