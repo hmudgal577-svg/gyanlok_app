@@ -941,7 +941,8 @@ function buildReaderUrl(bookName, chNum, chTitle, cat) {
 // Toggle chapter dropdown accordion
 function toggleChapterDropdown(chId) {
   var drop   = document.getElementById('drop-' + chId);
-  var header = document.querySelector('#' + chId + ' .chapter-header');
+  var item   = document.getElementById(chId);
+  var header = item ? item.querySelector('.chapter-header') : null;
   if (!drop) return;
   var opening = drop.hidden;
   document.querySelectorAll('.ch-dropdown').forEach(function(d) { d.hidden = true; });
@@ -956,7 +957,8 @@ function toggleChapterDropdown(chId) {
 }
 
 function renderChapter(book, ch) {
-  var chId     = 'ch-' + book.name.replace(/\s/g,'-') + '-' + ch.num;
+  var cleanName = book.name.replace(/[^\w\u0900-\u097F]+/g, '-');
+  var chId     = 'ch-' + cleanName + '-' + ch.num;
   var safeBook = book.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   var safeTitle= ch.title.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
