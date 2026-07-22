@@ -1,24 +1,15 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/login",
-      "destination": "/login.html"
-    },
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
     {
-      "source": "/admin",
-      "destination": "/admin.html"
-    },
-    {
-      "source": "/admin-dashboard",
-      "destination": "/admin-dashboard.html"
-    },
-    {
-      "source": "/api/:path*",
-      "destination": "https://gyanlok-backend.onrender.com/api/:path*"
-    },
-    {
-      "source": "/uploads/:path*",
-      "destination": "https://gyanlok-backend.onrender.com/uploads/:path*"
+      "src": "/(.*)",
+      "dest": "server.js"
     }
   ]
 }

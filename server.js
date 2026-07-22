@@ -297,16 +297,27 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
     return res.status(403).json({ error: 'Access denied. This email is not authorized.' });
   }
 
-  if (!process.env.BREVO_API_KEY) {
-    return res.status(500).json({ error: 'Email service (Brevo) not configured. Contact admin.' });
-  }
-
   // Generate 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
   otpStore.set(email.toLowerCase().trim(), { otp, expiresAt });
 
-  // Send OTP email
+  // LOCAL DEV FALLBACK: if BREVO not configured, log OTP to console
+  if (!process.env.BREVO_API_KEY) {
+    console.log(`\n╔══════════════════════════════════════╗`);
+    console.log(`║  🔐 ADMIN OTP (DEV MODE)             ║`);
+    console.log(`║  Email : ${email.padEnd(28)}║`);
+    console.log(`║  OTP   : ${otp.padEnd(28)}║`);
+    console.log(`║  (Valid for 5 minutes)               ║`);
+    console.log(`╚══════════════════════════════════════╝\n`);
+    return res.json({
+      success: true,
+      message: `[DEV MODE] OTP: ${otp} — Check server console. (Email not sent — BREVO_API_KEY not set)`,
+      devOtp: otp,  // Only returned in dev mode so UI can show it
+    });
+  }
+
+  // Send OTP email via Brevo (production)
   try {
     await sendOtpViaBrevo(email.toLowerCase().trim(), otp);
     console.log(`[OTP] Sent via Brevo to ${email}`);
@@ -316,6 +327,7 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
     res.status(500).json({ error: `Failed to send OTP: ${err.message}` });
   }
 });
+
 
 // POST /api/admin/verify-otp  — Step 2: verify OTP and issue JWT
 app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
@@ -351,65 +363,12 @@ app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
   res.json({ success: true, user: { email: key, role: 'admin' } });
 });
 
-// POST /api/admin/login — Admin password login (fallback / alternative to OTP)
+// POST /api/admin/login  — Legacy (disabled, returns friendly error)
 app.post('/api/admin/login', loginLimiter, async (req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required.' });
-  }
-
-  const cleanEmail    = email.toLowerCase().trim();
-  const cleanPassword = password.trim();
-
-  // Check if authorized email
-  const defaultEmail = (process.env.ADMIN_EMAIL || 'ektaverma09.work@gmail.com').toLowerCase().trim();
-  const isAllowed    = ALLOWED_ADMIN_EMAILS.includes(cleanEmail) || cleanEmail === defaultEmail;
-  if (!isAllowed) {
-    return res.status(403).json({ error: 'Access denied. This email is not authorized as admin.' });
-  }
-
-  try {
-    let adminUser = null;
-    if (usingDb) {
-      const result = await db.query("SELECT * FROM users WHERE role = 'admin' AND LOWER(email) = $1", [cleanEmail]);
-      adminUser = result.rows[0];
-    } else {
-      const users = readJson('users.json', []);
-      adminUser = users.find(u => u.role === 'admin' && u.email.toLowerCase() === cleanEmail);
-    }
-
-    const defaultPass  = (process.env.ADMIN_PASSWORD || '99722 47410').trim();
-    const defaultPass2 = defaultPass.replace(/\s+/g, '');
-
-    let passwordMatch = false;
-
-    if (adminUser && adminUser.password_hash) {
-      passwordMatch = await bcrypt.compare(cleanPassword, adminUser.password_hash);
-    }
-
-    if (!passwordMatch) {
-      if (cleanPassword === defaultPass || cleanPassword === defaultPass2) {
-        passwordMatch = true;
-      }
-    }
-
-    if (!passwordMatch) {
-      return res.status(401).json({ error: 'Invalid email or password.' });
-    }
-
-    const token = jwt.sign({ email: cleanEmail, role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    return res.json({ success: true, user: { email: cleanEmail, role: 'admin' } });
-  } catch (err) {
-    console.error('[admin-login]', err);
-    return res.status(500).json({ error: 'Server error during login.' });
-  }
+  return res.status(410).json({
+    error: 'Password login is disabled. Please use OTP login.',
+    useOtp: true,
+  });
 });
 
 
@@ -983,12 +942,19 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ─── Start Server ────────────────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`=========================================`);
-  console.log(`GyanLok Backend running at http://localhost:${PORT}`);
-  console.log(`Environment:  ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Database:     ${usingDb ? 'Supabase PostgreSQL ✓' : 'JSON file storage'}`);
-  console.log(`File Storage: ${usingCloudinary ? 'Cloudinary ✓' : 'Local disk (uploads/)'}`);
-  console.log(`=========================================`);
-});
+// ─── Start Server (local dev) / Export for Vercel ───────────────────────────
+if (process.env.VERCEL) {
+  // Vercel serverless — just export the app
+  module.exports = app;
+} else {
+  // Local development — start the HTTP server
+  app.listen(PORT, () => {
+    console.log(`=========================================`);
+    console.log(`GyanLok Backend running at http://localhost:${PORT}`);
+    console.log(`Environment:  ${process.env.NODE_ENV || 'development'}`);
+    console.log(`Database:     ${usingDb ? 'Supabase PostgreSQL ✓' : 'JSON file storage'}`);
+    console.log(`File Storage: ${usingCloudinary ? 'Cloudinary ✓' : 'Local disk (uploads/)'}`);
+    console.log(`=========================================`);
+  });
+  module.exports = app;
+}

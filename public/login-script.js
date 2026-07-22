@@ -2,8 +2,10 @@
    GyanLok — login-script.js
    ════════════════════════════════════════ */
 
-// Backend URL (Render)
-const API_BASE = 'https://gyanlok-backend.onrender.com';
+// Auto-detect backend URL: relative on localhost, Render URL in production
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? ''
+  : 'https://gyanlok-backend.onrender.com';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Elements

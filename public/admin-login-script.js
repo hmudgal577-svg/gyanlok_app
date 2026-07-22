@@ -1,91 +1,14 @@
-// Relative API base
-const API_BASE = '';
+// Auto-detect backend URL: relative on localhost, Render URL in production
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? ''
+  : 'https://gyanlok-backend.onrender.com';
 
 let otpTimerInterval = null;
 let currentOtpEmail = '';
 
 document.addEventListener('DOMContentLoaded', () => {
   initOtpLoginFlow();
-  initPassLoginFlow();
-  initTabSwitch();
 });
-
-function initTabSwitch() {
-  const tabOtp  = document.getElementById('tab-otp');
-  const tabPass = document.getElementById('tab-pass');
-  const stepEmail = document.getElementById('step-email');
-  const stepPass  = document.getElementById('step-password');
-  const stepOtp   = document.getElementById('step-otp');
-
-  if (tabOtp && tabPass) {
-    tabOtp.addEventListener('click', () => {
-      tabOtp.style.fontWeight = '700';
-      tabOtp.style.color = '#3A7BD5';
-      tabOtp.style.borderBottom = '2px solid #3A7BD5';
-      tabPass.style.fontWeight = '600';
-      tabPass.style.color = '#64748b';
-      tabPass.style.borderBottom = 'none';
-
-      stepEmail.hidden = false;
-      stepPass.hidden  = true;
-      stepOtp.hidden   = true;
-    });
-
-    tabPass.addEventListener('click', () => {
-      tabPass.style.fontWeight = '700';
-      tabPass.style.color = '#3A7BD5';
-      tabPass.style.borderBottom = '2px solid #3A7BD5';
-      tabOtp.style.fontWeight = '600';
-      tabOtp.style.color = '#64748b';
-      tabOtp.style.borderBottom = 'none';
-
-      stepPass.hidden  = false;
-      stepEmail.hidden = true;
-      stepOtp.hidden   = true;
-    });
-  }
-}
-
-function initPassLoginFlow() {
-  const form = document.getElementById('password-login-form');
-  if (!form) return;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('admin-pass-email').value.trim();
-    const password = document.getElementById('admin-pass-input').value.trim();
-    const errBox = document.getElementById('pass-login-error');
-    const btn = document.getElementById('pass-login-btn');
-
-    errBox.hidden = true;
-    btn.disabled = true;
-    btn.textContent = 'Logging in...';
-
-    try {
-      const res = await fetch('/api/admin/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        showAdminToast('✅ Login successful! Redirecting...');
-        setTimeout(() => { window.location.href = '/admin-dashboard.html'; }, 600);
-      } else {
-        errBox.textContent = data.error || 'Login failed. Check your credentials.';
-        errBox.hidden = false;
-      }
-    } catch (err) {
-      errBox.textContent = 'Network error. Please try again.';
-      errBox.hidden = false;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Login with Password';
-    }
-  });
-}
 
 function initOtpLoginFlow() {
   const sendOtpForm   = document.getElementById('send-otp-form');
@@ -105,7 +28,7 @@ function initOtpLoginFlow() {
       btn.textContent = 'Sending OTP...';
 
       try {
-        const res  = await fetch('/api/admin/send-otp', {
+        const res  = await fetch(`${API_BASE}/api/admin/send-otp`, {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ email }),
@@ -120,7 +43,20 @@ function initOtpLoginFlow() {
           document.getElementById('otp-input').value   = '';
           document.getElementById('otp-input').focus();
           startOtpTimer(5 * 60); // 5 minutes
-          showAdminToast('📧 OTP sent! Check your Gmail.');
+
+          // DEV MODE: auto-fill OTP and show notice
+          if (data.devOtp) {
+            document.getElementById('otp-input').value = data.devOtp;
+            showAdminToast(`🛠️ DEV MODE — OTP auto-filled: ${data.devOtp}`);
+            // Show dev notice box if it exists
+            const devNotice = document.getElementById('otp-dev-notice');
+            if (devNotice) {
+              devNotice.textContent = `🛠️ Dev Mode: OTP = ${data.devOtp} (BREVO not configured)`;
+              devNotice.hidden = false;
+            }
+          } else {
+            showAdminToast('📧 OTP sent! Check your Gmail.');
+          }
         } else {
           errBox.textContent = data.error || 'Failed to send OTP.';
           errBox.hidden = false;
@@ -135,6 +71,7 @@ function initOtpLoginFlow() {
     });
   }
 
+
   // ── STEP 2: Verify OTP ──
   if (verifyOtpForm) {
     verifyOtpForm.addEventListener('submit', async (e) => {
@@ -148,7 +85,7 @@ function initOtpLoginFlow() {
       btn.textContent = 'Verifying...';
 
       try {
-        const res  = await fetch('/api/admin/verify-otp', {
+        const res  = await fetch(`${API_BASE}/api/admin/verify-otp`, {
           method:      'POST',
           headers:     { 'Content-Type': 'application/json' },
           credentials: 'include',
