@@ -1,4 +1,4 @@
-/**
+﻿/**
  * GyanLok — script.js (v2)
  *
  * Sections:
@@ -922,104 +922,150 @@ function renderChapter(book, ch) {
   return `
     <div class="chapter-item" id="${chId}">
       <div class="chapter-header" role="button" tabindex="0" aria-expanded="false"
-           onclick="selectChapter('${safeBook}',${ch.num},'${safeTitle}','${safeUrl}')">
+           onclick="openRightContent('${safeBook}',${ch.num},'${safeTitle}','summary')">
         <div class="ch-num">${ch.num}</div>
         <div class="ch-title">${ch.title}</div>
-        <div class="ch-toggle">${SVG.chevD}</div>
+        <div class="ch-toggle" style="font-size:.8rem;color:var(--accent);font-weight:600;">पढ़ें &rarr;</div>
       </div>
     </div>`;
 }
 
 // Called when user clicks a chapter row — loads details in the right panel
 function selectChapter(bookName, chNum, chTitle, fileUrl) {
-  document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('open'));
-  const chId = `ch-${bookName.replace(/\s/g,'-')}-${chNum}`;
-  const item = document.getElementById(chId);
-  if (item) item.classList.add('open');
+  openRightContent(bookName, chNum, chTitle, 'summary');
+}
 
-  const panel = document.getElementById('boards-right-panel');
-  if (!panel) return;
+// ─── HTML Content Viewer & Editor Helpers ─────────────────────────────────────
+let _chapterHtmlCache = null;
 
-  // Slide right panel into view on mobile
-  const layout = document.querySelector('.boards-split-layout');
-  if (layout) layout.classList.add('show-right');
-
-  // Scroll right panel to top on selection
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const introData = getIntroData(bookName, chNum);
-  const sBook = bookName.replace(/'/g,"\\'");
-  const sTitle = chTitle.replace(/'/g,"\\'");
-  const sUrl = (fileUrl||'').replace(/'/g,"\\'");
-
-  // Try finding worksheets for this chapter from BOARDS_DATA structure
-  let wsCount = 0;
+async function fetchChapterHtmlContent() {
+  if (_chapterHtmlCache) return _chapterHtmlCache;
   try {
-    const boardRes = BOARDS_DATA[state.board].resources;
-    const clsRes   = boardRes && boardRes[state.cls];
-    const subjRes  = clsRes && clsRes[state.subj];
-    if (subjRes && subjRes.books) {
-      const bookObj = subjRes.books.find(b => b.name.toLowerCase().replace(/[^a-z]/g,'').includes(bookName.toLowerCase().replace(/[^a-z]/g,'')));
-      if (bookObj && bookObj.chapters) {
-        const chObj = bookObj.chapters.find(c => c.num === chNum);
-        if (chObj) wsCount = chObj.worksheets || 0;
-      }
-    }
-  } catch (e) {
-    console.error('Error finding worksheets:', e);
+    const res = await fetch('/chapter_html_content.json');
+    if (!res.ok) throw new Error('Failed to load chapter content');
+    _chapterHtmlCache = await res.json();
+    return _chapterHtmlCache;
+  } catch (err) {
+    console.error('Error fetching chapter content:', err);
+    return {};
   }
+}
 
-  const opts = [
-    { icon:'📝', bg:'#E8F8F6', color:'#2BA899', name:'पाठ सारांश',   sub:'Summary',          action:`openSummary('${sBook}',${chNum},'${sTitle}')` },
-    { icon:'📄', bg:'#EBF3FD', color:'#3A7BD5', name:'पाठ PDF',       sub:'Chapter PDF',      action:`openRightPDF('${sBook}',${chNum},'${sTitle}','${sUrl}')` },
-    { icon:'❓', bg:'#FDE8E8', color:'#E05555', name:'प्रश्न-उत्तर', sub:'Q & A',             action:`openRightComingSoon('Q and A','${sTitle}')` },
-    { icon:'📖', bg:'#F5EFF9', color:'#9B59B6', name:'शब्द-अर्थ',    sub:'Word Meanings',    action:`openRightComingSoon('Muhavare','${sTitle}')` },
-    { icon:'🕐', bg:'#FFF4E0', color:'#E8900A', name:'PYQ',           sub:'पिछले वर्ष प्रश्न',action:`openRightComingSoon('PYQ','${sTitle}')` },
-    { icon:'⭐', bg:'#EAF7EF', color:'#27AE60', name:'अभ्यास प्रश्न',sub:'Extra Practice',   action:`openRightComingSoon('Practice','${sTitle}')` },
+// Maps chapter title keywords (English or Hindi) to short key names
+const CHAPTER_KEY_MAP = [
+  { keys: ['kabir','\u0915\u092C\u0940\u0930'],                                        code: 'kabir'      },
+  { keys: ['meera','mira','\u092E\u0940\u0930\u093E'],                                  code: 'meera'      },
+  { keys: ['bihari','\u092C\u093F\u0939\u093E\u0930\u0940'],                          code: 'bihari'     },
+  { keys: ['manushyata','\u092E\u0928\u0941\u0937\u094D\u092F\u0924\u093E'],         code: 'manushyata' },
+  { keys: ['pavas','paavas','parvat','\u092A\u093E\u0935\u0938'],                       code: 'pavas'      },
+  { keys: ['madhur','deepak','\u0926\u0940\u092A\u0915'],                               code: 'deepak'     },
+  { keys: ['topi','\u091F\u094B\u092A\u0940'],                                         code: 'topi'       },
+  { keys: ['top','tope','\u0924\u094B\u092A'],                                          code: 'top'        },
+  { keys: ['fida','fidaa','\u0915\u0930 \u091A\u0932\u0947','\u092B\u093C\u093F\u0926\u093E'], code: 'fida' },
+  { keys: ['aatmtran','atmtran','\u0906\u0924\u094D\u092E\u0924\u094D\u0930\u093E\u0923'],      code: 'aatmtran'  },
+  { keys: ['bade bhai','bade bha','\u092C\u095C\u0947 \u092D\u093E\u0908'],           code: 'badebhai'   },
+  { keys: ['diary','\u0921\u093E\u092F\u0930\u094D\u0940'],                                  code: 'diary'      },
+  { keys: ['tantara','tatara','\u0924\u0924\u093E\u0901\u0930\u093E'],                code: 'tantara'    },
+  { keys: ['shailendra','teesri kasam','\u0936\u0948\u0932\u0947\u0902\u0926\u094D\u0930'], code: 'shailendra' },
+  { keys: ['ab kahan','\u0905\u092C \u0915\u0939\u093E\u0901'],                      code: 'abkahan'    },
+  { keys: ['patjhar','pattiya','\u092A\u0924\u091D\u0930'],                             code: 'patjhar'    },
+  { keys: ['kartoos','\u0915\u093E\u0930\u0924\u0942\u0938'],                         code: 'kartoos'    },
+  { keys: ['girgit','\u0917\u093F\u0930\u0917\u093F\u091F'],                         code: 'girgit'     },
+  { keys: ['harihar','\u0939\u0930\u093F\u0939\u0930'],                               code: 'harihar'    },
+  { keys: ['sapno','sapne','\u0938\u092A\u0928\u094B\u0902'],                          code: 'sapno'      },
+];
+
+function getChapterContentKey(bookName, chNum, chTitle) {
+  const board = String(state.board || 'CBSE').toLowerCase();
+  const cls   = String(state.cls  || '10');
+  const subj  = String(state.subj || 'Hindi').toLowerCase();
+  const title = String(chTitle || '').toLowerCase();
+
+  let chCode = null;
+  for (const entry of CHAPTER_KEY_MAP) {
+    for (const kw of entry.keys) {
+      if (title.includes(kw.toLowerCase())) { chCode = entry.code; break; }
+    }
+    if (chCode) break;
+  }
+  if (!chCode) chCode = 'ch' + chNum;
+
+  return board + '_' + cls + '_' + subj + '_' + chCode;
+}
+
+async function openRightContent(bookName, chNum, chTitle, category) {
+  const sBook  = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const sTitle = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const safeCat = category || 'summary';
+
+  const catTabs = [
+    { key: 'summary',    icon: '\uD83D\uDCDD', label: '\u092A\u093E\u0920 \u0938\u093E\u0930\u093E\u0902\u0936' },
+    { key: 'notes',      icon: '\u2753',       label: '\u0928\u094B\u091F\u094D\u0938' },
+    { key: 'muhavre',    icon: '\uD83D\uDCD6', label: '\u092E\u0941\u0939\u093E\u0935\u0930\u0947' },
+    { key: 'pyq',        icon: '\uD83D\uDD50', label: 'PYQ' },
+    { key: 'additional', icon: '\u2B50',       label: '\u0905\u092D\u094D\u092F\u093E\u0938 \u092A\u094D\u0930\u0936\u094D\u0928' },
   ];
 
-  panel.innerHTML = `
-    <div class="rp-chapter-card">
-      <div class="rp-ch-header">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:.4rem;">
-          <div class="rp-ch-breadcrumb">${bookName} &rsaquo; Chapter ${chNum}</div>
-          <button class="rp-summary-back mobile-only" onclick="goBackToChapters()" style="padding:.2rem .5rem; font-size:.72rem; border-color:var(--border-dark);">← Back</button>
-        </div>
-        <h2 class="rp-ch-title">${chTitle}</h2>
-      </div>
-      <div class="rp-ch-body">
-        ${introData ? `
-        <div class="rp-intro">
-          <p class="rp-intro-hi">${introData.hi}</p>
-          ${introData.en ? `<p class="rp-intro-en">${introData.en}</p>` : ''}
-        </div>` : ''}
-        <p class="rp-options-label">इस अध्याय में देखें:</p>
-        <div class="rp-options-grid">
-          ${opts.map(o => `
-            <button class="rp-opt-btn" onclick="${o.action}">
-              <div class="rp-opt-icon" style="background:${o.bg};color:${o.color}">${o.icon}</div>
-              <div class="rp-opt-text">
-                <span class="rp-opt-name">${o.name}</span>
-                <span class="rp-opt-sub">${o.sub}</span>
-              </div>
-            </button>`).join('')}
-        </div>
-        ${wsCount > 0 ? `
-        <div class="rp-ws-block" style="margin-top:1.5rem; padding-top:1.25rem; border-top:1px dashed var(--border);">
-          <p class="rp-options-label" style="margin-bottom:.5rem">अभ्यास पत्रक (Worksheets):</p>
-          <div class="rp-ws-row" style="display:flex; flex-wrap:wrap; gap:.5rem;">
-            ${Array.from({ length: wsCount }, (_, i) => `
-              <div class="rp-ws-card" style="display:flex; align-items:center; gap:.5rem; background:var(--bg-soft); border:1px solid var(--border); padding:.4rem .8rem; border-radius:var(--r-md); max-width: 100%;">
-                <span style="font-size:.82rem; font-weight:600; color:var(--text-primary)">Worksheet ${i+1}</span>
-                <button class="ws-btn download" style="padding:.25rem .5rem; font-size:.72rem;" onclick="handleDownload('${sBook} Ch.${chNum} Worksheet ${i+1}')">${SVG.dl} Down</button>
-                <button class="ws-btn upload" style="padding:.25rem .5rem; font-size:.72rem;" onclick="openUploadModal('${sBook} Ch.${chNum} Worksheet ${i+1}')">${SVG.up} Up</button>
-              </div>
-            `).join('')}
-          </div>
-        </div>` : ''}
-      </div>
-    </div>`;
+  const tabsHtml = catTabs.map(t => {
+    const cls = t.key === safeCat ? 'fs-tab fs-tab--active' : 'fs-tab';
+    return '<button class="' + cls + '" onclick="openRightContent(\'' + sBook + '\',' + chNum + ',\'' + sTitle + '\',\'' + t.key + '\')">' + t.icon + ' ' + t.label + '</button>';
+  }).join('');
+
+  // Remove existing overlay if any
+  const existing = document.getElementById('fs-doc-overlay');
+  if (existing) existing.remove();
+
+  // Build full-screen overlay
+  const overlay = document.createElement('div');
+  overlay.id = 'fs-doc-overlay';
+  overlay.className = 'fs-overlay';
+  overlay.innerHTML =
+    '<div class="fs-header">'
+    + '<button class="fs-back-btn" onclick="closeFsOverlay()">&#8592; \u0935\u093E\u092A\u0938</button>'
+    + '<div class="fs-breadcrumb">'
+    + '<span class="fs-bc-book">' + bookName + '</span>'
+    + '<span class="fs-bc-sep">&rsaquo;</span>'
+    + '<span class="fs-bc-ch">Ch. ' + chNum + '</span>'
+    + '<span class="fs-bc-sep">&rsaquo;</span>'
+    + '<span class="fs-bc-title">' + chTitle + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div class="fs-tabs-bar">' + tabsHtml + '</div>'
+    + '<div class="fs-doc-body" id="fs-doc-body">'
+    + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content \u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...</span></div>'
+    + '</div>';
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // Fetch content
+  const key = getChapterContentKey(bookName, chNum, chTitle);
+  const store = await fetchChapterHtmlContent();
+  const htmlContent = (store && store[key] && store[key][safeCat]) ? store[key][safeCat] : '';
+
+  const docBody = document.getElementById('fs-doc-body');
+  if (!docBody) return;
+
+  if (!htmlContent) {
+    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">\uD83D\uDEA7</div><h3>\u091C\u0932\u094D\u0926 \u0906\u090F\u0917\u093E!</h3><p>\u0907\u0938 section \u0915\u093E content \u0924\u0948\u092F\u093E\u0930 \u0915\u093F\u092F\u093E \u091C\u093E \u0930\u0939\u093E \u0939\u0948\u0964</p></div>';
+    return;
+  }
+
+  docBody.innerHTML = '<div class="fs-doc-content">' + htmlContent + '</div>';
 }
+
+function closeFsOverlay() {
+  const overlay = document.getElementById('fs-doc-overlay');
+  if (overlay) {
+    overlay.classList.add('fs-overlay--exit');
+    setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 280);
+  }
+}
+
+// Close on Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeFsOverlay();
+});
 
 function openRightComingSoon(type, chTitle) {
   const panel = document.getElementById('boards-right-panel');
@@ -1914,3 +1960,5 @@ function goBackToChapters() {
   // Clear left highlight when coming back to the list
   document.querySelectorAll('.chapter-item').forEach(el => el.classList.remove('open'));
 }
+window.openRightContent = openRightContent;
+window.closeFsOverlay = closeFsOverlay;

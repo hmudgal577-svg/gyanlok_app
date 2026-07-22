@@ -85,9 +85,10 @@ function initSidebarMenu() {
         panel.classList.toggle('active', panel.id === target);
       });
       panelTitle.textContent = btn.innerText.trim();
-      if (target === 'panel-overview')     loadOverviewStats();
-      else if (target === 'panel-mentor')  loadMentorRequests();
+      if (target === 'panel-overview')         loadOverviewStats();
+      else if (target === 'panel-mentor')      loadMentorRequests();
       else if (target === 'panel-submissions') loadSubmissions();
+      else if (target === 'panel-content-editor') ceLoadKeys();
     });
   });
 }
@@ -310,3 +311,129 @@ function showAdminToast(message) {
     setTimeout(() => toast.remove(), 350);
   }, 4000);
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CHAPTER CONTENT EDITOR
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CHAPTER_KEY_LABELS = {
+  cbse_10_hindi_kabir:      'Kabir ke Dohe (Sparsh Ch.1)',
+  cbse_10_hindi_meera:      'Meera ke Pad (Sparsh Ch.2)',
+  cbse_10_hindi_bihari:     'Bihari ke Dohe (Sparsh Ch.3)',
+  cbse_10_hindi_manushyata: 'Manushyata (Sparsh Ch.4)',
+  cbse_10_hindi_pavas:      'Parvat Pradesh mein Paavas (Sparsh Ch.5)',
+  cbse_10_hindi_deepak:     'Madhur Madhur mere Deepak Jal (Sparsh Ch.6)',
+  cbse_10_hindi_top:        'Top / Toop (Sparsh Ch.7)',
+  cbse_10_hindi_fida:       'Kar Chale Hum Fida (Sparsh Ch.8)',
+  cbse_10_hindi_aatmtran:   'Aatmtran (Sparsh Ch.9)',
+  cbse_10_hindi_badebhai:   'Bade Bhai Sahab (Sparsh Ch.10)',
+  cbse_10_hindi_diary:      'Diary ka ek Panna (Sparsh Ch.11)',
+  cbse_10_hindi_tantara:    'Tantara-Vamiro Katha (Sparsh Ch.12)',
+  cbse_10_hindi_shailendra: 'Teesri Kasam ke Shilpkar Shailendra (Sparsh Ch.13)',
+  cbse_10_hindi_girgit:     'Girgit (Sparsh Ch.14)',
+  cbse_10_hindi_harihar:    'Harihar Kaka (Sanchayan Ch.1)',
+  cbse_10_hindi_sapno:      'Sapno ke se Din (Sanchayan Ch.2)',
+  cbse_10_hindi_topi:       'Topi Shukla (Sanchayan Ch.3)',
+};
+
+async function ceLoadKeys() {
+  const sel = document.getElementById('ce-key-select');
+  if (!sel) return;
+  // Already loaded
+  if (sel.options.length > 1) return;
+  try {
+    const res = await fetch('/api/admin/chapter-content', { credentials: 'include' });
+    if (!res.ok) throw new Error('Auth failed');
+    const data = await res.json();
+    sel.innerHTML = '';
+    (data.keys || []).forEach(key => {
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.textContent = CHAPTER_KEY_LABELS[key] || key;
+      sel.appendChild(opt);
+    });
+  } catch (err) {
+    sel.innerHTML = '<option value="">-- Error loading keys --</option>';
+    console.error('ceLoadKeys error:', err);
+  }
+}
+
+async function ceLoadContent() {
+  const key      = document.getElementById('ce-key-select').value;
+  const category = document.getElementById('ce-category').value;
+  const status   = document.getElementById('ce-load-status');
+  const textarea = document.getElementById('ce-html-input');
+
+  if (!key) { status.textContent = '⚠️ Chapter select karo pehle.'; status.className = 'form-status error'; return; }
+
+  status.textContent = 'Loading...';
+  status.className = 'form-status';
+
+  try {
+    const res = await fetch(`/api/admin/chapter-content?key=${encodeURIComponent(key)}&category=${encodeURIComponent(category)}`, {
+      credentials: 'include'
+    });
+    if (!res.ok) throw new Error('Failed');
+    const data = await res.json();
+    textarea.value = data.html || '';
+    document.getElementById('ce-char-count').textContent = textarea.value.length + ' chars';
+    status.textContent = '✓ Content loaded!';
+    status.className = 'form-status success';
+    // Hide preview when loading new content
+    document.getElementById('ce-preview').style.display = 'none';
+    setTimeout(() => { status.textContent = ''; }, 3000);
+  } catch (err) {
+    status.textContent = '✗ Load failed: ' + err.message;
+    status.className = 'form-status error';
+  }
+}
+
+async function ceSaveContent() {
+  const key      = document.getElementById('ce-key-select').value;
+  const category = document.getElementById('ce-category').value;
+  const html     = document.getElementById('ce-html-input').value;
+  const status   = document.getElementById('ce-save-status');
+  const btn      = document.getElementById('ce-save-btn');
+
+  if (!key) { status.textContent = '⚠️ Chapter select karo pehle.'; status.className = 'form-status error'; return; }
+  if (!html.trim()) { status.textContent = '⚠️ Content empty hai.'; status.className = 'form-status error'; return; }
+
+  btn.disabled = true;
+  status.textContent = 'Saving...';
+  status.className = 'form-status';
+
+  try {
+    const res = await fetch('/api/admin/chapter-content', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key, category, html })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      status.textContent = '✓ Saved successfully!';
+      status.className = 'form-status success';
+      showAdminToast('✓ Content saved: ' + (CHAPTER_KEY_LABELS[key] || key) + ' → ' + category);
+    } else {
+      throw new Error(data.error || 'Save failed');
+    }
+  } catch (err) {
+    status.textContent = '✗ Error: ' + err.message;
+    status.className = 'form-status error';
+  } finally {
+    btn.disabled = false;
+    setTimeout(() => { status.textContent = ''; }, 4000);
+  }
+}
+
+function ceTogglePreview() {
+  const preview  = document.getElementById('ce-preview');
+  const textarea = document.getElementById('ce-html-input');
+  if (preview.style.display === 'none') {
+    preview.innerHTML = textarea.value || '<p style="color:#aaa;">No content to preview</p>';
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+}
+

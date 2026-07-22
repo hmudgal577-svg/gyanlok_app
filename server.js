@@ -188,6 +188,7 @@ app.use(helmet({
     directives: {
       defaultSrc:   ["'self'"],
       scriptSrc:    ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"],
       styleSrc:     ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
       fontSrc:      ["'self'", "https://fonts.gstatic.com"],
       imgSrc:       ["'self'", "data:", "blob:"],
@@ -848,6 +849,50 @@ app.patch('/api/admin/mentor-request/:id/status', auth, async (req, res) => {
     }
     res.json({ success: true });
   } catch (err) { console.error(err); res.status(500).json({ error: 'Failed.' }); }
+});
+
+// ─── GET /api/admin/chapter-content — load content for editing ────────────────
+app.get('/api/admin/chapter-content', auth, (req, res) => {
+  try {
+    const { key, category } = req.query;
+    const filePath = path.join(__dirname, 'public', 'chapter_html_content.json');
+    if (!fs.existsSync(filePath)) return res.json({ html: '' });
+    const store = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if (key && category) {
+      const html = (store[key] && store[key][category]) ? store[key][category] : '';
+      return res.json({ html, key, category });
+    }
+    // Return all keys (for dropdown population)
+    res.json({ keys: Object.keys(store) });
+  } catch (err) {
+    console.error('[chapter-content GET]', err.message);
+    res.status(500).json({ error: 'Failed to load content.' });
+  }
+});
+
+// ─── POST /api/admin/chapter-content — save/update content ───────────────────
+app.post('/api/admin/chapter-content', auth, (req, res) => {
+  try {
+    const { key, category, html } = req.body;
+    if (!key || !category || html === undefined) {
+      return res.status(400).json({ error: 'key, category and html are required.' });
+    }
+    const filePath = path.join(__dirname, 'public', 'chapter_html_content.json');
+    let store = {};
+    if (fs.existsSync(filePath)) {
+      store = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+    if (!store[key]) {
+      store[key] = { summary: '', notes: '', muhavre: '', pyq: '', additional: '' };
+    }
+    store[key][category] = html;
+    fs.writeFileSync(filePath, JSON.stringify(store, null, 2), 'utf8');
+    console.log(`[Content Updated] key=${key} category=${category} by ${req.user.email}`);
+    res.json({ success: true, key, category });
+  } catch (err) {
+    console.error('[chapter-content POST]', err.message);
+    res.status(500).json({ error: 'Failed to save content.' });
+  }
 });
 
 // ─── Health check ────────────────────────────────────────────────────────────
