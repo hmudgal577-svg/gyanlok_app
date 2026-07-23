@@ -482,11 +482,7 @@ function checkReaderUrlParams() {
   const title = p.get('title');
   if (cat && book && ch && title) {
     setTimeout(() => {
-      if (cat === 'pdf') {
-        openRightPDF(book, ch, title, '');
-      } else {
-        openRightContent(book, ch, title, cat);
-      }
+      openRightContent(book, ch, title, cat);
     }, 600);
   }
 }
@@ -1056,12 +1052,13 @@ function getChapterContentKey(bookName, chNum, chTitle) {
 }
 
 async function openRightContent(bookName, chNum, chTitle, category) {
-  const sBook  = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  const sTitle = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const sBook   = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const safeCat = category || 'summary';
 
   const catTabs = [
     { key: 'summary',    icon: '\uD83D\uDCDD', label: '\u092A\u093E\u0920 \u0938\u093E\u0930\u093E\u0902\u0936' },
+    { key: 'pdf',        icon: '\uD83D\uDCC4', label: '\u092A\u093E\u0920 PDF' },
     { key: 'notes',      icon: '\u2753',       label: '\u0928\u094B\u091F\u094D\u0938' },
     { key: 'muhavre',    icon: '\uD83D\uDCD6', label: '\u092E\u0941\u0939\u093E\u0935\u0930\u0947' },
     { key: 'pyq',        icon: '\uD83D\uDD50', label: 'PYQ' },
@@ -1070,57 +1067,103 @@ async function openRightContent(bookName, chNum, chTitle, category) {
 
   const tabsHtml = catTabs.map(t => {
     const cls = t.key === safeCat ? 'fs-tab fs-tab--active' : 'fs-tab';
-    return '<button class="' + cls + '" onclick="openRightContent(\'' + sBook + '\',' + chNum + ',\'' + sTitle + '\',\'' + t.key + '\')">' + t.icon + ' ' + t.label + '</button>';
+    return '<button class="' + cls + '" data-cat="' + t.key + '" onclick="openRightContent(\'' + sBook + '\',' + chNum + ',\'' + sTitle + '\',\'' + t.key + '\')">' + t.icon + ' ' + t.label + '</button>';
   }).join('');
 
-  // Remove existing overlay if any
-  const existing = document.getElementById('fs-doc-overlay');
-  if (existing) existing.remove();
+  let overlay = document.getElementById('fs-doc-overlay');
 
-  // Build full-screen overlay
-  const overlay = document.createElement('div');
-  overlay.id = 'fs-doc-overlay';
-  overlay.className = 'fs-overlay';
-  overlay.innerHTML =
-    '<div class="fs-header">'
-    + '<button class="fs-back-btn" onclick="closeFsOverlay()">&#8592; \u0935\u093E\u092A\u0938</button>'
-    + '<div class="fs-breadcrumb">'
-    + '<span class="fs-bc-book">' + bookName + '</span>'
-    + '<span class="fs-bc-sep">&rsaquo;</span>'
-    + '<span class="fs-bc-ch">Ch. ' + chNum + '</span>'
-    + '<span class="fs-bc-sep">&rsaquo;</span>'
-    + '<span class="fs-bc-title">' + chTitle + '</span>'
-    + '</div>'
-    + '</div>'
-    + '<div class="fs-tabs-bar">' + tabsHtml + '</div>'
-    + '<div class="fs-doc-body" id="fs-doc-body">'
-    + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content \u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...</span></div>'
-    + '</div>';
+  if (overlay) {
+    // Overlay already open: update tabs without removing DOM to prevent background flash/teardown
+    const tabsBar = overlay.querySelector('.fs-tabs-bar');
+    if (tabsBar) tabsBar.innerHTML = tabsHtml;
 
-  document.body.appendChild(overlay);
-  document.body.style.overflow = 'hidden';
+    const docBody = document.getElementById('fs-doc-body');
+    if (docBody) {
+      docBody.scrollTop = 0;
+      docBody.style.opacity = '0.4';
+    }
+  } else {
+    // Build full-screen overlay
+    overlay = document.createElement('div');
+    overlay.id = 'fs-doc-overlay';
+    overlay.className = 'fs-overlay';
+    overlay.innerHTML =
+      '<div class="fs-header">'
+      + '<button class="fs-back-btn" onclick="closeFsOverlay()">&larr; \u0935\u093E\u092A\u0938</button>'
+      + '<div class="fs-breadcrumb">'
+      + '<span class="fs-bc-book">' + bookName + '</span>'
+      + '<span class="fs-bc-sep">&rsaquo;</span>'
+      + '<span class="fs-bc-ch">Ch. ' + chNum + '</span>'
+      + '<span class="fs-bc-sep">&rsaquo;</span>'
+      + '<span class="fs-bc-title">' + chTitle + '</span>'
+      + '</div>'
+      + '<button class="fs-close-btn" onclick="closeFsOverlay()" aria-label="Close">&times;</button>'
+      + '</div>'
+      + '<div class="fs-tabs-bar">' + tabsHtml + '</div>'
+      + '<div class="fs-doc-body" id="fs-doc-body">'
+      + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content \u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...</span></div>'
+      + '</div>';
 
-  // Fetch content
-  const key = getChapterContentKey(bookName, chNum, chTitle);
-  const store = await fetchChapterHtmlContent();
-  const htmlContent = (store && store[key] && store[key][safeCat]) ? store[key][safeCat] : '';
+    document.body.appendChild(overlay);
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+  }
 
   const docBody = document.getElementById('fs-doc-body');
   if (!docBody) return;
 
-  if (!htmlContent) {
-    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">\uD83D\uDEA7</div><h3>\u091C\u0932\u094D\u0926 \u0906\u090F\u0917\u093E!</h3><p>\u0907\u0938 section \u0915\u093E content \u0924\u0948\u092F\u093E\u0930 \u0915\u093F\u092F\u093E \u091C\u093E \u0930\u0939\u093E \u0939\u0948\u0964</p></div>';
+  // Handle PDF category
+  if (safeCat === 'pdf') {
+    let pdfUrl = '';
+    const boardRes = BOARDS_DATA[state.board] && BOARDS_DATA[state.board].resources;
+    const clsRes   = boardRes && boardRes[state.cls];
+    const subjRes  = clsRes && clsRes[state.subj];
+    if (subjRes && subjRes.books) {
+      for (const b of subjRes.books) {
+        if (b.chapters) {
+          const chObj = b.chapters.find(c => c.num === chNum || c.title === chTitle);
+          if (chObj && chObj.file_url) { pdfUrl = chObj.file_url; break; }
+        }
+      }
+    }
+    if (!pdfUrl) {
+      pdfUrl = `/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_${chNum}.pdf`;
+    }
+
+    const isAbsoluteUrl = /^https?:\/\//i.test(pdfUrl);
+    const absoluteUrl = isAbsoluteUrl ? pdfUrl : `${window.location.origin}${pdfUrl}`;
+
+    docBody.innerHTML =
+      '<div class="fs-pdf-wrap" style="width:100%;height:100%;display:flex;flex-direction:column;background:#2A2D32;">'
+      + '<iframe src="https://docs.google.com/viewer?url=' + encodeURIComponent(absoluteUrl) + '&embedded=true" style="width:100%;height:100%;border:none;" title="' + chTitle + ' PDF"></iframe>'
+      + '</div>';
+    setTimeout(() => { docBody.style.opacity = '1'; }, 50);
     return;
   }
 
-  docBody.innerHTML = '<div class="fs-doc-content">' + htmlContent + '</div>';
+  // Fetch HTML Content
+  const key = getChapterContentKey(bookName, chNum, chTitle);
+  const store = await fetchChapterHtmlContent();
+  const htmlContent = (store && store[key] && store[key][safeCat]) ? store[key][safeCat] : '';
+
+  if (!htmlContent) {
+    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">\uD83D\uDEA7</div><h3>\u091C\u0932\u094D\u0926 \u0906\u090F\u0917\u093E!</h3><p>\u0907\u0938 section \u0915\u093E content \u0924\u0948\u092F\u093E\u0930 \u0915\u093F\u092F\u093E \u091C\u093E \u0930\u0939\u093E \u0939\u0948\u0964</p></div>';
+  } else {
+    docBody.innerHTML = '<div class="fs-doc-content">' + htmlContent + '</div>';
+  }
+
+  setTimeout(() => { docBody.style.opacity = '1'; }, 50);
 }
 
 function closeFsOverlay() {
   const overlay = document.getElementById('fs-doc-overlay');
   if (overlay) {
     overlay.classList.add('fs-overlay--exit');
-    setTimeout(() => { overlay.remove(); document.body.style.overflow = ''; }, 280);
+    setTimeout(() => {
+      overlay.remove();
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }, 250);
   }
 }
 
