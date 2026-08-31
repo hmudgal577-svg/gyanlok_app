@@ -1,15 +1,15 @@
 /**
- * GyanLok - script.js (v2)
+ * GyanLok: script.js (v2)
  *
  * Sections:
- *  1.  DATA - School Boards (CBSE/ICSE, classes, subjects, books, chapters)
- *  2.  DATA - Test Sheets (UTP, Worksheets, Mock Exam)
+ *  1.  DATA: School Boards (CBSE/ICSE, classes, subjects, books, chapters)
+ *  2.  DATA: Test Sheets (UTP, Worksheets, Mock Exam)
  *  3.  SVGS & HELPERS
  *  4.  NAVBAR (hamburger, dropdown, scroll shadow, active link)
  *  5.  FADE-IN (IntersectionObserver)
- *  6.  SCHOOL BOARDS - render logic
- *  7.  TEST SHEETS - render logic
- *  8.  CONTACT FORM - validation
+ *  6.  SCHOOL BOARDS: render logic
+ *  7.  TEST SHEETS: render logic
+ *  8.  CONTACT FORM: validation
  *  9.  REVISION NOTIFY FORM
  * 10.  DOCUMENT VIEWER MODAL
  * 11.  UPLOAD ANSWER SHEET MODAL
@@ -18,7 +18,7 @@
  */
 
 /* ══════════════════════════════════════════
-   1. DATA - SCHOOL BOARDS
+   1. DATA: SCHOOL BOARDS
 ══════════════════════════════════════════ */
 let BOARDS_DATA = {
   CBSE: {
@@ -34,35 +34,35 @@ let BOARDS_DATA = {
           books: [
             {
               name: 'स्पर्श (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी) - मुख्य पाठ्यपुस्तक (NCERT)',
+              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): मुख्य पाठ्यपुस्तक (NCERT)',
               color: '#3A7BD5',
               file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf',
               chapters: [
-                { num: 1,  title: 'कबीर - साखी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
-                { num: 2,  title: 'मीरा - पद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
-                { num: 3,  title: 'मैथिलीशरण गुप्त - मनुष्यता', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
-                { num: 4,  title: 'सुमित्रानंदन पंत - पर्वत प्रदेश में पावस', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
-                { num: 5,  title: 'वीरेन डंगवाल - तोप', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
-                { num: 6,  title: 'कैफ़ी आज़मी - कर चले हम फ़िदा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
-                { num: 7,  title: 'रवींद्रनाथ ठाकुर - आत्मत्राण', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
-                { num: 8,  title: 'प्रेमचंद - बड़े भाई साहब', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
-                { num: 9,  title: 'सीताराम सेकसरिया - डायरी का एक पन्ना', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
-                { num: 10, title: 'लीलाधर मंडलोई - तताँरा-वामीरो कथा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
-                { num: 11, title: 'प्रहलाद अग्रवाल - तीसरी कसम के शिल्पकार शैलेंद्र', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
-                { num: 12, title: 'निदा फ़ाज़ली - अब कहाँ दूसरे के दुख से दुखी होने वाले', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
-                { num: 13, title: 'रवींद्र केलेकर - पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
-                { num: 14, title: 'हबीब तनवीर - कारतूस (एकांकी)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
+                { num: 1,  title: 'कबीर: साखी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
+                { num: 2,  title: 'मीरा: पद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
+                { num: 3,  title: 'मैथिलीशरण गुप्त: मनुष्यता', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
+                { num: 4,  title: 'सुमित्रानंदन पंत: पर्वत प्रदेश में पावस', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
+                { num: 5,  title: 'वीरेन डंगवाल: तोप', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
+                { num: 6,  title: 'कैफ़ी आज़मी: कर चले हम फ़िदा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
+                { num: 7,  title: 'रवींद्रनाथ ठाकुर: आत्मत्राण', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
+                { num: 8,  title: 'प्रेमचंद: बड़े भाई साहब', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
+                { num: 9,  title: 'सीताराम सेकसरिया: डायरी का एक पन्ना', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
+                { num: 10, title: 'लीलाधर मंडलोई: तताँरा-वामीरो कथा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
+                { num: 11, title: 'प्रहलाद अग्रवाल: तीसरी कसम के शिल्पकार शैलेंद्र', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
+                { num: 12, title: 'निदा फ़ाज़ली: अब कहाँ दूसरे के दुख से दुखी होने वाले', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
+                { num: 13, title: 'रवींद्र केलेकर: पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
+                { num: 14, title: 'हबीब तनवीर: कारतूस (एकांकी)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
               ]
             },
             {
               name: 'संचयन (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी) - पूरक पाठ्यपुस्तक (NCERT)',
+              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): पूरक पाठ्यपुस्तक (NCERT)',
               color: '#2BA899',
               file_url: '/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf',
               chapters: [
-                { num: 1, title: 'मिथिलेश्वर - हरिहर काका', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
-                { num: 2, title: 'गुरदयाल सिंह - सपनों के-से दिन', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
-                { num: 3, title: 'राही मासूम रज़ा - टोपी शुक्ला', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
+                { num: 1, title: 'मिथिलेश्वर: हरिहर काका', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
+                { num: 2, title: 'गुरदयाल सिंह: सपनों के-से दिन', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
+                { num: 3, title: 'राही मासूम रज़ा: टोपी शुक्ला', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
               ]
             }
           ]
@@ -72,7 +72,7 @@ let BOARDS_DATA = {
           markingScheme: { title: 'Mathematics Marking Scheme 2026' },
           books: [
             {
-              name: 'Mathematics - Standard',
+              name: 'Mathematics: Standard',
               subtitle: 'Class 10 Mathematics (NCERT)',
               color: '#E05555',
               chapters: [
@@ -100,7 +100,7 @@ let BOARDS_DATA = {
           books: [
             {
               name: 'Science',
-              subtitle: 'Class 10 Science - Physics, Chemistry & Biology (NCERT)',
+              subtitle: 'Class 10 Science: Physics, Chemistry & Biology (NCERT)',
               color: '#7EC8A4',
               chapters: [
                 { num: 1,  title: 'Chemical Reactions and Equations',          worksheets: 2 },
@@ -111,7 +111,7 @@ let BOARDS_DATA = {
                 { num: 7,  title: 'Control and Coordination',                  worksheets: 2 },
                 { num: 8,  title: 'How do Organisms Reproduce?',               worksheets: 1 },
                 { num: 9,  title: 'Heredity',                                  worksheets: 1 },
-                { num: 10, title: 'Light - Reflection and Refraction',         worksheets: 2 },
+                { num: 10, title: 'Light: Reflection and Refraction',         worksheets: 2 },
                 { num: 11, title: 'Human Eye and the Colourful World',         worksheets: 1 },
                 { num: 12, title: 'Electricity',                               worksheets: 2 },
                 { num: 13, title: 'Magnetic Effects of Electric Current',      worksheets: 2 },
@@ -126,7 +126,7 @@ let BOARDS_DATA = {
           markingScheme: { title: 'Social Science Marking Scheme 2026' },
           books: [
             {
-              name: 'India and the Contemporary World - II (History)',
+              name: 'India and the Contemporary World: II (History)',
               subtitle: 'Class 10 History',
               color: '#9B59B6',
               chapters: [
@@ -138,7 +138,7 @@ let BOARDS_DATA = {
               ]
             },
             {
-              name: 'Contemporary India - II (Geography)',
+              name: 'Contemporary India: II (Geography)',
               subtitle: 'Class 10 Geography',
               color: '#27AE60',
               chapters: [
@@ -159,15 +159,15 @@ let BOARDS_DATA = {
           books: [
             {
               name: 'First Flight',
-              subtitle: 'Class 10 English - Main Textbook',
+              subtitle: 'Class 10 English: Main Textbook',
               color: '#F5A623',
               chapters: [
                 { num: 1,  title: 'A Letter to God',                          worksheets: 2 },
                 { num: 2,  title: 'Nelson Mandela: Long Walk to Freedom',     worksheets: 2 },
                 { num: 3,  title: 'Two Stories About Flying',                 worksheets: 1 },
                 { num: 4,  title: 'From the Diary of Anne Frank',             worksheets: 2 },
-                { num: 5,  title: 'The Hundred Dresses - I',                  worksheets: 1 },
-                { num: 6,  title: 'The Hundred Dresses - II',                 worksheets: 1 },
+                { num: 5,  title: 'The Hundred Dresses: I',                  worksheets: 1 },
+                { num: 6,  title: 'The Hundred Dresses: II',                 worksheets: 1 },
                 { num: 7,  title: 'Glimpses of India',                        worksheets: 1 },
                 { num: 8,  title: 'Mijbil the Otter',                         worksheets: 1 },
                 { num: 9,  title: 'Madam Rides the Bus',                      worksheets: 1 },
@@ -177,7 +177,7 @@ let BOARDS_DATA = {
             },
             {
               name: 'Footprints Without Feet',
-              subtitle: 'Class 10 English - Supplementary Reader',
+              subtitle: 'Class 10 English: Supplementary Reader',
               color: '#E8900A',
               chapters: [
                 { num: 1,  title: 'A Triumph of Surgery',                     worksheets: 1 },
@@ -214,12 +214,12 @@ let BOARDS_DATA = {
               subtitle: 'Class 10 ICSE Mathematics',
               color: '#E05555',
               chapters: [
-                { num: 1, title: 'Commercial Mathematics - GST, Shares, Compound Interest',  worksheets: 2 },
-                { num: 2, title: 'Algebra - Polynomials, Quadratic Equations',               worksheets: 2 },
-                { num: 3, title: 'Geometry - Similarity, Loci, Tangents to Circles',         worksheets: 2 },
-                { num: 4, title: 'Mensuration - Cylinder, Cone, Sphere',                     worksheets: 2 },
+                { num: 1, title: 'Commercial Mathematics: GST, Shares, Compound Interest',  worksheets: 2 },
+                { num: 2, title: 'Algebra: Polynomials, Quadratic Equations',               worksheets: 2 },
+                { num: 3, title: 'Geometry: Similarity, Loci, Tangents to Circles',         worksheets: 2 },
+                { num: 4, title: 'Mensuration: Cylinder, Cone, Sphere',                     worksheets: 2 },
                 { num: 5, title: 'Trigonometry',                                             worksheets: 2 },
-                { num: 6, title: 'Statistics - Mean, Median, Ogive, Histogram',              worksheets: 2 },
+                { num: 6, title: 'Statistics: Mean, Median, Ogive, Histogram',              worksheets: 2 },
                 { num: 7, title: 'Probability',                                              worksheets: 1 },
               ]
             }
@@ -235,7 +235,7 @@ let BOARDS_DATA = {
               color: '#3A7BD5',
               chapters: [
                 { num: 1, title: 'Force, Work, Power and Energy',             worksheets: 2 },
-                { num: 2, title: 'Light - Refraction and Lenses',             worksheets: 2 },
+                { num: 2, title: 'Light: Refraction and Lenses',             worksheets: 2 },
                 { num: 3, title: 'Sound',                                     worksheets: 1 },
                 { num: 4, title: 'Electricity and Magnetism',                 worksheets: 2 },
                 { num: 5, title: 'Heat',                                      worksheets: 1 },
@@ -270,8 +270,8 @@ let BOARDS_DATA = {
           markingScheme: { title: 'ICSE Hindi Marking Scheme 2026' },
           books: [
             {
-              name: 'साहित्य सागर - गद्य (Prose)',
-              subtitle: 'Class 10 ICSE Hindi - Gadya Khand | 10 Kahaniyaan',
+              name: 'साहित्य सागर: गद्य (Prose)',
+              subtitle: 'Class 10 ICSE Hindi: Gadya Khand | 10 Kahaniyaan',
               color: '#9B59B6',
               chapters: [
                 { num: 1,  title: 'बात अठन्नी की',         worksheets: 2 },
@@ -287,8 +287,8 @@ let BOARDS_DATA = {
               ]
             },
             {
-              name: 'साहित्य सागर - पद्य (Poetry)',
-              subtitle: 'Class 10 ICSE Hindi - Padya Khand | 9 Kavitaen',
+              name: 'साहित्य सागर: पद्य (Poetry)',
+              subtitle: 'Class 10 ICSE Hindi: Padya Khand | 9 Kavitaen',
               color: '#E8900A',
               chapters: [
                 { num: 1, title: 'साखी',                    worksheets: 2 },
@@ -304,7 +304,7 @@ let BOARDS_DATA = {
             },
             {
               name: 'एकांकी संचय',
-              subtitle: 'Class 10 ICSE Hindi - Ekanki | 6 One-Act Plays',
+              subtitle: 'Class 10 ICSE Hindi: Ekanki | 6 One-Act Plays',
               color: '#2BA899',
               chapters: [
                 { num: 1, title: 'संस्कार और भावना',        worksheets: 2 },
@@ -317,7 +317,7 @@ let BOARDS_DATA = {
             },
             {
               name: 'नया रास्ता (उपन्यास)',
-              subtitle: 'Class 10 ICSE Hindi - Novel | अध्याय क्रमवार (Publisher: Evergreen / Morning Star)',
+              subtitle: 'Class 10 ICSE Hindi: Novel | अध्याय क्रमवार (Publisher: Evergreen / Morning Star)',
               color: '#E05555',
               chapters: [
                 { num: 1, title: 'अध्याय 1', worksheets: 1 },
@@ -338,35 +338,35 @@ let BOARDS_DATA = {
 };
 
 /* ══════════════════════════════════════════
-   2. DATA - TEST SHEETS
+   2. DATA: TEST SHEETS
 ══════════════════════════════════════════ */
 const TEST_DATA = {
   UTP: {
     CBSE: {
       10: [
-        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1 - Science',       subject: 'Science',       date: 'Jan 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2 - Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3 - Social Science',subject: 'Social Science',date: 'May 2026', pages: 3, color: '#9B59B6' },
-        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4 - Hindi',         subject: 'Hindi',         date: 'Jun 2026', pages: 3, color: '#3A7BD5' },
+        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1: Science',       subject: 'Science',       date: 'Jan 2026', pages: 4, color: '#7EC8A4' },
+        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2: Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3: Social Science',subject: 'Social Science',date: 'May 2026', pages: 3, color: '#9B59B6' },
+        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4: Hindi',         subject: 'Hindi',         date: 'Jun 2026', pages: 3, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'UTP_CBSE_09_01', title: 'Unit Test Paper 1 - Science',       subject: 'Science',       date: 'Feb 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_09_02', title: 'Unit Test Paper 2 - Mathematics',   subject: 'Mathematics',   date: 'Apr 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_CBSE_09_01', title: 'Unit Test Paper 1: Science',       subject: 'Science',       date: 'Feb 2026', pages: 4, color: '#7EC8A4' },
+        { id: 'UTP_CBSE_09_02', title: 'Unit Test Paper 2: Mathematics',   subject: 'Mathematics',   date: 'Apr 2026', pages: 4, color: '#E05555' },
       ],
       8: [
-        { id: 'UTP_CBSE_08_01', title: 'Unit Test Paper 1 - Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 3, color: '#E05555' },
+        { id: 'UTP_CBSE_08_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 3, color: '#E05555' },
       ],
       7: [],
       6: [],
     },
     ICSE: {
       10: [
-        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1 - Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2 - Physics',       subject: 'Physics',       date: 'Apr 2026', pages: 4, color: '#3A7BD5' },
-        { id: 'UTP_ICSE_10_03', title: 'Unit Test Paper 3 - Chemistry',     subject: 'Chemistry',     date: 'Jun 2026', pages: 3, color: '#7EC8A4' },
+        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2: Physics',       subject: 'Physics',       date: 'Apr 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_ICSE_10_03', title: 'Unit Test Paper 3: Chemistry',     subject: 'Chemistry',     date: 'Jun 2026', pages: 3, color: '#7EC8A4' },
       ],
       9: [
-        { id: 'UTP_ICSE_09_01', title: 'Unit Test Paper 1 - Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_ICSE_09_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
       ],
       8: [], 7: [], 6: [],
     }
@@ -374,27 +374,27 @@ const TEST_DATA = {
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1 - Trigonometry',          subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2 - Chemical Reactions',    subject: 'Science',     date: 'Feb 2026', pages: 3, color: '#7EC8A4' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3 - Hindi Grammar',         subject: 'Hindi',       date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4 - Electricity',           subject: 'Science',     date: 'Apr 2026', pages: 2, color: '#7EC8A4' },
+        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Trigonometry',          subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Chemical Reactions',    subject: 'Science',     date: 'Feb 2026', pages: 3, color: '#7EC8A4' },
+        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi Grammar',         subject: 'Hindi',       date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Electricity',           subject: 'Science',     date: 'Apr 2026', pages: 2, color: '#7EC8A4' },
       ],
       9: [
-        { id: 'WS_CBSE_09_01', title: 'Worksheet 1 - Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_09_02', title: 'Worksheet 2 - Force & Motion',        subject: 'Science',     date: 'Mar 2026', pages: 2, color: '#7EC8A4' },
+        { id: 'WS_CBSE_09_01', title: 'Worksheet 1: Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_09_02', title: 'Worksheet 2: Force & Motion',        subject: 'Science',     date: 'Mar 2026', pages: 2, color: '#7EC8A4' },
       ],
       8: [
-        { id: 'WS_CBSE_08_01', title: 'Worksheet 1 - Rational Numbers',      subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_08_01', title: 'Worksheet 1: Rational Numbers',      subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
       ],
       7: [], 6: [],
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1 - Commercial Maths',      subject: 'Mathematics', date: 'Jan 2026', pages: 3, color: '#E05555' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2 - Light (Refraction)',     subject: 'Physics',     date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: Commercial Maths',      subject: 'Mathematics', date: 'Jan 2026', pages: 3, color: '#E05555' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: Light (Refraction)',     subject: 'Physics',     date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'WS_ICSE_09_01', title: 'Worksheet 1 - Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_ICSE_09_01', title: 'Worksheet 1: Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
       ],
       8: [], 7: [], 6: [],
     }
@@ -402,19 +402,19 @@ const TEST_DATA = {
   MockExam: {
     CBSE: {
       10: [
-        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1 - Science (Full Paper)',    subject: 'Science',     date: 'Nov 2025', pages: 8, color: '#7EC8A4' },
-        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2 - Mathematics (Full Paper)',subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3 - Hindi (Full Paper)',      subject: 'Hindi',       date: 'Dec 2025', pages: 5, color: '#3A7BD5' },
+        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1: Science (Full Paper)',    subject: 'Science',     date: 'Nov 2025', pages: 8, color: '#7EC8A4' },
+        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2: Mathematics (Full Paper)',subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
+        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3: Hindi (Full Paper)',      subject: 'Hindi',       date: 'Dec 2025', pages: 5, color: '#3A7BD5' },
       ],
       9: [
-        { id: 'MOCK_CBSE_09_01', title: 'Mock Exam 1 - Annual Paper (All Subjects)', subject: 'All Subjects', date: 'Oct 2025', pages: 10, color: '#9B59B6' },
+        { id: 'MOCK_CBSE_09_01', title: 'Mock Exam 1: Annual Paper (All Subjects)', subject: 'All Subjects', date: 'Oct 2025', pages: 10, color: '#9B59B6' },
       ],
       8: [], 7: [], 6: [],
     },
     ICSE: {
       10: [
-        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1 - Mathematics (Full Paper)', subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_ICSE_10_02', title: 'Mock Exam 2 - Physics (Full Paper)',      subject: 'Physics',     date: 'Dec 2025', pages: 6, color: '#3A7BD5' },
+        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1: Mathematics (Full Paper)', subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
+        { id: 'MOCK_ICSE_10_02', title: 'Mock Exam 2: Physics (Full Paper)',      subject: 'Physics',     date: 'Dec 2025', pages: 6, color: '#3A7BD5' },
       ],
       9: [], 8: [], 7: [], 6: [],
     }
@@ -608,7 +608,7 @@ async function initBoardsSection() {
                   BOARDS_DATA[board].classes.push(c);
                 }
               });
-              BOARDS_DATA[board].classes.sort((a, b) => a - b);
+              BOARDS_DATA[board].classes.sort((a, b) => a: b);
             }
             if (dbData[board].subjectsByClass && Object.keys(dbData[board].subjectsByClass).length > 0) {
               for (const cls in dbData[board].subjectsByClass) {
@@ -633,7 +633,7 @@ async function initBoardsSection() {
                     const dbSubj = dbData[board].resources[cls][subj];
                     const localSubj = BOARDS_DATA[board].resources[cls] && BOARDS_DATA[board].resources[cls][subj];
                     if (!localSubj) {
-                      // No local fallback - use database directly
+                      // No local fallback: use database directly
                       if (!BOARDS_DATA[board].resources[cls]) BOARDS_DATA[board].resources[cls] = {};
                       BOARDS_DATA[board].resources[cls][subj] = dbSubj;
                     } else {
@@ -691,7 +691,7 @@ async function initBoardsSection() {
 
 function selectBoard(board) {
   state.board = board;
-  state.cls   = BOARDS_DATA[board].classes[BOARDS_DATA[board].classes.length - 1]; // default to highest class
+  state.cls   = BOARDS_DATA[board].classes[BOARDS_DATA[board].classes.length: 1]; // default to highest class
   document.querySelectorAll('.board-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.board === board);
     t.setAttribute('aria-selected', String(t.dataset.board === board));
@@ -706,7 +706,7 @@ function renderClassPills() {
   if (!container) return;
   const classes = BOARDS_DATA[state.board].classes;
   // default state.cls to first available for this board
-  if (!classes.includes(state.cls)) state.cls = classes[classes.length - 1];
+  if (!classes.includes(state.cls)) state.cls = classes[classes.length: 1];
   container.innerHTML = classes.map(c => `
     <button class="class-pill${c === state.cls ? ' active' : ''}" data-class="${c}">Class ${c}</button>
   `).join('');
@@ -752,7 +752,7 @@ function renderBoardContent() {
         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light)" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto var(--sp-sm)" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
         </svg>
-        <h3>${state.subj} - Class ${state.cls} (${state.board})</h3>
+        <h3>${state.subj}: Class ${state.cls} (${state.board})</h3>
         <p>Resources for this subject are being prepared and will be available soon.<br/>
         <a href="#contact" style="color:var(--accent);font-weight:600">Contact a mentor</a> for study material in the meantime.</p>
       </div>`;
@@ -866,7 +866,7 @@ function renderDefaultRightContent(subjRes) {
 
   books.forEach(book => {
     html += `
-      <button class="rp-opt-btn" onclick="openDocViewer('${book.name} - Complete Book', '${book.file_url || ''}')">
+      <button class="rp-opt-btn" onclick="openDocViewer('${book.name}: Complete Book', '${book.file_url || ''}')">
         <div class="rp-opt-icon" style="background:${book.color || 'var(--accent)'};color:#fff">📚</div>
         <div class="rp-opt-text">
           <span class="rp-opt-name">${book.name}</span>
@@ -887,25 +887,25 @@ function renderDefaultRightContent(subjRes) {
 // ─── Chapter intro descriptions ─────────────────────────────────────────────
 const CHAPTER_INTROS = {
   'स्पर्श (भाग-2)': {
-    1:  { hi: 'कबीर के दोहे (साखी) - संत कबीर द्वारा रचित दोहे जो जीवन की सच्चाई, भक्ति और मानवता का संदेश देते हैं। ये दोहे आज भी उतने ही प्रासंगिक हैं जितने सदियों पहले थे।', en: 'Kabir ke Dohe - Sakhis by Saint Kabir conveying truths of life, devotion and humanity.' },
-    2:  { hi: 'मीरा के पद - मीराबाई की कृष्ण-भक्ति की अनूठी अभिव्यक्ति। इन पदों में मीरा ने कृष्ण के प्रति अपनी अनन्य श्रद्धा और प्रेम को व्यक्त किया है।', en: 'Meera ke Pad - Unique expression of Mirabai\'s devotion to Lord Krishna through soulful verses.' },
-    3:  { hi: 'मनुष्यता - मैथिलीशरण गुप्त की यह कविता मानवता, परोपकार और एकता का संदेश देती है। कवि कहते हैं कि सच्ची मनुष्यता दूसरों की सेवा में है।', en: 'Manushyata - A poem by Maithilisharan Gupt emphasizing humanity, sacrifice and unity.' },
-    4:  { hi: 'पर्वत प्रदेश में पावस - सुमित्रानंदन पंत की यह कविता पहाड़ी क्षेत्र में बरसात के मनोरम दृश्य का अत्यंत सुंदर चित्रण प्रस्तुत करती है।', en: 'Parvat Pradesh Mein Pavas - Sumitranandan Pant\'s vivid description of monsoon in the hills.' },
-    5:  { hi: 'तोप - वीरेन डंगवाल की यह व्यंग्यात्मक कविता एक पुरानी तोप के माध्यम से युद्ध, ताकत और इतिहास पर सवाल उठाती है।', en: 'Top - A satirical poem by Viren Dangwal questioning war and power through an old cannon.' },
-    6:  { hi: 'कर चले हम फ़िदा - कैफ़ी आज़मी की यह देशभक्ति कविता सैनिकों की वीरता और बलिदान को श्रद्धांजलि देती है।', en: 'Kar Chale Hum Fida - Kaifi Azmi\'s patriotic poem paying tribute to the bravery of soldiers.' },
-    7:  { hi: 'आत्मत्राण - रवींद्रनाथ ठाकुर की यह कविता ईश्वर से मुसीबतों को हटाने की नहीं बल्कि उनसे लड़ने की शक्ति माँगती है।', en: 'Aatmtran - Rabindranath Tagore\'s prayer for strength to face difficulties, not to escape them.' },
-    8:  { hi: 'बड़े भाई साहब - प्रेमचंद की इस कहानी में छोटे भाई की शरारतें और बड़े भाई के उपदेशों के माध्यम से शिक्षा और जीवन का मार्मिक चित्रण है।', en: 'Bade Bhai Sahab - Premchand\'s story depicting the contrast between bookish education and practical wisdom.' },
-    9:  { hi: 'डायरी का एक पन्ना - सीताराम सेकसरिया की डायरी का यह अंश 26 जनवरी 1931 को कलकत्ता में हुए ऐतिहासिक स्वतंत्रता आंदोलन का जीवंत विवरण प्रस्तुत करता है।', en: 'Diary Ka Ek Panna - An eyewitness account of the historic January 26, 1931 freedom movement in Calcutta.' },
-    10: { hi: 'तताँरा-वामीरो कथा - अंडमान-निकोबार द्वीप की एक सुंदर लोककथा जो प्रेम, त्याग और सामाजिक बंधनों की कहानी बताती है।', en: 'Tantara-Vamiro Katha - A beautiful folk tale from Andaman-Nicobar islands about love and social constraints.' },
-    11: { hi: 'तीसरी कसम के शिल्पकार शैलेंद्र - गीतकार शैलेंद्र के जीवन और उनकी फिल्म "तीसरी कसम" के निर्माण की प्रेरक कहानी।', en: 'Teesri Kasam ke Shilpkar Shailendra - The inspiring story of lyricist Shailendra and the making of the film Teesri Kasam.' },
-    12: { hi: 'अब कहाँ दूसरे के दुख से दुखी होने वाले - निदा फ़ाज़ली का यह पाठ पर्यावरण संरक्षण और मानवता के क्षरण पर विचार करता है।', en: 'Ab Kahan Doosre ke Dukh se Dukhi Hone Wale - Nida Fazli\'s reflection on environmental degradation and loss of empathy.' },
-    13: { hi: 'पतझर में टूटी पत्तियाँ - रवींद्र केलेकर के दो लघु निबंध: "गिन्नी का सोना" और "झेन की देन" जो जीवन दर्शन की गहरी बातें सरल भाषा में कहते हैं।', en: 'Patahar Mein Tooti Pattiyan - Two short essays on life philosophy: Ginni Ka Sona and Zen Ki Den.' },
-    14: { hi: 'कारतूस - हबीब तनवीर का यह एकांकी वज़ीर अली की बहादुरी और अंग्रेजों के विरुद्ध उनके साहस की रोमांचक कहानी प्रस्तुत करता है।', en: 'Kartoos - Habib Tanvir\'s one-act play depicting the bravery of Wazir Ali against the British.' },
+    1:  { hi: 'कबीर के दोहे (साखी): संत कबीर द्वारा रचित दोहे जो जीवन की सच्चाई, भक्ति और मानवता का संदेश देते हैं। ये दोहे आज भी उतने ही प्रासंगिक हैं जितने सदियों पहले थे।', en: 'Kabir ke Dohe: Sakhis by Saint Kabir conveying truths of life, devotion and humanity.' },
+    2:  { hi: 'मीरा के पद: मीराबाई की कृष्ण-भक्ति की अनूठी अभिव्यक्ति। इन पदों में मीरा ने कृष्ण के प्रति अपनी अनन्य श्रद्धा और प्रेम को व्यक्त किया है।', en: 'Meera ke Pad: Unique expression of Mirabai\'s devotion to Lord Krishna through soulful verses.' },
+    3:  { hi: 'मनुष्यता: मैथिलीशरण गुप्त की यह कविता मानवता, परोपकार और एकता का संदेश देती है। कवि कहते हैं कि सच्ची मनुष्यता दूसरों की सेवा में है।', en: 'Manushyata: A poem by Maithilisharan Gupt emphasizing humanity, sacrifice and unity.' },
+    4:  { hi: 'पर्वत प्रदेश में पावस: सुमित्रानंदन पंत की यह कविता पहाड़ी क्षेत्र में बरसात के मनोरम दृश्य का अत्यंत सुंदर चित्रण प्रस्तुत करती है।', en: 'Parvat Pradesh Mein Pavas: Sumitranandan Pant\'s vivid description of monsoon in the hills.' },
+    5:  { hi: 'तोप: वीरेन डंगवाल की यह व्यंग्यात्मक कविता एक पुरानी तोप के माध्यम से युद्ध, ताकत और इतिहास पर सवाल उठाती है।', en: 'Top: A satirical poem by Viren Dangwal questioning war and power through an old cannon.' },
+    6:  { hi: 'कर चले हम फ़िदा: कैफ़ी आज़मी की यह देशभक्ति कविता सैनिकों की वीरता और बलिदान को श्रद्धांजलि देती है।', en: 'Kar Chale Hum Fida: Kaifi Azmi\'s patriotic poem paying tribute to the bravery of soldiers.' },
+    7:  { hi: 'आत्मत्राण: रवींद्रनाथ ठाकुर की यह कविता ईश्वर से मुसीबतों को हटाने की नहीं बल्कि उनसे लड़ने की शक्ति माँगती है।', en: 'Aatmtran: Rabindranath Tagore\'s prayer for strength to face difficulties, not to escape them.' },
+    8:  { hi: 'बड़े भाई साहब: प्रेमचंद की इस कहानी में छोटे भाई की शरारतें और बड़े भाई के उपदेशों के माध्यम से शिक्षा और जीवन का मार्मिक चित्रण है।', en: 'Bade Bhai Sahab: Premchand\'s story depicting the contrast between bookish education and practical wisdom.' },
+    9:  { hi: 'डायरी का एक पन्ना: सीताराम सेकसरिया की डायरी का यह अंश 26 जनवरी 1931 को कलकत्ता में हुए ऐतिहासिक स्वतंत्रता आंदोलन का जीवंत विवरण प्रस्तुत करता है।', en: 'Diary Ka Ek Panna: An eyewitness account of the historic January 26, 1931 freedom movement in Calcutta.' },
+    10: { hi: 'तताँरा-वामीरो कथा: अंडमान-निकोबार द्वीप की एक सुंदर लोककथा जो प्रेम, त्याग और सामाजिक बंधनों की कहानी बताती है।', en: 'Tantara-Vamiro Katha: A beautiful folk tale from Andaman-Nicobar islands about love and social constraints.' },
+    11: { hi: 'तीसरी कसम के शिल्पकार शैलेंद्र: गीतकार शैलेंद्र के जीवन और उनकी फिल्म "तीसरी कसम" के निर्माण की प्रेरक कहानी।', en: 'Teesri Kasam ke Shilpkar Shailendra: The inspiring story of lyricist Shailendra and the making of the film Teesri Kasam.' },
+    12: { hi: 'अब कहाँ दूसरे के दुख से दुखी होने वाले: निदा फ़ाज़ली का यह पाठ पर्यावरण संरक्षण और मानवता के क्षरण पर विचार करता है।', en: 'Ab Kahan Doosre ke Dukh se Dukhi Hone Wale: Nida Fazli\'s reflection on environmental degradation and loss of empathy.' },
+    13: { hi: 'पतझर में टूटी पत्तियाँ: रवींद्र केलेकर के दो लघु निबंध: "गिन्नी का सोना" और "झेन की देन" जो जीवन दर्शन की गहरी बातें सरल भाषा में कहते हैं।', en: 'Patahar Mein Tooti Pattiyan: Two short essays on life philosophy: Ginni Ka Sona and Zen Ki Den.' },
+    14: { hi: 'कारतूस: हबीब तनवीर का यह एकांकी वज़ीर अली की बहादुरी और अंग्रेजों के विरुद्ध उनके साहस की रोमांचक कहानी प्रस्तुत करता है।', en: 'Kartoos: Habib Tanvir\'s one-act play depicting the bravery of Wazir Ali against the British.' },
   },
   'संचयन (भाग-2)': {
-    1: { hi: 'हरिहर काका - मिथिलेश्वर की इस कहानी में एक निःसंतान बुजुर्ग की ज़मीन को लेकर परिवार और ठाकुरबारी के बीच की स्वार्थपूर्ण लड़ाई का मार्मिक चित्रण है।', en: 'Harihar Kaka - A poignant story about an old childless man caught between the greed of his family and a temple.' },
-    2: { hi: 'सपनों के-से दिन - गुरदयाल सिंह की यह कहानी बचपन की मासूमियत, स्कूल की यादें और जीवन की पहली सीख को बड़े ही आत्मीय ढंग से प्रस्तुत करती है।', en: 'Sapno ke-se Din - Gurdayal Singh\'s nostalgic story about childhood innocence and school memories.' },
-    3: { hi: 'टोपी शुक्ला - राही मासूम रज़ा की यह कहानी हिंदू-मुस्लिम मित्रता के माध्यम से सांप्रदायिक सद्भाव और बचपन की निश्छल दोस्ती का संदेश देती है।', en: 'Topi Shukla - A story about Hindu-Muslim friendship conveying communal harmony through children\'s innocent bond.' },
+    1: { hi: 'हरिहर काका: मिथिलेश्वर की इस कहानी में एक निःसंतान बुजुर्ग की ज़मीन को लेकर परिवार और ठाकुरबारी के बीच की स्वार्थपूर्ण लड़ाई का मार्मिक चित्रण है।', en: 'Harihar Kaka: A poignant story about an old childless man caught between the greed of his family and a temple.' },
+    2: { hi: 'सपनों के-से दिन: गुरदयाल सिंह की यह कहानी बचपन की मासूमियत, स्कूल की यादें और जीवन की पहली सीख को बड़े ही आत्मीय ढंग से प्रस्तुत करती है।', en: 'Sapno ke-se Din: Gurdayal Singh\'s nostalgic story about childhood innocence and school memories.' },
+    3: { hi: 'टोपी शुक्ला: राही मासूम रज़ा की यह कहानी हिंदू-मुस्लिम मित्रता के माध्यम से सांप्रदायिक सद्भाव और बचपन की निश्छल दोस्ती का संदेश देती है।', en: 'Topi Shukla: A story about Hindu-Muslim friendship conveying communal harmony through children\'s innocent bond.' },
   }
 };
 
@@ -980,7 +980,7 @@ function renderChapter(book, ch) {
     + '<div class="ch-dropdown" id="drop-' + chId + '" hidden>' + linksHtml + '</div>'
     + '</div>';
 }
-// Called when user clicks a chapter row - loads details in the right panel
+// Called when user clicks a chapter row: loads details in the right panel
 function selectChapter(bookName, chNum, chTitle, fileUrl) {
   openRightContent(bookName, chNum, chTitle, 'summary');
 }
@@ -1170,7 +1170,7 @@ function openRightComingSoon(type, chTitle) {
   panel.innerHTML = `
     <div class="rp-summary-wrap">
       <div class="rp-summary-header">
-        <span style="font-weight:700;color:var(--text-primary)">${type} - ${chTitle}</span>
+        <span style="font-weight:700;color:var(--text-primary)">${type}: ${chTitle}</span>
       </div>
       <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
         <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
@@ -1196,11 +1196,11 @@ function openRightPDF(bookName, chNum, chTitle, fileUrl) {
       <div class="rp-summary-header">
         <div>
           <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} &rsaquo; Chapter ${chNum}</div>
-          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${chTitle} - PDF</span>
+          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${chTitle}: PDF</span>
         </div>
         <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','${url.replace(/'/g,"\\'")}')">← वापस</button>
       </div>
-      <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
+      <div style="height:calc(100vh: var(--nav-h): 180px);background:#fff">
         <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
           style="width:100%;height:100%;border:none" loading="lazy" title="${chTitle} PDF">
         </iframe>
@@ -1214,22 +1214,22 @@ function _OLD_renderChapter_unused(book, ch) {
   const introHi = introData ? introData.hi : '';
   const introEn = introData ? introData.en : '';
   const quickLinks = [
-    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title} - पाठ PDF`, action: `handleDownload('${book.name} - Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
+    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: पाठ PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
     { label: 'पाठ सारांश (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: '📝' },
-    { label: 'प्रश्न-उत्तर (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num} - Q&A')`, icon: '❓' },
-    { label: 'मुहावरे / शब्द-अर्थ', action: `openDocViewer('${book.name} Ch.${ch.num} - Muhavare')`, icon: '📖' },
-    { label: 'पिछले वर्ष के प्रश्न (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num} - PYQ')`, icon: '🕐' },
-    { label: 'अतिरिक्त अभ्यास प्रश्न', action: `openDocViewer('${book.name} Ch.${ch.num} - Additional Qs')`, icon: '⭐' },
+    { label: 'प्रश्न-उत्तर (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')`, icon: '❓' },
+    { label: 'मुहावरे / शब्द-अर्थ', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
+    { label: 'पिछले वर्ष के प्रश्न (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')`, icon: '🕐' },
+    { label: 'अतिरिक्त अभ्यास प्रश्न', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: '⭐' },
   ];
 
   // Right column: sidebar resource buttons
   const sidebarOptions = [
     { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'पाठ का सार',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
-    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'प्रश्न-उत्तर',        action: `openDocViewer('${book.name} Ch.${ch.num} - Q&A')` },
-    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'शब्द अर्थ',          action: `openDocViewer('${book.name} Ch.${ch.num} - Muhavare')` },
-    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'पिछले वर्ष प्रश्न',   action: `openDocViewer('${book.name} Ch.${ch.num} - PYQ')` },
-    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'अभ्यास प्रश्न',      action: `openDocViewer('${book.name} Ch.${ch.num} - Additional Qs')` },
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'पाठ डाउनलोड',       action: `handleDownload('${book.name} - Chapter ${ch.num}', '${ch.file_url || ''}')` },
+    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'प्रश्न-उत्तर',        action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')` },
+    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'शब्द अर्थ',          action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')` },
+    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'पिछले वर्ष प्रश्न',   action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')` },
+    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'अभ्यास प्रश्न',      action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'पाठ डाउनलोड',       action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')` },
   ];
 
   return `
@@ -1570,7 +1570,7 @@ function openDocViewer(title, url) {
             </button>
           </div>
         </div>
-        <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
+        <div style="height:calc(100vh: var(--nav-h): 180px);background:#fff">
           <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
             style="width:100%;height:100%;border:none" loading="lazy" title="${title}">
           </iframe>
@@ -1671,7 +1671,7 @@ function parseSummaryArray(arr, bookName, chNum, chTitle) {
   if (!arr || arr.length === 0) return null;
   
   let bookTitle = chTitle;
-  let classInfo = 'Class 10 - Hindi Course B (' + bookName + ')';
+  let classInfo = 'Class 10: Hindi Course B (' + bookName + ')';
   let author = '';
   let introTitle = '';
   let introText = '';
@@ -1757,7 +1757,7 @@ async function openSummary(bookName, chNum, chTitle) {
   panel.innerHTML = `
     <div class="rp-summary-wrap">
       <div class="rp-summary-header">
-        <span style="font-weight:700;color:var(--text-primary)">${bookName} Ch.${chNum} - Summary</span>
+        <span style="font-weight:700;color:var(--text-primary)">${bookName} Ch.${chNum}: Summary</span>
         <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
       </div>
       <div class="rp-summary-body" style="display:flex;align-items:center;gap:.75rem;padding:2rem">
@@ -1773,7 +1773,7 @@ async function openSummary(bookName, chNum, chTitle) {
     panel.innerHTML = `
       <div class="rp-summary-wrap">
         <div class="rp-summary-header">
-          <span style="font-weight:700;color:var(--text-primary)">${chTitle} - Summary</span>
+          <span style="font-weight:700;color:var(--text-primary)">${chTitle}: Summary</span>
           <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
         </div>
         <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
@@ -1982,7 +1982,7 @@ function handleDownload(title, url) {
     document.body.removeChild(a);
     showToast(`Downloading: "${title}"`);
   } else {
-    showToast(`"${title}" - will be available for download soon. Contact a mentor for direct access.`);
+    showToast(`"${title}": will be available for download soon. Contact a mentor for direct access.`);
   }
 }
 
