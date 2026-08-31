@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=29.0.0" />
+  <link rel="stylesheet" href="style.css?v=30.0.0" />
 </head>
 <body>
 
@@ -153,18 +153,18 @@
     <div class="section-header fade-in">
       <span class="section-badge">Why Choose Us</span>
       <h2 id="why-heading">Everything a Student Needs</h2>
-      <p>One trusted stop for CBSE and ICSE school students  :  no distractions, just focused, structured learning.</p>
+      <p>One trusted stop for CBSE and ICSE school students: no distractions, just focused, structured learning.</p>
     </div>
     <div class="features-grid">
       <div class="feature-card fade-in">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
         <h3>Chapter-wise Resources</h3>
-        <p>Textbooks, summaries, word meanings, Q&amp;A, and worksheets  :  organised by class and chapter.</p>
+        <p>Textbooks, summaries, word meanings, Q&amp;A, and worksheets: organised by class and chapter.</p>
       </div>
       <div class="feature-card fade-in">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
         <h3>Practice &amp; Evaluate</h3>
-        <p>Download test sheets, upload your answers, and get evaluated  :  real exam practice at home.</p>
+        <p>Download test sheets, upload your answers, and get evaluated: real exam practice at home.</p>
       </div>
       <div class="feature-card fade-in">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
@@ -276,36 +276,32 @@
     <div class="section-header fade-in">
       <span class="section-badge">Board Exam Prep</span>
       <h2 id="pyqs-heading">Previous Year Questions</h2>
-      <p>Year-wise and chapter-wise PYQs for CBSE and ICSE board exams  :  the most important resource before your finals.</p>
+      <p>Year-wise and chapter-wise PYQs for CBSE and ICSE board exams: the most important resource before your finals.</p>
     </div>
-    <div class="coming-soon-grid fade-in">
-      <div class="coming-soon-card">
-        <div class="cs-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <div class="coming-soon-grid fade-in" style="grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 0 auto;">
+      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="cs-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>CBSE Class 10 PYQs</h3>
+          <p>Last 10 years board exam papers with solutions for Class 10 Hindi Course B.</p>
         </div>
-        <h3>CBSE Class 10 PYQs</h3>
-        <p>Last 10 years board exam papers with solutions  :  Hindi.</p>
-        <span class="coming-tag">Coming Soon</span>
+        <button class="btn btn-primary" onclick="selectBoard('CBSE'); document.getElementById('school-boards').scrollIntoView({behavior:'smooth'});" style="margin-top:1.25rem; width:100%; justify-content:center;">View CBSE Class 10 PYQs</button>
       </div>
-      <div class="coming-soon-card">
-        <div class="cs-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div class="cs-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>ICSE Class 10 PYQs</h3>
+          <p>ICSE board papers from 2015 to 2025, chapter-mapped with model answers.</p>
         </div>
-        <h3>CBSE Class 9 PYQs</h3>
-        <p>Annual exam papers with model solutions organised by subject and chapter.</p>
-        <span class="coming-tag">Coming Soon</span>
-      </div>
-      <div class="coming-soon-card">
-        <div class="cs-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <h3>ICSE Class 10 PYQs</h3>
-        <p>ICSE board papers from 2015: 2025, chapter-mapped for targeted revision.</p>
-        <span class="coming-tag">Coming Soon</span>
+        <button class="btn btn-outline" onclick="selectBoard('ICSE'); document.getElementById('school-boards').scrollIntoView({behavior:'smooth'});" style="margin-top:1.25rem; width:100%; justify-content:center;">View ICSE Class 10 PYQs</button>
       </div>
     </div>
-    <div class="notify-bar fade-in">
-      <p>Be the first to know when PYQs are available. <a href="#contact" class="notify-link">Notify me </a></p>
+    <div class="notify-bar fade-in" style="margin-top:2rem;">
+      <p>Need a specific chapter PYQ paper or sample paper? <a href="#contact" class="notify-link">Talk to a Mentor Directly</a></p>
     </div>
   </div>
 </section>
@@ -366,7 +362,7 @@
     <div class="section-header fade-in">
       <span class="section-badge">Live Classes</span>
       <h2 id="revision-heading">Revision Classes</h2>
-      <p>Structured live revision sessions before board exams  :  conducted by subject experts, covering important topics and doubt resolution.</p>
+      <p>Structured live revision sessions before board exams: conducted by subject experts, covering important topics and doubt resolution.</p>
     </div>
     <div class="revision-card fade-in">
       <div class="revision-inner">
@@ -377,7 +373,7 @@
           <ul class="revision-features">
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Subject-wise focused sessions</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Important topic coverage + PYQ discussion</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Recorded sessions  :  watch any time</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Recorded sessions: watch any time</li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Small batch size for personal attention</li>
           </ul>
         </div>
@@ -519,7 +515,7 @@
         </span>
         <span class="logo-text">Gyan<span>Lok</span></span>
       </a>
-      <p class="footer-about">A free, trusted learning platform for CBSE &amp; ICSE school students across India  :  textbooks, chapter resources, PYQs, practice sheets, and mentor support.</p>
+      <p class="footer-about">A free, trusted learning platform for CBSE &amp; ICSE school students across India: textbooks, chapter resources, PYQs, practice sheets, and mentor support.</p>
       <div class="social-links" aria-label="Social media links">
         <a href="#" class="social-icon" aria-label="GyanLok on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 1.95C5.12 20 12 20 12 20s6.88 0 8.6-.47a2.78 2.78 0 0 0 1.94-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
         <a href="#" class="social-icon" aria-label="GyanLok on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
@@ -636,7 +632,7 @@
   </div>
 </div>
 
-<script src="script.js?v=29.0.0"></script>
+<script src="script.js?v=30.0.0"></script>
 </body>
 
 
