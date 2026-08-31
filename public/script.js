@@ -1023,12 +1023,12 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   const safeCat = category || 'summary';
 
   const catTabs = [
-    { key: 'summary',    icon: '\uD83D\uDCDD', label: '\u092A\u093E\u0920 \u0938\u093E\u0930\u093E\u0902\u0936' },
-    { key: 'pdf',        icon: '\uD83D\uDCC4', label: '\u092A\u093E\u0920 PDF' },
-    { key: 'notes',      icon: '\u2753',       label: '\u0928\u094B\u091F\u094D\u0938' },
-    { key: 'muhavre',    icon: '\uD83D\uDCD6', label: '\u092E\u0941\u0939\u093E\u0935\u0930\u0947' },
-    { key: 'pyq',        icon: '\uD83D\uDD50', label: 'PYQ' },
-    { key: 'additional', icon: '\u2B50',       label: '\u0905\u092D\u094D\u092F\u093E\u0938 \u092A\u094D\u0930\u0936\u094D\u0928' },
+    { key: 'summary',    icon: '📝', label: 'Summary' },
+    { key: 'pdf',        icon: '📄', label: 'PDF' },
+    { key: 'notes',      icon: '❓', label: 'Notes' },
+    { key: 'competency', icon: '🎯', label: 'Competency Qs' },
+    { key: 'additional', icon: '⭐', label: 'Additional Qs' },
+    { key: 'muhavre',    icon: '📖', label: 'Muhavre & Word Meanings' },
   ];
 
   const tabsHtml = catTabs.map(t => {
