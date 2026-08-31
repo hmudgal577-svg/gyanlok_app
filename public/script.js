@@ -2035,3 +2035,17 @@ window.openRightContent = openRightContent;
 window.closeFsOverlay = closeFsOverlay;
 
 
+
+
+function showEmptyRightPanel() {
+  const panel = document.getElementById('boards-right-panel');
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="boards-detail-empty">
+      <div class="detail-empty-icon">📖</div>
+      <h3>Select a Chapter</h3>
+      <p>Choose any chapter from the left panel to view <strong>Summary, PDF, Notes, PYQs &amp; Worksheets</strong>.</p>
+    </div>
+  `;
+}
+window.showEmptyRightPanel = showEmptyRightPanel;
