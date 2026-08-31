@@ -2049,3 +2049,21 @@ function showEmptyRightPanel() {
   `;
 }
 window.showEmptyRightPanel = showEmptyRightPanel;
+
+
+function openAboutModal() {
+  let modal = document.getElementById('about-modal');
+  if (!modal) return;
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAboutModal() {
+  let modal = document.getElementById('about-modal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+window.openAboutModal = openAboutModal;
+window.closeAboutModal = closeAboutModal;
