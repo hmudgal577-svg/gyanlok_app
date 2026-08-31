@@ -200,7 +200,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // ─── Rate Limiters ──────────────────────────────────────────────────────────
-const generalLimiter = rateLimit({
+const generalLimiter = process.env.VERCEL ? (req, res, next) => next() : rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 500,
   message: { error: 'Too many requests, please try again later.' },
@@ -209,7 +209,7 @@ const generalLimiter = rateLimit({
 });
 app.use('/api/', generalLimiter);
 
-const loginLimiter = rateLimit({
+const loginLimiter = process.env.VERCEL ? (req, res, next) => next() : rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
   message: { error: 'Too many login attempts. Try again after 15 minutes.' },
