@@ -3232,11 +3232,19 @@ html { scroll-behavior: smooth; }
   font-weight: 600;
 }
 
-.docx-styled-content .doc-footer {
-  font-size: 0.85rem;
-  color: var(--text-muted, #64748B);
-  border-top: 1px solid var(--border, #E2E8F0);
-  padding-top: 0.5rem;
-  margin-top: 2rem;
-  text-align: center;
+.docx-exact-container {
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Plus Jakarta Sans', sans-serif !important;
+  font-style: normal !important;
+  color: #1E293B;
+  background: #ffffff;
+  padding: 2.25rem 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+}
+.docx-exact-container * {
+  font-style: normal;
+}
+.docx-exact-container i, 
+.docx-exact-container em {
+  font-style: normal;
 }
