@@ -22,18 +22,14 @@
 ══════════════════════════════════════════ */
 let BOARDS_DATA = {
   CBSE: {
-    classes: [6, 7, 8, 9, 10],
+    classes: [10],
     subjectsByClass: {
-      6:  ['Hindi', 'Mathematics', 'Science', 'Social Science', 'English', 'Sanskrit'],
-      7:  ['Hindi', 'Mathematics', 'Science', 'Social Science', 'English', 'Sanskrit'],
-      8:  ['Hindi', 'Mathematics', 'Science', 'Social Science', 'English', 'Sanskrit'],
-      9:  ['Hindi', 'Mathematics', 'Science', 'Social Science', 'English', 'Sanskrit'],
-      10: ['Hindi', 'Mathematics', 'Science', 'Social Science', 'English'],
+      10: ['Hindi'],
     },
     resources: {
       10: {
         Hindi: {
-          syllabus:      { title: 'Hindi B Syllabus 2026–27', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf', isNew: true },
+          syllabus:      { title: 'Hindi B Syllabus 2026—27', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf', isNew: true },
           markingScheme: { title: 'Hindi B Marking Scheme 2026', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf' },
           books: [
             {
@@ -72,7 +68,7 @@ let BOARDS_DATA = {
           ]
         },
         Mathematics: {
-          syllabus:      { title: 'Mathematics Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'Mathematics Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'Mathematics Marking Scheme 2026' },
           books: [
             {
@@ -99,7 +95,7 @@ let BOARDS_DATA = {
           ]
         },
         Science: {
-          syllabus:      { title: 'Science Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'Science Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'Science Marking Scheme 2026' },
           books: [
             {
@@ -126,7 +122,7 @@ let BOARDS_DATA = {
           ]
         },
         'Social Science': {
-          syllabus:      { title: 'Social Science Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'Social Science Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'Social Science Marking Scheme 2026' },
           books: [
             {
@@ -158,7 +154,7 @@ let BOARDS_DATA = {
           ]
         },
         English: {
-          syllabus:      { title: 'English Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'English Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'English Marking Scheme 2026' },
           books: [
             {
@@ -203,18 +199,14 @@ let BOARDS_DATA = {
   },
 
   ICSE: {
-    classes: [6, 7, 8, 9, 10],
+    classes: [10],
     subjectsByClass: {
-      6:  ['English', 'Mathematics', 'Science', 'History & Civics', 'Geography', 'Hindi'],
-      7:  ['English', 'Mathematics', 'Science', 'History & Civics', 'Geography', 'Hindi'],
-      8:  ['English', 'Mathematics', 'Science', 'History & Civics', 'Geography', 'Hindi'],
-      9:  ['Hindi', 'English Language', 'English Literature', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'History & Civics', 'Geography'],
-      10: ['Hindi', 'English Language', 'English Literature', 'Mathematics', 'Physics', 'Chemistry', 'Biology', 'History & Civics', 'Geography'],
+      10: ['Hindi'],
     },
     resources: {
       10: {
         Mathematics: {
-          syllabus:      { title: 'ICSE Mathematics Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'ICSE Mathematics Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'ICSE Mathematics Marking Scheme 2026' },
           books: [
             {
@@ -234,7 +226,7 @@ let BOARDS_DATA = {
           ]
         },
         Physics: {
-          syllabus:      { title: 'ICSE Physics Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'ICSE Physics Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'ICSE Physics Marking Scheme 2026' },
           books: [
             {
@@ -253,7 +245,7 @@ let BOARDS_DATA = {
           ]
         },
         Chemistry: {
-          syllabus:      { title: 'ICSE Chemistry Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'ICSE Chemistry Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'ICSE Chemistry Marking Scheme 2026' },
           books: [
             {
@@ -274,7 +266,7 @@ let BOARDS_DATA = {
           ]
         },
         Hindi: {
-          syllabus:      { title: 'ICSE Hindi Syllabus 2026–27', isNew: true },
+          syllabus:      { title: 'ICSE Hindi Syllabus 2026—27', isNew: true },
           markingScheme: { title: 'ICSE Hindi Marking Scheme 2026' },
           books: [
             {
