@@ -98,60 +98,37 @@ try {
   console.log('[Storage] Cloudinary module error → using local disk uploads/', e.message);
 }
 
-// ─── DB Init + Admin Sync (single async IIFE) ──────────────────────────────
+// ─── DB Init + Admin Sync (Non-blocking for Vercel Serverless) ─────────────
 let db = null;
 let usingDb = false;
-(async () => {
-  // Step 1: Connect to DB and set usingDb flag (await so admin sync runs after)
+
+// Async init runs in background without blocking server startup or HTTP requests
+setTimeout(async () => {
   if (!process.env.DATABASE_URL) {
     console.log('[DB] DATABASE_URL not set → using JSON file storage');
-  } else {
-    try {
-      console.log('[DB] DATABASE_URL found, connecting to PostgreSQL...');
-      db = require('./db');
-      await db.query('SELECT 1');  // ← await here ensures usingDb is set before admin sync
-      usingDb = true;
-      console.log('[DB] PostgreSQL (Supabase) connected ✓');
-    } catch (err) {
-      usingDb = false;
-      console.error('[DB] PostgreSQL connection FAILED:', err.message);
-      console.log('[DB] Falling back to JSON file storage');
-    }
+    return;
   }
+  try {
+    console.log('[DB] DATABASE_URL found, connecting to PostgreSQL...');
+    db = require('./db');
+    await db.query('SELECT 1');
+    usingDb = true;
+    console.log('[DB] PostgreSQL (Supabase) connected ✓');
 
-  // Step 2: Sync admin credentials (runs AFTER DB connection is confirmed)
-  const adminEmail    = process.env.ADMIN_EMAIL    || 'ektaverma09.work@gmail.com';
-  const adminPassword = process.env.ADMIN_PASSWORD || '99722 47410';
-
-  if (usingDb) {
-    try {
-      const res  = await db.query("SELECT * FROM users WHERE role = 'admin'");
-      const hash = await bcrypt.hash(adminPassword, 12);
-      if (res.rows.length === 0) {
-        await db.query("INSERT INTO users (email, password_hash, role, name) VALUES ($1, $2, 'admin', 'Admin')", [adminEmail, hash]);
-        console.log(`[INIT] Admin created in database: ${adminEmail}`);
-      } else {
-        await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, res.rows[0].id]);
-        console.log(`[INIT] Admin credentials synced in database: ${adminEmail}`);
-      }
-    } catch (e) {
-      console.error('[INIT-DB-ADMIN]', e.message);
-    }
-  } else {
-    const users = readJson('users.json', []);
-    const hash  = await bcrypt.hash(adminPassword, 12);
-    const idx   = users.findIndex(u => u.role === 'admin');
-    if (idx === -1) {
-      users.push({ id: Date.now(), email: adminEmail, password_hash: hash, role: 'admin' });
-      console.log(`[INIT] Admin created in JSON storage: ${adminEmail}`);
+    const adminEmail    = process.env.ADMIN_EMAIL    || 'ektaverma09.work@gmail.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || '99722 47410';
+    const res  = await db.query("SELECT * FROM users WHERE role = 'admin'");
+    const hash = await bcrypt.hash(adminPassword, 12);
+    if (res.rows.length === 0) {
+      await db.query("INSERT INTO users (email, password_hash, role, name) VALUES ($1, $2, 'admin', 'Admin')", [adminEmail, hash]);
     } else {
-      users[idx].email = adminEmail;
-      users[idx].password_hash = hash;
-      console.log(`[INIT] Admin synced in JSON storage: ${adminEmail}`);
+      await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, res.rows[0].id]);
     }
-    writeJson('users.json', users);
+  } catch (err) {
+    usingDb = false;
+    console.error('[DB] PostgreSQL connection FAILED:', err.message);
   }
-})();
+}, 10);
 
 // ─── App setup ──────────────────────────────────────────────────────────────
 const app        = express();
