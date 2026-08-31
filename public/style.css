@@ -3107,3 +3107,8 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 @media (max-width: 992px) {
   .about-wrapper { grid-template-columns: 1fr; gap: 2.5rem; }
 }
+
+
+/* Ensure fixed header offset when scrolling to sections */
+section[id] { scroll-margin-top: 80px; }
+html { scroll-behavior: smooth; }
