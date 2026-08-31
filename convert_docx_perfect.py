@@ -15,7 +15,7 @@ def rgb_to_hex(rgb):
     except Exception:
         return None
 
-def get_run_style(run):
+def get_run_style(run, default_color=None):
     styles = []
     font = run.font
 
@@ -32,8 +32,10 @@ def get_run_style(run):
         hex_color = rgb_to_hex(font.color.rgb)
         if hex_color:
             styles.append(f"color: {hex_color}")
+    elif default_color:
+        styles.append(f"color: {default_color}")
 
-    # Bold & Italic (Strict check: ONLY add italic if explicitly True)
+    # Bold & Italic (Strict: ONLY italic if explicitly True)
     if font.bold is True:
         styles.append("font-weight: bold")
     else:
@@ -49,7 +51,7 @@ def get_run_style(run):
 
     return "; ".join(styles)
 
-def get_paragraph_style(p):
+def get_paragraph_style(p, default_align=None):
     styles = ["font-style: normal"]
     pf = p.paragraph_format
 
@@ -61,6 +63,8 @@ def get_paragraph_style(p):
         styles.append("text-align: justify")
     elif p.alignment == WD_ALIGN_PARAGRAPH.LEFT:
         styles.append("text-align: left")
+    elif default_align:
+        styles.append(f"text-align: {default_align}")
 
     if pf.line_spacing:
         if isinstance(pf.line_spacing, (int, float)):
@@ -75,12 +79,12 @@ def get_paragraph_style(p):
     if pf.space_after and hasattr(pf.space_after, 'pt') and pf.space_after.pt:
         styles.append(f"margin-bottom: {pf.space_after.pt}pt")
     else:
-        styles.append("margin-bottom: 0.75rem")
+        styles.append("margin-bottom: 0.5rem")
 
     return "; ".join(styles)
 
-def paragraph_to_html(p):
-    p_style = get_paragraph_style(p)
+def paragraph_to_html(p, default_align=None, default_color=None):
+    p_style = get_paragraph_style(p, default_align=default_align)
     runs_html = []
 
     for run in p.runs:
@@ -89,13 +93,13 @@ def paragraph_to_html(p):
             continue
         
         text_escaped = text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>")
-        r_style = get_run_style(run)
+        r_style = get_run_style(run, default_color=default_color)
 
         runs_html.append(f'<span style="{r_style}">{text_escaped}</span>')
 
     full_inner = "".join(runs_html)
     if not full_inner.strip():
-        return '<p style="margin-bottom: 0.5rem;"><br/></p>'
+        return '<p style="margin-bottom: 0.25rem;"><br/></p>'
 
     return f'<p style="{p_style}; font-style: normal;">{full_inner}</p>'
 
@@ -117,12 +121,16 @@ def docx_to_exact_html(filepath):
     doc = docx.Document(filepath)
     html_parts = []
 
-    # Extract Header if present (clean layout, no dashed borders)
+    # Extract Header (Centered, exact DOCX colors #4A86E8, #1E3A8A)
     for section in doc.sections:
         if section.header and section.header.paragraphs:
-            header_paras = [paragraph_to_html(p) for p in section.header.paragraphs if p.text.strip()]
+            header_paras = [paragraph_to_html(p, default_align='center', default_color='#4A86E8') for p in section.header.paragraphs if p.text.strip()]
             if header_paras:
-                html_parts.append(f'<div class="doc-header" style="font-size: 0.95rem; color: #475569; padding-bottom: 10px; margin-bottom: 1.5rem; font-style: normal; font-weight: 600;">{"".join(header_paras)}</div>')
+                html_parts.append(
+                    f'<div class="doc-header" style="background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1rem 1.5rem; margin-bottom: 2rem; text-align: center; font-style: normal;">'
+                    + "".join(header_paras) +
+                    '</div>'
+                )
             break
 
     # Extract Body Elements
@@ -134,15 +142,19 @@ def docx_to_exact_html(filepath):
             t = docx.table.Table(elem, doc)
             html_parts.append(table_to_html(t))
 
-    # Extract Footer if present
+    # Extract Footer (Right aligned, exact DOCX color #156082)
     for section in doc.sections:
         if section.footer and section.footer.paragraphs:
-            footer_paras = [paragraph_to_html(p) for p in section.footer.paragraphs if p.text.strip()]
+            footer_paras = [paragraph_to_html(p, default_align='right', default_color='#156082') for p in section.footer.paragraphs if p.text.strip()]
             if footer_paras:
-                html_parts.append(f'<div class="doc-footer" style="font-size: 0.9rem; color: #475569; padding-top: 12px; margin-top: 2rem; text-align: center; font-style: normal;">{"".join(footer_paras)}</div>')
+                html_parts.append(
+                    f'<div class="doc-footer" style="border-top: 2px solid #E2E8F0; padding-top: 1rem; margin-top: 2.5rem; text-align: right; font-style: normal; font-weight: bold; color: #156082;">'
+                    + "".join(footer_paras) +
+                    '</div>'
+                )
             break
 
-    return f'<div class="docx-exact-container" style="background: #ffffff; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,0.04); font-family: \'Noto Sans Devanagari\', \'Mangal\', sans-serif; font-size: 11pt; color: #1E293B; font-style: normal;">{"".join(html_parts)}</div>'
+    return f'<div class="docx-exact-container" style="background: #ffffff; padding: 2.25rem 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); font-family: \'Noto Sans Devanagari\', \'Mangal\', sans-serif; font-size: 11pt; color: #1E293B; font-style: normal;">{"".join(html_parts)}</div>'
 
 
 # Convert all files
@@ -204,4 +216,4 @@ for k in keys:
 with open(json_path, 'w', encoding='utf-8') as jf:
     json.dump(data, jf, ensure_ascii=False, indent=2)
 
-print("SUCCESS: CONVERTED DOCX WITH NON-ITALIC DEVANAGARI FONTS, EXACT HEADERS & COLORS!")
+print("SUCCESS: CONVERTED DOCX WITH BEAUTIFUL CENTERED HEADER CARD AND RIGHT-ALIGNED FOOTER!")
