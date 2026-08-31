@@ -1531,11 +1531,14 @@ function openDocViewer(title, url) {
 
     panel.innerHTML = `
       <div class="rp-summary-wrap">
-        <div class="rp-summary-header">
-          <div>
-            <span style="font-weight:700;color:var(--text-primary)">${title}</span>
+        <div class="rp-summary-header" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; padding:0.75rem 1rem;">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <button class="rp-summary-back" onclick="renderDefaultRightContent(BOARDS_DATA[state.board].resources[state.cls][state.subj])" style="font-size:0.85rem; padding:0.35rem 0.75rem; background:var(--accent-bg); color:var(--accent); border:1px solid var(--accent-light); border-radius:6px; font-weight:700; cursor:pointer;">
+              &larr; Back
+            </button>
+            <span style="font-weight:700; color:var(--text-primary); font-size:0.95rem;">${title}</span>
           </div>
-          <div style="display:flex;gap:.4rem;align-items:center;">
+          <div style="display:flex; gap:.4rem; align-items:center;">
             <button class="rp-summary-back" onclick="handleDownload('${title.replace(/'/g,"\\'")}', '${absoluteUrl}')" style="font-size:.78rem;">
               📥 Download
             </button>
