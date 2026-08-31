@@ -344,79 +344,53 @@ const TEST_DATA = {
   UTP: {
     CBSE: {
       10: [
-        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1: Science',       subject: 'Science',       date: 'Jan 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2: Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3: Social Science',subject: 'Social Science',date: 'May 2026', pages: 3, color: '#9B59B6' },
-        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4: Hindi',         subject: 'Hindi',         date: 'Jun 2026', pages: 3, color: '#3A7BD5' },
+        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1: Hindi (स्पर्श)',          subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2: Hindi (संचयन)',          subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
+        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3: Hindi (व्याकरण एवं मुहावरे)', subject: 'Hindi', date: 'Jun 2026', pages: 3, color: '#9B59B6' },
+        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4: Hindi (अभ्यास प्रश्न पत्र)', subject: 'Hindi', date: 'Aug 2026', pages: 4, color: '#E05555' },
       ],
-      9: [
-        { id: 'UTP_CBSE_09_01', title: 'Unit Test Paper 1: Science',       subject: 'Science',       date: 'Feb 2026', pages: 4, color: '#7EC8A4' },
-        { id: 'UTP_CBSE_09_02', title: 'Unit Test Paper 2: Mathematics',   subject: 'Mathematics',   date: 'Apr 2026', pages: 4, color: '#E05555' },
-      ],
-      8: [
-        { id: 'UTP_CBSE_08_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 3, color: '#E05555' },
-      ],
-      7: [],
-      6: [],
+      9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Feb 2026', pages: 4, color: '#E05555' },
-        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2: Physics',       subject: 'Physics',       date: 'Apr 2026', pages: 4, color: '#3A7BD5' },
-        { id: 'UTP_ICSE_10_03', title: 'Unit Test Paper 3: Chemistry',     subject: 'Chemistry',     date: 'Jun 2026', pages: 3, color: '#7EC8A4' },
+        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1: ICSE Hindi (गद्य खंड)',   subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2: ICSE Hindi (पद्य खंड)',   subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
       ],
-      9: [
-        { id: 'UTP_ICSE_09_01', title: 'Unit Test Paper 1: Mathematics',   subject: 'Mathematics',   date: 'Mar 2026', pages: 4, color: '#E05555' },
-      ],
-      8: [], 7: [], 6: [],
+      9: [], 8: [], 7: [], 6: []
     }
   },
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Trigonometry',          subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Chemical Reactions',    subject: 'Science',     date: 'Feb 2026', pages: 3, color: '#7EC8A4' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi Grammar',         subject: 'Hindi',       date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Electricity',           subject: 'Science',     date: 'Apr 2026', pages: 2, color: '#7EC8A4' },
+        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (व्याकरण - पदबंध व समास)', subject: 'Hindi', date: 'Jan 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (काव्य खंड - साखी व पद)', subject: 'Hindi', date: 'Feb 2026', pages: 3, color: '#2BA899' },
+        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (गद्य खंड - बड़े भाई साहब)', subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#9B59B6' },
+        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (रचनात्मक लेखन)',         subject: 'Hindi', date: 'Apr 2026', pages: 2, color: '#E05555' },
       ],
-      9: [
-        { id: 'WS_CBSE_09_01', title: 'Worksheet 1: Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
-        { id: 'WS_CBSE_09_02', title: 'Worksheet 2: Force & Motion',        subject: 'Science',     date: 'Mar 2026', pages: 2, color: '#7EC8A4' },
-      ],
-      8: [
-        { id: 'WS_CBSE_08_01', title: 'Worksheet 1: Rational Numbers',      subject: 'Mathematics', date: 'Jan 2026', pages: 2, color: '#E05555' },
-      ],
-      7: [], 6: [],
+      9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: Commercial Maths',      subject: 'Mathematics', date: 'Jan 2026', pages: 3, color: '#E05555' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: Light (Refraction)',     subject: 'Physics',     date: 'Mar 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (एकांकी संचय)',      subject: 'Hindi', date: 'Jan 2026', pages: 3, color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (व्याकरण व निबंध)',  subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#2BA899' },
       ],
-      9: [
-        { id: 'WS_ICSE_09_01', title: 'Worksheet 1: Algebra',               subject: 'Mathematics', date: 'Feb 2026', pages: 2, color: '#E05555' },
-      ],
-      8: [], 7: [], 6: [],
+      9: [], 8: [], 7: [], 6: []
     }
   },
   MockExam: {
     CBSE: {
       10: [
-        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1: Science (Full Paper)',    subject: 'Science',     date: 'Nov 2025', pages: 8, color: '#7EC8A4' },
-        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2: Mathematics (Full Paper)',subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3: Hindi (Full Paper)',      subject: 'Hindi',       date: 'Dec 2025', pages: 5, color: '#3A7BD5' },
+        { id: 'MOCK_CBSE_10_01', title: 'Mock Exam 1: Hindi Course B (Full Paper 1)', subject: 'Hindi', date: 'Nov 2025', pages: 8, color: '#3A7BD5' },
+        { id: 'MOCK_CBSE_10_02', title: 'Mock Exam 2: Hindi Course B (Full Paper 2)', subject: 'Hindi', date: 'Dec 2025', pages: 7, color: '#2BA899' },
+        { id: 'MOCK_CBSE_10_03', title: 'Mock Exam 3: Hindi Sample Paper 2026',      subject: 'Hindi', date: 'Jan 2026', pages: 6, color: '#9B59B6' },
       ],
-      9: [
-        { id: 'MOCK_CBSE_09_01', title: 'Mock Exam 1: Annual Paper (All Subjects)', subject: 'All Subjects', date: 'Oct 2025', pages: 10, color: '#9B59B6' },
-      ],
-      8: [], 7: [], 6: [],
+      9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1: Mathematics (Full Paper)', subject: 'Mathematics', date: 'Dec 2025', pages: 7, color: '#E05555' },
-        { id: 'MOCK_ICSE_10_02', title: 'Mock Exam 2: Physics (Full Paper)',      subject: 'Physics',     date: 'Dec 2025', pages: 6, color: '#3A7BD5' },
+        { id: 'MOCK_ICSE_10_01', title: 'Mock Exam 1: ICSE Hindi (Full Paper)',     subject: 'Hindi', date: 'Dec 2025', pages: 7, color: '#3A7BD5' },
       ],
-      9: [], 8: [], 7: [], 6: [],
+      9: [], 8: [], 7: [], 6: []
     }
   }
 };
