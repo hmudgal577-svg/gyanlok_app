@@ -43,7 +43,7 @@ async function sendOtpEmail(email, otp) {
         'content-type': 'application/json'
       },
       body: JSON.stringify({
-        sender: { name: 'GyanLok Admin', email: process.env.SMTP_USER || 'hmudgal577@gmail.com' },
+        sender: { name: 'GyanLok Admin', email: process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || 'mudgalharsh284@gmail.com' },
         to: [{ email: email }],
         subject: '🔐 GyanLok Admin Login OTP',
         htmlContent: `
