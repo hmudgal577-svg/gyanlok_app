@@ -9,7 +9,30 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="admin-style.css" />
-</head>
+    <style>
+      .auth-back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: #3A7BD5;
+        background: rgba(58,123,213,0.08);
+        border: 1px solid rgba(58,123,213,0.2);
+        border-radius: 10px;
+        padding: 6px 14px;
+        text-decoration: none;
+        margin-bottom: 1.25rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .auth-back-btn:hover {
+        background: #3A7BD5;
+        color: #ffffff;
+        transform: translateX(-3px);
+      }
+    </style>
+  </head>
 <body>
 
   <!-- ════════════════════════════════════════
@@ -17,6 +40,7 @@
        ════════════════════════════════════════ -->
   <div id="login-container" class="login-wrapper">
     <div class="login-card">
+      <a href="javascript:void(0)" class="auth-back-btn" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='/';}">&larr; Back / वापस जाएं</a>
       <div class="login-header">
         <span class="logo-icon">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -58,6 +82,7 @@
           <div id="otp-verify-error" class="error-box" hidden></div>
           <div id="otp-dev-notice" hidden style="background:#FFF3CD;border:1px solid #FFECB5;color:#856404;padding:10px 14px;border-radius:8px;font-size:0.82rem;margin-bottom:10px;font-family:monospace;"></div>
           <button type="submit" class="btn btn-primary btn-block" id="verify-otp-btn">Verify OTP &amp; Login</button>
+          <button type="button" class="auth-back-btn" style="margin-top:12px;margin-bottom:0;width:100%;justify-content:center;" onclick="document.getElementById('step-otp').hidden=true;document.getElementById('step-email').hidden=false;">&larr; Change Email / Re-enter Email</button>
         </form>
         <button id="resend-otp-btn" class="btn-link" style="display:block;text-align:center;margin-top:12px;font-size:0.83rem;color:#3A7BD5;background:none;border:none;cursor:pointer;">
           ↩ Resend OTP / Change Email
