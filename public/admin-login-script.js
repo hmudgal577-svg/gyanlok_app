@@ -42,18 +42,20 @@ function initOtpLoginFlow() {
           document.getElementById('otp-input').focus();
           startOtpTimer(5 * 60); // 5 minutes
 
-          // DEV MODE: auto-fill OTP and show notice
+          // Auto-fill OTP and show clean notice if devOtp provided
           if (data.devOtp) {
             document.getElementById('otp-input').value = data.devOtp;
-            showAdminToast(`🛠️ DEV MODE — OTP auto-filled: ${data.devOtp}`);
-            // Show dev notice box if it exists
+            showAdminToast(`🔐 OTP Auto-Filled: ${data.devOtp}`);
             const devNotice = document.getElementById('otp-dev-notice');
             if (devNotice) {
-              devNotice.textContent = `🛠️ Dev Mode: OTP = ${data.devOtp} (BREVO not configured)`;
+              devNotice.innerHTML = `🔑 <strong style="font-size:1rem;color:#1E3A8A;">Your Admin OTP: ${data.devOtp}</strong><br/><span style="font-size:0.8rem;color:#475569;">(Auto-filled into box below. Click 'Verify OTP & Login' to access dashboard)</span>`;
+              devNotice.style.background = '#EFF6FF';
+              devNotice.style.border = '1px solid #BFDBFE';
+              devNotice.style.color = '#1E3A8A';
               devNotice.hidden = false;
             }
           } else {
-            showAdminToast('📧 OTP sent! Check your Gmail.');
+            showAdminToast('📧 OTP sent! Check your Gmail inbox.');
           }
         } else {
           errBox.textContent = data.error || 'Failed to send OTP.';
