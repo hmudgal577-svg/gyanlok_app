@@ -38,20 +38,20 @@ let BOARDS_DATA = {
               color: '#3A7BD5',
               file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf',
               chapters: [
-                { num: 1,  title: 'कबीर: साखी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
-                { num: 2,  title: 'मीरा: पद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
-                { num: 3,  title: 'मैथिलीशरण गुप्त: मनुष्यता', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
-                { num: 4,  title: 'सुमित्रानंदन पंत: पर्वत प्रदेश में पावस', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
-                { num: 5,  title: 'वीरेन डंगवाल: तोप', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
-                { num: 6,  title: 'कैफ़ी आज़मी: कर चले हम फ़िदा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
-                { num: 7,  title: 'रवींद्रनाथ ठाकुर: आत्मत्राण', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
-                { num: 8,  title: 'प्रेमचंद: बड़े भाई साहब', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
-                { num: 9,  title: 'सीताराम सेकसरिया: डायरी का एक पन्ना', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
-                { num: 10, title: 'लीलाधर मंडलोई: तताँरा-वामीरो कथा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
-                { num: 11, title: 'प्रहलाद अग्रवाल: तीसरी कसम के शिल्पकार शैलेंद्र', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
-                { num: 12, title: 'निदा फ़ाज़ली: अब कहाँ दूसरे के दुख से दुखी होने वाले', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
-                { num: 13, title: 'रवींद्र केलेकर: पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
-                { num: 14, title: 'हबीब तनवीर: कारतूस (एकांकी)', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
+                { num: 1,  title: 'साखी - कबीर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
+                { num: 2,  title: 'पद - मीरा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
+                { num: 3,  title: 'मनुष्यता - मैथिलीशरण गुप्त', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
+                { num: 4,  title: 'पर्वत प्रदेश में पावस - सुमित्रानंदन पंत', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
+                { num: 5,  title: 'तोप - वीरेन डंगवाल', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
+                { num: 6,  title: 'कर चले हम फ़िदा - कैफ़ी आज़मी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
+                { num: 7,  title: 'आत्मत्राण - रवींद्रनाथ ठाकुर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
+                { num: 8,  title: 'बड़े भाई साहब - प्रेमचंद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
+                { num: 9,  title: 'डायरी का एक पन्ना - सीताराम सेकसरिया', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
+                { num: 10, title: 'तताँरा-वामीरो कथा - लीलाधर मंडलोई', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
+                { num: 11, title: 'तीसरी कसम के शिल्पकार शैलेंद्र - प्रहलाद अग्रवाल', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
+                { num: 12, title: 'अब कहाँ दूसरे के दुख से दुखी होने वाले - निदा फ़ाज़ली', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
+                { num: 13, title: 'पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन) - रवींद्र केलेकर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
+                { num: 14, title: 'कारतूस (एकांकी) - हबीब तनवीर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
               ]
             },
             {
@@ -60,9 +60,9 @@ let BOARDS_DATA = {
               color: '#2BA899',
               file_url: '/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf',
               chapters: [
-                { num: 1, title: 'मिथिलेश्वर: हरिहर काका', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
-                { num: 2, title: 'गुरदयाल सिंह: सपनों के-से दिन', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
-                { num: 3, title: 'राही मासूम रज़ा: टोपी शुक्ला', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
+                { num: 1, title: 'हरिहर काका - मिथिलेश्वर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
+                { num: 2, title: 'सपनों के-से दिन - गुरदयाल सिंह', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
+                { num: 3, title: 'टोपी शुक्ला - राही मासूम रज़ा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
               ]
             }
           ]
@@ -946,13 +946,13 @@ function renderChapter(book, ch) {
   var safeTitle= ch.title.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
-  var opts = [
-    { icon:'\uD83D\uDCDD', label:'\u092A\u093E\u0920 \u0938\u093E\u0930\u093E\u0902\u0936', sub:'Summary',          cat:'summary',   color:'#2BA899' },
-    { icon:'\uD83D\uDCC4', label:'\u092A\u093E\u0920 PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
-    { icon:'\u2753',       label:'\u0928\u094B\u091F\u094D\u0938',     sub:'Notes',            cat:'notes',     color:'#E05555' },
-    { icon:'\uD83D\uDCD6', label:'\u092E\u0941\u0939\u093E\u0935\u0930\u0947',   sub:'Muhavre',          cat:'muhavre',   color:'#9B59B6' },
-    { icon:'\uD83D\uDD50', label:'PYQ',             sub:'\u092A\u093F\u091B\u0932\u0947 \u0935\u0930\u094D\u0937 \u092A\u094D\u0930\u0936\u094D\u0928', cat:'pyq',       color:'#E8900A' },
-    { icon:'\u2B50',       label:'\u0905\u092D\u094D\u092F\u093E\u0938 \u092A\u094D\u0930\u0936\u094D\u0928', sub:'Extra Practice',   cat:'additional',color:'#27AE60' },
+    var opts = [
+    { icon:'📝', label:'पाठ सारांश', sub:'Summary',          cat:'summary',   color:'#2BA899' },
+    { icon:'📄', label:'पाठ PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
+    { icon:'❓', label:'नोट्स',     sub:'Notes',            cat:'notes',     color:'#E05555' },
+    { icon:'📖', label:'मुहावरे एवं शब्द-अर्थ', sub:'Word Meanings', cat:'muhavre', color:'#9B59B6' },
+    { icon:'🎯', label:'CBQ',             sub:'Competency Based Qs', cat:'competency', color:'#E8900A' },
+    { icon:'⭐', label:'अतिरिक्त प्रश्न', sub:'Additional Questions', cat:'additional', color:'#27AE60' },
   ];
 
   var linksHtml = opts.map(function(o) {
@@ -1047,8 +1047,8 @@ async function openRightContent(bookName, chNum, chTitle, category) {
     { key: 'summary',    icon: '📝', label: 'Summary' },
     { key: 'pdf',        icon: '📄', label: 'PDF' },
     { key: 'notes',      icon: '❓', label: 'Notes' },
-    { key: 'competency', icon: '🎯', label: 'Competency Qs' },
-    { key: 'additional', icon: '⭐', label: 'Additional Qs' },
+    { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
+    { key: 'additional', icon: '⭐', label: 'अतिरिक्त प्रश्न (Additional Qs)' },
     { key: 'muhavre',    icon: '📖', label: 'Muhavre & Word Meanings' },
   ];
 
