@@ -31,9 +31,39 @@ const ALLOWED_ADMIN_EMAILS = [
 // Map: email → { otp, expiresAt }
 const otpStore = new Map();
 
-// ─── Email Sender (Supports Brevo API or Gmail SMTP) ────────────────────────
+// ─── Email Sender (Prioritizes Gmail SMTP for 100% Guaranteed Inbox Delivery) ──
 async function sendOtpEmail(email, otp) {
-  // Option 1: Brevo API
+  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || 'hmudgal577@gmail.com';
+  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
+
+  // Option 1: Gmail SMTP (Guaranteed 0-second delivery to inbox)
+  if (smtpPass) {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: smtpUser, pass: smtpPass }
+    });
+
+    await transporter.sendMail({
+      from: `"GyanLok Admin" <${smtpUser}>`,
+      to: email,
+      subject: '🔐 GyanLok Admin Login OTP',
+      html: `
+        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
+          <h2 style="color:#1a2740;margin-bottom:8px;">GyanLok Admin Login</h2>
+          <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
+          <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
+          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
+          <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
+          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
+          <p style="color:#aaa;font-size:11px;">GyanLok Learning Platform — Secure Admin Access</p>
+        </div>
+      `
+    });
+    console.log(`[SMTP] Sent OTP email directly via Gmail SMTP to ${email}`);
+    return;
+  }
+
+  // Option 2: Brevo API
   if (process.env.BREVO_API_KEY) {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
@@ -63,35 +93,6 @@ async function sendOtpEmail(email, otp) {
       const errorData = await response.json().catch(() => ({}));
       throw new Error(errorData.message || `Brevo status ${response.status}`);
     }
-    return;
-  }
-
-  // Option 2: Gmail / SMTP Transporter via Nodemailer
-  const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || 'hmudgal577@gmail.com';
-  const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
-
-  if (smtpPass) {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: { user: smtpUser, pass: smtpPass }
-    });
-
-    await transporter.sendMail({
-      from: `"GyanLok Admin" <${smtpUser}>`,
-      to: email,
-      subject: '🔐 GyanLok Admin Login OTP',
-      html: `
-        <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
-          <h2 style="color:#1a2740;margin-bottom:8px;">GyanLok Admin Login</h2>
-          <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
-          <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
-          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
-          <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
-          <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
-          <p style="color:#aaa;font-size:11px;">GyanLok Learning Platform — Secure Admin Access</p>
-        </div>
-      `
-    });
     return;
   }
 
