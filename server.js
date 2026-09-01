@@ -308,21 +308,6 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
   otpStore.set(email.toLowerCase().trim(), { otp, expiresAt });
 
-  // LOCAL DEV FALLBACK: if email provider not configured, log OTP & return devOtp
-  if (!process.env.BREVO_API_KEY && !process.env.SMTP_PASS && !process.env.GMAIL_APP_PASSWORD) {
-    console.log(`\n╔══════════════════════════════════════╗`);
-    console.log(`║  🔐 ADMIN OTP (DEV MODE)             ║`);
-    console.log(`║  Email : ${email.padEnd(28)}║`);
-    console.log(`║  OTP   : ${otp.padEnd(28)}║`);
-    console.log(`║  (Valid for 5 minutes)               ║`);
-    console.log(`╚══════════════════════════════════════╝\n`);
-    return res.json({
-      success: true,
-      message: `[DEV MODE] OTP: ${otp} — Auto-filled on screen. (Email key not set on Vercel)`,
-      devOtp: otp,  // Returned in dev mode so UI can show & auto-fill
-    });
-  }
-
   // Send OTP email via Brevo or Gmail SMTP
   try {
     await sendOtpEmail(email.toLowerCase().trim(), otp);
@@ -330,12 +315,7 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
     res.json({ success: true, message: `OTP sent to ${email}. Valid for 5 minutes.` });
   } catch (err) {
     console.error('[OTP] Send failed:', err.message);
-    // If Brevo IP restriction or provider error occurs, provide graceful fallback with devOtp so admin is never locked out
-    return res.json({
-      success: true,
-      message: `[NOTICE] Brevo IP Security: ${err.message}. Showing OTP on screen as fallback.`,
-      devOtp: otp,
-    });
+    res.status(500).json({ error: `Email delivery failed: ${err.message}` });
   }
 });
 
