@@ -3267,16 +3267,31 @@ html { scroll-behavior: smooth; }
 }
 
 .docx-exact-container {
-  font-family: 'Noto Sans Devanagari', 'Mangal', 'Plus Jakarta Sans', sans-serif !important;
-  font-style: normal !important;
+  font-family: 'Noto Sans Devanagari', 'Mangal', 'Plus Jakarta Sans', sans-serif;
+  font-style: normal;
   color: #1E293B;
   background: #ffffff;
   padding: 2.25rem 2rem;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
+.docx-exact-container p {
+  border: none !important;
+  background: transparent !important;
+}
+.docx-exact-container table {
+  display: table !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  margin: 1.25rem 0 !important;
+}
+.docx-exact-container td {
+  border: 1px solid #CBD5E1 !important;
+  padding: 10px 14px !important;
+}
 .docx-exact-container * {
-  font-style: normal;
+  box-sizing: border-box;
 }
 .docx-exact-container i, 
 .docx-exact-container em {
