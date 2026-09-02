@@ -947,12 +947,12 @@ function renderChapter(book, ch) {
   var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
     var opts = [
-    { icon:'📜', label:'पाठ सारांश', sub:'Summary',          cat:'summary',   color:'#2BA899' },
-    { icon:'📄', label:'पाठ PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
-    { icon:'â“', label:'नोट्स',     sub:'Notes',            cat:'notes',     color:'#E05555' },
-    { icon:'📖', label:'मुहावरे एवं शब्द-अर्थ', sub:'Word Meanings', cat:'muhavre', color:'#9B59B6' },
-    { icon:'🎯', label:'CBQ',             sub:'Competency Based Qs', cat:'competency', color:'#E8900A' },
-    { icon:'⭐', label:'अतिरिक्त प्रश्न', sub:'Additional Questions', cat:'additional', color:'#27AE60' },
+    { icon:'📜', label:'Summary',                sub:'Chapter Summary',       cat:'summary',    color:'#2BA899' },
+    { icon:'📄', label:'PDF',                    sub:'Chapter PDF',           cat:'pdf',        color:'#3A7BD5' },
+    { icon:'📝', label:'Notes',                  sub:'Revision Notes',        cat:'notes',      color:'#E05555' },
+    { icon:'📖', label:'Word Meanings & Muhavre', sub:'Vocabulary & Idioms',   cat:'muhavre',    color:'#9B59B6' },
+    { icon:'🎯', label:'CBQ',                    sub:'Competency Based Qs',   cat:'competency', color:'#E8900A' },
+    { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',    cat:'additional', color:'#27AE60' },
   ];
 
   var linksHtml = opts.map(function(o) {
@@ -1046,10 +1046,10 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   const catTabs = [
     { key: 'summary',    icon: '📜', label: 'Summary' },
     { key: 'pdf',        icon: '📄', label: 'PDF' },
-    { key: 'notes',      icon: 'â“', label: 'Notes' },
+    { key: 'notes',      icon: '📝', label: 'Notes' },
     { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
-    { key: 'additional', icon: '⭐', label: 'अतिरिक्त प्रश्न (Additional Qs)' },
-    { key: 'muhavre',    icon: '📖', label: 'Muhavre & Word Meanings' },
+    { key: 'additional', icon: '⭐', label: 'Additional Questions' },
+    { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavre' },
   ];
 
   const tabsHtml = catTabs.map(t => {
@@ -1209,22 +1209,22 @@ function _OLD_renderChapter_unused(book, ch) {
   const introHi = introData ? introData.hi : '';
   const introEn = introData ? introData.en : '';
   const quickLinks = [
-    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: पाठ PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
-    { label: 'पाठ सारांश (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: '📜' },
-    { label: 'प्रश्न-उत्तर (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')`, icon: 'â“' },
-    { label: 'मुहावरे / शब्द-अर्थ', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
-    { label: 'पिछले वर्ष के प्रश्न (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')`, icon: '✨•' },
-    { label: 'अतिरिक्त अभ्यास प्रश्न', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: '⭐' },
+    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: Chapter PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
+    { label: 'Summary', action: `openSummary('${book.name.replace(/'/g, "\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\'")}')`, icon: '📜' },
+    { label: 'Notes & Q/A', action: `openDocViewer('${book.name} Ch.${ch.num}: Notes')`, icon: '📝' },
+    { label: 'Word Meanings & Muhavre', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
+    { label: 'CBQ (Competency Based Qs)', action: `openDocViewer('${book.name} Ch.${ch.num}: CBQ')`, icon: '🎯' },
+    { label: 'Additional Questions', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: '⭐' },
   ];
 
   // Right column: sidebar resource buttons
   const sidebarOptions = [
-    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'पाठ का सार',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
-    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'प्रश्न-उत्तर',        action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')` },
-    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'शब्द अर्थ',          action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')` },
-    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'पिछले वर्ष प्रश्न',   action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')` },
-    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'अभ्यास प्रश्न',      action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')` },
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'पाठ डाउनलोड',       action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')` },
+    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'Chapter Summary',    action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
+    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Notes',            sublabel: 'Revision Notes',     action: `openDocViewer('${book.name} Ch.${ch.num}: Notes')` },
+    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'Vocabulary & Idioms', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')` },
+    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'CBQ',              sublabel: 'Competency Based Qs', action: `openDocViewer('${book.name} Ch.${ch.num}: CBQ')` },
+    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Additional Qs',    sublabel: 'Practice Questions', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'Full Chapter PDF',   action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')` },
   ];
 
   return `
