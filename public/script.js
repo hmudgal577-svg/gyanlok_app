@@ -1028,6 +1028,10 @@ const CHAPTER_KEY_MAP = [
   { keys: ['girgit','गिरगिट'],                         code: 'girgit'     },
   { keys: ['harihar','हरिहर'],                               code: 'harihar'    },
   { keys: ['sapno','sapne','सपनों'],                          code: 'sapno'      },
+  { keys: ['bade ghar','बड़े घर'],                            code: 'badeghar'   },
+  { keys: ['bheed','भीड़','भीड़'],                             code: 'bheed'      },
+  { keys: ['do kalakar','दो कलाकार'],                         code: 'dokalakar'  },
+  { keys: ['sukhi','सूखी'],                                   code: 'sukhidaali' },
 ];
 
 function getChapterContentKey(bookName, chNum, chTitle) {
@@ -1179,7 +1183,13 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   // Fetch HTML Content
   const key = getChapterContentKey(bookName, chNum, chTitle);
   const store = await fetchChapterHtmlContent();
-  const htmlContent = (store && store[key] && store[key][safeCat]) ? store[key][safeCat] : '';
+  let htmlContent = '';
+  if (store && store[key]) {
+    htmlContent = store[key][safeCat] 
+      || (safeCat === 'competency' ? store[key]['pyq'] : '') 
+      || (safeCat === 'pyq' ? store[key]['competency'] : '') 
+      || '';
+  }
 
   if (!htmlContent) {
     docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">🚧</div><h3>जल्द आएगा!</h3><p>इस section का content तैयार किया जा रहा है।</p></div>';
