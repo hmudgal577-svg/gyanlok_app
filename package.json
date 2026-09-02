@@ -1,4 +1,4 @@
-﻿{
+{
   "name": "ekshala-backend",
   "version": "1.0.0",
   "description": "Production-grade secure backend for EkShala learning platform",
@@ -27,4 +27,3 @@
     "node": ">=18.0.0"
   }
 }
-

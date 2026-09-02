@@ -1,4 +1,4 @@
-﻿/**
+/**
  * EkShala: script.js (v2)
  *
  * Sections:
