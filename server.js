@@ -4,7 +4,7 @@ if (dns.setDefaultResultOrder) {
 }
 
 /**
- * EkShala Backend â€” server.js
+ * EkShala Backend — server.js
  * Stack: Express + Supabase (PostgreSQL) + Cloudinary (file storage)
  * Fallback: JSON file storage when DB not available
  */
@@ -23,15 +23,15 @@ const nodemailer   = require('nodemailer');
 
 require('dotenv').config();
 
-// â”€â”€â”€ Allowed admin emails & OTP store â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Allowed admin emails & OTP store ──────────────────────────────────────
 const ALLOWED_ADMIN_EMAILS = [
   'hmudgal577@gmail.com',
   'ektaverma09.work@gmail.com',
 ];
-// Map: email â†’ { otp, expiresAt }
+// Map: email → { otp, expiresAt }
 const otpStore = new Map();
 
-// â”€â”€â”€ Email Sender (Prioritizes Gmail SMTP for 100% Guaranteed Inbox Delivery) â”€â”€
+// ─── Email Sender (Prioritizes Gmail SMTP for 100% Guaranteed Inbox Delivery) ──
 async function sendOtpEmail(email, otp) {
   const smtpUser = process.env.SMTP_USER || process.env.GMAIL_USER || 'hmudgal577@gmail.com';
   const smtpPass = process.env.SMTP_PASS || process.env.GMAIL_APP_PASSWORD;
@@ -46,16 +46,16 @@ async function sendOtpEmail(email, otp) {
     await transporter.sendMail({
       from: `"EkShala Admin" <${smtpUser}>`,
       to: email,
-      subject: 'ðŸ” EkShala Admin Login OTP',
+      subject: '🔍 EkShala Admin Login OTP',
       html: `
         <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
           <h2 style="color:#1a2740;margin-bottom:8px;">EkShala Admin Login</h2>
           <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
           <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
-          <p style="color:#888;margin-top:20px;font-size:13px;">â± This OTP is valid for <strong>5 minutes</strong> only.</p>
+          <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
           <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
           <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
-          <p style="color:#aaa;font-size:11px;">EkShala Learning Platform â€” Secure Admin Access</p>
+          <p style="color:#aaa;font-size:11px;">EkShala Learning Platform — Secure Admin Access</p>
         </div>
       `
     });
@@ -75,16 +75,16 @@ async function sendOtpEmail(email, otp) {
       body: JSON.stringify({
         sender: { name: 'EkShala Admin', email: process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || 'mudgalharsh284@gmail.com' },
         to: [{ email: email }],
-        subject: 'ðŸ” EkShala Admin Login OTP',
+        subject: '🔍 EkShala Admin Login OTP',
         htmlContent: `
           <div style="font-family:Arial,sans-serif;max-width:480px;margin:0 auto;padding:32px;background:#f8fafc;border-radius:12px;">
             <h2 style="color:#1a2740;margin-bottom:8px;">EkShala Admin Login</h2>
             <p style="color:#555;margin-bottom:24px;">Your One-Time Password (OTP) for admin login:</p>
             <div style="background:#1a2740;color:#fff;font-size:36px;font-weight:bold;letter-spacing:12px;text-align:center;padding:24px;border-radius:8px;">${otp}</div>
-            <p style="color:#888;margin-top:20px;font-size:13px;">â± This OTP is valid for <strong>5 minutes</strong> only.</p>
+            <p style="color:#888;margin-top:20px;font-size:13px;">⏱ This OTP is valid for <strong>5 minutes</strong> only.</p>
             <p style="color:#888;font-size:13px;">If you did not request this, please ignore this email.</p>
             <hr style="border:none;border-top:1px solid #e2e8f0;margin:20px 0;">
-            <p style="color:#aaa;font-size:11px;">EkShala Learning Platform â€” Secure Admin Access</p>
+            <p style="color:#aaa;font-size:11px;">EkShala Learning Platform — Secure Admin Access</p>
           </div>
         `
       })
@@ -99,7 +99,7 @@ async function sendOtpEmail(email, otp) {
   throw new Error('No email provider configured. Please set BREVO_API_KEY or SMTP_PASS.');
 }
 
-// â”€â”€â”€ Cloudinary setup (optional â€” falls back to local disk) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Cloudinary setup (optional — falls back to local disk) ─────────────────
 let cloudinaryStorage = null;
 let usingCloudinary   = false;
 try {
@@ -121,22 +121,22 @@ try {
       }),
     });
     usingCloudinary = true;
-    console.log('[Storage] Cloudinary connected âœ“');
+    console.log('[Storage] Cloudinary connected ✓');
   } else {
-    console.log('[Storage] Cloudinary not configured â†’ using local disk uploads/');
+    console.log('[Storage] Cloudinary not configured → using local disk uploads/');
   }
 } catch (e) {
-  console.log('[Storage] Cloudinary module error â†’ using local disk uploads/', e.message);
+  console.log('[Storage] Cloudinary module error → using local disk uploads/', e.message);
 }
 
-// â”€â”€â”€ DB Init + Admin Sync (Non-blocking for Vercel Serverless) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── DB Init + Admin Sync (Non-blocking for Vercel Serverless) ─────────────
 let db = null;
 let usingDb = false;
 
 // Async init runs in background without blocking server startup or HTTP requests
 setTimeout(async () => {
   if (!process.env.DATABASE_URL) {
-    console.log('[DB] DATABASE_URL not set â†’ using JSON file storage');
+    console.log('[DB] DATABASE_URL not set → using JSON file storage');
     return;
   }
   try {
@@ -144,7 +144,7 @@ setTimeout(async () => {
     db = require('./db');
     await db.query('SELECT 1');
     usingDb = true;
-    console.log('[DB] PostgreSQL (Supabase) connected âœ“');
+    console.log('[DB] PostgreSQL (Supabase) connected ✓');
 
     const adminEmail    = process.env.ADMIN_EMAIL    || 'ektaverma09.work@gmail.com';
     const adminPassword = process.env.ADMIN_PASSWORD || '99722 47410';
@@ -161,7 +161,7 @@ setTimeout(async () => {
   }
 }, 10);
 
-// â”€â”€â”€ App setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── App setup ──────────────────────────────────────────────────────────────
 const app        = express();
 app.set('trust proxy', 1); // trust first proxy behind Render / Vercel CDN
 const PORT       = process.env.PORT || 3000;
@@ -189,7 +189,7 @@ function writeJson(filename, data) {
 }
 
 
-// â”€â”€â”€ Security Middleware â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Security Middleware ────────────────────────────────────────────────────
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -226,11 +226,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// â”€â”€â”€ Static files â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Static files ───────────────────────────────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(UPLOADS_DIR));
 
-// â”€â”€â”€ Rate Limiters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Rate Limiters ──────────────────────────────────────────────────────────
 const generalLimiter = process.env.VERCEL ? (req, res, next) => next() : rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 500,
@@ -246,7 +246,7 @@ const loginLimiter = process.env.VERCEL ? (req, res, next) => next() : rateLimit
   message: { error: 'Too many login attempts. Try again after 15 minutes.' },
 });
 
-// â”€â”€â”€ Multer (File Upload â€” Cloudinary or local disk) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Multer (File Upload — Cloudinary or local disk) ───────────────────────
 const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
   filename:    (req, file, cb) => {
@@ -274,7 +274,7 @@ function getFileUrl(req) {
   return `/uploads/${req.file.filename}`;      // Local disk gives filename
 }
 
-// â”€â”€â”€ JWT Middleware â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── JWT Middleware ──────────────────────────────────────────────────────────
 function auth(req, res, next) {
   const token = req.cookies?.token;
   if (!token) return res.status(401).json({ error: 'Unauthorized. Please log in.' });
@@ -286,7 +286,7 @@ function auth(req, res, next) {
   }
 }
 
-// â”€â”€â”€ In-memory boards cache â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── In-memory boards cache ──────────────────────────────────────────────────
 let boardsDataCache = null;
 function invalidateCache() { boardsDataCache = null; }
 
@@ -294,7 +294,7 @@ function invalidateCache() { boardsDataCache = null; }
 // AUTHENTICATION ENDPOINTS
 // ============================================================
 
-// POST /api/admin/send-otp  â€” Step 1: send OTP to Gmail
+// POST /api/admin/send-otp  — Step 1: send OTP to Gmail
 app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
@@ -321,7 +321,7 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
 });
 
 
-// POST /api/admin/verify-otp  â€” Step 2: verify OTP and issue JWT
+// POST /api/admin/verify-otp  — Step 2: verify OTP and issue JWT
 app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
   const { email, otp } = req.body;
   if (!email || !otp) return res.status(400).json({ error: 'Email and OTP are required.' });
@@ -341,7 +341,7 @@ app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
     return res.status(401).json({ error: 'Incorrect OTP. Please try again.' });
   }
 
-  // OTP valid â€” delete it (one-time use)
+  // OTP valid — delete it (one-time use)
   otpStore.delete(key);
 
   // Issue JWT
@@ -355,7 +355,7 @@ app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
   res.json({ success: true, user: { email: key, role: 'admin' } });
 });
 
-// POST /api/admin/login â€” Password fallback for Admin
+// POST /api/admin/login — Password fallback for Admin
 app.post('/api/admin/login', loginLimiter, async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
@@ -393,9 +393,9 @@ app.post('/api/admin/logout', (req, res) => {
 // GET /api/admin/me
 app.get('/api/admin/me', auth, (req, res) => res.json({ user: req.user }));
 
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ────────────────────────────────────────────────────────────
 // Student Portal Endpoints
-// â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ────────────────────────────────────────────────────────────
 
 // POST /api/student/register
 app.post('/api/student/register', async (req, res) => {
@@ -506,10 +506,10 @@ app.get('/api/student/submissions', auth, async (req, res) => {
 
 
 // ============================================================
-// PUBLIC APIs â€” Educational Content
+// PUBLIC APIs — Educational Content
 // ============================================================
 
-// GET /api/resources â†’ Returns BOARDS_DATA JSON (same shape the frontend expects)
+// GET /api/resources → Returns BOARDS_DATA JSON (same shape the frontend expects)
 app.get('/api/resources', async (req, res) => {
   if (boardsDataCache) return res.json(boardsDataCache);
 
@@ -569,11 +569,11 @@ app.get('/api/resources', async (req, res) => {
     }
   }
 
-  // JSON file fallback â€” return empty object so frontend uses its own hardcoded data
+  // JSON file fallback — return empty object so frontend uses its own hardcoded data
   return res.json({});
 });
 
-// GET /api/test-sheets â†’ Returns TEST_DATA JSON
+// GET /api/test-sheets → Returns TEST_DATA JSON
 app.get('/api/test-sheets', async (req, res) => {
   if (usingDb) {
     try {
@@ -665,7 +665,7 @@ app.post('/api/revision-notify', async (req, res) => {
   }
 });
 
-// POST /api/student-submit â€” Upload answer sheet
+// POST /api/student-submit — Upload answer sheet
 app.post('/api/student-submit', upload.single('answer_file'), async (req, res) => {
   const { resource_type, resource_id, resource_title, student_name } = req.body;
 
@@ -834,7 +834,7 @@ app.post('/api/admin/upload-chapter-resource', auth, upload.single('file'), asyn
   }
 });
 
-// GET /api/admin/test-sheets â€” list all for admin table
+// GET /api/admin/test-sheets — list all for admin table
 app.get('/api/admin/test-sheets', auth, async (req, res) => {
   try {
     if (usingDb) {
@@ -875,7 +875,7 @@ app.patch('/api/admin/mentor-request/:id/status', auth, async (req, res) => {
   } catch (err) { console.error(err); res.status(500).json({ error: 'Failed.' }); }
 });
 
-// â”€â”€â”€ GET /api/admin/chapter-content â€” load content for editing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── GET /api/admin/chapter-content — load content for editing ────────────────
 app.get('/api/admin/chapter-content', auth, (req, res) => {
   try {
     const { key, category } = req.query;
@@ -894,7 +894,7 @@ app.get('/api/admin/chapter-content', auth, (req, res) => {
   }
 });
 
-// â”€â”€â”€ POST /api/admin/chapter-content â€” save/update content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── POST /api/admin/chapter-content — save/update content ───────────────────
 app.post('/api/admin/chapter-content', auth, (req, res) => {
   try {
     const { key, category, html } = req.body;
@@ -919,7 +919,7 @@ app.post('/api/admin/chapter-content', auth, (req, res) => {
   }
 });
 
-// â”€â”€â”€ Health check â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Health check ────────────────────────────────────────────────────────────
 app.get('/api/health', async (req, res) => {
   let dbStatus = 'not-configured';
   let dbError  = null;
@@ -945,7 +945,7 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// â”€â”€â”€ Catch-all: serve frontend â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Catch-all: serve frontend ──────────────────────────────────────────────
 app.get('*', (req, res) => {
   // Serve admin panel for /admin path
   if (req.path.startsWith('/admin')) {
@@ -954,18 +954,18 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// â”€â”€â”€ Start Server (local dev) / Export for Vercel â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Start Server (local dev) / Export for Vercel ───────────────────────────
 if (process.env.VERCEL) {
-  // Vercel serverless â€” just export the app
+  // Vercel serverless — just export the app
   module.exports = app;
 } else {
-  // Local development â€” start the HTTP server
+  // Local development — start the HTTP server
   app.listen(PORT, () => {
     console.log(`=========================================`);
     console.log(`EkShala Backend running at http://localhost:${PORT}`);
     console.log(`Environment:  ${process.env.NODE_ENV || 'development'}`);
-    console.log(`Database:     ${usingDb ? 'Supabase PostgreSQL âœ“' : 'JSON file storage'}`);
-    console.log(`File Storage: ${usingCloudinary ? 'Cloudinary âœ“' : 'Local disk (uploads/)'}`);
+    console.log(`Database:     ${usingDb ? 'Supabase PostgreSQL ✓' : 'JSON file storage'}`);
+    console.log(`File Storage: ${usingCloudinary ? 'Cloudinary ✓' : 'Local disk (uploads/)'}`);
     console.log(`=========================================`);
   });
   module.exports = app;

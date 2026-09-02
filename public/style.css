@@ -1,12 +1,12 @@
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   EkShala â€” style.css  (v2)
+/* ═══════════════════════════════════════════════════════
+   EkShala — style.css  (v2)
    Full redesign with School Boards, Test Sheets, PYQs,
    Board Guidance, Revision Classes, and Modals.
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+═══════════════════════════════════════════════════════ */
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    1. CSS CUSTOM PROPERTIES
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 :root {
   /* Brand */
   --accent:        #3A7BD5;
@@ -65,9 +65,9 @@
   --nav-h: 68px;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    2. RESET & BASE
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body { font-family: var(--font-body); color: var(--text-body); background: var(--bg); line-height: 1.7; -webkit-font-smoothing: antialiased; }
@@ -78,9 +78,9 @@ button { font-family: var(--font-body); cursor: pointer; border: none; backgroun
 input, textarea, select { font-family: var(--font-body); font-size: 1rem; }
 h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-height: 1.25; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    3. UTILITIES
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .container { width: 100%; max-width: var(--max-w); margin: 0 auto; padding: 0 var(--sp-md); }
 .section { padding: var(--sp-2xl) 0; }
 .bg-soft { background: var(--bg-soft); }
@@ -117,9 +117,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    4. NAVBAR
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
   height: var(--nav-h);
@@ -227,9 +227,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .hamburger.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .hamburger.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    5. HERO
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .hero {
   background: linear-gradient(135deg,#EBF3FD 0%,#F2F6FC 50%,#E8F8F6 100%);
   padding-top: calc(var(--nav-h) + var(--sp-xl));
@@ -266,9 +266,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .hero-wave { margin-top: -2px; line-height: 0; }
 .hero-wave svg { width: 100%; height: 60px; display: block; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    6. WHY EkShala
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .features-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: var(--sp-md); }
 .feature-card {
   background: var(--card-bg); border: 1px solid var(--border);
@@ -289,9 +289,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .feature-card h3 { font-size: 1.1rem; margin-bottom: .5rem; }
 .feature-card p { font-size: .9rem; color: var(--text-body); line-height: 1.6; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   7. BOARDS SECTION â€” Full-Width Premium
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─────────────────────────────────────────
+   7. BOARDS SECTION — Full-Width Premium
+───────────────────────────────────────── */
 
 .boards-section {
   background: var(--bg);
@@ -332,7 +332,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   margin: 0;
 }
 
-/* Board tabs CBSE/ICSE â€” pill style */
+/* Board tabs CBSE/ICSE — pill style */
 .board-tabs {
   display: flex;
   gap: .3rem;
@@ -362,7 +362,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   color: var(--accent);
 }
 
-/* â”€â”€â”€ Split layout: left panel + right content viewer â”€â”€â”€ */
+/* ─── Split layout: left panel + right content viewer ─── */
 .boards-split-layout {
   display: grid;
   grid-template-columns: 420px 1fr;
@@ -477,7 +477,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   line-height: 1.7;
 }
 
-/* Right panel â€” chapter info card */
+/* Right panel — chapter info card */
 .rp-chapter-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -575,7 +575,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   color: var(--text-muted);
 }
 
-/* Right panel â€” summary viewer (inline) */
+/* Right panel — summary viewer (inline) */
 .rp-summary-wrap {
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -612,15 +612,15 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   overflow-y: auto;
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   MOBILE â€” Premium slide drawer experience
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════════════════════
+   MOBILE — Premium slide drawer experience
+═══════════════════════════════════════════════════════════ */
 .mobile-only { display: none !important; }
 
 @media (max-width: 800px) {
   .mobile-only { display: inline-flex !important; }
 
-  /* â”€â”€ Slide layout â”€â”€ */
+  /* ── Slide layout ── */
   .boards-split-layout {
     display: flex !important;
     width: 200vw !important;
@@ -644,7 +644,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     transform: translateX(-100vw);
   }
 
-  /* â”€â”€ Left panel filter bar â”€â”€ */
+  /* ── Left panel filter bar ── */
   .boards-filter-bar {
     padding: .75rem 1rem;
     gap: .6rem;
@@ -674,12 +674,12 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     box-shadow: 0 2px 10px rgba(58,123,213,.25);
   }
 
-  /* â”€â”€ Board content panel (left chapter list) â”€â”€ */
+  /* ── Board content panel (left chapter list) ── */
   .board-content-panel {
     padding: .75rem 1rem 2rem;
   }
 
-  /* â”€â”€ Chapter items â€” touch friendly â”€â”€ */
+  /* ── Chapter items — touch friendly ── */
   .chapter-header {
     padding: .95rem 1rem !important;
     min-height: 52px;
@@ -698,7 +698,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     padding: .9rem 1rem !important;
   }
 
-  /* â”€â”€ Right panel â”€â”€ */
+  /* ── Right panel ── */
   .boards-right-panel {
     background: var(--bg-soft);
     padding: 1rem !important;
@@ -732,7 +732,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     font-size: .68rem !important;
   }
 
-  /* â”€â”€ Right panel summary & PDF viewer â”€â”€ */
+  /* ── Right panel summary & PDF viewer ── */
   .rp-summary-header {
     padding: .85rem 1rem !important;
     flex-wrap: wrap;
@@ -748,7 +748,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     height: 65vh !important;
   }
   
-  /* â”€â”€ Resource cards â”€â”€ */
+  /* ── Resource cards ── */
   .resource-row {
     grid-template-columns: 1fr !important;
   }
@@ -756,7 +756,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     padding: .8rem 1rem !important;
   }
 
-  /* â”€â”€ Summary content â”€â”€ */
+  /* ── Summary content ── */
   .summary-viewer-wrap {
     padding: .25rem 0 !important;
   }
@@ -773,26 +773,26 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
     font-size: .88rem !important;
   }
 
-  /* â”€â”€ Test sheets â”€â”€ */
+  /* ── Test sheets ── */
   .test-papers-grid { grid-template-columns: 1fr; }
 
-  /* â”€â”€ PYQs â”€â”€ */
+  /* ── PYQs ── */
   .pyq-grid { grid-template-columns: 1fr !important; }
   
-  /* â”€â”€ Boards detail empty â”€â”€ */
+  /* ── Boards detail empty ── */
   .boards-detail-empty {
     min-height: 250px !important;
     padding: 2rem 1rem;
   }
 
-  /* â”€â”€ Back button bigger on mobile â”€â”€ */
+  /* ── Back button bigger on mobile ── */
   .rp-summary-back {
     padding: .4rem .8rem !important;
     font-size: .84rem !important;
     min-height: 36px;
   }
   
-  /* â”€â”€ Default view â”€â”€ */
+  /* ── Default view ── */
   .rp-default-view {
     padding: .25rem 0;
   }
@@ -983,7 +983,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border-top: 1px solid var(--border);
 }
 
-/* Chapter resource links â€” legacy (keep for other subjects) */
+/* Chapter resource links — legacy (keep for other subjects) */
 .ch-resources { display: flex; flex-direction: column; gap: .4rem; margin-bottom: var(--sp-sm); }
 
 .ch-res-item {
@@ -1008,7 +1008,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .ch-res-item:hover .ch-res-action { background: var(--accent); color: white; }
 
-/* â”€â”€â”€ Two-Column Chapter Layout â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Two-Column Chapter Layout ─────────────────────────────── */
 .ch-two-col {
   display: grid;
   grid-template-columns: 1fr 280px;
@@ -1189,9 +1189,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .ws-btn.upload:hover { background: var(--teal); color: white; }
 .ws-btn svg { flex-shrink: 0; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    8. TEST SHEETS SECTION
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .test-tagline {
   font-size: 1.1rem; font-weight: 600;
   color: var(--accent); margin-top: -.5rem;
@@ -1312,9 +1312,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   padding: var(--sp-lg); color: var(--text-muted); font-size: .9rem;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    9. PYQs SECTION
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .coming-soon-grid {
   display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-md);
   margin-bottom: var(--sp-md);
@@ -1348,9 +1348,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .notify-link { color: var(--accent); font-weight: 600; transition: opacity var(--t); }
 .notify-link:hover { opacity: .75; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    10. BOARD GUIDANCE
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .guidance-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-md); margin-bottom: var(--sp-lg); }
 .guidance-card {
   background: var(--card-bg); border: 1px solid var(--border);
@@ -1376,9 +1376,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .guidance-cta { text-align: center; padding: var(--sp-sm); }
 .guidance-cta p { font-size: .95rem; display: flex; align-items: center; justify-content: center; gap: var(--sp-sm); flex-wrap: wrap; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    11. REVISION CLASSES
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .revision-card {
   background: var(--card-bg); border: 1.5px solid var(--border);
   border-radius: var(--r-xl); overflow: hidden;
@@ -1430,9 +1430,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   text-align: center; min-height: 1.2em;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    12. VEDIC MATHS
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .vedic-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: var(--sp-lg); max-width: 900px; margin: 0 auto; }
 .vedic-card {
   background: var(--card-bg); border: 1.5px solid var(--border);
@@ -1467,9 +1467,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .price-tag-old { font-size: 1rem; color: var(--text-muted); text-decoration: line-through; }
 .vedic-btn { width: 100%; justify-content: center; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    13. TESTIMONIALS
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .testimonials-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-md); }
 .testimonial-card {
   background: var(--card-bg); border: 1px solid var(--border);
@@ -1494,9 +1494,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .author-info strong { display: block; font-size: .9rem; color: var(--text-primary); }
 .author-info span { font-size: .78rem; color: var(--text-muted); }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    14. CONTACT
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-2xl); align-items: start; }
 .contact-info h2 { font-size: clamp(1.6rem,3vw,2.2rem); margin-bottom: var(--sp-sm); }
 .contact-info > p { color: var(--text-body); font-size: .97rem; margin-bottom: var(--sp-lg); line-height: 1.75; }
@@ -1550,9 +1550,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border-radius: var(--r-md); padding: .75rem 1rem;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    15. FOOTER
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .footer { background: var(--text-primary); color: rgba(255,255,255,.75); padding-top: var(--sp-2xl); }
 .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--sp-xl); padding-bottom: var(--sp-xl); }
 .footer-logo .logo-text { color: white; }
@@ -1580,9 +1580,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .footer-bottom { border-top: 1px solid rgba(255,255,255,.1); padding: var(--sp-md) 0; text-align: center; }
 .footer-bottom p { font-size: .82rem; color: rgba(255,255,255,.4); }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    16. SCROLL TO TOP
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .scroll-top {
   position: fixed; bottom: 2rem; right: 2rem;
   width: 44px; height: 44px; border-radius: 50%;
@@ -1597,9 +1597,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .scroll-top:hover { background: var(--accent-dark); transform: translateY(-3px); }
 .scroll-top svg { width: 100%; height: 100%; }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────
    17. MODALS
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────── */
 .modal-overlay {
   position: fixed; inset: 0; z-index: 2000;
   background: rgba(26,39,64,.55);
@@ -1718,9 +1718,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   padding: var(--sp-sm) var(--sp-lg) 0; min-height: 1em;
 }
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   18. RESPONSIVE â€” TABLET (â‰¤ 900px)
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─────────────────────────────────────────
+   18. RESPONSIVE — TABLET (≤ 900px)
+───────────────────────────────────────── */
 @media (max-width: 900px) {
   :root { --sp-xl: 2.5rem; --sp-2xl: 4rem; }
 
@@ -1741,7 +1741,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .nav-link::after { display: none; }
   .nav-link.nav-cta { margin: .5rem 0 0; text-align: center; padding: .75rem; }
 
-  /* School boards dropdown â€” inline on mobile */
+  /* School boards dropdown — inline on mobile */
   .nav-dropdown-wrapper { border-bottom: 1px solid var(--border); }
   .dropdown-trigger {
     width: 100%; padding: .85rem .5rem; font-size: 1rem;
@@ -1765,7 +1765,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   /* Features */
   .features-grid { grid-template-columns: repeat(2,1fr); }
 
-  /* Boards â€” new full-width layout */
+  /* Boards — new full-width layout */
   .boards-topbar-inner { padding: .7rem 1rem; }
   .boards-layout { grid-template-columns: 1fr; }
   .boards-sidebar { border-right: none; border-bottom: 1px solid var(--border); }
@@ -1813,9 +1813,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-   19. RESPONSIVE â€” MOBILE (â‰¤ 480px)
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─────────────────────────────────────────
+   19. RESPONSIVE — MOBILE (≤ 480px)
+───────────────────────────────────────── */
 @media (max-width: 480px) {
   :root { --sp-xl: 1.75rem; --sp-2xl: 3rem; }
 
@@ -1966,7 +1966,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .upload-file-selected { margin: 0 var(--sp-sm) var(--sp-sm); }
 }
 
-/* â”€â”€â”€ Premium Summary Viewer Styles â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── Premium Summary Viewer Styles ──────────────────────────────────────── */
 .summary-viewer-wrap {
   font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   color: var(--text-primary);
@@ -2041,7 +2041,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   gap: 0.5rem;
 }
 .summary-point-title::before {
-  content: "â€¢";
+  content: "•";
   color: var(--accent);
   font-size: 1.5rem;
   line-height: 1.1;
@@ -2067,9 +2067,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   100% { transform: rotate(360deg); }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════════════════════════
    EDUREV-STYLE DOCUMENT VIEWER
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+═══════════════════════════════════════════════════════════════ */
 .edurev-viewer {
   background: #fff;
   border: 1px solid var(--border);
@@ -2081,7 +2081,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   flex-direction: column;
 }
 
-/* â”€â”€ Toolbar (back + breadcrumb) â”€â”€ */
+/* ── Toolbar (back + breadcrumb) ── */
 .edurev-toolbar {
   display: flex;
   align-items: center;
@@ -2129,7 +2129,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   max-width: 260px;
 }
 
-/* â”€â”€ Tabs bar â”€â”€ */
+/* ── Tabs bar ── */
 .edurev-tabs-bar {
   display: flex;
   gap: 0;
@@ -2161,7 +2161,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   background: white;
 }
 
-/* â”€â”€ Document body â”€â”€ */
+/* ── Document body ── */
 .edurev-doc-body {
   flex: 1;
   padding: 0;
@@ -2170,7 +2170,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   background: #fff;
 }
 
-/* â”€â”€ Actual content area â”€â”€ */
+/* ── Actual content area ── */
 .edurev-doc-content {
   padding: 2rem 2.5rem;
   color: #1a2740;
@@ -2297,7 +2297,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   margin: 1.75rem 0;
 }
 
-/* â”€â”€ Loading state â”€â”€ */
+/* ── Loading state ── */
 .edurev-loading {
   display: flex;
   align-items: center;
@@ -2315,7 +2315,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   flex-shrink: 0;
 }
 
-/* â”€â”€ Empty state â”€â”€ */
+/* ── Empty state ── */
 .edurev-empty {
   text-align: center;
   padding: 3.5rem 2rem;
@@ -2324,7 +2324,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .edurev-empty h3 { font-size: 1.1rem; color: var(--text-primary); margin-bottom: .5rem; }
 .edurev-empty p  { font-size: .9rem; max-width: 280px; margin: 0 auto; line-height: 1.7; }
 
-/* â”€â”€ Mobile â”€â”€ */
+/* ── Mobile ── */
 @media (max-width: 800px) {
   .edurev-doc-content { padding: 1.25rem 1rem; font-size: .9rem; }
   .edurev-breadcrumb { font-size: .72rem; }
@@ -2338,7 +2338,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .edurev-doc-content td { padding: .5rem .65rem; }
 }
 
-/* â”€â”€ Admin dashboard form extras â”€â”€ */
+/* ── Admin dashboard form extras ── */
 .form-divider {
   border: none;
   border-top: 1.5px dashed var(--border);
@@ -2350,9 +2350,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .col-8 { flex: 2; }
 .col-4 { flex: 1; }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   PAGINATED READER â€” erp- (EduRev Page)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════════════════════════
+   PAGINATED READER — erp- (EduRev Page)
+═══════════════════════════════════════════════════════════════ */
 .erp-page-wrap {
   display: flex;
   flex-direction: column;
@@ -2487,9 +2487,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 
 
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+/* ═══════════════════════════════════════════════════════════════
    FULL-SCREEN DOCUMENT VIEWER (fs-)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+═══════════════════════════════════════════════════════════════ */
 
 /* Overlay covers entire viewport */
 .fs-overlay {
@@ -2666,7 +2666,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   transition: opacity .15s ease;
 }
 
-/* Document content â€” centered column */
+/* Document content — centered column */
 .fs-doc-content {
   max-width: 860px;
   margin: 0 auto;
@@ -2786,12 +2786,12 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .fs-doc-content th, .fs-doc-content td { padding: .55rem .75rem; }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   CONTENT FORMATTING â€” Consistent colors & typography
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT FORMATTING — Consistent colors & typography
    Applied inside .fs-doc-content (full-screen viewer)
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+═══════════════════════════════════════════════════════════════ */
 
-/* â”€â”€ Chapter title banner (first h2 on page) â”€â”€ */
+/* ── Chapter title banner (first h2 on page) ── */
 .fs-doc-content > h2:first-child,
 .fs-doc-content > h1:first-child {
   background: linear-gradient(135deg, #1A2740 0%, #2563EB 100%);
@@ -2806,7 +2806,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   box-shadow: 0 4px 18px rgba(37,99,235,.22);
 }
 
-/* â”€â”€ Section headings (h2 after first) â”€â”€ */
+/* ── Section headings (h2 after first) ── */
 .fs-doc-content h2 {
   background: linear-gradient(90deg, #EBF3FD 0%, #F6F9FF 100%);
   border-left: 5px solid #2563EB !important;
@@ -2817,7 +2817,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   margin: 2rem 0 1rem !important;
 }
 
-/* â”€â”€ Sub-section headings (h3) â”€â”€ */
+/* ── Sub-section headings (h3) ── */
 .fs-doc-content h3 {
   color: #1e40af !important;
   border-bottom: 2px dashed #BFDBFE;
@@ -2826,13 +2826,13 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   font-size: 1.05rem !important;
 }
 
-/* â”€â”€ h4 â”€â”€ */
+/* ── h4 ── */
 .fs-doc-content h4 {
   color: #1d4ed8 !important;
   margin: 1.2rem 0 .5rem !important;
 }
 
-/* â”€â”€ Paragraphs â”€â”€ */
+/* ── Paragraphs ── */
 .fs-doc-content p {
   color: #1e293b !important;
   line-height: 1.9;
@@ -2850,7 +2850,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .fs-doc-content p + p + p { border-left: none; font-style: normal; color: #1e293b !important; }
 
-/* â”€â”€ Lists â”€â”€ */
+/* ── Lists ── */
 .fs-doc-content ul { list-style: none !important; padding-left: 0 !important; }
 .fs-doc-content ul li {
   position: relative;
@@ -2865,7 +2865,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .fs-doc-content ul li:hover { background: #EBF3FD; border-color: #BFDBFE; }
 .fs-doc-content ul li::before {
-  content: "â–¸";
+  content: "▸";
   position: absolute; left: .75rem;
   color: #2563EB; font-size: 1rem; top: .45rem;
 }
@@ -2880,7 +2880,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .fs-doc-content ol li::marker { color: #2563EB; font-weight: 700; }
 
-/* â”€â”€ Tables â”€â”€ */
+/* ── Tables ── */
 .fs-doc-content table {
   border-radius: 10px !important;
   overflow: hidden !important;
@@ -2905,7 +2905,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 .fs-doc-content tr:nth-child(even) td { background: #EFF6FF !important; }
 .fs-doc-content tr:hover td { background: #DBEAFE !important; }
 
-/* â”€â”€ Question cards (PYQ section) â”€â”€ */
+/* ── Question cards (PYQ section) ── */
 .fs-doc-content .question-card {
   background: #fff;
   border: 1.5px solid #BFDBFE;
@@ -2943,7 +2943,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   letter-spacing: .04em;
 }
 
-/* â”€â”€ Muhavre / Idioms grid â”€â”€ */
+/* ── Muhavre / Idioms grid ── */
 .fs-doc-content .muhavre-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -2976,7 +2976,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border-left: 3px solid #F59E0B;
 }
 
-/* â”€â”€ Blockquote / highlighted info â”€â”€ */
+/* ── Blockquote / highlighted info ── */
 .fs-doc-content blockquote {
   background: linear-gradient(135deg, #EFF6FF 0%, #F0F9FF 100%) !important;
   border-left: 5px solid #2563EB !important;
@@ -2988,7 +2988,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   box-shadow: 0 2px 12px rgba(37,99,235,.08);
 }
 
-/* â”€â”€ Summary intro box â”€â”€ */
+/* ── Summary intro box ── */
 .fs-doc-content > p:first-of-type {
   background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%);
   border: 1.5px solid #86EFAC;
@@ -3002,7 +3002,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   line-height: 1.75;
 }
 
-/* â”€â”€ HR divider â”€â”€ */
+/* ── HR divider ── */
 .fs-doc-content hr {
   border: none !important;
   height: 2px;
@@ -3011,7 +3011,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border-radius: 100px;
 }
 
-/* â”€â”€ Inline code â”€â”€ */
+/* ── Inline code ── */
 .fs-doc-content code {
   background: #EFF6FF !important;
   color: #1d4ed8 !important;
@@ -3021,14 +3021,14 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border: 1px solid #BFDBFE;
 }
 
-/* â”€â”€ Strong/bold highlight â”€â”€ */
+/* ── Strong/bold highlight ── */
 .fs-doc-content strong {
   color: #1e3a8a !important;
   background: linear-gradient(135deg, transparent 0%, transparent 60%, rgba(219,234,254,.4) 100%);
   padding: 0 .1rem;
 }
 
-/* â”€â”€ Additional Q section numbers â”€â”€ */
+/* ── Additional Q section numbers ── */
 .fs-doc-content > p:has(+ p) {
   counter-increment: section;
 }
@@ -3040,9 +3040,9 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   .fs-doc-content .question-header { font-size: .88rem; }
 }
 
-/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-   CHAPTER ACCORDION DROPDOWN â€” link-style items
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
+/* ═══════════════════════════════════════════════════════════════
+   CHAPTER ACCORDION DROPDOWN — link-style items
+═══════════════════════════════════════════════════════════════ */
 
 /* Chapter toggle arrow rotation */
 .chapter-header .ch-toggle {
@@ -3121,7 +3121,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 
 
-/* â”€â”€â”€ ABOUT SECTION STYLES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* ─── ABOUT SECTION STYLES ─────────────────────────────────────────── */
 .about-section { background: var(--bg-alt); padding: 5rem 0; }
 .about-wrapper { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 3rem; align-items: center; }
 .about-lead { font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 1rem 0; line-height: 1.6; }
@@ -3149,9 +3149,9 @@ html { scroll-behavior: smooth; }
 
 
 
-/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+/* ─────────────────────────────────────────────────────────────────────────────
    DOCX RICH FORMATTED CONTENT STYLING (Preserves DOCX Layout, Colors & Typography)
-â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+───────────────────────────────────────────────────────────────────────────── */
 .docx-styled-content {
   font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 1rem;

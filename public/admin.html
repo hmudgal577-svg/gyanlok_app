@@ -35,12 +35,12 @@
   </head>
 <body>
 
-  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  <!-- ════════════════════════════════════════
        LOGIN SCREEN ONLY
-       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+       ════════════════════════════════════════ -->
   <div id="login-container" class="login-wrapper">
     <div class="login-card">
-      <a href="javascript:void(0)" class="auth-back-btn" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='/';}">&larr; Back / à¤µà¤¾à¤ªà¤¸ à¤œà¤¾à¤à¤‚</a>
+      <a href="javascript:void(0)" class="auth-back-btn" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='/';}">&larr; Back / वापस जाएं</a>
       <div class="login-header">
         <span class="logo-icon">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -76,16 +76,16 @@
         <form id="verify-otp-form" novalidate>
           <div class="form-group">
             <label for="otp-input">Enter 6-Digit OTP</label>
-            <input type="text" id="otp-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢" maxlength="6" inputmode="numeric" pattern="[0-9]*" required autocomplete="one-time-code" style="letter-spacing:0.3em;font-size:1.4rem;text-align:center;" />
+            <input type="text" id="otp-input" placeholder="••••••" maxlength="6" inputmode="numeric" pattern="[0-9]*" required autocomplete="one-time-code" style="letter-spacing:0.3em;font-size:1.4rem;text-align:center;" />
           </div>
-          <div id="otp-timer" style="text-align:center;font-size:0.82rem;color:#888;margin-bottom:12px;">â± OTP expires in <strong id="timer-count">5:00</strong></div>
+          <div id="otp-timer" style="text-align:center;font-size:0.82rem;color:#888;margin-bottom:12px;">⏱ OTP expires in <strong id="timer-count">5:00</strong></div>
           <div id="otp-verify-error" class="error-box" hidden></div>
           <div id="otp-dev-notice" hidden style="background:#FFF3CD;border:1px solid #FFECB5;color:#856404;padding:10px 14px;border-radius:8px;font-size:0.82rem;margin-bottom:10px;font-family:monospace;"></div>
           <button type="submit" class="btn btn-primary btn-block" id="verify-otp-btn">Verify OTP &amp; Login</button>
           <button type="button" class="auth-back-btn" style="margin-top:12px;margin-bottom:0;width:100%;justify-content:center;" onclick="document.getElementById('step-otp').hidden=true;document.getElementById('step-email').hidden=false;">&larr; Change Email / Re-enter Email</button>
         </form>
         <button id="resend-otp-btn" class="btn-link" style="display:block;text-align:center;margin-top:12px;font-size:0.83rem;color:#3A7BD5;background:none;border:none;cursor:pointer;">
-          â†© Resend OTP / Change Email
+          ↩ Resend OTP / Change Email
         </button>
       </div>
 
