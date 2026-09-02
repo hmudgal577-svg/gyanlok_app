@@ -1,6 +1,6 @@
-/* ════════════════════════════════════════
-   GyanLok — login-script.js
-   ════════════════════════════════════════ */
+﻿/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   EkShala â€” login-script.js
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 // Auto-detect backend URL: relative on localhost, Render URL in production
 const API_BASE = '';
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adminError.hidden = true;
   }
 
-  // ─── ADMIN LOGIN SUBMISSION ──────────────────────────────────────────────
+  // â”€â”€â”€ ADMIN LOGIN SUBMISSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   adminLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     adminError.hidden = true;
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ─── STUDENT LOGIN SUBMISSION ────────────────────────────────────────────
+  // â”€â”€â”€ STUDENT LOGIN SUBMISSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   studentLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     studentError.hidden = true;
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ─── STUDENT REGISTER SUBMISSION ─────────────────────────────────────────
+  // â”€â”€â”€ STUDENT REGISTER SUBMISSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   studentRegisterForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     registerError.hidden = true;
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ─── STUDENT LOGOUT ──────────────────────────────────────────────────────
+  // â”€â”€â”€ STUDENT LOGOUT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   studentLogoutBtn.addEventListener('click', async () => {
     try {
       await fetch(`${API_BASE}/api/student/logout`, { method: 'POST', credentials: 'include' });
@@ -178,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showToast('Logged out successfully.');
   });
 
-  // ─── CHECK SESSION ───────────────────────────────────────────────────────
+  // â”€â”€â”€ CHECK SESSION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   async function checkSession() {
     try {
       const res = await fetch(`${API_BASE}/api/student/me`, { credentials: 'include' });
@@ -196,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // ─── LOAD DASHBOARD ──────────────────────────────────────────────────────
+  // â”€â”€â”€ LOAD DASHBOARD â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function loadDashboard() {
     authContainer.hidden = true;
     portalContainer.hidden = false;
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadChatHistory();
   }
 
-  // ─── LOAD STUDENT SUBMISSIONS ────────────────────────────────────────────
+  // â”€â”€â”€ LOAD STUDENT SUBMISSIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   async function loadSubmissions() {
     try {
       const res = await fetch(`${API_BASE}/api/student/submissions`, { credentials: 'include' });
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderSubmissionsTable(mock);
   }
 
-  // ─── CHAT MENTOR DOUBT BOX ───────────────────────────────────────────────
+  // â”€â”€â”€ CHAT MENTOR DOUBT BOX â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   chatForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const text = chatInput.value.trim();
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chatMessagesContainer.innerHTML = '<div class="message system-msg">No active conversations. Type your doubt below to start a new chat.</div>';
   }
 
-  // ─── PANEL SWITCHING ─────────────────────────────────────────────────────
+  // â”€â”€â”€ PANEL SWITCHING â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function initSidebarPanels() {
     document.querySelectorAll('.portal-sidebar .menu-item').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -313,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ─── MOCK STUDENT FALLBACKS ──────────────────────────────────────────────
+  // â”€â”€â”€ MOCK STUDENT FALLBACKS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   function mockStudentLogin(email, password) {
     if (email && password) {
       currentUser = {
@@ -372,3 +372,4 @@ function showToast(message) {
     setTimeout(() => toast.remove(), 350);
   }, 4000);
 }
+

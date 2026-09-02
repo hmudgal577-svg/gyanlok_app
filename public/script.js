@@ -1,5 +1,5 @@
-/**
- * GyanLok: script.js (v2)
+﻿/**
+ * EkShala: script.js (v2)
  *
  * Sections:
  *  1.  DATA: School Boards (CBSE/ICSE, classes, subjects, books, chapters)
@@ -17,9 +17,9 @@
  * 13.  TOAST HELPER
  */
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    1. DATA: SCHOOL BOARDS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let BOARDS_DATA = {
   CBSE: {
     classes: [10],
@@ -33,36 +33,36 @@ let BOARDS_DATA = {
           markingScheme: { title: 'Hindi B Marking Scheme 2026', file_url: '/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf' },
           books: [
             {
-              name: 'स्पर्श (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): मुख्य पाठ्यपुस्तक (NCERT)',
+              name: 'à¤¸à¥à¤ªà¤°à¥à¤¶ (à¤­à¤¾à¤—-2)',
+              subtitle: 'à¤•à¤•à¥à¤·à¤¾ 10 à¤¹à¤¿à¤‚à¤¦à¥€ (à¤•à¥‹à¤°à¥à¤¸ à¤¬à¥€): à¤®à¥à¤–à¥à¤¯ à¤ªà¤¾à¤ à¥à¤¯à¤ªà¥à¤¸à¥à¤¤à¤• (NCERT)',
               color: '#3A7BD5',
               file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf',
               chapters: [
-                { num: 1,  title: 'साखी - कबीर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
-                { num: 2,  title: 'पद - मीरा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
-                { num: 3,  title: 'मनुष्यता - मैथिलीशरण गुप्त', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
-                { num: 4,  title: 'पर्वत प्रदेश में पावस - सुमित्रानंदन पंत', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
-                { num: 5,  title: 'तोप - वीरेन डंगवाल', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
-                { num: 6,  title: 'कर चले हम फ़िदा - कैफ़ी आज़मी', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
-                { num: 7,  title: 'आत्मत्राण - रवींद्रनाथ ठाकुर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
-                { num: 8,  title: 'बड़े भाई साहब - प्रेमचंद', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
-                { num: 9,  title: 'डायरी का एक पन्ना - सीताराम सेकसरिया', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
-                { num: 10, title: 'तताँरा-वामीरो कथा - लीलाधर मंडलोई', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
-                { num: 11, title: 'तीसरी कसम के शिल्पकार शैलेंद्र - प्रहलाद अग्रवाल', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
-                { num: 12, title: 'अब कहाँ दूसरे के दुख से दुखी होने वाले - निदा फ़ाज़ली', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
-                { num: 13, title: 'पतझर में टूटी पत्तियाँ (गिन्नी का सोना / झेन की देन) - रवींद्र केलेकर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
-                { num: 14, title: 'कारतूस (एकांकी) - हबीब तनवीर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
+                { num: 1,  title: 'à¤¸à¤¾à¤–à¥€ - à¤•à¤¬à¥€à¤°', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_1.pdf' },
+                { num: 2,  title: 'à¤ªà¤¦ - à¤®à¥€à¤°à¤¾', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_2.pdf' },
+                { num: 3,  title: 'à¤®à¤¨à¥à¤·à¥à¤¯à¤¤à¤¾ - à¤®à¥ˆà¤¥à¤¿à¤²à¥€à¤¶à¤°à¤£ à¤—à¥à¤ªà¥à¤¤', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_3.pdf' },
+                { num: 4,  title: 'à¤ªà¤°à¥à¤µà¤¤ à¤ªà¥à¤°à¤¦à¥‡à¤¶ à¤®à¥‡à¤‚ à¤ªà¤¾à¤µà¤¸ - à¤¸à¥à¤®à¤¿à¤¤à¥à¤°à¤¾à¤¨à¤‚à¤¦à¤¨ à¤ªà¤‚à¤¤', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_4.pdf' },
+                { num: 5,  title: 'à¤¤à¥‹à¤ª - à¤µà¥€à¤°à¥‡à¤¨ à¤¡à¤‚à¤—à¤µà¤¾à¤²', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_5.pdf' },
+                { num: 6,  title: 'à¤•à¤° à¤šà¤²à¥‡ à¤¹à¤® à¤«à¤¼à¤¿à¤¦à¤¾ - à¤•à¥ˆà¤«à¤¼à¥€ à¤†à¤œà¤¼à¤®à¥€', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_6.pdf' },
+                { num: 7,  title: 'à¤†à¤¤à¥à¤®à¤¤à¥à¤°à¤¾à¤£ - à¤°à¤µà¥€à¤‚à¤¦à¥à¤°à¤¨à¤¾à¤¥ à¤ à¤¾à¤•à¥à¤°', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_7.pdf' },
+                { num: 8,  title: 'à¤¬à¤¡à¤¼à¥‡ à¤­à¤¾à¤ˆ à¤¸à¤¾à¤¹à¤¬ - à¤ªà¥à¤°à¥‡à¤®à¤šà¤‚à¤¦', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_8.pdf' },
+                { num: 9,  title: 'à¤¡à¤¾à¤¯à¤°à¥€ à¤•à¤¾ à¤à¤• à¤ªà¤¨à¥à¤¨à¤¾ - à¤¸à¥€à¤¤à¤¾à¤°à¤¾à¤® à¤¸à¥‡à¤•à¤¸à¤°à¤¿à¤¯à¤¾', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_9.pdf' },
+                { num: 10, title: 'à¤¤à¤¤à¤¾à¤à¤°à¤¾-à¤µà¤¾à¤®à¥€à¤°à¥‹ à¤•à¤¥à¤¾ - à¤²à¥€à¤²à¤¾à¤§à¤° à¤®à¤‚à¤¡à¤²à¥‹à¤ˆ', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_10.pdf' },
+                { num: 11, title: 'à¤¤à¥€à¤¸à¤°à¥€ à¤•à¤¸à¤® à¤•à¥‡ à¤¶à¤¿à¤²à¥à¤ªà¤•à¤¾à¤° à¤¶à¥ˆà¤²à¥‡à¤‚à¤¦à¥à¤° - à¤ªà¥à¤°à¤¹à¤²à¤¾à¤¦ à¤…à¤—à¥à¤°à¤µà¤¾à¤²', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_11.pdf' },
+                { num: 12, title: 'à¤…à¤¬ à¤•à¤¹à¤¾à¤ à¤¦à¥‚à¤¸à¤°à¥‡ à¤•à¥‡ à¤¦à¥à¤– à¤¸à¥‡ à¤¦à¥à¤–à¥€ à¤¹à¥‹à¤¨à¥‡ à¤µà¤¾à¤²à¥‡ - à¤¨à¤¿à¤¦à¤¾ à¤«à¤¼à¤¾à¤œà¤¼à¤²à¥€', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_12.pdf' },
+                { num: 13, title: 'à¤ªà¤¤à¤à¤° à¤®à¥‡à¤‚ à¤Ÿà¥‚à¤Ÿà¥€ à¤ªà¤¤à¥à¤¤à¤¿à¤¯à¤¾à¤ (à¤—à¤¿à¤¨à¥à¤¨à¥€ à¤•à¤¾ à¤¸à¥‹à¤¨à¤¾ / à¤à¥‡à¤¨ à¤•à¥€ à¤¦à¥‡à¤¨) - à¤°à¤µà¥€à¤‚à¤¦à¥à¤° à¤•à¥‡à¤²à¥‡à¤•à¤°', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_13.pdf' },
+                { num: 14, title: 'à¤•à¤¾à¤°à¤¤à¥‚à¤¸ (à¤à¤•à¤¾à¤‚à¤•à¥€) - à¤¹à¤¬à¥€à¤¬ à¤¤à¤¨à¤µà¥€à¤°', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_14.pdf' },
               ]
             },
             {
-              name: 'संचयन (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): पूरक पाठ्यपुस्तक (NCERT)',
+              name: 'à¤¸à¤‚à¤šà¤¯à¤¨ (à¤­à¤¾à¤—-2)',
+              subtitle: 'à¤•à¤•à¥à¤·à¤¾ 10 à¤¹à¤¿à¤‚à¤¦à¥€ (à¤•à¥‹à¤°à¥à¤¸ à¤¬à¥€): à¤ªà¥‚à¤°à¤• à¤ªà¤¾à¤ à¥à¤¯à¤ªà¥à¤¸à¥à¤¤à¤• (NCERT)',
               color: '#2BA899',
               file_url: '/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf',
               chapters: [
-                { num: 1, title: 'हरिहर काका - मिथिलेश्वर', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
-                { num: 2, title: 'सपनों के-से दिन - गुरदयाल सिंह', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
-                { num: 3, title: 'टोपी शुक्ला - राही मासूम रज़ा', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
+                { num: 1, title: 'à¤¹à¤°à¤¿à¤¹à¤° à¤•à¤¾à¤•à¤¾ - à¤®à¤¿à¤¥à¤¿à¤²à¥‡à¤¶à¥à¤µà¤°', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_1.pdf' },
+                { num: 2, title: 'à¤¸à¤ªà¤¨à¥‹à¤‚ à¤•à¥‡-à¤¸à¥‡ à¤¦à¤¿à¤¨ - à¤—à¥à¤°à¤¦à¤¯à¤¾à¤² à¤¸à¤¿à¤‚à¤¹', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_2.pdf' },
+                { num: 3, title: 'à¤Ÿà¥‹à¤ªà¥€ à¤¶à¥à¤•à¥à¤²à¤¾ - à¤°à¤¾à¤¹à¥€ à¤®à¤¾à¤¸à¥‚à¤® à¤°à¤œà¤¼à¤¾', worksheets: 2, file_url: '/pdf/cbse/class10/hindi/class_10_sanchayan_hindi_chapter_3.pdf' },
               ]
             }
           ]
@@ -270,64 +270,64 @@ let BOARDS_DATA = {
           markingScheme: { title: 'ICSE Hindi Marking Scheme 2026' },
           books: [
             {
-              name: 'साहित्य सागर: गद्य (Prose)',
+              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤°: à¤—à¤¦à¥à¤¯ (Prose)',
               subtitle: 'Class 10 ICSE Hindi: Gadya Khand | 10 Kahaniyaan',
               color: '#9B59B6',
               chapters: [
-                { num: 1,  title: 'बात अठन्नी की',         worksheets: 2 },
-                { num: 2,  title: 'काकी',                   worksheets: 2 },
-                { num: 3,  title: 'महायज्ञ का पुरस्कार',    worksheets: 2 },
-                { num: 4,  title: 'नेताजी का चश्मा',        worksheets: 2 },
-                { num: 5,  title: 'अपना-अपना भाग्य',        worksheets: 2 },
-                { num: 6,  title: 'बड़े घर की बेटी',        worksheets: 2 },
-                { num: 7,  title: 'संदेह',                  worksheets: 1 },
-                { num: 8,  title: 'भीड़ में खोया आदमी',     worksheets: 2 },
-                { num: 9,  title: 'भेड़ें और भेड़िए',       worksheets: 1 },
-                { num: 10, title: 'दो कलाकार',              worksheets: 2 },
+                { num: 1,  title: 'à¤¬à¤¾à¤¤ à¤…à¤ à¤¨à¥à¤¨à¥€ à¤•à¥€',         worksheets: 2 },
+                { num: 2,  title: 'à¤•à¤¾à¤•à¥€',                   worksheets: 2 },
+                { num: 3,  title: 'à¤®à¤¹à¤¾à¤¯à¤œà¥à¤ž à¤•à¤¾ à¤ªà¥à¤°à¤¸à¥à¤•à¤¾à¤°',    worksheets: 2 },
+                { num: 4,  title: 'à¤¨à¥‡à¤¤à¤¾à¤œà¥€ à¤•à¤¾ à¤šà¤¶à¥à¤®à¤¾',        worksheets: 2 },
+                { num: 5,  title: 'à¤…à¤ªà¤¨à¤¾-à¤…à¤ªà¤¨à¤¾ à¤­à¤¾à¤—à¥à¤¯',        worksheets: 2 },
+                { num: 6,  title: 'à¤¬à¤¡à¤¼à¥‡ à¤˜à¤° à¤•à¥€ à¤¬à¥‡à¤Ÿà¥€',        worksheets: 2 },
+                { num: 7,  title: 'à¤¸à¤‚à¤¦à¥‡à¤¹',                  worksheets: 1 },
+                { num: 8,  title: 'à¤­à¥€à¤¡à¤¼ à¤®à¥‡à¤‚ à¤–à¥‹à¤¯à¤¾ à¤†à¤¦à¤®à¥€',     worksheets: 2 },
+                { num: 9,  title: 'à¤­à¥‡à¤¡à¤¼à¥‡à¤‚ à¤”à¤° à¤­à¥‡à¤¡à¤¼à¤¿à¤',       worksheets: 1 },
+                { num: 10, title: 'à¤¦à¥‹ à¤•à¤²à¤¾à¤•à¤¾à¤°',              worksheets: 2 },
               ]
             },
             {
-              name: 'साहित्य सागर: पद्य (Poetry)',
+              name: 'à¤¸à¤¾à¤¹à¤¿à¤¤à¥à¤¯ à¤¸à¤¾à¤—à¤°: à¤ªà¤¦à¥à¤¯ (Poetry)',
               subtitle: 'Class 10 ICSE Hindi: Padya Khand | 9 Kavitaen',
               color: '#E8900A',
               chapters: [
-                { num: 1, title: 'साखी',                    worksheets: 2 },
-                { num: 2, title: 'कुंडलियाँ',               worksheets: 2 },
-                { num: 3, title: 'स्वर्ग बना सकते हैं',     worksheets: 2 },
-                { num: 4, title: 'वह मातृभूमि मेरी',        worksheets: 2 },
-                { num: 5, title: 'मेघ आए',                  worksheets: 1 },
-                { num: 6, title: 'सूरदास के पद',            worksheets: 2 },
-                { num: 7, title: 'विनय के पद',               worksheets: 2 },
-                { num: 8, title: 'भिक्षुक',                 worksheets: 1 },
-                { num: 9, title: 'चलना हमारा काम है',        worksheets: 2 },
+                { num: 1, title: 'à¤¸à¤¾à¤–à¥€',                    worksheets: 2 },
+                { num: 2, title: 'à¤•à¥à¤‚à¤¡à¤²à¤¿à¤¯à¤¾à¤',               worksheets: 2 },
+                { num: 3, title: 'à¤¸à¥à¤µà¤°à¥à¤— à¤¬à¤¨à¤¾ à¤¸à¤•à¤¤à¥‡ à¤¹à¥ˆà¤‚',     worksheets: 2 },
+                { num: 4, title: 'à¤µà¤¹ à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤®à¥‡à¤°à¥€',        worksheets: 2 },
+                { num: 5, title: 'à¤®à¥‡à¤˜ à¤†à¤',                  worksheets: 1 },
+                { num: 6, title: 'à¤¸à¥‚à¤°à¤¦à¤¾à¤¸ à¤•à¥‡ à¤ªà¤¦',            worksheets: 2 },
+                { num: 7, title: 'à¤µà¤¿à¤¨à¤¯ à¤•à¥‡ à¤ªà¤¦',               worksheets: 2 },
+                { num: 8, title: 'à¤­à¤¿à¤•à¥à¤·à¥à¤•',                 worksheets: 1 },
+                { num: 9, title: 'à¤šà¤²à¤¨à¤¾ à¤¹à¤®à¤¾à¤°à¤¾ à¤•à¤¾à¤® à¤¹à¥ˆ',        worksheets: 2 },
               ]
             },
             {
-              name: 'एकांकी संचय',
+              name: 'à¤à¤•à¤¾à¤‚à¤•à¥€ à¤¸à¤‚à¤šà¤¯',
               subtitle: 'Class 10 ICSE Hindi: Ekanki | 6 One-Act Plays',
               color: '#2BA899',
               chapters: [
-                { num: 1, title: 'संस्कार और भावना',        worksheets: 2 },
-                { num: 2, title: 'बहू की विदा',             worksheets: 2 },
-                { num: 3, title: 'मातृभूमि का मान',         worksheets: 2 },
-                { num: 4, title: 'सूखी डाली',               worksheets: 2 },
-                { num: 5, title: 'महाभारत की एक साँझ',      worksheets: 2 },
-                { num: 6, title: 'दीपदान',                  worksheets: 2 },
+                { num: 1, title: 'à¤¸à¤‚à¤¸à¥à¤•à¤¾à¤° à¤”à¤° à¤­à¤¾à¤µà¤¨à¤¾',        worksheets: 2 },
+                { num: 2, title: 'à¤¬à¤¹à¥‚ à¤•à¥€ à¤µà¤¿à¤¦à¤¾',             worksheets: 2 },
+                { num: 3, title: 'à¤®à¤¾à¤¤à¥ƒà¤­à¥‚à¤®à¤¿ à¤•à¤¾ à¤®à¤¾à¤¨',         worksheets: 2 },
+                { num: 4, title: 'à¤¸à¥‚à¤–à¥€ à¤¡à¤¾à¤²à¥€',               worksheets: 2 },
+                { num: 5, title: 'à¤®à¤¹à¤¾à¤­à¤¾à¤°à¤¤ à¤•à¥€ à¤à¤• à¤¸à¤¾à¤à¤',      worksheets: 2 },
+                { num: 6, title: 'à¤¦à¥€à¤ªà¤¦à¤¾à¤¨',                  worksheets: 2 },
               ]
             },
             {
-              name: 'नया रास्ता (उपन्यास)',
-              subtitle: 'Class 10 ICSE Hindi: Novel | अध्याय क्रमवार (Publisher: Evergreen / Morning Star)',
+              name: 'à¤¨à¤¯à¤¾ à¤°à¤¾à¤¸à¥à¤¤à¤¾ (à¤‰à¤ªà¤¨à¥à¤¯à¤¾à¤¸)',
+              subtitle: 'Class 10 ICSE Hindi: Novel | à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤•à¥à¤°à¤®à¤µà¤¾à¤° (Publisher: Evergreen / Morning Star)',
               color: '#E05555',
               chapters: [
-                { num: 1, title: 'अध्याय 1', worksheets: 1 },
-                { num: 2, title: 'अध्याय 2', worksheets: 1 },
-                { num: 3, title: 'अध्याय 3', worksheets: 1 },
-                { num: 4, title: 'अध्याय 4', worksheets: 1 },
-                { num: 5, title: 'अध्याय 5', worksheets: 1 },
-                { num: 6, title: 'अध्याय 6', worksheets: 1 },
-                { num: 7, title: 'अध्याय 7', worksheets: 1 },
-                { num: 8, title: 'अध्याय 8', worksheets: 1 },
+                { num: 1, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 1', worksheets: 1 },
+                { num: 2, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 2', worksheets: 1 },
+                { num: 3, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 3', worksheets: 1 },
+                { num: 4, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 4', worksheets: 1 },
+                { num: 5, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 5', worksheets: 1 },
+                { num: 6, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 6', worksheets: 1 },
+                { num: 7, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 7', worksheets: 1 },
+                { num: 8, title: 'à¤…à¤§à¥à¤¯à¤¾à¤¯ 8', worksheets: 1 },
               ]
             }
           ]
@@ -337,24 +337,24 @@ let BOARDS_DATA = {
   }
 };
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    2. DATA: TEST SHEETS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const TEST_DATA = {
   UTP: {
     CBSE: {
       10: [
-        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1: Hindi (स्पर्श)',          subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
-        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2: Hindi (संचयन)',          subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
-        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3: Hindi (व्याकरण एवं मुहावरे)', subject: 'Hindi', date: 'Jun 2026', pages: 3, color: '#9B59B6' },
-        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4: Hindi (अभ्यास प्रश्न पत्र)', subject: 'Hindi', date: 'Aug 2026', pages: 4, color: '#E05555' },
+        { id: 'UTP_CBSE_10_01', title: 'Unit Test Paper 1: Hindi (à¤¸à¥à¤ªà¤°à¥à¤¶)',          subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_CBSE_10_02', title: 'Unit Test Paper 2: Hindi (à¤¸à¤‚à¤šà¤¯à¤¨)',          subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
+        { id: 'UTP_CBSE_10_03', title: 'Unit Test Paper 3: Hindi (à¤µà¥à¤¯à¤¾à¤•à¤°à¤£ à¤à¤µà¤‚ à¤®à¥à¤¹à¤¾à¤µà¤°à¥‡)', subject: 'Hindi', date: 'Jun 2026', pages: 3, color: '#9B59B6' },
+        { id: 'UTP_CBSE_10_04', title: 'Unit Test Paper 4: Hindi (à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤ªà¥à¤°à¤¶à¥à¤¨ à¤ªà¤¤à¥à¤°)', subject: 'Hindi', date: 'Aug 2026', pages: 4, color: '#E05555' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1: ICSE Hindi (गद्य खंड)',   subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
-        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2: ICSE Hindi (पद्य खंड)',   subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
+        { id: 'UTP_ICSE_10_01', title: 'Unit Test Paper 1: ICSE Hindi (à¤—à¤¦à¥à¤¯ à¤–à¤‚à¤¡)',   subject: 'Hindi', date: 'Feb 2026', pages: 4, color: '#3A7BD5' },
+        { id: 'UTP_ICSE_10_02', title: 'Unit Test Paper 2: ICSE Hindi (à¤ªà¤¦à¥à¤¯ à¤–à¤‚à¤¡)',   subject: 'Hindi', date: 'Apr 2026', pages: 4, color: '#2BA899' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
@@ -362,17 +362,17 @@ const TEST_DATA = {
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (व्याकरण - पदबंध व समास)', subject: 'Hindi', date: 'Jan 2026', pages: 2, color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (काव्य खंड - साखी व पद)', subject: 'Hindi', date: 'Feb 2026', pages: 3, color: '#2BA899' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (गद्य खंड - बड़े भाई साहब)', subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#9B59B6' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (रचनात्मक लेखन)',         subject: 'Hindi', date: 'Apr 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (à¤µà¥à¤¯à¤¾à¤•à¤°à¤£ - à¤ªà¤¦à¤¬à¤‚à¤§ à¤µ à¤¸à¤®à¤¾à¤¸)', subject: 'Hindi', date: 'Jan 2026', pages: 2, color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (à¤•à¤¾à¤µà¥à¤¯ à¤–à¤‚à¤¡ - à¤¸à¤¾à¤–à¥€ à¤µ à¤ªà¤¦)', subject: 'Hindi', date: 'Feb 2026', pages: 3, color: '#2BA899' },
+        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (à¤—à¤¦à¥à¤¯ à¤–à¤‚à¤¡ - à¤¬à¤¡à¤¼à¥‡ à¤­à¤¾à¤ˆ à¤¸à¤¾à¤¹à¤¬)', subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#9B59B6' },
+        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (à¤°à¤šà¤¨à¤¾à¤¤à¥à¤®à¤• à¤²à¥‡à¤–à¤¨)',         subject: 'Hindi', date: 'Apr 2026', pages: 2, color: '#E05555' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (एकांकी संचय)',      subject: 'Hindi', date: 'Jan 2026', pages: 3, color: '#3A7BD5' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (व्याकरण व निबंध)',  subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#2BA899' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (à¤à¤•à¤¾à¤‚à¤•à¥€ à¤¸à¤‚à¤šà¤¯)',      subject: 'Hindi', date: 'Jan 2026', pages: 3, color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (à¤µà¥à¤¯à¤¾à¤•à¤°à¤£ à¤µ à¤¨à¤¿à¤¬à¤‚à¤§)',  subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#2BA899' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
@@ -395,9 +395,9 @@ const TEST_DATA = {
   }
 };
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    3. SVG HELPERS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const SVG = {
   book: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
   file: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
@@ -412,9 +412,9 @@ const SVG = {
   chevD: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`,
 };
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    STATE
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let state = {
   board: 'CBSE',
   cls:   10,
@@ -423,9 +423,9 @@ let state = {
   testBoard: 'CBSE',
 };
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    DOM READY
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
   initFadeIn();
@@ -453,9 +453,9 @@ function checkReaderUrlParams() {
   }
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    4. NAVBAR
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initNavbar() {
   const hamburger  = document.getElementById('hamburger');
   const navLinks   = document.getElementById('nav-links');
@@ -552,9 +552,9 @@ function initNavbar() {
   sections.forEach(s => secObs.observe(s));
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    5. FADE-IN
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let fadeObserver;
 function initFadeIn() {
   fadeObserver = new IntersectionObserver((entries) => {
@@ -577,9 +577,9 @@ function observeFade(el) {
   else el.classList.add('visible');
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    6. SCHOOL BOARDS SECTION
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function initBoardsSection() {
   /* Board tab clicks */
   document.querySelectorAll('.board-tab').forEach(tab => {
@@ -757,9 +757,9 @@ function renderBoardContent() {
     if (rightPanel) {
       rightPanel.innerHTML = `
         <div class="boards-detail-empty">
-          <div class="detail-empty-icon">⏳</div>
-          <h3>सामग्री जल्द आ रही है</h3>
-          <p>Class ${state.cls} (${state.board}) के लिए <strong>${state.subj}</strong> की अध्ययन सामग्री अभी तैयार की जा रही है।</p>
+          <div class="detail-empty-icon">â³</div>
+          <h3>à¤¸à¤¾à¤®à¤—à¥à¤°à¥€ à¤œà¤²à¥à¤¦ à¤† à¤°à¤¹à¥€ à¤¹à¥ˆ</h3>
+          <p>Class ${state.cls} (${state.board}) à¤•à¥‡ à¤²à¤¿à¤ <strong>${state.subj}</strong> à¤•à¥€ à¤…à¤§à¥à¤¯à¤¯à¤¨ à¤¸à¤¾à¤®à¤—à¥à¤°à¥€ à¤…à¤­à¥€ à¤¤à¥ˆà¤¯à¤¾à¤° à¤•à¥€ à¤œà¤¾ à¤°à¤¹à¥€ à¤¹à¥ˆà¥¤</p>
         </div>`;
     }
     return;
@@ -775,7 +775,7 @@ function renderBoardContent() {
   let html = `
     <div class="subject-info-banner" onclick="showSubjectDetails()" style="display:flex; align-items:center; justify-content:space-between; background:var(--accent-bg); border:1px solid var(--accent-light); padding:.75rem 1rem; border-radius:var(--r-md); margin-bottom:1.25rem; cursor:pointer;">
       <div style="display:flex; align-items:center; gap:.5rem;">
-        <span style="font-size:1.25rem; margin-right:.15rem;">📋</span>
+        <span style="font-size:1.25rem; margin-right:.15rem;">ðŸ“‹</span>
         <div style="text-align:left;">
           <strong style="font-size:.84rem; color:var(--accent-dark); display:block; line-height:1.2;">Syllabus &amp; Full Books</strong>
           <span style="font-size:.72rem; color:var(--text-body); display:block; margin-top:2px;">Syllabus, Marking Scheme aur text books check karein</span>
@@ -817,11 +817,11 @@ function renderDefaultRightContent(subjRes) {
     <div class="rp-default-view">
       <div class="rp-ch-header" style="margin-bottom: 1.25rem;">
         <div class="rp-ch-breadcrumb">${state.board} &rsaquo; Class ${state.cls} &rsaquo; ${state.subj}</div>
-        <h2 class="rp-ch-title">विषय सामग्री (Subject Materials)</h2>
+        <h2 class="rp-ch-title">à¤µà¤¿à¤·à¤¯ à¤¸à¤¾à¤®à¤—à¥à¤°à¥€ (Subject Materials)</h2>
       </div>
       
       <div class="rp-intro" style="background:var(--accent-bg); border-left-color:var(--accent); margin-bottom: 1.25rem;">
-        <p class="rp-intro-hi">इस विषय का Syllabus, Marking Scheme और Complete Textbook direct यहाँ से देखें या download करें।</p>
+        <p class="rp-intro-hi">à¤‡à¤¸ à¤µà¤¿à¤·à¤¯ à¤•à¤¾ Syllabus, Marking Scheme à¤”à¤° Complete Textbook direct à¤¯à¤¹à¤¾à¤ à¤¸à¥‡ à¤¦à¥‡à¤–à¥‡à¤‚ à¤¯à¤¾ download à¤•à¤°à¥‡à¤‚à¥¤</p>
       </div>
 
       <p class="rp-options-label">Syllabus &amp; Marking Scheme:</p>
@@ -862,7 +862,7 @@ function renderDefaultRightContent(subjRes) {
   books.forEach(book => {
     html += `
       <button class="rp-opt-btn" onclick="openDocViewer('${book.name}: Complete Book', '${book.file_url || ''}')">
-        <div class="rp-opt-icon" style="background:${book.color || 'var(--accent)'};color:#fff">📚</div>
+        <div class="rp-opt-icon" style="background:${book.color || 'var(--accent)'};color:#fff">ðŸ“š</div>
         <div class="rp-opt-text">
           <span class="rp-opt-name">${book.name}</span>
           <span class="rp-opt-sub">Complete Book PDF</span>
@@ -879,38 +879,38 @@ function renderDefaultRightContent(subjRes) {
   panel.innerHTML = html;
 }
 
-// ─── Chapter intro descriptions ─────────────────────────────────────────────
+// â”€â”€â”€ Chapter intro descriptions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const CHAPTER_INTROS = {
-  'स्पर्श (भाग-2)': {
-    1:  { hi: 'कबीर के दोहे (साखी): संत कबीर द्वारा रचित दोहे जो जीवन की सच्चाई, भक्ति और मानवता का संदेश देते हैं। ये दोहे आज भी उतने ही प्रासंगिक हैं जितने सदियों पहले थे।', en: 'Kabir ke Dohe: Sakhis by Saint Kabir conveying truths of life, devotion and humanity.' },
-    2:  { hi: 'मीरा के पद: मीराबाई की कृष्ण-भक्ति की अनूठी अभिव्यक्ति। इन पदों में मीरा ने कृष्ण के प्रति अपनी अनन्य श्रद्धा और प्रेम को व्यक्त किया है।', en: 'Meera ke Pad: Unique expression of Mirabai\'s devotion to Lord Krishna through soulful verses.' },
-    3:  { hi: 'मनुष्यता: मैथिलीशरण गुप्त की यह कविता मानवता, परोपकार और एकता का संदेश देती है। कवि कहते हैं कि सच्ची मनुष्यता दूसरों की सेवा में है।', en: 'Manushyata: A poem by Maithilisharan Gupt emphasizing humanity, sacrifice and unity.' },
-    4:  { hi: 'पर्वत प्रदेश में पावस: सुमित्रानंदन पंत की यह कविता पहाड़ी क्षेत्र में बरसात के मनोरम दृश्य का अत्यंत सुंदर चित्रण प्रस्तुत करती है।', en: 'Parvat Pradesh Mein Pavas: Sumitranandan Pant\'s vivid description of monsoon in the hills.' },
-    5:  { hi: 'तोप: वीरेन डंगवाल की यह व्यंग्यात्मक कविता एक पुरानी तोप के माध्यम से युद्ध, ताकत और इतिहास पर सवाल उठाती है।', en: 'Top: A satirical poem by Viren Dangwal questioning war and power through an old cannon.' },
-    6:  { hi: 'कर चले हम फ़िदा: कैफ़ी आज़मी की यह देशभक्ति कविता सैनिकों की वीरता और बलिदान को श्रद्धांजलि देती है।', en: 'Kar Chale Hum Fida: Kaifi Azmi\'s patriotic poem paying tribute to the bravery of soldiers.' },
-    7:  { hi: 'आत्मत्राण: रवींद्रनाथ ठाकुर की यह कविता ईश्वर से मुसीबतों को हटाने की नहीं बल्कि उनसे लड़ने की शक्ति माँगती है।', en: 'Aatmtran: Rabindranath Tagore\'s prayer for strength to face difficulties, not to escape them.' },
-    8:  { hi: 'बड़े भाई साहब: प्रेमचंद की इस कहानी में छोटे भाई की शरारतें और बड़े भाई के उपदेशों के माध्यम से शिक्षा और जीवन का मार्मिक चित्रण है।', en: 'Bade Bhai Sahab: Premchand\'s story depicting the contrast between bookish education and practical wisdom.' },
-    9:  { hi: 'डायरी का एक पन्ना: सीताराम सेकसरिया की डायरी का यह अंश 26 जनवरी 1931 को कलकत्ता में हुए ऐतिहासिक स्वतंत्रता आंदोलन का जीवंत विवरण प्रस्तुत करता है।', en: 'Diary Ka Ek Panna: An eyewitness account of the historic January 26, 1931 freedom movement in Calcutta.' },
-    10: { hi: 'तताँरा-वामीरो कथा: अंडमान-निकोबार द्वीप की एक सुंदर लोककथा जो प्रेम, त्याग और सामाजिक बंधनों की कहानी बताती है।', en: 'Tantara-Vamiro Katha: A beautiful folk tale from Andaman-Nicobar islands about love and social constraints.' },
-    11: { hi: 'तीसरी कसम के शिल्पकार शैलेंद्र: गीतकार शैलेंद्र के जीवन और उनकी फिल्म "तीसरी कसम" के निर्माण की प्रेरक कहानी।', en: 'Teesri Kasam ke Shilpkar Shailendra: The inspiring story of lyricist Shailendra and the making of the film Teesri Kasam.' },
-    12: { hi: 'अब कहाँ दूसरे के दुख से दुखी होने वाले: निदा फ़ाज़ली का यह पाठ पर्यावरण संरक्षण और मानवता के क्षरण पर विचार करता है।', en: 'Ab Kahan Doosre ke Dukh se Dukhi Hone Wale: Nida Fazli\'s reflection on environmental degradation and loss of empathy.' },
-    13: { hi: 'पतझर में टूटी पत्तियाँ: रवींद्र केलेकर के दो लघु निबंध: "गिन्नी का सोना" और "झेन की देन" जो जीवन दर्शन की गहरी बातें सरल भाषा में कहते हैं।', en: 'Patahar Mein Tooti Pattiyan: Two short essays on life philosophy: Ginni Ka Sona and Zen Ki Den.' },
-    14: { hi: 'कारतूस: हबीब तनवीर का यह एकांकी वज़ीर अली की बहादुरी और अंग्रेजों के विरुद्ध उनके साहस की रोमांचक कहानी प्रस्तुत करता है।', en: 'Kartoos: Habib Tanvir\'s one-act play depicting the bravery of Wazir Ali against the British.' },
+  'à¤¸à¥à¤ªà¤°à¥à¤¶ (à¤­à¤¾à¤—-2)': {
+    1:  { hi: 'à¤•à¤¬à¥€à¤° à¤•à¥‡ à¤¦à¥‹à¤¹à¥‡ (à¤¸à¤¾à¤–à¥€): à¤¸à¤‚à¤¤ à¤•à¤¬à¥€à¤° à¤¦à¥à¤µà¤¾à¤°à¤¾ à¤°à¤šà¤¿à¤¤ à¤¦à¥‹à¤¹à¥‡ à¤œà¥‹ à¤œà¥€à¤µà¤¨ à¤•à¥€ à¤¸à¤šà¥à¤šà¤¾à¤ˆ, à¤­à¤•à¥à¤¤à¤¿ à¤”à¤° à¤®à¤¾à¤¨à¤µà¤¤à¤¾ à¤•à¤¾ à¤¸à¤‚à¤¦à¥‡à¤¶ à¤¦à¥‡à¤¤à¥‡ à¤¹à¥ˆà¤‚à¥¤ à¤¯à¥‡ à¤¦à¥‹à¤¹à¥‡ à¤†à¤œ à¤­à¥€ à¤‰à¤¤à¤¨à¥‡ à¤¹à¥€ à¤ªà¥à¤°à¤¾à¤¸à¤‚à¤—à¤¿à¤• à¤¹à¥ˆà¤‚ à¤œà¤¿à¤¤à¤¨à¥‡ à¤¸à¤¦à¤¿à¤¯à¥‹à¤‚ à¤ªà¤¹à¤²à¥‡ à¤¥à¥‡à¥¤', en: 'Kabir ke Dohe: Sakhis by Saint Kabir conveying truths of life, devotion and humanity.' },
+    2:  { hi: 'à¤®à¥€à¤°à¤¾ à¤•à¥‡ à¤ªà¤¦: à¤®à¥€à¤°à¤¾à¤¬à¤¾à¤ˆ à¤•à¥€ à¤•à¥ƒà¤·à¥à¤£-à¤­à¤•à¥à¤¤à¤¿ à¤•à¥€ à¤…à¤¨à¥‚à¤ à¥€ à¤…à¤­à¤¿à¤µà¥à¤¯à¤•à¥à¤¤à¤¿à¥¤ à¤‡à¤¨ à¤ªà¤¦à¥‹à¤‚ à¤®à¥‡à¤‚ à¤®à¥€à¤°à¤¾ à¤¨à¥‡ à¤•à¥ƒà¤·à¥à¤£ à¤•à¥‡ à¤ªà¥à¤°à¤¤à¤¿ à¤…à¤ªà¤¨à¥€ à¤…à¤¨à¤¨à¥à¤¯ à¤¶à¥à¤°à¤¦à¥à¤§à¤¾ à¤”à¤° à¤ªà¥à¤°à¥‡à¤® à¤•à¥‹ à¤µà¥à¤¯à¤•à¥à¤¤ à¤•à¤¿à¤¯à¤¾ à¤¹à¥ˆà¥¤', en: 'Meera ke Pad: Unique expression of Mirabai\'s devotion to Lord Krishna through soulful verses.' },
+    3:  { hi: 'à¤®à¤¨à¥à¤·à¥à¤¯à¤¤à¤¾: à¤®à¥ˆà¤¥à¤¿à¤²à¥€à¤¶à¤°à¤£ à¤—à¥à¤ªà¥à¤¤ à¤•à¥€ à¤¯à¤¹ à¤•à¤µà¤¿à¤¤à¤¾ à¤®à¤¾à¤¨à¤µà¤¤à¤¾, à¤ªà¤°à¥‹à¤ªà¤•à¤¾à¤° à¤”à¤° à¤à¤•à¤¤à¤¾ à¤•à¤¾ à¤¸à¤‚à¤¦à¥‡à¤¶ à¤¦à¥‡à¤¤à¥€ à¤¹à¥ˆà¥¤ à¤•à¤µà¤¿ à¤•à¤¹à¤¤à¥‡ à¤¹à¥ˆà¤‚ à¤•à¤¿ à¤¸à¤šà¥à¤šà¥€ à¤®à¤¨à¥à¤·à¥à¤¯à¤¤à¤¾ à¤¦à¥‚à¤¸à¤°à¥‹à¤‚ à¤•à¥€ à¤¸à¥‡à¤µà¤¾ à¤®à¥‡à¤‚ à¤¹à¥ˆà¥¤', en: 'Manushyata: A poem by Maithilisharan Gupt emphasizing humanity, sacrifice and unity.' },
+    4:  { hi: 'à¤ªà¤°à¥à¤µà¤¤ à¤ªà¥à¤°à¤¦à¥‡à¤¶ à¤®à¥‡à¤‚ à¤ªà¤¾à¤µà¤¸: à¤¸à¥à¤®à¤¿à¤¤à¥à¤°à¤¾à¤¨à¤‚à¤¦à¤¨ à¤ªà¤‚à¤¤ à¤•à¥€ à¤¯à¤¹ à¤•à¤µà¤¿à¤¤à¤¾ à¤ªà¤¹à¤¾à¤¡à¤¼à¥€ à¤•à¥à¤·à¥‡à¤¤à¥à¤° à¤®à¥‡à¤‚ à¤¬à¤°à¤¸à¤¾à¤¤ à¤•à¥‡ à¤®à¤¨à¥‹à¤°à¤® à¤¦à¥ƒà¤¶à¥à¤¯ à¤•à¤¾ à¤…à¤¤à¥à¤¯à¤‚à¤¤ à¤¸à¥à¤‚à¤¦à¤° à¤šà¤¿à¤¤à¥à¤°à¤£ à¤ªà¥à¤°à¤¸à¥à¤¤à¥à¤¤ à¤•à¤°à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Parvat Pradesh Mein Pavas: Sumitranandan Pant\'s vivid description of monsoon in the hills.' },
+    5:  { hi: 'à¤¤à¥‹à¤ª: à¤µà¥€à¤°à¥‡à¤¨ à¤¡à¤‚à¤—à¤µà¤¾à¤² à¤•à¥€ à¤¯à¤¹ à¤µà¥à¤¯à¤‚à¤—à¥à¤¯à¤¾à¤¤à¥à¤®à¤• à¤•à¤µà¤¿à¤¤à¤¾ à¤à¤• à¤ªà¥à¤°à¤¾à¤¨à¥€ à¤¤à¥‹à¤ª à¤•à¥‡ à¤®à¤¾à¤§à¥à¤¯à¤® à¤¸à¥‡ à¤¯à¥à¤¦à¥à¤§, à¤¤à¤¾à¤•à¤¤ à¤”à¤° à¤‡à¤¤à¤¿à¤¹à¤¾à¤¸ à¤ªà¤° à¤¸à¤µà¤¾à¤² à¤‰à¤ à¤¾à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Top: A satirical poem by Viren Dangwal questioning war and power through an old cannon.' },
+    6:  { hi: 'à¤•à¤° à¤šà¤²à¥‡ à¤¹à¤® à¤«à¤¼à¤¿à¤¦à¤¾: à¤•à¥ˆà¤«à¤¼à¥€ à¤†à¤œà¤¼à¤®à¥€ à¤•à¥€ à¤¯à¤¹ à¤¦à¥‡à¤¶à¤­à¤•à¥à¤¤à¤¿ à¤•à¤µà¤¿à¤¤à¤¾ à¤¸à¥ˆà¤¨à¤¿à¤•à¥‹à¤‚ à¤•à¥€ à¤µà¥€à¤°à¤¤à¤¾ à¤”à¤° à¤¬à¤²à¤¿à¤¦à¤¾à¤¨ à¤•à¥‹ à¤¶à¥à¤°à¤¦à¥à¤§à¤¾à¤‚à¤œà¤²à¤¿ à¤¦à¥‡à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Kar Chale Hum Fida: Kaifi Azmi\'s patriotic poem paying tribute to the bravery of soldiers.' },
+    7:  { hi: 'à¤†à¤¤à¥à¤®à¤¤à¥à¤°à¤¾à¤£: à¤°à¤µà¥€à¤‚à¤¦à¥à¤°à¤¨à¤¾à¤¥ à¤ à¤¾à¤•à¥à¤° à¤•à¥€ à¤¯à¤¹ à¤•à¤µà¤¿à¤¤à¤¾ à¤ˆà¤¶à¥à¤µà¤° à¤¸à¥‡ à¤®à¥à¤¸à¥€à¤¬à¤¤à¥‹à¤‚ à¤•à¥‹ à¤¹à¤Ÿà¤¾à¤¨à¥‡ à¤•à¥€ à¤¨à¤¹à¥€à¤‚ à¤¬à¤²à¥à¤•à¤¿ à¤‰à¤¨à¤¸à¥‡ à¤²à¤¡à¤¼à¤¨à¥‡ à¤•à¥€ à¤¶à¤•à¥à¤¤à¤¿ à¤®à¤¾à¤à¤—à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Aatmtran: Rabindranath Tagore\'s prayer for strength to face difficulties, not to escape them.' },
+    8:  { hi: 'à¤¬à¤¡à¤¼à¥‡ à¤­à¤¾à¤ˆ à¤¸à¤¾à¤¹à¤¬: à¤ªà¥à¤°à¥‡à¤®à¤šà¤‚à¤¦ à¤•à¥€ à¤‡à¤¸ à¤•à¤¹à¤¾à¤¨à¥€ à¤®à¥‡à¤‚ à¤›à¥‹à¤Ÿà¥‡ à¤­à¤¾à¤ˆ à¤•à¥€ à¤¶à¤°à¤¾à¤°à¤¤à¥‡à¤‚ à¤”à¤° à¤¬à¤¡à¤¼à¥‡ à¤­à¤¾à¤ˆ à¤•à¥‡ à¤‰à¤ªà¤¦à¥‡à¤¶à¥‹à¤‚ à¤•à¥‡ à¤®à¤¾à¤§à¥à¤¯à¤® à¤¸à¥‡ à¤¶à¤¿à¤•à¥à¤·à¤¾ à¤”à¤° à¤œà¥€à¤µà¤¨ à¤•à¤¾ à¤®à¤¾à¤°à¥à¤®à¤¿à¤• à¤šà¤¿à¤¤à¥à¤°à¤£ à¤¹à¥ˆà¥¤', en: 'Bade Bhai Sahab: Premchand\'s story depicting the contrast between bookish education and practical wisdom.' },
+    9:  { hi: 'à¤¡à¤¾à¤¯à¤°à¥€ à¤•à¤¾ à¤à¤• à¤ªà¤¨à¥à¤¨à¤¾: à¤¸à¥€à¤¤à¤¾à¤°à¤¾à¤® à¤¸à¥‡à¤•à¤¸à¤°à¤¿à¤¯à¤¾ à¤•à¥€ à¤¡à¤¾à¤¯à¤°à¥€ à¤•à¤¾ à¤¯à¤¹ à¤…à¤‚à¤¶ 26 à¤œà¤¨à¤µà¤°à¥€ 1931 à¤•à¥‹ à¤•à¤²à¤•à¤¤à¥à¤¤à¤¾ à¤®à¥‡à¤‚ à¤¹à¥à¤ à¤à¤¤à¤¿à¤¹à¤¾à¤¸à¤¿à¤• à¤¸à¥à¤µà¤¤à¤‚à¤¤à¥à¤°à¤¤à¤¾ à¤†à¤‚à¤¦à¥‹à¤²à¤¨ à¤•à¤¾ à¤œà¥€à¤µà¤‚à¤¤ à¤µà¤¿à¤µà¤°à¤£ à¤ªà¥à¤°à¤¸à¥à¤¤à¥à¤¤ à¤•à¤°à¤¤à¤¾ à¤¹à¥ˆà¥¤', en: 'Diary Ka Ek Panna: An eyewitness account of the historic January 26, 1931 freedom movement in Calcutta.' },
+    10: { hi: 'à¤¤à¤¤à¤¾à¤à¤°à¤¾-à¤µà¤¾à¤®à¥€à¤°à¥‹ à¤•à¤¥à¤¾: à¤…à¤‚à¤¡à¤®à¤¾à¤¨-à¤¨à¤¿à¤•à¥‹à¤¬à¤¾à¤° à¤¦à¥à¤µà¥€à¤ª à¤•à¥€ à¤à¤• à¤¸à¥à¤‚à¤¦à¤° à¤²à¥‹à¤•à¤•à¤¥à¤¾ à¤œà¥‹ à¤ªà¥à¤°à¥‡à¤®, à¤¤à¥à¤¯à¤¾à¤— à¤”à¤° à¤¸à¤¾à¤®à¤¾à¤œà¤¿à¤• à¤¬à¤‚à¤§à¤¨à¥‹à¤‚ à¤•à¥€ à¤•à¤¹à¤¾à¤¨à¥€ à¤¬à¤¤à¤¾à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Tantara-Vamiro Katha: A beautiful folk tale from Andaman-Nicobar islands about love and social constraints.' },
+    11: { hi: 'à¤¤à¥€à¤¸à¤°à¥€ à¤•à¤¸à¤® à¤•à¥‡ à¤¶à¤¿à¤²à¥à¤ªà¤•à¤¾à¤° à¤¶à¥ˆà¤²à¥‡à¤‚à¤¦à¥à¤°: à¤—à¥€à¤¤à¤•à¤¾à¤° à¤¶à¥ˆà¤²à¥‡à¤‚à¤¦à¥à¤° à¤•à¥‡ à¤œà¥€à¤µà¤¨ à¤”à¤° à¤‰à¤¨à¤•à¥€ à¤«à¤¿à¤²à¥à¤® "à¤¤à¥€à¤¸à¤°à¥€ à¤•à¤¸à¤®" à¤•à¥‡ à¤¨à¤¿à¤°à¥à¤®à¤¾à¤£ à¤•à¥€ à¤ªà¥à¤°à¥‡à¤°à¤• à¤•à¤¹à¤¾à¤¨à¥€à¥¤', en: 'Teesri Kasam ke Shilpkar Shailendra: The inspiring story of lyricist Shailendra and the making of the film Teesri Kasam.' },
+    12: { hi: 'à¤…à¤¬ à¤•à¤¹à¤¾à¤ à¤¦à¥‚à¤¸à¤°à¥‡ à¤•à¥‡ à¤¦à¥à¤– à¤¸à¥‡ à¤¦à¥à¤–à¥€ à¤¹à¥‹à¤¨à¥‡ à¤µà¤¾à¤²à¥‡: à¤¨à¤¿à¤¦à¤¾ à¤«à¤¼à¤¾à¤œà¤¼à¤²à¥€ à¤•à¤¾ à¤¯à¤¹ à¤ªà¤¾à¤  à¤ªà¤°à¥à¤¯à¤¾à¤µà¤°à¤£ à¤¸à¤‚à¤°à¤•à¥à¤·à¤£ à¤”à¤° à¤®à¤¾à¤¨à¤µà¤¤à¤¾ à¤•à¥‡ à¤•à¥à¤·à¤°à¤£ à¤ªà¤° à¤µà¤¿à¤šà¤¾à¤° à¤•à¤°à¤¤à¤¾ à¤¹à¥ˆà¥¤', en: 'Ab Kahan Doosre ke Dukh se Dukhi Hone Wale: Nida Fazli\'s reflection on environmental degradation and loss of empathy.' },
+    13: { hi: 'à¤ªà¤¤à¤à¤° à¤®à¥‡à¤‚ à¤Ÿà¥‚à¤Ÿà¥€ à¤ªà¤¤à¥à¤¤à¤¿à¤¯à¤¾à¤: à¤°à¤µà¥€à¤‚à¤¦à¥à¤° à¤•à¥‡à¤²à¥‡à¤•à¤° à¤•à¥‡ à¤¦à¥‹ à¤²à¤˜à¥ à¤¨à¤¿à¤¬à¤‚à¤§: "à¤—à¤¿à¤¨à¥à¤¨à¥€ à¤•à¤¾ à¤¸à¥‹à¤¨à¤¾" à¤”à¤° "à¤à¥‡à¤¨ à¤•à¥€ à¤¦à¥‡à¤¨" à¤œà¥‹ à¤œà¥€à¤µà¤¨ à¤¦à¤°à¥à¤¶à¤¨ à¤•à¥€ à¤—à¤¹à¤°à¥€ à¤¬à¤¾à¤¤à¥‡à¤‚ à¤¸à¤°à¤² à¤­à¤¾à¤·à¤¾ à¤®à¥‡à¤‚ à¤•à¤¹à¤¤à¥‡ à¤¹à¥ˆà¤‚à¥¤', en: 'Patahar Mein Tooti Pattiyan: Two short essays on life philosophy: Ginni Ka Sona and Zen Ki Den.' },
+    14: { hi: 'à¤•à¤¾à¤°à¤¤à¥‚à¤¸: à¤¹à¤¬à¥€à¤¬ à¤¤à¤¨à¤µà¥€à¤° à¤•à¤¾ à¤¯à¤¹ à¤à¤•à¤¾à¤‚à¤•à¥€ à¤µà¤œà¤¼à¥€à¤° à¤…à¤²à¥€ à¤•à¥€ à¤¬à¤¹à¤¾à¤¦à¥à¤°à¥€ à¤”à¤° à¤…à¤‚à¤—à¥à¤°à¥‡à¤œà¥‹à¤‚ à¤•à¥‡ à¤µà¤¿à¤°à¥à¤¦à¥à¤§ à¤‰à¤¨à¤•à¥‡ à¤¸à¤¾à¤¹à¤¸ à¤•à¥€ à¤°à¥‹à¤®à¤¾à¤‚à¤šà¤• à¤•à¤¹à¤¾à¤¨à¥€ à¤ªà¥à¤°à¤¸à¥à¤¤à¥à¤¤ à¤•à¤°à¤¤à¤¾ à¤¹à¥ˆà¥¤', en: 'Kartoos: Habib Tanvir\'s one-act play depicting the bravery of Wazir Ali against the British.' },
   },
-  'संचयन (भाग-2)': {
-    1: { hi: 'हरिहर काका: मिथिलेश्वर की इस कहानी में एक निःसंतान बुजुर्ग की ज़मीन को लेकर परिवार और ठाकुरबारी के बीच की स्वार्थपूर्ण लड़ाई का मार्मिक चित्रण है।', en: 'Harihar Kaka: A poignant story about an old childless man caught between the greed of his family and a temple.' },
-    2: { hi: 'सपनों के-से दिन: गुरदयाल सिंह की यह कहानी बचपन की मासूमियत, स्कूल की यादें और जीवन की पहली सीख को बड़े ही आत्मीय ढंग से प्रस्तुत करती है।', en: 'Sapno ke-se Din: Gurdayal Singh\'s nostalgic story about childhood innocence and school memories.' },
-    3: { hi: 'टोपी शुक्ला: राही मासूम रज़ा की यह कहानी हिंदू-मुस्लिम मित्रता के माध्यम से सांप्रदायिक सद्भाव और बचपन की निश्छल दोस्ती का संदेश देती है।', en: 'Topi Shukla: A story about Hindu-Muslim friendship conveying communal harmony through children\'s innocent bond.' },
+  'à¤¸à¤‚à¤šà¤¯à¤¨ (à¤­à¤¾à¤—-2)': {
+    1: { hi: 'à¤¹à¤°à¤¿à¤¹à¤° à¤•à¤¾à¤•à¤¾: à¤®à¤¿à¤¥à¤¿à¤²à¥‡à¤¶à¥à¤µà¤° à¤•à¥€ à¤‡à¤¸ à¤•à¤¹à¤¾à¤¨à¥€ à¤®à¥‡à¤‚ à¤à¤• à¤¨à¤¿à¤ƒà¤¸à¤‚à¤¤à¤¾à¤¨ à¤¬à¥à¤œà¥à¤°à¥à¤— à¤•à¥€ à¤œà¤¼à¤®à¥€à¤¨ à¤•à¥‹ à¤²à¥‡à¤•à¤° à¤ªà¤°à¤¿à¤µà¤¾à¤° à¤”à¤° à¤ à¤¾à¤•à¥à¤°à¤¬à¤¾à¤°à¥€ à¤•à¥‡ à¤¬à¥€à¤š à¤•à¥€ à¤¸à¥à¤µà¤¾à¤°à¥à¤¥à¤ªà¥‚à¤°à¥à¤£ à¤²à¤¡à¤¼à¤¾à¤ˆ à¤•à¤¾ à¤®à¤¾à¤°à¥à¤®à¤¿à¤• à¤šà¤¿à¤¤à¥à¤°à¤£ à¤¹à¥ˆà¥¤', en: 'Harihar Kaka: A poignant story about an old childless man caught between the greed of his family and a temple.' },
+    2: { hi: 'à¤¸à¤ªà¤¨à¥‹à¤‚ à¤•à¥‡-à¤¸à¥‡ à¤¦à¤¿à¤¨: à¤—à¥à¤°à¤¦à¤¯à¤¾à¤² à¤¸à¤¿à¤‚à¤¹ à¤•à¥€ à¤¯à¤¹ à¤•à¤¹à¤¾à¤¨à¥€ à¤¬à¤šà¤ªà¤¨ à¤•à¥€ à¤®à¤¾à¤¸à¥‚à¤®à¤¿à¤¯à¤¤, à¤¸à¥à¤•à¥‚à¤² à¤•à¥€ à¤¯à¤¾à¤¦à¥‡à¤‚ à¤”à¤° à¤œà¥€à¤µà¤¨ à¤•à¥€ à¤ªà¤¹à¤²à¥€ à¤¸à¥€à¤– à¤•à¥‹ à¤¬à¤¡à¤¼à¥‡ à¤¹à¥€ à¤†à¤¤à¥à¤®à¥€à¤¯ à¤¢à¤‚à¤— à¤¸à¥‡ à¤ªà¥à¤°à¤¸à¥à¤¤à¥à¤¤ à¤•à¤°à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Sapno ke-se Din: Gurdayal Singh\'s nostalgic story about childhood innocence and school memories.' },
+    3: { hi: 'à¤Ÿà¥‹à¤ªà¥€ à¤¶à¥à¤•à¥à¤²à¤¾: à¤°à¤¾à¤¹à¥€ à¤®à¤¾à¤¸à¥‚à¤® à¤°à¤œà¤¼à¤¾ à¤•à¥€ à¤¯à¤¹ à¤•à¤¹à¤¾à¤¨à¥€ à¤¹à¤¿à¤‚à¤¦à¥‚-à¤®à¥à¤¸à¥à¤²à¤¿à¤® à¤®à¤¿à¤¤à¥à¤°à¤¤à¤¾ à¤•à¥‡ à¤®à¤¾à¤§à¥à¤¯à¤® à¤¸à¥‡ à¤¸à¤¾à¤‚à¤ªà¥à¤°à¤¦à¤¾à¤¯à¤¿à¤• à¤¸à¤¦à¥à¤­à¤¾à¤µ à¤”à¤° à¤¬à¤šà¤ªà¤¨ à¤•à¥€ à¤¨à¤¿à¤¶à¥à¤›à¤² à¤¦à¥‹à¤¸à¥à¤¤à¥€ à¤•à¤¾ à¤¸à¤‚à¤¦à¥‡à¤¶ à¤¦à¥‡à¤¤à¥€ à¤¹à¥ˆà¥¤', en: 'Topi Shukla: A story about Hindu-Muslim friendship conveying communal harmony through children\'s innocent bond.' },
   }
 };
 
 function getIntroData(bookName, chNum) {
   const name = bookName.toLowerCase();
   let bookKey = null;
-  if (name.includes('स्पर्श') || name.includes('sparsh')) {
-    bookKey = 'स्पर्श (भाग-2)';
-  } else if (name.includes('संचयन') || name.includes('sanchayan')) {
-    bookKey = 'संचयन (भाग-2)';
+  if (name.includes('à¤¸à¥à¤ªà¤°à¥à¤¶') || name.includes('sparsh')) {
+    bookKey = 'à¤¸à¥à¤ªà¤°à¥à¤¶ (à¤­à¤¾à¤—-2)';
+  } else if (name.includes('à¤¸à¤‚à¤šà¤¯à¤¨') || name.includes('sanchayan')) {
+    bookKey = 'à¤¸à¤‚à¤šà¤¯à¤¨ (à¤­à¤¾à¤—-2)';
   }
   if (!bookKey) return null;
   return (CHAPTER_INTROS[bookKey] || {})[chNum] || null;
@@ -947,12 +947,12 @@ function renderChapter(book, ch) {
   var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
     var opts = [
-    { icon:'📝', label:'पाठ सारांश', sub:'Summary',          cat:'summary',   color:'#2BA899' },
-    { icon:'📄', label:'पाठ PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
-    { icon:'❓', label:'नोट्स',     sub:'Notes',            cat:'notes',     color:'#E05555' },
-    { icon:'📖', label:'मुहावरे एवं शब्द-अर्थ', sub:'Word Meanings', cat:'muhavre', color:'#9B59B6' },
-    { icon:'🎯', label:'CBQ',             sub:'Competency Based Qs', cat:'competency', color:'#E8900A' },
-    { icon:'⭐', label:'अतिरिक्त प्रश्न', sub:'Additional Questions', cat:'additional', color:'#27AE60' },
+    { icon:'ðŸ“', label:'à¤ªà¤¾à¤  à¤¸à¤¾à¤°à¤¾à¤‚à¤¶', sub:'Summary',          cat:'summary',   color:'#2BA899' },
+    { icon:'ðŸ“„', label:'à¤ªà¤¾à¤  PDF',        sub:'Chapter PDF',      cat:'pdf',       color:'#3A7BD5' },
+    { icon:'â“', label:'à¤¨à¥‹à¤Ÿà¥à¤¸',     sub:'Notes',            cat:'notes',     color:'#E05555' },
+    { icon:'ðŸ“–', label:'à¤®à¥à¤¹à¤¾à¤µà¤°à¥‡ à¤à¤µà¤‚ à¤¶à¤¬à¥à¤¦-à¤…à¤°à¥à¤¥', sub:'Word Meanings', cat:'muhavre', color:'#9B59B6' },
+    { icon:'ðŸŽ¯', label:'CBQ',             sub:'Competency Based Qs', cat:'competency', color:'#E8900A' },
+    { icon:'â­', label:'à¤…à¤¤à¤¿à¤°à¤¿à¤•à¥à¤¤ à¤ªà¥à¤°à¤¶à¥à¤¨', sub:'Additional Questions', cat:'additional', color:'#27AE60' },
   ];
 
   var linksHtml = opts.map(function(o) {
@@ -980,7 +980,7 @@ function selectChapter(bookName, chNum, chTitle, fileUrl) {
   openRightContent(bookName, chNum, chTitle, 'summary');
 }
 
-// ─── HTML Content Viewer & Editor Helpers ─────────────────────────────────────
+// â”€â”€â”€ HTML Content Viewer & Editor Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let _chapterHtmlCache = null;
 
 async function fetchChapterHtmlContent() {
@@ -1044,12 +1044,12 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   const safeCat = category || 'summary';
 
   const catTabs = [
-    { key: 'summary',    icon: '📝', label: 'Summary' },
-    { key: 'pdf',        icon: '📄', label: 'PDF' },
-    { key: 'notes',      icon: '❓', label: 'Notes' },
-    { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
-    { key: 'additional', icon: '⭐', label: 'अतिरिक्त प्रश्न (Additional Qs)' },
-    { key: 'muhavre',    icon: '📖', label: 'Muhavre & Word Meanings' },
+    { key: 'summary',    icon: 'ðŸ“', label: 'Summary' },
+    { key: 'pdf',        icon: 'ðŸ“„', label: 'PDF' },
+    { key: 'notes',      icon: 'â“', label: 'Notes' },
+    { key: 'competency', icon: 'ðŸŽ¯', label: 'CBQ (Competency Based Qs)' },
+    { key: 'additional', icon: 'â­', label: 'à¤…à¤¤à¤¿à¤°à¤¿à¤•à¥à¤¤ à¤ªà¥à¤°à¤¶à¥à¤¨ (Additional Qs)' },
+    { key: 'muhavre',    icon: 'ðŸ“–', label: 'Muhavre & Word Meanings' },
   ];
 
   const tabsHtml = catTabs.map(t => {
@@ -1168,9 +1168,9 @@ function openRightComingSoon(type, chTitle) {
         <span style="font-weight:700;color:var(--text-primary)">${type}: ${chTitle}</span>
       </div>
       <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
-        <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
-        <h3 style="color:var(--text-primary);margin-bottom:.5rem">जल्द आएगा!</h3>
-        <p style="color:var(--text-muted)">यह सामग्री तैयार की जा रही है।</p>
+        <div style="font-size:2.5rem;margin-bottom:1rem">ðŸš§</div>
+        <h3 style="color:var(--text-primary);margin-bottom:.5rem">à¤œà¤²à¥à¤¦ à¤†à¤à¤—à¤¾!</h3>
+        <p style="color:var(--text-muted)">à¤¯à¤¹ à¤¸à¤¾à¤®à¤—à¥à¤°à¥€ à¤¤à¥ˆà¤¯à¤¾à¤° à¤•à¥€ à¤œà¤¾ à¤°à¤¹à¥€ à¤¹à¥ˆà¥¤</p>
       </div>
     </div>`;
 }
@@ -1193,7 +1193,7 @@ function openRightPDF(bookName, chNum, chTitle, fileUrl) {
           <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} &rsaquo; Chapter ${chNum}</div>
           <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${chTitle}: PDF</span>
         </div>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','${url.replace(/'/g,"\\'")}')">← वापस</button>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','${url.replace(/'/g,"\\'")}')">â† à¤µà¤¾à¤ªà¤¸</button>
       </div>
       <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
         <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
@@ -1209,22 +1209,22 @@ function _OLD_renderChapter_unused(book, ch) {
   const introHi = introData ? introData.hi : '';
   const introEn = introData ? introData.en : '';
   const quickLinks = [
-    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: पाठ PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
-    { label: 'पाठ सारांश (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: '📝' },
-    { label: 'प्रश्न-उत्तर (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')`, icon: '❓' },
-    { label: 'मुहावरे / शब्द-अर्थ', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
-    { label: 'पिछले वर्ष के प्रश्न (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')`, icon: '🕐' },
-    { label: 'अतिरिक्त अभ्यास प्रश्न', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: '⭐' },
+    { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: à¤ªà¤¾à¤  PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: 'ðŸ“„' },
+    { label: 'à¤ªà¤¾à¤  à¤¸à¤¾à¤°à¤¾à¤‚à¤¶ (Summary)', action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')`, icon: 'ðŸ“' },
+    { label: 'à¤ªà¥à¤°à¤¶à¥à¤¨-à¤‰à¤¤à¥à¤¤à¤° (Q&A)', action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')`, icon: 'â“' },
+    { label: 'à¤®à¥à¤¹à¤¾à¤µà¤°à¥‡ / à¤¶à¤¬à¥à¤¦-à¤…à¤°à¥à¤¥', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: 'ðŸ“–' },
+    { label: 'à¤ªà¤¿à¤›à¤²à¥‡ à¤µà¤°à¥à¤· à¤•à¥‡ à¤ªà¥à¤°à¤¶à¥à¤¨ (PYQ)', action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')`, icon: 'ðŸ•' },
+    { label: 'à¤…à¤¤à¤¿à¤°à¤¿à¤•à¥à¤¤ à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤ªà¥à¤°à¤¶à¥à¤¨', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: 'â­' },
   ];
 
   // Right column: sidebar resource buttons
   const sidebarOptions = [
-    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'पाठ का सार',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
-    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'प्रश्न-उत्तर',        action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')` },
-    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'शब्द अर्थ',          action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')` },
-    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'पिछले वर्ष प्रश्न',   action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')` },
-    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'अभ्यास प्रश्न',      action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')` },
-    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'पाठ डाउनलोड',       action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')` },
+    { icon: SVG.file,   color: '#2BA899', bg: '#E8F8F6', label: 'Summary',          sublabel: 'à¤ªà¤¾à¤  à¤•à¤¾ à¤¸à¤¾à¤°',         action: `openSummary('${book.name.replace(/'/g, "\\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\\'")}')` },
+    { icon: SVG.check,  color: '#27AE60', bg: '#EAF7EF', label: 'Q & A',            sublabel: 'à¤ªà¥à¤°à¤¶à¥à¤¨-à¤‰à¤¤à¥à¤¤à¤°',        action: `openDocViewer('${book.name} Ch.${ch.num}: Q&A')` },
+    { icon: SVG.pencil, color: '#9B59B6', bg: '#F5EFF9', label: 'Word Meanings',    sublabel: 'à¤¶à¤¬à¥à¤¦ à¤…à¤°à¥à¤¥',          action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')` },
+    { icon: SVG.clock,  color: '#E05555', bg: '#FDE8E8', label: 'PYQ',              sublabel: 'à¤ªà¤¿à¤›à¤²à¥‡ à¤µà¤°à¥à¤· à¤ªà¥à¤°à¤¶à¥à¤¨',   action: `openDocViewer('${book.name} Ch.${ch.num}: PYQ')` },
+    { icon: SVG.star,   color: '#E8900A', bg: '#FFF4E0', label: 'Practice',         sublabel: 'à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤ªà¥à¤°à¤¶à¥à¤¨',      action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')` },
+    { icon: SVG.dl,     color: '#3A7BD5', bg: '#EBF3FD', label: 'Download PDF',     sublabel: 'à¤ªà¤¾à¤  à¤¡à¤¾à¤‰à¤¨à¤²à¥‹à¤¡',       action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')` },
   ];
 
   return `
@@ -1247,7 +1247,7 @@ function _OLD_renderChapter_unused(book, ch) {
               </div>` : ''}
 
               <div class="ch-links-block">
-                <p class="ch-links-label">इस अध्याय में:</p>
+                <p class="ch-links-label">à¤‡à¤¸ à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤®à¥‡à¤‚:</p>
                 <ul class="ch-links-list">
                   ${quickLinks.map(l => `
                     <li>
@@ -1259,7 +1259,7 @@ function _OLD_renderChapter_unused(book, ch) {
 
               ${ch.worksheets > 0 ? `
               <div class="ch-ws-block">
-                <p class="ch-links-label">अभ्यास पत्रक (Worksheets):</p>
+                <p class="ch-links-label">à¤…à¤­à¥à¤¯à¤¾à¤¸ à¤ªà¤¤à¥à¤°à¤• (Worksheets):</p>
                 <div class="ch-ws-row">
                   ${Array.from({ length: ch.worksheets }, (_, i) => `
                     <button class="ws-btn download" onclick="handleDownload('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.dl} Worksheet ${i+1}</button>
@@ -1280,7 +1280,7 @@ function _OLD_renderChapter_unused(book, ch) {
                       <span class="ch-opt-label">${r.label}</span>
                       <span class="ch-opt-sub">${r.sublabel}</span>
                     </div>
-                    <span class="ch-opt-arrow">→</span>
+                    <span class="ch-opt-arrow">â†’</span>
                   </div>`).join('')}
               </div>
             </div>
@@ -1291,9 +1291,9 @@ function _OLD_renderChapter_unused(book, ch) {
     </div>`;
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    7. TEST SHEETS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initTestSheets() {
   /* Category tabs */
   document.querySelectorAll('.test-tab').forEach(tab => {
@@ -1393,9 +1393,9 @@ function renderTestPaperCard(p) {
     </div>`;
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    8. CONTACT FORM
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
@@ -1465,9 +1465,9 @@ function initContactForm() {
   });
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    9. REVISION NOTIFY FORM
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initRevisionNotify() {
   const form = document.getElementById('notify-form');
   if (!form) return;
@@ -1499,9 +1499,9 @@ function initRevisionNotify() {
   });
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    10. DOCUMENT VIEWER MODAL
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initDocModal() {
   const modal     = document.getElementById('doc-modal');
   const closeBtn  = document.getElementById('doc-modal-close');
@@ -1539,9 +1539,9 @@ function openDocViewer(title, url) {
             <span style="font-weight:700;color:var(--text-primary)">${title}</span>
           </div>
           <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
-            <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
-            <h3 style="color:var(--text-primary);margin-bottom:.5rem">जल्द आएगा!</h3>
-            <p style="color:var(--text-muted)">यह सामग्री तैयार की जा रही है।</p>
+            <div style="font-size:2.5rem;margin-bottom:1rem">ðŸš§</div>
+            <h3 style="color:var(--text-primary);margin-bottom:.5rem">à¤œà¤²à¥à¤¦ à¤†à¤à¤—à¤¾!</h3>
+            <p style="color:var(--text-muted)">à¤¯à¤¹ à¤¸à¤¾à¤®à¤—à¥à¤°à¥€ à¤¤à¥ˆà¤¯à¤¾à¤° à¤•à¥€ à¤œà¤¾ à¤°à¤¹à¥€ à¤¹à¥ˆà¥¤</p>
           </div>
         </div>`;
       return;
@@ -1561,10 +1561,10 @@ function openDocViewer(title, url) {
           </div>
           <div style="display:flex; gap:.4rem; align-items:center;">
             <button class="rp-summary-back" onclick="handleDownload('${title.replace(/'/g,"\\'")}', '${absoluteUrl}')" style="font-size:.78rem;">
-              📥 Download
+              ðŸ“¥ Download
             </button>
             <button class="rp-summary-back" onclick="window.open('${absoluteUrl}', '_blank')" style="font-size:.78rem;">
-              ↗ Open Tab
+              â†— Open Tab
             </button>
           </div>
         </div>
@@ -1621,7 +1621,7 @@ function openDocViewer(title, url) {
         <div class="viewer-mobile-hint">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           Document load nahi ho raha?
-          <a href="${url}" target="_blank" rel="noopener" class="viewer-open-link">Naye tab mein kholen →</a>
+          <a href="${url}" target="_blank" rel="noopener" class="viewer-open-link">Naye tab mein kholen â†’</a>
         </div>` : ''}
       </div>`;
   } else {
@@ -1634,7 +1634,7 @@ function openDocViewer(title, url) {
 }
 
 
-// ─── Chapter Summary Viewer System ──────────────────────────────────────────
+// â”€â”€â”€ Chapter Summary Viewer System â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let _summariesCache = null;
 
 async function fetchSummaries() {
@@ -1651,16 +1651,16 @@ async function fetchSummaries() {
 }
 
 function getSummaryKey(bookName, chNum, chTitle = '') {
-  const isSparsh = bookName.includes('स्पर्श') || bookName.toLowerCase().includes('sparsh');
-  const isSanchayan = bookName.includes('संचयन') || bookName.toLowerCase().includes('sanchayan');
+  const isSparsh = bookName.includes('à¤¸à¥à¤ªà¤°à¥à¤¶') || bookName.toLowerCase().includes('sparsh');
+  const isSanchayan = bookName.includes('à¤¸à¤‚à¤šà¤¯à¤¨') || bookName.toLowerCase().includes('sanchayan');
   const title = (chTitle || '').toLowerCase();
   
   if (isSparsh) {
-    if (chNum === 2 || title.includes('मीरा') || title.includes('meera')) return 'meera_ke_pad';
-    if (chNum === 9 || chNum === 11 || title.includes('डायरी') || title.includes('diary')) return 'dairy_ke_panne';
+    if (chNum === 2 || title.includes('à¤®à¥€à¤°à¤¾') || title.includes('meera')) return 'meera_ke_pad';
+    if (chNum === 9 || chNum === 11 || title.includes('à¤¡à¤¾à¤¯à¤°à¥€') || title.includes('diary')) return 'dairy_ke_panne';
   }
   if (isSanchayan) {
-    if (chNum === 1 || title.includes('हरिहर') || title.includes('harihar')) return 'harihar_kaka';
+    if (chNum === 1 || title.includes('à¤¹à¤°à¤¿à¤¹à¤°') || title.includes('harihar')) return 'harihar_kaka';
   }
   return null;
 }
@@ -1677,20 +1677,20 @@ function parseSummaryArray(arr, bookName, chNum, chTitle) {
   
   let currentIndex = 0;
   
-  if (arr[currentIndex] === "पाठ का मुख्य विवरण (Quick Overview)") {
+  if (arr[currentIndex] === "à¤ªà¤¾à¤  à¤•à¤¾ à¤®à¥à¤–à¥à¤¯ à¤µà¤¿à¤µà¤°à¤£ (Quick Overview)") {
     currentIndex++;
   }
   
   while (currentIndex < arr.length) {
     const line = arr[currentIndex].trim();
-    if (line.includes("पाठ का नाम:")) {
-      bookTitle = line.replace(/.*पाठ का नाम:\s*/, '').replace(/[•\s]/g, '').trim();
+    if (line.includes("à¤ªà¤¾à¤  à¤•à¤¾ à¤¨à¤¾à¤®:")) {
+      bookTitle = line.replace(/.*à¤ªà¤¾à¤  à¤•à¤¾ à¤¨à¤¾à¤®:\s*/, '').replace(/[â€¢ï‚·\s]/g, '').trim();
       currentIndex++;
-    } else if (line.includes("कक्षा:")) {
-      classInfo = line.replace(/.*कक्षा:\s*/, '').replace(/[•\s]/g, '').trim();
+    } else if (line.includes("à¤•à¤•à¥à¤·à¤¾:")) {
+      classInfo = line.replace(/.*à¤•à¤•à¥à¤·à¤¾:\s*/, '').replace(/[â€¢ï‚·\s]/g, '').trim();
       currentIndex++;
-    } else if (line.includes("लेखक:")) {
-      author = line.replace(/.*लेखक:\s*/, '').replace(/[•\s]/g, '').trim();
+    } else if (line.includes("à¤²à¥‡à¤–à¤•:")) {
+      author = line.replace(/.*à¤²à¥‡à¤–à¤•:\s*/, '').replace(/[â€¢ï‚·\s]/g, '').trim();
       currentIndex++;
     } else if (line === "(SUMMARY)" || line === "SUMMARY") {
       currentIndex++;
@@ -1710,9 +1710,9 @@ function parseSummaryArray(arr, bookName, chNum, chTitle) {
     const text = arr[i].trim();
     if (!text) continue;
     
-    if (text.startsWith("हिंदी:") || text.startsWith("हिंदी :")) {
+    if (text.startsWith("à¤¹à¤¿à¤‚à¤¦à¥€:") || text.startsWith("à¤¹à¤¿à¤‚à¤¦à¥€ :")) {
       if (currentPoint) {
-        currentPoint.hindi = text.replace(/^हिंदी\s*:\s*/, '').trim();
+        currentPoint.hindi = text.replace(/^à¤¹à¤¿à¤‚à¤¦à¥€\s*:\s*/, '').trim();
       }
     } else if (text.startsWith("English:") || text.startsWith("English :")) {
       if (currentPoint) {
@@ -1756,11 +1756,11 @@ async function openSummary(bookName, chNum, chTitle) {
     <div class="rp-summary-wrap">
       <div class="rp-summary-header">
         <span style="font-weight:700;color:var(--text-primary)">${bookName} Ch.${chNum}: Summary</span>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† à¤µà¤¾à¤ªà¤¸</button>
       </div>
       <div class="rp-summary-body" style="display:flex;align-items:center;gap:.75rem;padding:2rem">
         <div style="width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite"></div>
-        <p style="color:var(--text-muted);font-weight:500">Summary लोड हो रही है...</p>
+        <p style="color:var(--text-muted);font-weight:500">Summary à¤²à¥‹à¤¡ à¤¹à¥‹ à¤°à¤¹à¥€ à¤¹à¥ˆ...</p>
       </div>
     </div>`;
 
@@ -1772,12 +1772,12 @@ async function openSummary(bookName, chNum, chTitle) {
       <div class="rp-summary-wrap">
         <div class="rp-summary-header">
           <span style="font-weight:700;color:var(--text-primary)">${chTitle}: Summary</span>
-          <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
+          <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† à¤µà¤¾à¤ªà¤¸</button>
         </div>
         <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
-          <div style="font-size:2.5rem;margin-bottom:1rem">📝</div>
-          <h3 style="color:var(--text-primary);margin-bottom:.5rem">Summary जल्द आएगी</h3>
-          <p style="color:var(--text-muted)"><strong>${chTitle}</strong> का सारांश तैयार किया जा रहा है।</p>
+          <div style="font-size:2.5rem;margin-bottom:1rem">ðŸ“</div>
+          <h3 style="color:var(--text-primary);margin-bottom:.5rem">Summary à¤œà¤²à¥à¤¦ à¤†à¤à¤—à¥€</h3>
+          <p style="color:var(--text-muted)"><strong>${chTitle}</strong> à¤•à¤¾ à¤¸à¤¾à¤°à¤¾à¤‚à¤¶ à¤¤à¥ˆà¤¯à¤¾à¤° à¤•à¤¿à¤¯à¤¾ à¤œà¤¾ à¤°à¤¹à¤¾ à¤¹à¥ˆà¥¤</p>
         </div>
       </div>`;
     return;
@@ -1788,7 +1788,7 @@ async function openSummary(bookName, chNum, chTitle) {
 
   let pts = '';
   if (data.introText) {
-    pts += `<div class="summary-intro-box"><strong>${data.introTitle || 'अध्याय एक नज़र में'}:</strong><br/>${data.introText}</div>`;
+    pts += `<div class="summary-intro-box"><strong>${data.introTitle || 'à¤…à¤§à¥à¤¯à¤¾à¤¯ à¤à¤• à¤¨à¤œà¤¼à¤° à¤®à¥‡à¤‚'}:</strong><br/>${data.introText}</div>`;
   }
   pts += `<div class="summary-points-list">`;
   data.points.forEach(pt => {
@@ -1804,14 +1804,14 @@ async function openSummary(bookName, chNum, chTitle) {
     <div class="rp-summary-wrap">
       <div class="rp-summary-header">
         <div>
-          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} › Chapter ${chNum}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} â€º Chapter ${chNum}</div>
           <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${data.bookTitle || chTitle}</span>
         </div>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">← वापस</button>
+        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† à¤µà¤¾à¤ªà¤¸</button>
       </div>
       <div class="rp-summary-body">
         <div class="summary-viewer-wrap">
-          <h3 class="summary-section-title">पाठ का सार (Quick Revision Summary)</h3>
+          <h3 class="summary-section-title">à¤ªà¤¾à¤  à¤•à¤¾ à¤¸à¤¾à¤° (Quick Revision Summary)</h3>
           ${pts}
         </div>
       </div>
@@ -1822,9 +1822,9 @@ async function openSummary(bookName, chNum, chTitle) {
 
 
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    11. UPLOAD ANSWER SHEET MODAL
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initUploadModal() {
   const modal      = document.getElementById('upload-modal');
   const closeBtn   = document.getElementById('upload-modal-close');
@@ -1932,9 +1932,9 @@ function openUploadModal(resourceName) {
   openModal(modal);
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    12. SCROLL TO TOP
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function initScrollTop() {
   const btn = document.getElementById('scroll-top');
   if (!btn) return;
@@ -1942,9 +1942,9 @@ function initScrollTop() {
   btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-/* ══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    13. HELPERS
-══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function openModal(modal) {
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
@@ -2042,7 +2042,7 @@ function showToast(message) {
   }, 4000);
 }
 
-// ─── Mobile Slide Layout helpers ───────────────────────────────────────────
+// â”€â”€â”€ Mobile Slide Layout helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function showSubjectDetails() {
   const layout = document.querySelector('.boards-split-layout');
   if (layout) layout.classList.add('show-right');
@@ -2066,7 +2066,7 @@ function showEmptyRightPanel() {
   if (!panel) return;
   panel.innerHTML = `
     <div class="boards-detail-empty">
-      <div class="detail-empty-icon">📖</div>
+      <div class="detail-empty-icon">ðŸ“–</div>
       <h3>Select a Chapter</h3>
       <p>Choose any chapter from the left panel to view <strong>Summary, PDF, Notes, PYQs &amp; Worksheets</strong>.</p>
     </div>
@@ -2091,3 +2091,4 @@ function closeAboutModal() {
 
 window.openAboutModal = openAboutModal;
 window.closeAboutModal = closeAboutModal;
+

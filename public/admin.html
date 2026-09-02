@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GyanLok - Admin Portal Login</title>
+  <title>EkShala - Admin Portal Login</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233A7BD5'/><path d='M9 10h14M9 16h9M9 22h12' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,12 +35,12 @@
   </head>
 <body>
 
-  <!-- ════════════════════════════════════════
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
        LOGIN SCREEN ONLY
-       ════════════════════════════════════════ -->
+       â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <div id="login-container" class="login-wrapper">
     <div class="login-card">
-      <a href="javascript:void(0)" class="auth-back-btn" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='/';}">&larr; Back / वापस जाएं</a>
+      <a href="javascript:void(0)" class="auth-back-btn" onclick="if(window.history.length>1){window.history.back();}else{window.location.href='/';}">&larr; Back / à¤µà¤¾à¤ªà¤¸ à¤œà¤¾à¤à¤‚</a>
       <div class="login-header">
         <span class="logo-icon">
           <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
@@ -76,16 +76,16 @@
         <form id="verify-otp-form" novalidate>
           <div class="form-group">
             <label for="otp-input">Enter 6-Digit OTP</label>
-            <input type="text" id="otp-input" placeholder="••••••" maxlength="6" inputmode="numeric" pattern="[0-9]*" required autocomplete="one-time-code" style="letter-spacing:0.3em;font-size:1.4rem;text-align:center;" />
+            <input type="text" id="otp-input" placeholder="â€¢â€¢â€¢â€¢â€¢â€¢" maxlength="6" inputmode="numeric" pattern="[0-9]*" required autocomplete="one-time-code" style="letter-spacing:0.3em;font-size:1.4rem;text-align:center;" />
           </div>
-          <div id="otp-timer" style="text-align:center;font-size:0.82rem;color:#888;margin-bottom:12px;">⏱ OTP expires in <strong id="timer-count">5:00</strong></div>
+          <div id="otp-timer" style="text-align:center;font-size:0.82rem;color:#888;margin-bottom:12px;">â± OTP expires in <strong id="timer-count">5:00</strong></div>
           <div id="otp-verify-error" class="error-box" hidden></div>
           <div id="otp-dev-notice" hidden style="background:#FFF3CD;border:1px solid #FFECB5;color:#856404;padding:10px 14px;border-radius:8px;font-size:0.82rem;margin-bottom:10px;font-family:monospace;"></div>
           <button type="submit" class="btn btn-primary btn-block" id="verify-otp-btn">Verify OTP &amp; Login</button>
           <button type="button" class="auth-back-btn" style="margin-top:12px;margin-bottom:0;width:100%;justify-content:center;" onclick="document.getElementById('step-otp').hidden=true;document.getElementById('step-email').hidden=false;">&larr; Change Email / Re-enter Email</button>
         </form>
         <button id="resend-otp-btn" class="btn-link" style="display:block;text-align:center;margin-top:12px;font-size:0.83rem;color:#3A7BD5;background:none;border:none;cursor:pointer;">
-          ↩ Resend OTP / Change Email
+          â†© Resend OTP / Change Email
         </button>
       </div>
 
@@ -95,3 +95,4 @@
   <script src="admin-login-script.js?v=51.0.0"></script>
 </body>
 </html>
+

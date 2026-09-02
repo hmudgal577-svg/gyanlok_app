@@ -1,7 +1,7 @@
-{
-  "name": "gyanlok-backend",
+﻿{
+  "name": "ekshala-backend",
   "version": "1.0.0",
-  "description": "Production-grade secure backend for GyanLok learning platform",
+  "description": "Production-grade secure backend for EkShala learning platform",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -27,3 +27,4 @@
     "node": ">=18.0.0"
   }
 }
+
