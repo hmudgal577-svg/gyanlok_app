@@ -2943,8 +2943,8 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   letter-spacing: .04em;
 }
 
-/* ── Muhavre / Idioms grid ── */
-.fs-doc-content .muhavre-grid {
+/* ── Muhavare / Idioms grid ── */
+.fs-doc-content .muhavare-grid, .muhavre-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1rem;
@@ -3035,7 +3035,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 
 /* Mobile fixes */
 @media (max-width: 768px) {
-  .fs-doc-content .muhavre-grid { grid-template-columns: 1fr; }
+  .fs-doc-content .muhavare-grid, .muhavre-grid { grid-template-columns: 1fr; }
   .fs-doc-content > h2:first-child { font-size: 1.1rem !important; padding: 1rem !important; }
   .fs-doc-content .question-header { font-size: .88rem; }
 }

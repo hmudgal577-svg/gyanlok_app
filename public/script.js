@@ -950,7 +950,7 @@ function renderChapter(book, ch) {
     { icon:'📜', label:'Summary',                sub:'Chapter Summary',       cat:'summary',    color:'#2BA899' },
     { icon:'📄', label:'PDF',                    sub:'Chapter PDF',           cat:'pdf',        color:'#3A7BD5' },
     { icon:'📝', label:'Notes',                  sub:'Revision Notes',        cat:'notes',      color:'#E05555' },
-    { icon:'📖', label:'Word Meanings & Muhavre', sub:'Vocabulary & Idioms',   cat:'muhavre',    color:'#9B59B6' },
+    { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',   cat:'muhavre',    color:'#9B59B6' },
     { icon:'🎯', label:'CBQ',                    sub:'Competency Based Qs',   cat:'competency', color:'#E8900A' },
     { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',    cat:'additional', color:'#27AE60' },
   ];
@@ -1049,7 +1049,7 @@ async function openRightContent(bookName, chNum, chTitle, category) {
     { key: 'notes',      icon: '📝', label: 'Notes' },
     { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
     { key: 'additional', icon: '⭐', label: 'Additional Questions' },
-    { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavre' },
+    { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
   ];
 
   const tabsHtml = catTabs.map(t => {
@@ -1212,7 +1212,7 @@ function _OLD_renderChapter_unused(book, ch) {
     { label: `${ch.title.split('-')[1] ? ch.title.split('-')[1].trim() : ch.title}: Chapter PDF`, action: `handleDownload('${book.name}: Chapter ${ch.num}', '${ch.file_url || ''}')`, icon: '📄' },
     { label: 'Summary', action: `openSummary('${book.name.replace(/'/g, "\'")}', ${ch.num}, '${ch.title.replace(/'/g, "\'")}')`, icon: '📜' },
     { label: 'Notes & Q/A', action: `openDocViewer('${book.name} Ch.${ch.num}: Notes')`, icon: '📝' },
-    { label: 'Word Meanings & Muhavre', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
+    { label: 'Word Meanings & Muhavare', action: `openDocViewer('${book.name} Ch.${ch.num}: Muhavare')`, icon: '📖' },
     { label: 'CBQ (Competency Based Qs)', action: `openDocViewer('${book.name} Ch.${ch.num}: CBQ')`, icon: '🎯' },
     { label: 'Additional Questions', action: `openDocViewer('${book.name} Ch.${ch.num}: Additional Qs')`, icon: '⭐' },
   ];
