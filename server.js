@@ -156,6 +156,20 @@ setTimeout(async () => {
     } else {
       await db.query('UPDATE users SET email = $1, password_hash = $2, updated_at = NOW() WHERE id = $3', [adminEmail, hash, res.rows[0].id]);
     }
+
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS student_chats (
+        id VARCHAR(64) PRIMARY KEY,
+        student_name VARCHAR(255),
+        student_email VARCHAR(255),
+        student_class VARCHAR(50),
+        message TEXT,
+        reply TEXT,
+        replied_at TIMESTAMP,
+        status VARCHAR(50) DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `);
   } catch (err) {
     usingDb = false;
     console.error('[DB] PostgreSQL connection FAILED:', err.message);
@@ -505,6 +519,109 @@ app.get('/api/student/submissions', auth, async (req, res) => {
   }
 });
 
+// POST /api/student/chat - Student asks a doubt to mentor
+app.post('/api/student/chat', async (req, res) => {
+  try {
+    let student_name = req.body.student_name;
+    let student_email = req.body.student_email;
+    let student_class = req.body.student_class;
+    const message = (req.body.message || req.body.text || '').trim();
+
+    // Try reading cookie token if available
+    const token = req.cookies && req.cookies.student_token;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        student_name = student_name || decoded.name;
+        student_email = student_email || decoded.email;
+        student_class = student_class || decoded.class_num;
+      } catch(e) {}
+    }
+
+    if (!message) {
+      return res.status(400).json({ error: 'Message cannot be empty.' });
+    }
+
+    student_name = student_name || 'Student';
+    student_email = student_email || 'anonymous';
+    student_class = student_class || '10';
+
+    const newId = 'chat_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    const newChat = {
+      id: newId,
+      student_name,
+      student_email,
+      student_class: String(student_class),
+      message,
+      reply: null,
+      replied_at: null,
+      status: 'pending',
+      created_at: new Date().toISOString()
+    };
+
+    if (usingDb) {
+      await db.query(
+        'INSERT INTO student_chats (id, student_name, student_email, student_class, message, reply, replied_at, status, created_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)',
+        [newChat.id, newChat.student_name, newChat.student_email, newChat.student_class, newChat.message, null, null, 'pending', newChat.created_at]
+      );
+    } else {
+      const chats = readJson('student_chats.json', []);
+      chats.push(newChat);
+      writeJson('student_chats.json', chats);
+    }
+
+    res.json({ success: true, chat: newChat });
+  } catch (err) {
+    console.error('[student-chat-post]', err);
+    res.status(500).json({ error: 'Failed to send message.' });
+  }
+});
+
+// GET /api/student/chat-messages - Student fetches their doubt history & replies
+app.get('/api/student/chat-messages', async (req, res) => {
+  try {
+    let student_name = req.query.student_name;
+    let student_email = req.query.student_email;
+
+    const token = req.cookies && req.cookies.student_token;
+    if (token) {
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        student_name = student_name || decoded.name;
+        student_email = student_email || decoded.email;
+      } catch(e) {}
+    }
+
+    if (usingDb) {
+      let query = 'SELECT * FROM student_chats';
+      const params = [];
+      if (student_email && student_email !== 'anonymous') {
+        query += ' WHERE student_email = $1 OR student_name = $2 ORDER BY created_at ASC';
+        params.push(student_email, student_name || '');
+      } else if (student_name) {
+        query += ' WHERE student_name = $1 ORDER BY created_at ASC';
+        params.push(student_name);
+      } else {
+        query += ' ORDER BY created_at ASC';
+      }
+      const r = await db.query(query, params);
+      return res.json({ success: true, messages: r.rows });
+    }
+
+    const chats = readJson('student_chats.json', []);
+    let filtered = chats;
+    if (student_email && student_email !== 'anonymous') {
+      filtered = chats.filter(c => c.student_email === student_email || c.student_name === student_name);
+    } else if (student_name) {
+      filtered = chats.filter(c => c.student_name === student_name);
+    }
+    res.json({ success: true, messages: filtered });
+  } catch (err) {
+    console.error('[student-chat-get]', err);
+    res.status(500).json({ error: 'Failed to fetch messages.' });
+  }
+});
+
 
 // ============================================================
 // PUBLIC APIs — Educational Content
@@ -716,6 +833,57 @@ app.get('/api/admin/mentor-requests', auth, async (req, res) => {
     }
     res.json(readJson('mentor_requests.json', []));
   } catch (err) { console.error(err); res.status(500).json({ error: 'Failed.' }); }
+});
+
+// GET /api/admin/student-chats - Admin views all student doubt messages
+app.get('/api/admin/student-chats', auth, async (req, res) => {
+  try {
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM student_chats ORDER BY created_at DESC');
+      return res.json({ success: true, chats: r.rows });
+    }
+    const chats = readJson('student_chats.json', []);
+    chats.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    res.json({ success: true, chats });
+  } catch (err) {
+    console.error('[admin-student-chats-get]', err);
+    res.status(500).json({ error: 'Failed to fetch student chats.' });
+  }
+});
+
+// POST /api/admin/student-chat-reply - Admin sends a direct reply to student doubt
+app.post('/api/admin/student-chat-reply', auth, async (req, res) => {
+  try {
+    const { chatId, replyText } = req.body;
+    if (!chatId || !replyText || !replyText.trim()) {
+      return res.status(400).json({ error: 'Chat ID and Reply text are required.' });
+    }
+    const reply = replyText.trim();
+    const replied_at = new Date().toISOString();
+
+    if (usingDb) {
+      const r = await db.query(
+        'UPDATE student_chats SET reply = $1, replied_at = $2, status = $3 WHERE id = $4 RETURNING *',
+        [reply, replied_at, 'replied', chatId]
+      );
+      if (r.rows.length === 0) return res.status(404).json({ error: 'Chat message not found.' });
+      return res.json({ success: true, chat: r.rows[0] });
+    }
+
+    const chats = readJson('student_chats.json', []);
+    const idx = chats.findIndex(c => String(c.id) === String(chatId));
+    if (idx === -1) return res.status(404).json({ error: 'Chat message not found.' });
+
+    chats[idx].reply = reply;
+    chats[idx].replied_at = replied_at;
+    chats[idx].status = 'replied';
+    writeJson('student_chats.json', chats);
+
+    res.json({ success: true, chat: chats[idx] });
+  } catch (err) {
+    console.error('[admin-student-chat-reply]', err);
+    res.status(500).json({ error: 'Failed to send reply.' });
+  }
 });
 
 // GET /api/admin/submissions

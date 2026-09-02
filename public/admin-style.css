@@ -654,3 +654,225 @@ tr:hover td {
 .btn-link:hover {
   color: #2a6ac3;
 }
+
+/* ════════════════════════════════════════════
+   STUDENT DOUBTS & LIVE MENTOR CHAT (ADMIN)
+   ════════════════════════════════════════════ */
+
+.btn-filter {
+  padding: 0.45rem 0.95rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-filter:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-filter.active {
+  background: var(--accent);
+  color: #fff !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 2px 8px rgba(58,123,213,0.25);
+}
+
+.doubts-list-container {
+  margin-top: 1rem;
+}
+
+.doubt-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 1.35rem 1.5rem;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.doubt-card:hover {
+  box-shadow: var(--shadow-md);
+}
+.doubt-card.pending {
+  border-left: 5px solid #e11d48;
+}
+.doubt-card.answered {
+  border-left: 5px solid #16a34a;
+}
+
+.doubt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.student-info-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.student-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3a7bd5, #00d2ff);
+  color: #fff;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.student-meta {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.doubt-status-tag {
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+}
+.doubt-status-tag.pending {
+  background: #ffe4e6;
+  color: #be123c;
+}
+.doubt-status-tag.answered {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.doubt-question-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--r-sm);
+  padding: 1rem 1.2rem;
+}
+.doubt-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #64748b;
+  margin-bottom: 0.4rem;
+}
+.doubt-text {
+  font-size: 0.95rem;
+  color: #0f172a;
+  line-height: 1.6;
+  font-weight: 500;
+  white-space: pre-wrap;
+}
+.doubt-time {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+.doubt-answer-box {
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  border-radius: var(--r-sm);
+  padding: 1rem 1.2rem;
+  position: relative;
+}
+.answer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.45rem;
+  font-size: 0.84rem;
+  color: #166534;
+}
+.reply-time {
+  font-size: 0.75rem;
+  color: #4ade80;
+  color: #15803d;
+}
+.answer-text {
+  font-size: 0.94rem;
+  color: #14532d;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+.btn-edit-reply {
+  background: none;
+  border: 1px solid #86efac;
+  background: #ffffff;
+  color: #166534;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 0.65rem;
+  display: inline-block;
+  transition: all 0.15s ease;
+}
+.btn-edit-reply:hover {
+  background: #dcfce7;
+}
+
+.doubt-reply-form {
+  margin-top: 0.25rem;
+}
+.doubt-reply-form.hidden-form {
+  display: none;
+}
+.reply-form-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 0.45rem;
+}
+.admin-reply-textarea {
+  width: 100%;
+  border: 1.5px solid #cbd5e1;
+  border-radius: var(--r-sm);
+  padding: 0.8rem 1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #1e293b;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.admin-reply-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(58,123,213,0.15);
+}
+.reply-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+}
+.btn-secondary {
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: #cbd5e1;
+}

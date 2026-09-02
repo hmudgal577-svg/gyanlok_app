@@ -48,10 +48,20 @@ function redirectToLogin() {
 
 function showDashboard() {
   document.getElementById('admin-email-display').textContent = currentAdmin.email;
-  // Load stats and requests
+  // Load stats, doubts and requests
   loadOverviewStats();
+  loadStudentChats();
   loadMentorRequests();
   loadSubmissions();
+
+  // Auto-poll student doubts every 10 seconds for real-time mentor alerts
+  setInterval(() => {
+    loadOverviewStats();
+    const activePanel = document.querySelector('.panel-section.active');
+    if (activePanel && activePanel.id === 'panel-student-doubts') {
+      loadStudentChats();
+    }
+  }, 10000);
 }
 
 function initLogout() {
@@ -86,9 +96,10 @@ function initSidebarMenu() {
         panel.classList.toggle('active', panel.id === target);
       });
       panelTitle.textContent = btn.innerText.trim();
-      if (target === 'panel-overview')         loadOverviewStats();
-      else if (target === 'panel-mentor')      loadMentorRequests();
-      else if (target === 'panel-submissions') loadSubmissions();
+      if (target === 'panel-overview')            loadOverviewStats();
+      else if (target === 'panel-student-doubts') loadStudentChats();
+      else if (target === 'panel-mentor')         loadMentorRequests();
+      else if (target === 'panel-submissions')    loadSubmissions();
       else if (target === 'panel-content-editor') ceLoadKeys();
     });
   });
@@ -100,20 +111,38 @@ function initSidebarMenu() {
 
 async function loadOverviewStats() {
   try {
-    const [requestsRes, submissionsRes, notificationsRes] = await Promise.all([
+    const [requestsRes, submissionsRes, notificationsRes, chatsRes] = await Promise.all([
       fetch(`${API_BASE}/api/admin/mentor-requests`,  { credentials: 'include' }),
       fetch(`${API_BASE}/api/admin/submissions`,       { credentials: 'include' }),
       fetch(`${API_BASE}/api/admin/notifications`,     { credentials: 'include' }),
+      fetch(`${API_BASE}/api/admin/student-chats`,      { credentials: 'include' }),
     ]);
 
     if (requestsRes.ok && submissionsRes.ok && notificationsRes.ok) {
       const requests      = await requestsRes.json();
       const submissions   = await submissionsRes.json();
       const notifications = await notificationsRes.json();
+      const chatsData     = chatsRes && chatsRes.ok ? await chatsRes.json() : { chats: [] };
+      const chats         = chatsData.chats || [];
 
       document.getElementById('stat-requests').textContent    = requests.length;
       document.getElementById('stat-submissions').textContent = submissions.length;
       document.getElementById('stat-alerts').textContent      = notifications.length;
+
+      const statDoubts = document.getElementById('stat-doubts');
+      if (statDoubts) statDoubts.textContent = chats.length;
+
+      // Pending doubts badge
+      const pendingDoubts = chats.filter(c => !c.reply || c.status === 'pending').length;
+      const badgeDoubts = document.getElementById('badge-doubts');
+      if (badgeDoubts) {
+        if (pendingDoubts > 0) {
+          badgeDoubts.textContent = pendingDoubts;
+          badgeDoubts.hidden = false;
+        } else {
+          badgeDoubts.hidden = true;
+        }
+      }
 
       const mentorBadge = document.getElementById('badge-mentor');
       if (requests.length > 0) { mentorBadge.textContent = requests.length; mentorBadge.hidden = false; }
@@ -148,6 +177,189 @@ function populateRecentRequests(requests) {
     </tr>
   `).join('');
 }
+
+// ----------------------------------------------------
+// Student Doubts & Live Mentor Chat Management
+// ----------------------------------------------------
+
+let allStudentChats = [];
+let currentDoubtsFilter = 'all';
+
+async function loadStudentChats(showToastNotice = false) {
+  const container = document.getElementById('student-doubts-list');
+  if (!container) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/student-chats`, { credentials: 'include' });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+    allStudentChats = data.chats || [];
+
+    // Counts
+    const total = allStudentChats.length;
+    const pending = allStudentChats.filter(c => !c.reply || c.status === 'pending').length;
+    const replied = total - pending;
+
+    const elAll = document.getElementById('count-doubts-all');
+    const elPending = document.getElementById('count-doubts-pending');
+    const elReplied = document.getElementById('count-doubts-replied');
+    if (elAll) elAll.textContent = total;
+    if (elPending) elPending.textContent = pending;
+    if (elReplied) elReplied.textContent = replied;
+
+    const statDoubts = document.getElementById('stat-doubts');
+    if (statDoubts) statDoubts.textContent = total;
+
+    const badgeDoubts = document.getElementById('badge-doubts');
+    if (badgeDoubts) {
+      if (pending > 0) {
+        badgeDoubts.textContent = pending;
+        badgeDoubts.hidden = false;
+      } else {
+        badgeDoubts.hidden = true;
+      }
+    }
+
+    renderStudentChatsList();
+    if (showToastNotice && typeof showAdminToast === 'function') {
+      showAdminToast('Student doubts refreshed!');
+    }
+  } catch (err) {
+    console.error('Failed to load student doubts:', err);
+    if (container) container.innerHTML = `<div class="no-data" style="color:red">Failed to load student doubts. Please retry.</div>`;
+  }
+}
+
+function setDoubtsFilter(filter) {
+  currentDoubtsFilter = filter;
+  document.querySelectorAll('.doubts-filter-bar .btn-filter').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `filter-doubts-${filter}`);
+  });
+  renderStudentChatsList();
+}
+
+function renderStudentChatsList() {
+  const container = document.getElementById('student-doubts-list');
+  if (!container) return;
+
+  let filtered = allStudentChats;
+  if (currentDoubtsFilter === 'pending') {
+    filtered = allStudentChats.filter(c => !c.reply || c.status === 'pending');
+  } else if (currentDoubtsFilter === 'replied') {
+    filtered = allStudentChats.filter(c => c.reply && c.status === 'replied');
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="no-data" style="padding:2.5rem;text-align:center;color:var(--text-muted);">No student doubts found for "${currentDoubtsFilter}" filter.</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(chat => {
+    const isAnswered = Boolean(chat.reply && chat.status === 'replied');
+    const createdDate = new Date(chat.created_at).toLocaleString();
+    const replyDate = chat.replied_at ? new Date(chat.replied_at).toLocaleString() : '';
+
+    return `
+      <div class="doubt-card ${isAnswered ? 'answered' : 'pending'}" id="doubt-card-${chat.id}">
+        <div class="doubt-header">
+          <div class="student-info-chip">
+            <div class="student-avatar">${(chat.student_name || 'S')[0].toUpperCase()}</div>
+            <div>
+              <strong>${escapeHTML(chat.student_name || 'Student')}</strong>
+              <span class="student-meta">Class ${escapeHTML(chat.student_class || '10')} • ${escapeHTML(chat.student_email || 'No email')}</span>
+            </div>
+          </div>
+          <div class="doubt-status-tag ${isAnswered ? 'answered' : 'pending'}">
+            ${isAnswered ? '✓ Answered' : '⏳ Pending Reply'}
+          </div>
+        </div>
+
+        <div class="doubt-question-box">
+          <div class="doubt-label">❓ Student Question / Doubt:</div>
+          <div class="doubt-text">${escapeHTML(chat.message)}</div>
+          <div class="doubt-time">${createdDate}</div>
+        </div>
+
+        ${isAnswered ? `
+          <div class="doubt-answer-box">
+            <div class="answer-header">
+              <span>🎓 <strong>Your Reply (Mentor)</strong></span>
+              <span class="reply-time">${replyDate}</span>
+            </div>
+            <div class="answer-text">${escapeHTML(chat.reply)}</div>
+            <button class="btn-edit-reply" onclick="toggleEditReply('${chat.id}')">✏️ Edit Answer</button>
+          </div>
+        ` : ''}
+
+        <div class="doubt-reply-form ${isAnswered ? 'hidden-form' : ''}" id="reply-form-${chat.id}">
+          <label for="reply-input-${chat.id}" class="reply-form-label">
+            ${isAnswered ? 'Update Your Answer:' : '✍️ Write Your Answer / Solution for Student:'}
+          </label>
+          <textarea id="reply-input-${chat.id}" class="admin-reply-textarea" rows="3" placeholder="Type clear, helpful explanation or answer for ${escapeHTML(chat.student_name || 'the student')}...">${isAnswered ? escapeHTML(chat.reply) : ''}</textarea>
+          <div class="reply-actions">
+            <button class="btn btn-primary" onclick="submitAdminReply('${chat.id}')" id="btn-submit-${chat.id}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              ${isAnswered ? 'Update Answer' : 'Send Answer to Student'}
+            </button>
+            ${isAnswered ? `<button class="btn btn-secondary" onclick="toggleEditReply('${chat.id}')" style="margin-left:8px;">Cancel</button>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleEditReply(chatId) {
+  const form = document.getElementById(`reply-form-${chatId}`);
+  if (form) {
+    form.classList.toggle('hidden-form');
+  }
+}
+
+async function submitAdminReply(chatId) {
+  const textarea = document.getElementById(`reply-input-${chatId}`);
+  const btn = document.getElementById(`btn-submit-${chatId}`);
+  if (!textarea || !btn) return;
+
+  const replyText = textarea.value.trim();
+  if (!replyText) {
+    alert('Please enter an answer before sending.');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/student-chat-reply`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ chatId, replyText })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      if (typeof showAdminToast === 'function') {
+        showAdminToast('✓ Answer sent to student dashboard successfully!');
+      }
+      await loadStudentChats();
+    } else {
+      alert(data.error || 'Failed to send answer.');
+      btn.disabled = false;
+      btn.textContent = 'Send Answer to Student';
+    }
+  } catch (err) {
+    console.error('Reply submit error:', err);
+    alert('Network error. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Send Answer to Student';
+  }
+}
+
+window.setDoubtsFilter = setDoubtsFilter;
+window.loadStudentChats = loadStudentChats;
+window.toggleEditReply = toggleEditReply;
+window.submitAdminReply = submitAdminReply;
 
 async function loadMentorRequests() {
   const container = document.getElementById('mentor-requests-table-body');

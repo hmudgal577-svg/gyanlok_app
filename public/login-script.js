@@ -176,6 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── STUDENT LOGOUT ──────────────────────────────────────────────────────
   studentLogoutBtn.addEventListener('click', async () => {
+    if (chatPollInterval) clearInterval(chatPollInterval);
     try {
       await fetch(`${API_BASE}/api/student/logout`, { method: 'POST', credentials: 'include' });
     } catch(e) {}
@@ -221,6 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSubmissions();
     initSidebarPanels();
     loadChatHistory();
+
+    if (chatPollInterval) clearInterval(chatPollInterval);
+    chatPollInterval = setInterval(loadChatHistory, 5000);
   }
 
   // ─── LOAD STUDENT SUBMISSIONS ────────────────────────────────────────────
@@ -269,35 +273,107 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ─── CHAT MENTOR DOUBT BOX ───────────────────────────────────────────────
-  chatForm.addEventListener('submit', (e) => {
+  let chatPollInterval = null;
+
+  chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const text = chatInput.value.trim();
     if (!text) return;
 
-    // Append student message
-    appendChatMessage('student-msg', text);
     chatInput.value = '';
+    const submitBtn = chatForm.querySelector('button[type="submit"]');
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending...'; }
 
-    // Mock response from mentor after 2 seconds
-    setTimeout(() => {
-      appendChatMessage('mentor-msg', `Hello ${currentUser.name.split(' ')[0]}, I have received your doubt. Let me review this chapter topic and get back to you with the solution!`);
-    }, 2000);
+    try {
+      const res = await fetch(`${API_BASE}/api/student/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          message: text,
+          student_name: currentUser ? currentUser.name : 'Student',
+          student_email: currentUser ? currentUser.email : '',
+          student_class: currentUser ? currentUser.class_num : '10'
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('✓ Doubt sent to mentor!');
+        await loadChatHistory();
+      } else {
+        showToast(data.error || 'Failed to send doubt.');
+      }
+    } catch (err) {
+      console.error('Chat error:', err);
+      showToast('Network error while sending message.');
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send'; }
+    }
   });
 
-  function appendChatMessage(senderClass, text) {
-    // Clear system msg if present
-    const sys = chatMessagesContainer.querySelector('.system-msg');
-    if (sys) sys.remove();
+  async function loadChatHistory() {
+    if (!currentUser) return;
+    try {
+      const sName = encodeURIComponent(currentUser.name || '');
+      const sEmail = encodeURIComponent(currentUser.email || '');
+      const res = await fetch(`${API_BASE}/api/student/chat-messages?student_name=${sName}&student_email=${sEmail}`, {
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error();
+      const data = await res.json();
+      const messages = data.messages || [];
 
-    const div = document.createElement('div');
-    div.className = `message ${senderClass}`;
-    div.textContent = text;
-    chatMessagesContainer.appendChild(div);
-    chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+      if (messages.length === 0) {
+        chatMessagesContainer.innerHTML = '<div class="message system-msg">No active conversations. Type your doubt below to ask your mentor directly.</div>';
+        return;
+      }
+
+      let html = '';
+      messages.forEach(msg => {
+        const dateStr = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        // Student's message bubble
+        const isPending = !msg.reply;
+        html += `
+          <div class="message student-msg">
+            <div class="msg-text">${escapeChatHTML(msg.message)}</div>
+            <div class="msg-meta">
+              <span class="msg-time">${dateStr}</span>
+              ${isPending 
+                ? '<span class="msg-status-badge pending">⏳ Waiting for Mentor</span>' 
+                : '<span class="msg-status-badge answered">✓ Answered</span>'}
+            </div>
+          </div>
+        `;
+
+        // Mentor's reply bubble (if mentor has replied)
+        if (msg.reply) {
+          const replyDateStr = msg.replied_at 
+            ? new Date(msg.replied_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            : '';
+          html += `
+            <div class="message mentor-msg">
+              <div class="mentor-reply-header">
+                <span class="mentor-badge-tag">🎓 Senior Mentor</span>
+                <span class="mentor-verified-tag">EkShala Verified</span>
+              </div>
+              <div class="msg-text">${escapeChatHTML(msg.reply)}</div>
+              ${replyDateStr ? `<div class="msg-meta"><span class="msg-time">${replyDateStr}</span></div>` : ''}
+            </div>
+          `;
+        }
+      });
+
+      chatMessagesContainer.innerHTML = html;
+      chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+    } catch (err) {
+      console.error('Failed to load chat history:', err);
+    }
   }
 
-  function loadChatHistory() {
-    chatMessagesContainer.innerHTML = '<div class="message system-msg">No active conversations. Type your doubt below to start a new chat.</div>';
+  function escapeChatHTML(str) {
+    if (!str) return '';
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
   // ─── PANEL SWITCHING ─────────────────────────────────────────────────────
