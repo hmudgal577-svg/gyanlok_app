@@ -931,14 +931,39 @@ function renderChapter(book, ch) {
   var safeTitle= ch.title.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
-    var opts = [
-    { icon:'📜', label:'Summary',                sub:'Chapter Summary',       cat:'summary',    color:'#2BA899' },
-    { icon:'📄', label:'PDF',                    sub:'Chapter PDF',           cat:'pdf',        color:'#3A7BD5' },
-    { icon:'📝', label:'Notes',                  sub:'Revision Notes',        cat:'notes',      color:'#E05555' },
-    { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',   cat:'muhavre',    color:'#9B59B6' },
-    { icon:'🎯', label:'CBQ',                    sub:'Competency Based Qs',   cat:'competency', color:'#E8900A' },
-    { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',    cat:'additional', color:'#27AE60' },
-  ];
+  var isNayaRaasta = book.name.indexOf('नया रास्ता') !== -1 || book.name.toLowerCase().indexOf('naya raasta') !== -1;
+  var isICSE = String(state.board || '').toUpperCase() === 'ICSE';
+
+  var opts = [];
+  if (isNayaRaasta) {
+    // Naya Raasta (Novel): Summary, PDF, Notes, PYQ
+    opts = [
+      { icon:'📜', label:'Summary', sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'PDF',     sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'Notes',   sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'🎯', label:'PYQ',     sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+    ];
+  } else if (isICSE) {
+    // ICSE other books: Summary, PDF, Notes, Word Meanings & Muhavare, PYQ, Additional Questions
+    opts = [
+      { icon:'📜', label:'Summary',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'Notes',                  sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',     cat:'muhavre',    color:'#9B59B6' },
+      { icon:'🎯', label:'PYQ',                    sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+      { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',      cat:'additional', color:'#27AE60' },
+    ];
+  } else {
+    // CBSE: Summary, PDF, Notes, Word Meanings & Muhavare, CBQ, Additional Questions
+    opts = [
+      { icon:'📜', label:'Summary',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'Notes',                  sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',     cat:'muhavre',    color:'#9B59B6' },
+      { icon:'🎯', label:'CBQ',                    sub:'Competency Based Qs',     cat:'competency', color:'#E8900A' },
+      { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',      cat:'additional', color:'#27AE60' },
+    ];
+  }
 
   var linksHtml = opts.map(function(o) {
     var href = buildReaderUrl(book.name, ch.num, ch.title, o.cat);
@@ -1028,14 +1053,39 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const safeCat = category || 'summary';
 
-  const catTabs = [
-    { key: 'summary',    icon: '📜', label: 'Summary' },
-    { key: 'pdf',        icon: '📄', label: 'PDF' },
-    { key: 'notes',      icon: '📝', label: 'Notes' },
-    { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
-    { key: 'additional', icon: '⭐', label: 'Additional Questions' },
-    { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
-  ];
+  const isNayaRaasta = bookName.indexOf('नया रास्ता') !== -1 || bookName.toLowerCase().indexOf('naya raasta') !== -1;
+  const isICSE = String(state.board || '').toUpperCase() === 'ICSE';
+
+  let catTabs = [];
+  if (isNayaRaasta) {
+    // Naya Raasta (Novel): Summary, PDF, Notes, PYQ
+    catTabs = [
+      { key: 'summary',    icon: '📜', label: 'Summary' },
+      { key: 'pdf',        icon: '📄', label: 'PDF' },
+      { key: 'notes',      icon: '📝', label: 'Notes' },
+      { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
+    ];
+  } else if (isICSE) {
+    // ICSE other books: Summary, PDF, Notes, PYQ, Additional Questions, Word Meanings & Muhavare
+    catTabs = [
+      { key: 'summary',    icon: '📜', label: 'Summary' },
+      { key: 'pdf',        icon: '📄', label: 'PDF' },
+      { key: 'notes',      icon: '📝', label: 'Notes' },
+      { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
+      { key: 'additional', icon: '⭐', label: 'Additional Questions' },
+      { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
+    ];
+  } else {
+    // CBSE: Summary, PDF, Notes, CBQ, Additional Questions, Word Meanings & Muhavare
+    catTabs = [
+      { key: 'summary',    icon: '📜', label: 'Summary' },
+      { key: 'pdf',        icon: '📄', label: 'PDF' },
+      { key: 'notes',      icon: '📝', label: 'Notes' },
+      { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
+      { key: 'additional', icon: '⭐', label: 'Additional Questions' },
+      { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
+    ];
+  }
 
   const tabsHtml = catTabs.map(t => {
     const cls = t.key === safeCat ? 'fs-tab fs-tab--active' : 'fs-tab';
