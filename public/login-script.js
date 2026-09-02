@@ -119,8 +119,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (res.ok) {
         currentUser = data.user;
-        showToast('Login successful!');
-        loadDashboard();
+        // Save session for navbar + site-wide auth
+        if (typeof EkAuth !== 'undefined') EkAuth.setUser(data.user);
+        else localStorage.setItem('student_session', JSON.stringify(data.user));
+        showToast('Login successful! Redirecting...');
+        // Redirect to main website
+        const next = new URLSearchParams(window.location.search).get('next') || '/';
+        setTimeout(() => { window.location.href = next + (next.includes('?') ? '&' : '?') + 'loggedIn=1'; }, 800);
       } else {
         studentError.textContent = data.error || 'Invalid credentials.';
         studentError.hidden = false;
@@ -154,9 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Account created successfully! Logging in...');
+        showToast('Account created! Redirecting...');
         currentUser = data.user;
-        loadDashboard();
+        if (typeof EkAuth !== 'undefined') EkAuth.setUser(data.user);
+        else localStorage.setItem('student_session', JSON.stringify(data.user));
+        const next = new URLSearchParams(window.location.search).get('next') || '/';
+        setTimeout(() => { window.location.href = next + (next.includes('?') ? '&' : '?') + 'loggedIn=1'; }, 800);
       } else {
         registerError.textContent = data.error || 'Registration failed.';
         registerError.hidden = false;
@@ -316,26 +324,32 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── MOCK STUDENT FALLBACKS ──────────────────────────────────────────────
   function mockStudentLogin(email, password) {
     if (email && password) {
-      currentUser = {
-        name: 'Mock Student',
+      const user = {
+        name: 'Demo Student',
         email: email,
         class_num: '10',
         id: 'mock_123'
       };
-      showToast('Demo student login successful!');
-      loadDashboard();
+      if (typeof EkAuth !== 'undefined') EkAuth.setUser(user);
+      else localStorage.setItem('student_session', JSON.stringify(user));
+      showToast('Demo login successful! Redirecting...');
+      const next = new URLSearchParams(window.location.search).get('next') || '/';
+      setTimeout(() => { window.location.href = next + (next.includes('?') ? '&' : '?') + 'loggedIn=1'; }, 800);
     }
   }
 
   function mockStudentRegister(name, email, class_num, password) {
-    currentUser = {
+    const user = {
       name: name,
       email: email,
       class_num: class_num,
       id: 'mock_' + Date.now()
     };
-    showToast('Demo account created successfully!');
-    loadDashboard();
+    if (typeof EkAuth !== 'undefined') EkAuth.setUser(user);
+    else localStorage.setItem('student_session', JSON.stringify(user));
+    showToast('Demo account created! Redirecting...');
+    const next = new URLSearchParams(window.location.search).get('next') || '/';
+    setTimeout(() => { window.location.href = next + (next.includes('?') ? '&' : '?') + 'loggedIn=1'; }, 800);
   }
 });
 

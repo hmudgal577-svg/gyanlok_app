@@ -1049,6 +1049,19 @@ function getChapterContentKey(bookName, chNum, chTitle) {
 }
 
 async function openRightContent(bookName, chNum, chTitle, category) {
+  // ─── Auth Gate: require login before accessing any chapter content ──────
+  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
+    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
+  })();
+  if (!_session) {
+    // Try server session
+    try {
+      const _r = await fetch('/api/student/me', { credentials: 'include' });
+      if (!_r.ok) { _showLoginGate(); return; }
+    } catch(e) { _showLoginGate(); return; }
+  }
+  // ── Logged in: proceed ──────────────────────────────────────────────────
+
   const sBook   = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const safeCat = category || 'summary';
@@ -2127,3 +2140,35 @@ function closeAboutModal() {
 window.openAboutModal = openAboutModal;
 window.closeAboutModal = closeAboutModal;
 
+// ─── Login Gate Modal ───────────────────────────────────────────────────────
+function _showLoginGate() {
+  const modal = document.getElementById('login-gate-modal');
+  if (!modal) { window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname); return; }
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+
+  const closeBtn = document.getElementById('login-gate-close');
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    };
+  }
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+  }, { once: true });
+}
+
+// Init login gate close button on page load
+document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = document.getElementById('login-gate-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      const modal = document.getElementById('login-gate-modal');
+      if (modal) { modal.hidden = true; document.body.style.overflow = ''; }
+    });
+  }
+});
