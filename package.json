@@ -1,5 +1,5 @@
 {
-  "name": "ekshala-backend",
+  "name": "ekshala",
   "version": "1.0.0",
   "description": "Production-grade secure backend for EkShala learning platform",
   "main": "server.js",
