@@ -970,7 +970,7 @@ function renderChapter(book, ch) {
     + '<div class="chapter-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleChapterDropdown(\'' + chId + '\')">'
     + '<div class="ch-num">' + ch.num + '</div>'
     + '<div class="ch-title">' + ch.title + '</div>'
-    + '<div class="ch-toggle">\u25BE</div>'
+    + '<div class="ch-toggle">▾</div>'
     + '</div>'
     + '<div class="ch-dropdown" id="drop-' + chId + '" hidden>' + linksHtml + '</div>'
     + '</div>';
@@ -998,26 +998,26 @@ async function fetchChapterHtmlContent() {
 
 // Maps chapter title keywords (English or Hindi) to short key names
 const CHAPTER_KEY_MAP = [
-  { keys: ['kabir','\u0915\u092C\u0940\u0930'],                                        code: 'kabir'      },
-  { keys: ['meera','mira','\u092E\u0940\u0930\u093E'],                                  code: 'meera'      },
-  { keys: ['bihari','\u092C\u093F\u0939\u093E\u0930\u0940'],                          code: 'bihari'     },
-  { keys: ['manushyata','\u092E\u0928\u0941\u0937\u094D\u092F\u0924\u093E'],         code: 'manushyata' },
-  { keys: ['pavas','paavas','parvat','\u092A\u093E\u0935\u0938'],                       code: 'pavas'      },
-  { keys: ['madhur','deepak','\u0926\u0940\u092A\u0915'],                               code: 'deepak'     },
-  { keys: ['topi','\u091F\u094B\u092A\u0940'],                                         code: 'topi'       },
-  { keys: ['top','tope','\u0924\u094B\u092A'],                                          code: 'top'        },
-  { keys: ['fida','fidaa','\u0915\u0930 \u091A\u0932\u0947','\u092B\u093C\u093F\u0926\u093E'], code: 'fida' },
-  { keys: ['aatmtran','atmtran','\u0906\u0924\u094D\u092E\u0924\u094D\u0930\u093E\u0923'],      code: 'aatmtran'  },
-  { keys: ['bade bhai','bade bha','\u092C\u095C\u0947 \u092D\u093E\u0908'],           code: 'badebhai'   },
-  { keys: ['diary','\u0921\u093E\u092F\u0930\u094D\u0940'],                                  code: 'diary'      },
-  { keys: ['tantara','tatara','\u0924\u0924\u093E\u0901\u0930\u093E'],                code: 'tantara'    },
-  { keys: ['shailendra','teesri kasam','\u0936\u0948\u0932\u0947\u0902\u0926\u094D\u0930'], code: 'shailendra' },
-  { keys: ['ab kahan','\u0905\u092C \u0915\u0939\u093E\u0901'],                      code: 'abkahan'    },
-  { keys: ['patjhar','pattiya','\u092A\u0924\u091D\u0930'],                             code: 'patjhar'    },
-  { keys: ['kartoos','\u0915\u093E\u0930\u0924\u0942\u0938'],                         code: 'kartoos'    },
-  { keys: ['girgit','\u0917\u093F\u0930\u0917\u093F\u091F'],                         code: 'girgit'     },
-  { keys: ['harihar','\u0939\u0930\u093F\u0939\u0930'],                               code: 'harihar'    },
-  { keys: ['sapno','sapne','\u0938\u092A\u0928\u094B\u0902'],                          code: 'sapno'      },
+  { keys: ['kabir','कबीर'],                                        code: 'kabir'      },
+  { keys: ['meera','mira','मीरा'],                                  code: 'meera'      },
+  { keys: ['bihari','बिहारी'],                          code: 'bihari'     },
+  { keys: ['manushyata','मनुष्यता'],         code: 'manushyata' },
+  { keys: ['pavas','paavas','parvat','पावस'],                       code: 'pavas'      },
+  { keys: ['madhur','deepak','दीपक'],                               code: 'deepak'     },
+  { keys: ['topi','टोपी'],                                         code: 'topi'       },
+  { keys: ['top','tope','तोप'],                                          code: 'top'        },
+  { keys: ['fida','fidaa','कर चले','फ़िदा'], code: 'fida' },
+  { keys: ['aatmtran','atmtran','आत्मत्राण'],      code: 'aatmtran'  },
+  { keys: ['bade bhai','bade bha','बड़े भाई'],           code: 'badebhai'   },
+  { keys: ['diary','डायरी'],                                  code: 'diary'      },
+  { keys: ['tantara','tatara','तताँरा'],                code: 'tantara'    },
+  { keys: ['shailendra','teesri kasam','शैलेंद्र'], code: 'shailendra' },
+  { keys: ['ab kahan','अब कहाँ'],                      code: 'abkahan'    },
+  { keys: ['patjhar','pattiya','पतझर'],                             code: 'patjhar'    },
+  { keys: ['kartoos','कारतूस'],                         code: 'kartoos'    },
+  { keys: ['girgit','गिरगिट'],                         code: 'girgit'     },
+  { keys: ['harihar','हरिहर'],                               code: 'harihar'    },
+  { keys: ['sapno','sapne','सपनों'],                          code: 'sapno'      },
 ];
 
 function getChapterContentKey(bookName, chNum, chTitle) {
@@ -1076,7 +1076,7 @@ async function openRightContent(bookName, chNum, chTitle, category) {
     overlay.className = 'fs-overlay';
     overlay.innerHTML =
       '<div class="fs-header">'
-      + '<button class="fs-back-btn" onclick="closeFsOverlay()">&larr; \u0935\u093E\u092A\u0938</button>'
+      + '<button class="fs-back-btn" onclick="closeFsOverlay()">&larr; वापस</button>'
       + '<div class="fs-breadcrumb">'
       + '<span class="fs-bc-book">' + bookName + '</span>'
       + '<span class="fs-bc-sep">&rsaquo;</span>'
@@ -1088,7 +1088,7 @@ async function openRightContent(bookName, chNum, chTitle, category) {
       + '</div>'
       + '<div class="fs-tabs-bar">' + tabsHtml + '</div>'
       + '<div class="fs-doc-body" id="fs-doc-body">'
-      + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content \u0932\u094B\u0921 \u0939\u094B \u0930\u0939\u093E \u0939\u0948...</span></div>'
+      + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content लोड हो रहा है...</span></div>'
       + '</div>';
 
     document.body.appendChild(overlay);
@@ -1134,7 +1134,7 @@ async function openRightContent(bookName, chNum, chTitle, category) {
   const htmlContent = (store && store[key] && store[key][safeCat]) ? store[key][safeCat] : '';
 
   if (!htmlContent) {
-    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">\uD83D\uDEA7</div><h3>\u091C\u0932\u094D\u0926 \u0906\u090F\u0917\u093E!</h3><p>\u0907\u0938 section \u0915\u093E content \u0924\u0948\u092F\u093E\u0930 \u0915\u093F\u092F\u093E \u091C\u093E \u0930\u0939\u093E \u0939\u0948\u0964</p></div>';
+    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">🚧</div><h3>जल्द आएगा!</h3><p>इस section का content तैयार किया जा रहा है।</p></div>';
   } else {
     docBody.innerHTML = '<div class="fs-doc-content">' + htmlContent + '</div>';
   }
