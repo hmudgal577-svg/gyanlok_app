@@ -381,25 +381,31 @@
       <p>Year-wise and chapter-wise PYQs for CBSE and ICSE board exams: the most important resource before your finals.</p>
     </div>
     <div class="coming-soon-grid fade-in" style="grid-template-columns: repeat(2, 1fr); max-width: 900px; margin: 0 auto;">
-      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
         <div>
-          <div class="cs-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <div class="cs-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <span style="background: #FEF3C7; color: #92400E; font-size: 0.76rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 100px; display: inline-block; border: 1px solid #FDE68A;">🚧 Coming Soon</span>
           </div>
           <h3>CBSE Class 10 PYQs</h3>
           <p>Last 10 years board exam papers with solutions for Class 10 Hindi Course B.</p>
         </div>
-        <button class="btn btn-primary" onclick="selectBoard('CBSE'); document.getElementById('school-boards').scrollIntoView({behavior:'smooth'});" style="margin-top:1.25rem; width:100%; justify-content:center;">View CBSE Class 10 PYQs</button>
+        <button class="btn btn-outline" onclick="showToast('CBSE Class 10 PYQs: जल्द आ रहे हैं! (Coming Soon)');" style="margin-top:1.25rem; width:100%; justify-content:center; background:#F8FAFC; color:#64748B; border-color:#CBD5E1; cursor:pointer;">🚧 Coming Soon</button>
       </div>
-      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div class="coming-soon-card" style="display: flex; flex-direction: column; justify-content: space-between; position: relative;">
         <div>
-          <div class="cs-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <div class="cs-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <span style="background: #FEF3C7; color: #92400E; font-size: 0.76rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 100px; display: inline-block; border: 1px solid #FDE68A;">🚧 Coming Soon</span>
           </div>
           <h3>ICSE Class 10 PYQs</h3>
           <p>ICSE board papers from 2015 to 2025, chapter-mapped with model answers.</p>
         </div>
-        <button class="btn btn-outline" onclick="selectBoard('ICSE'); document.getElementById('school-boards').scrollIntoView({behavior:'smooth'});" style="margin-top:1.25rem; width:100%; justify-content:center;">View ICSE Class 10 PYQs</button>
+        <button class="btn btn-outline" onclick="showToast('ICSE Class 10 PYQs: जल्द आ रहे हैं! (Coming Soon)');" style="margin-top:1.25rem; width:100%; justify-content:center; background:#F8FAFC; color:#64748B; border-color:#CBD5E1; cursor:pointer;">🚧 Coming Soon</button>
       </div>
     </div>
     <div class="notify-bar fade-in" style="margin-top:2rem;">
