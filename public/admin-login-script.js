@@ -27,20 +27,22 @@ function initOtpLoginFlow() {
 
       try {
         const res  = await fetch(`${API_BASE}/api/admin/send-otp`, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify({ email }),
+          method:      'POST',
+          headers:     { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body:        JSON.stringify({ email }),
         });
         const data = await res.json();
 
         if (res.ok) {
           currentOtpEmail = email;
+          window._adminOtpToken = data.otp_token || '';
           document.getElementById('otp-target-email').textContent = email;
           document.getElementById('step-email').hidden = true;
           document.getElementById('step-otp').hidden   = false;
           document.getElementById('otp-input').value   = '';
           document.getElementById('otp-input').focus();
-          startOtpTimer(5 * 60); // 5 minutes
+          startOtpTimer(10 * 60); // 10 minutes
 
           showAdminToast('📧 OTP sent! Check your Gmail inbox.');
         } else {
@@ -64,7 +66,7 @@ function initOtpLoginFlow() {
       e.preventDefault();
       const errBox = document.getElementById('otp-verify-error');
       const btn    = document.getElementById('verify-otp-btn');
-      const otp    = document.getElementById('otp-input').value.trim();
+      const otp    = document.getElementById('otp-input').value.trim().replace(/\s+/g, '');
 
       errBox.hidden = true;
       btn.disabled = true;
@@ -75,7 +77,11 @@ function initOtpLoginFlow() {
           method:      'POST',
           headers:     { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body:        JSON.stringify({ email: currentOtpEmail, otp }),
+          body:        JSON.stringify({ 
+            email: currentOtpEmail, 
+            otp,
+            otp_token: window._adminOtpToken || ''
+          }),
         });
         const data = await res.json();
 

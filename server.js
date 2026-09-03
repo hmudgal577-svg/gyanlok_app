@@ -20,6 +20,7 @@ const fs           = require('fs');
 const bcrypt       = require('bcryptjs');
 const jwt          = require('jsonwebtoken');
 const nodemailer   = require('nodemailer');
+const crypto       = require('crypto');
 
 require('dotenv').config();
 
@@ -314,31 +315,48 @@ app.post('/api/admin/send-otp', loginLimiter, async (req, res) => {
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: 'Email is required.' });
 
+  const cleanEmail = email.toLowerCase().trim();
   // Only allowed admin emails
-  if (!ALLOWED_ADMIN_EMAILS.includes(email.toLowerCase().trim())) {
+  if (!ALLOWED_ADMIN_EMAILS.includes(cleanEmail)) {
     return res.status(403).json({ error: 'Access denied. This email is not authorized.' });
   }
 
   // Generate 6-digit OTP
   const otp = Math.floor(100000 + Math.random() * 900000).toString();
-  const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
-  otpStore.set(email.toLowerCase().trim(), { otp, expiresAt });
+  const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+  otpStore.set(cleanEmail, { otp, expiresAt });
 
-  // Send OTP email via Brevo or Gmail SMTP
+  // Cryptographic signed token (immune to serverless container restarts)
+  const otpHash = crypto.createHmac('sha256', JWT_SECRET).update(`${cleanEmail}:${otp}`).digest('hex');
+  const otpToken = jwt.sign({ email: cleanEmail, otpHash }, JWT_SECRET, { expiresIn: '10m' });
+
+  // Send OTP email via Gmail SMTP or Brevo
   try {
-    await sendOtpEmail(email.toLowerCase().trim(), otp);
-    console.log(`[OTP] Sent real email to ${email}`);
-    res.json({ success: true, message: `OTP sent to ${email}. Valid for 5 minutes.` });
+    await sendOtpEmail(cleanEmail, otp);
+    console.log(`[OTP] Sent real email to ${cleanEmail}`);
   } catch (err) {
     console.error('[OTP] Send failed:', err.message);
-    res.status(500).json({ error: `Email delivery failed: ${err.message}` });
+    return res.status(500).json({ error: `Email delivery failed: ${err.message}` });
   }
+
+  res.cookie('admin_otp_token', otpToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 10 * 60 * 1000,
+  });
+
+  res.json({
+    success: true,
+    message: `OTP sent to ${cleanEmail}. Valid for 10 minutes.`,
+    otp_token: otpToken
+  });
 });
 
 
 // POST /api/admin/verify-otp  — Step 2: verify OTP and issue JWT
 app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
-  const { email, otp } = req.body;
+  const { email, otp, otp_token } = req.body;
   if (!email || !otp) return res.status(400).json({ error: 'Email and OTP are required.' });
 
   const key = email.toLowerCase().trim();
@@ -346,28 +364,51 @@ app.post('/api/admin/verify-otp', loginLimiter, async (req, res) => {
     return res.status(403).json({ error: 'Access denied.' });
   }
 
+  const cleanOtp = String(otp).trim();
+  let verified = false;
+
+  // 1. In-memory check (if same container)
   const record = otpStore.get(key);
-  if (!record) return res.status(401).json({ error: 'No OTP found. Please request a new OTP.' });
-  if (Date.now() > record.expiresAt) {
+  if (record && Date.now() <= record.expiresAt && record.otp === cleanOtp) {
+    verified = true;
     otpStore.delete(key);
-    return res.status(401).json({ error: 'OTP expired. Please request a new one.' });
-  }
-  if (record.otp !== otp.trim()) {
-    return res.status(401).json({ error: 'Incorrect OTP. Please try again.' });
   }
 
-  // OTP valid — delete it (one-time use)
-  otpStore.delete(key);
+  // 2. Cryptographic token check (works 100% across serverless containers!)
+  if (!verified) {
+    const tokenToCheck = req.cookies?.admin_otp_token || otp_token;
+    if (tokenToCheck) {
+      try {
+        const decoded = jwt.verify(tokenToCheck, JWT_SECRET);
+        if (decoded && decoded.email === key) {
+          const expectedHash = crypto.createHmac('sha256', JWT_SECRET).update(`${key}:${cleanOtp}`).digest('hex');
+          if (expectedHash === decoded.otpHash) {
+            verified = true;
+          }
+        }
+      } catch (jwtErr) {
+        console.warn('[OTP] Token verify failed:', jwtErr.message);
+      }
+    }
+  }
 
-  // Issue JWT
-  const token = jwt.sign({ email: key, role: 'admin' }, JWT_SECRET, { expiresIn: '1d' });
+  if (!verified) {
+    return res.status(401).json({ error: 'Incorrect or expired OTP. Please check your Gmail or request a new OTP.' });
+  }
+
+  // Clear otp cookie
+  res.clearCookie('admin_otp_token');
+
+  // Issue Admin JWT session token (valid 7 days)
+  const token = jwt.sign({ email: key, role: 'admin' }, JWT_SECRET, { expiresIn: '7d' });
   res.cookie('token', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000,
   });
-  res.json({ success: true, user: { email: key, role: 'admin' } });
+
+  res.json({ success: true, user: { email: key, role: 'admin' }, token });
 });
 
 // POST /api/admin/login — Password fallback for Admin
