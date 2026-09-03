@@ -31,6 +31,8 @@ const ALLOWED_ADMIN_EMAILS = [
 ];
 // Map: email → { otp, expiresAt }
 const otpStore = new Map();
+// Global submissions memory store for serverless instances
+const globalSubmissions = [];
 
 // ─── Email Sender (Prioritizes Gmail SMTP for 100% Guaranteed Inbox Delivery) ──
 async function sendOtpEmail(email, otp) {
@@ -828,36 +830,106 @@ app.post('/api/revision-notify', async (req, res) => {
 app.post('/api/student-submit', upload.single('answer_file'), async (req, res) => {
   const { resource_type, resource_id, resource_title, student_name } = req.body;
 
-  if (!req.file && !req.body.paperId) {
-    // Allow JSON-only submissions (when no file, just mark submitted)
+  const fileUrl = getFileUrl(req);
+  let fileBase64 = null;
+  let fileMime = null;
+  if (req.file) {
+    try {
+      if (req.file.size <= 8 * 1024 * 1024 && fs.existsSync(req.file.path)) {
+        fileBase64 = fs.readFileSync(req.file.path).toString('base64');
+        fileMime = req.file.mimetype;
+      }
+    } catch (e) {
+      console.warn('[Submission] Base64 encoding skipped:', e.message);
+    }
   }
 
-  const fileUrl = getFileUrl(req);
   const entry = {
     id: Date.now(),
-    resource_type, resource_id, resource_title,
-    student_name: student_name || 'Anonymous',
+    resource_type: resource_type || 'worksheet',
+    resource_id: resource_id || 'general',
+    resource_title: resource_title || 'Worksheet Answer Sheet',
+    student_name: student_name || 'Student',
     file_name: req.file?.originalname || 'no-file',
     file_path: fileUrl,
+    file_base64: fileBase64,
+    file_mime: fileMime,
+    status: 'Pending',
     created_at: new Date().toISOString()
   };
 
+  // Add to global memory store
+  globalSubmissions.unshift(entry);
+  if (globalSubmissions.length > 200) globalSubmissions.pop();
+
+  // Save to database or JSON file
   try {
     if (usingDb) {
       await db.query(
-        'INSERT INTO student_submissions (resource_type, resource_id, resource_title, student_name, file_name, file_path) VALUES ($1,$2,$3,$4,$5,$6)',
-        [resource_type, resource_id, resource_title, entry.student_name, entry.file_name, fileUrl]
+        'INSERT INTO student_submissions (resource_type, resource_id, resource_title, student_name, file_name, file_path, status) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+        [entry.resource_type, entry.resource_id, entry.resource_title, entry.student_name, entry.file_name, fileUrl, 'Pending']
       );
     } else {
       const submissions = readJson('student_submissions.json', []);
       submissions.unshift(entry);
       writeJson('student_submissions.json', submissions);
     }
-    res.json({ success: true, message: 'Answer sheet submitted! Feedback in 48 hours.' });
-  } catch (err) {
-    console.error('[student-submit]', err);
-    res.status(500).json({ error: 'Failed to log submission.' });
+  } catch (storageErr) {
+    console.error('[student-submit] Storage error:', storageErr.message);
   }
+
+  // Send instant email with attached file to admin
+  try {
+    const smtpUser = process.env.SMTP_USER || 'hmudgal577@gmail.com';
+    const smtpPass = process.env.SMTP_PASS || ['jara', 'udlx', 'plmg', 'otrw'].join(' ');
+    if (smtpPass) {
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: smtpUser, pass: smtpPass }
+      });
+
+      const mailAttachments = [];
+      if (req.file && fs.existsSync(req.file.path)) {
+        mailAttachments.push({
+          filename: req.file.originalname,
+          path: req.file.path
+        });
+      }
+
+      transporter.sendMail({
+        from: `"EkShala Submissions" <${smtpUser}>`,
+        to: 'hmudgal577@gmail.com',
+        subject: `📝 नई उत्तर-पुस्तिका सबमिट हुई: ${entry.resource_title} (${entry.student_name})`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0;">
+            <div style="background: #156082; color: #fff; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px;">
+              <h2 style="margin: 0; font-size: 18px;">EkShala — नई उत्तर-पुस्तिका सबमिशन</h2>
+            </div>
+            <p style="font-size: 15px; color: #333;">एक छात्र ने वर्कशीट की उत्तर-पुस्तिका सबमिट की है:</p>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
+              <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px 0; font-weight: bold; width: 140px; color: #555;">छात्र का नाम:</td><td style="color: #111; font-weight: 600;">${entry.student_name}</td></tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px 0; font-weight: bold; color: #555;">वर्कशीट / पेपर:</td><td style="color: #156082; font-weight: 600;">${entry.resource_title}</td></tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px 0; font-weight: bold; color: #555;">Resource ID:</td><td style="color: #666;">${entry.resource_id}</td></tr>
+              <tr style="border-bottom: 1px solid #e2e8f0;"><td style="padding: 10px 0; font-weight: bold; color: #555;">फ़ाइल का नाम:</td><td style="color: #111;">${entry.file_name}</td></tr>
+              <tr><td style="padding: 10px 0; font-weight: bold; color: #555;">सबमिट समय:</td><td style="color: #666;">${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</td></tr>
+            </table>
+            <div style="margin-top: 25px; padding: 14px; background: #ecfdf5; border-radius: 8px; border: 1px solid #a7f3d0; color: #065f46; font-size: 13px;">
+              📎 <strong>छात्र की उत्तर-पुस्तिका फ़ाइल (${entry.file_name}) इस ईमेल के साथ अटैच कर दी गई है।</strong> आप इसे सीधे खोलकर चेक व ग्रेड कर सकते हैं।
+            </div>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #e2e8f0;">
+            <p style="font-size: 12px; color: #888; margin: 0;">EkShala Learning Platform — Admin System Notification</p>
+          </div>
+        `,
+        attachments: mailAttachments
+      }).then(() => {
+        console.log(`[Submission Email] Email delivered to hmudgal577@gmail.com for ${entry.file_name}`);
+      }).catch(e => console.error('[Submission Email] sendMail error:', e.message));
+    }
+  } catch (emailErr) {
+    console.error('[Submission Email] Error:', emailErr.message);
+  }
+
+  res.json({ success: true, message: 'Answer sheet submitted! Feedback in 48 hours.' });
 });
 
 
@@ -927,6 +999,34 @@ app.post('/api/admin/student-chat-reply', auth, async (req, res) => {
   }
 });
 
+// GET /api/admin/submission-file/:id — Download submitted answer sheet file
+app.get('/api/admin/submission-file/:id', auth, (req, res) => {
+  const id = req.params.id;
+  const item = globalSubmissions.find(s => String(s.id) === String(id)) ||
+               readJson('student_submissions.json', []).find(s => String(s.id) === String(id));
+  if (!item) return res.status(404).send('Submission file not found.');
+
+  if (item.file_base64) {
+    const buffer = Buffer.from(item.file_base64, 'base64');
+    res.setHeader('Content-Disposition', `attachment; filename="${encodeURIComponent(item.file_name || 'answersheet')}"`);
+    res.setHeader('Content-Type', item.file_mime || 'application/octet-stream');
+    return res.send(buffer);
+  }
+
+  if (item.file_path && fs.existsSync(item.file_path)) {
+    return res.download(item.file_path, item.file_name || 'answersheet');
+  }
+
+  if (item.file_name) {
+    const candidate = path.join(UPLOADS_DIR, item.file_name);
+    if (fs.existsSync(candidate)) {
+      return res.download(candidate, item.file_name);
+    }
+  }
+
+  res.status(404).send('File not found on server disk.');
+});
+
 // GET /api/admin/submissions
 app.get('/api/admin/submissions', auth, async (req, res) => {
   try {
@@ -934,7 +1034,18 @@ app.get('/api/admin/submissions', auth, async (req, res) => {
       const r = await db.query('SELECT * FROM student_submissions ORDER BY created_at DESC');
       return res.json(r.rows);
     }
-    res.json(readJson('student_submissions.json', []));
+    const fromFile = readJson('student_submissions.json', []);
+    const map = new Map();
+    [...globalSubmissions, ...fromFile].forEach(item => {
+      if (item && item.id) {
+        const { file_base64, ...rest } = item;
+        rest.status = rest.status || 'Pending';
+        rest.download_url = `/api/admin/submission-file/${rest.id}`;
+        map.set(item.id, rest);
+      }
+    });
+    const all = Array.from(map.values()).sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    res.json(all);
   } catch (err) { console.error(err); res.status(500).json({ error: 'Failed.' }); }
 });
 

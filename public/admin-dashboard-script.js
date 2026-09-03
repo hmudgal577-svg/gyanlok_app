@@ -54,12 +54,14 @@ function showDashboard() {
   loadMentorRequests();
   loadSubmissions();
 
-  // Auto-poll student doubts every 10 seconds for real-time mentor alerts
+  // Auto-poll student doubts and submissions every 10 seconds
   setInterval(() => {
     loadOverviewStats();
     const activePanel = document.querySelector('.panel-section.active');
     if (activePanel && activePanel.id === 'panel-student-doubts') {
       loadStudentChats();
+    } else if (activePanel && activePanel.id === 'panel-submissions') {
+      loadSubmissions();
     }
   }, 10000);
 }
@@ -360,6 +362,7 @@ window.setDoubtsFilter = setDoubtsFilter;
 window.loadStudentChats = loadStudentChats;
 window.toggleEditReply = toggleEditReply;
 window.submitAdminReply = submitAdminReply;
+window.loadSubmissions = loadSubmissions;
 
 async function loadMentorRequests() {
   const container = document.getElementById('mentor-requests-table-body');
@@ -386,34 +389,58 @@ async function loadMentorRequests() {
   }
 }
 
-async function loadSubmissions() {
+async function loadSubmissions(showToastNotice = false) {
   const container = document.getElementById('submissions-table-body');
   if (!container) return;
   try {
     const res = await fetch(`${API_BASE}/api/admin/submissions`, { credentials: 'include' });
     if (!res.ok) throw new Error();
     const data = await res.json();
+
+    // Update Overview stats & badge
+    const statSubmissions = document.getElementById('stat-submissions');
+    if (statSubmissions) statSubmissions.textContent = data.length;
+    const submissionBadge = document.getElementById('badge-submissions');
+    const pendingCount = data.filter(s => (s.status || 'Pending').toLowerCase() === 'pending').length;
+    if (submissionBadge) {
+      if (pendingCount > 0) {
+        submissionBadge.textContent = pendingCount;
+        submissionBadge.hidden = false;
+      } else {
+        submissionBadge.hidden = true;
+      }
+    }
+
     if (data.length === 0) {
-      container.innerHTML = `<tr><td colspan="6" class="no-data">No student submissions found.</td></tr>`;
+      container.innerHTML = `<tr><td colspan="6" class="no-data">No student submissions found yet. When students submit worksheets, they appear here and in your Gmail.</td></tr>`;
       return;
     }
-    container.innerHTML = data.map(sub => `
+    container.innerHTML = data.map(sub => {
+      const st = sub.status || 'Pending';
+      const downloadLink = sub.download_url || sub.file_path || `/api/admin/submission-file/${sub.id}`;
+      return `
       <tr>
-        <td><strong>${escapeHTML(sub.student_name)}</strong></td>
-        <td>${escapeHTML(sub.resource_title)}<br/><span style="font-size:0.75rem;color:var(--text-muted)">ID: ${escapeHTML(sub.resource_id)}</span></td>
-        <td><span style="text-transform:capitalize;">${escapeHTML(sub.resource_type)}</span></td>
+        <td><strong>${escapeHTML(sub.student_name || 'Student')}</strong></td>
+        <td>${escapeHTML(sub.resource_title || 'Worksheet')}<br/><span style="font-size:0.75rem;color:var(--text-muted)">ID: ${escapeHTML(sub.resource_id || '')}</span></td>
+        <td><span style="text-transform:capitalize;">${escapeHTML(sub.resource_type || 'worksheet')}</span></td>
         <td>
-          <a href="${sub.file_path}" target="_blank" class="action-link">
+          <a href="${downloadLink}" target="_blank" download="${escapeHTML(sub.file_name || 'answersheet')}" class="action-link" style="display:inline-flex;align-items:center;gap:4px;color:#156082;font-weight:600;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            ${escapeHTML(sub.file_name)}
+            ${escapeHTML(sub.file_name || 'Download Answer Sheet')}
           </a>
         </td>
         <td>${new Date(sub.created_at).toLocaleString()}</td>
-        <td><span class="status-pill ${sub.status.toLowerCase()}">${escapeHTML(sub.status)}</span></td>
+        <td><span class="status-pill ${st.toLowerCase()}">${escapeHTML(st)}</span></td>
       </tr>
-    `).join('');
+    `;
+    }).join('');
+
+    if (showToastNotice && typeof showAdminToast === 'function') {
+      showAdminToast('Submissions refreshed!');
+    }
   } catch (err) {
-    container.innerHTML = `<tr><td colspan="6" class="no-data" style="color:red">Failed to load student submissions.</td></tr>`;
+    console.error('Failed to load student submissions:', err);
+    container.innerHTML = `<tr><td colspan="6" class="no-data" style="color:red">Failed to load student submissions. Please retry.</td></tr>`;
   }
 }
 

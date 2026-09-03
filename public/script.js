@@ -2049,12 +2049,18 @@ function initUploadModal() {
     submitBtn.textContent = 'Uploading...';
 
     const _u = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : null;
+    const nameInput = document.getElementById('upload-student-name');
+    const contactInput = document.getElementById('upload-student-contact');
+    const sName = nameInput?.value.trim() || _u?.name || 'Student';
+    const sContact = contactInput?.value.trim() || _u?.email || '';
+    const fullStudentInfo = sContact ? `${sName} (${sContact})` : sName;
+
     const fd = new FormData();
     fd.append('answer_file',    file);
     fd.append('resource_type', 'worksheet');
     fd.append('resource_id',    window._uploadResourceId   || 'general');
     fd.append('resource_title', window._uploadResourceName || 'Answer Sheet');
-    fd.append('student_name',   _u?.name || 'Student');
+    fd.append('student_name',   fullStudentInfo);
 
     try {
       const res  = await fetch('/api/student-submit', { method: 'POST', body: fd, credentials: 'include' });
@@ -2062,6 +2068,8 @@ function initUploadModal() {
       if (res.ok) {
         successEl.textContent = String.fromCharCode(10003) + ' ' + (data.message || 'Answer sheet submitted!');
         fileInput.value = '';
+        if (nameInput) nameInput.value = '';
+        if (contactInput) contactInput.value = '';
         fileInfo.hidden = true;
         dropArea.style.display = '';
         submitBtn.innerHTML = SVG.send + ' Submit for Evaluation';

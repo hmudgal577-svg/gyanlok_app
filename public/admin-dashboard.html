@@ -342,9 +342,12 @@
         <!-- PANEL 5: STUDENT SUBMISSIONS -->
         <section id="panel-submissions" class="panel-section">
           <div class="card">
-            <div class="card-header">
-              <h2>Student Submissions</h2>
-              <p>Review and download student submitted answer sheets for grading and feedback.</p>
+            <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+              <div>
+                <h2>Student Submissions</h2>
+                <p>Review and download student submitted answer sheets for grading and feedback.</p>
+              </div>
+              <button class="btn btn-secondary" onclick="loadSubmissions(true)" title="Refresh Submissions" style="padding:0.45rem 0.85rem;font-size:0.85rem;">🔄 Refresh</button>
             </div>
             <div class="table-container">
               <table>
