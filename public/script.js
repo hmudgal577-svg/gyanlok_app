@@ -1055,19 +1055,6 @@ function getChapterContentKey(bookName, chNum, chTitle) {
 }
 
 async function openRightContent(bookName, chNum, chTitle, category) {
-  // ─── Auth Gate: require login before accessing any chapter content ──────
-  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
-    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
-  })();
-  if (!_session) {
-    // Try server session
-    try {
-      const _r = await fetch('/api/student/me', { credentials: 'include' });
-      if (!_r.ok) { _showLoginGate(); return; }
-    } catch(e) { _showLoginGate(); return; }
-  }
-  // ── Logged in: proceed ──────────────────────────────────────────────────
-
   const sBook   = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const safeCat = category || 'summary';
@@ -1743,17 +1730,6 @@ async function fetchWorksheetsHtmlContent() {
 }
 
 async function openWorksheetViewer(id, title, fileUrl) {
-  // Auth Gate: require login before viewing worksheet
-  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
-    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
-  })();
-  if (!_session) {
-    try {
-      const _r = await fetch('/api/student/me', { credentials: 'include' });
-      if (!_r.ok) { _showLoginGate(); return; }
-    } catch(e) { _showLoginGate(); return; }
-  }
-
   const sTitle = (title || 'Worksheet').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const sUrl   = (fileUrl || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
@@ -2122,19 +2098,6 @@ function initUploadModal() {
 }
 
 function openUploadModal(resourceId, resourceTitle) {
-  // Require login before allowing answer sheet upload
-  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
-    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
-  })();
-  if (!_session) {
-    try {
-      fetch('/api/student/me', { credentials: 'include' }).then(r => {
-        if (!r.ok) { _showLoginGate(); }
-        else { _showModalActual(resourceId, resourceTitle); }
-      }).catch(() => _showLoginGate());
-    } catch(e) { _showLoginGate(); }
-    return;
-  }
   _showModalActual(resourceId, resourceTitle);
 }
 
@@ -2216,17 +2179,7 @@ function handleDownload(title, url) {
 }
 
 async function simulateSubmit(btn, paperId, paperTitle) {
-  // Auth check
-  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
-    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
-  })();
-  if (!_session) {
-    try {
-      const _r = await fetch('/api/student/me', { credentials: 'include' });
-      if (!_r.ok) { _showLoginGate(); return; }
-    } catch(e) { _showLoginGate(); return; }
-  }
-
+  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : null;
   const pTitle = paperTitle || paperId || 'Worksheet';
   btn.disabled = true;
   btn.textContent = 'Submitting...';
