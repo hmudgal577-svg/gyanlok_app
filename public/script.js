@@ -938,30 +938,30 @@ function renderChapter(book, ch) {
   if (isNayaRaasta) {
     // Naya Raasta (Novel): Summary, PDF, Notes, PYQ
     opts = [
-      { icon:'📜', label:'Summary', sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'PDF',     sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
-      { icon:'📝', label:'Notes',   sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
-      { icon:'🎯', label:'PYQ',     sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+      { icon:'📜', label:'पाठ सारांश', sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'पाठ PDF',     sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'नोट्स',       sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
     ];
   } else if (isICSE) {
     // ICSE other books: Summary, PDF, Notes, Word Meanings & Muhavare, PYQ, Additional Questions
     opts = [
-      { icon:'📜', label:'Summary',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
-      { icon:'📝', label:'Notes',                  sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
-      { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',     cat:'muhavre',    color:'#9B59B6' },
-      { icon:'🎯', label:'PYQ',                    sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
-      { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',      cat:'additional', color:'#27AE60' },
+      { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'पाठ PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'📖', label:'शब्दार्थ एवं मुहावरे',       sub:'Word Meanings & Muhavare', cat:'muhavre',    color:'#9B59B6' },
+      { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+      { icon:'⭐', label:'अतिरिक्त प्रश्न',            sub:'Additional Questions',    cat:'additional', color:'#27AE60' },
     ];
   } else {
     // CBSE: Summary, PDF, Notes, Word Meanings & Muhavare, CBQ, Additional Questions
     opts = [
-      { icon:'📜', label:'Summary',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
-      { icon:'📝', label:'Notes',                  sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
-      { icon:'📖', label:'Word Meanings & Muhavare', sub:'Vocabulary & Idioms',     cat:'muhavre',    color:'#9B59B6' },
-      { icon:'🎯', label:'CBQ',                    sub:'Competency Based Qs',     cat:'competency', color:'#E8900A' },
-      { icon:'⭐', label:'Additional Questions',    sub:'Practice Questions',      cat:'additional', color:'#27AE60' },
+      { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📄', label:'पाठ PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
+      { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'📖', label:'शब्दार्थ एवं मुहावरे',       sub:'Word Meanings & Muhavare', cat:'muhavre',    color:'#9B59B6' },
+      { icon:'🎯', label:'योग्यता आधारित प्रश्न (CBQ)', sub:'Competency Based Qs',     cat:'competency', color:'#E8900A' },
+      { icon:'⭐', label:'अतिरिक्त प्रश्न',            sub:'Additional Questions',    cat:'additional', color:'#27AE60' },
     ];
   }
 
