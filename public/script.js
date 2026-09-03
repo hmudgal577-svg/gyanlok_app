@@ -347,17 +347,19 @@ const TEST_DATA = {
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (व्याकरण - पदबंध व समास)', subject: 'Hindi', date: 'Jan 2026', pages: 2, color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (काव्य खंड - साखी व पद)', subject: 'Hindi', date: 'Feb 2026', pages: 3, color: '#2BA899' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (गद्य खंड - बड़े भाई साहब)', subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#9B59B6' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (रचनात्मक लेखन)',         subject: 'Hindi', date: 'Apr 2026', pages: 2, color: '#E05555' },
+        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_1_30Marks.docx', color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
+        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (अभ्यास प्रश्न-पत्र 3)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Mar 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_3_30Marks.docx', color: '#9B59B6' },
+        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (अभ्यास प्रश्न-पत्र 4)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Apr 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_4_40Marks.docx', color: '#E05555' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (एकांकी संचय)',      subject: 'Hindi', date: 'Jan 2026', pages: 3, color: '#3A7BD5' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (व्याकरण व निबंध)',  subject: 'Hindi', date: 'Mar 2026', pages: 2, color: '#2BA899' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'Class 10 ICSE Hindi | 30 Marks', subject: 'Hindi', marks: '30 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_1_30Marks.docx', color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'Class 10 ICSE Hindi | 40 Marks', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
+        { id: 'WS_ICSE_10_03', title: 'Worksheet 3: ICSE Hindi (अभ्यास प्रश्न-पत्र 3)', subtitle: 'Class 10 ICSE Hindi | 30 Marks', subject: 'Hindi', marks: '30 Marks', date: 'Mar 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_3_30Marks.docx', color: '#9B59B6' },
+        { id: 'WS_ICSE_10_04', title: 'Worksheet 4: ICSE Hindi (अभ्यास प्रश्न-पत्र 4)', subtitle: 'Class 10 ICSE Hindi | 40 Marks', subject: 'Hindi', marks: '40 Marks', date: 'Apr 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_4_40Marks.docx', color: '#E05555' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
@@ -404,7 +406,7 @@ let state = {
   board: 'CBSE',
   cls:   10,
   subj:  'Hindi',
-  testType: 'UTP',
+  testType: 'Worksheets',
   testBoard: 'CBSE',
 };
 
@@ -1377,9 +1379,38 @@ function initTestSheets() {
   renderTestContent();
 }
 
+function switchToWorksheetsTab() {
+  state.testType = 'Worksheets';
+  document.querySelectorAll('.test-tab').forEach(t => {
+    const isWs = t.dataset.testType === 'Worksheets';
+    t.classList.toggle('active', isWs);
+    t.setAttribute('aria-selected', String(isWs));
+  });
+  renderTestContent();
+}
+window.switchToWorksheetsTab = switchToWorksheetsTab;
+
 function renderTestContent() {
   const container = document.getElementById('test-content');
   if (!container) return;
+
+  // Coming soon for Unit Test Papers and Mock Exam as requested
+  if (state.testType === 'UTP' || state.testType === 'MockExam') {
+    const isUTP = state.testType === 'UTP';
+    const label = isUTP ? 'Unit Test Papers (UTP)' : 'Mock Exam (अभ्यास परीक्षा)';
+    container.innerHTML = `
+      <div class="test-coming-soon-card" style="text-align:center; padding: 4.5rem 2rem; background:#ffffff; border-radius:20px; border:1px solid #E2E8F0; margin: 1.5rem 0; box-shadow: 0 6px 24px rgba(0,0,0,0.05);">
+        <div style="font-size:3.5rem; margin-bottom:1rem;">🚧</div>
+        <h3 style="font-size:1.45rem; font-weight:800; color:var(--text-heading, #1A2740); margin-bottom:0.6rem;">${label} — जल्द आएगा! (Coming Soon)</h3>
+        <p style="color:var(--text-body, #64748B); max-width:500px; margin: 0 auto 1.75rem; line-height:1.7; font-size:0.95rem;">
+          इस सेक्शन के टेस्ट पेपर्स और प्रश्न-पत्र अभी तैयार किए जा रहे हैं। कृपया अभी के लिए उपलब्ध <strong>Worksheets (अभ्यास पत्रक)</strong> को हल करें और सबमिट करें।
+        </p>
+        <button onclick="switchToWorksheetsTab()" style="padding:0.7rem 1.6rem; border-radius:100px; font-weight:700; cursor:pointer; background:var(--accent, #3A7BD5); color:#fff; border:none; box-shadow:0 4px 14px rgba(58,123,213,0.3); font-size:0.92rem;">
+          📄 Worksheets पर जाएं →
+        </button>
+      </div>`;
+    return;
+  }
 
   const typeData  = TEST_DATA[state.testType];
   const boardData = typeData && typeData[state.testBoard];
@@ -1422,29 +1453,33 @@ function renderTestContent() {
 }
 
 function renderTestPaperCard(p) {
+  const safeTitle = p.title.replace(/'/g,"\\'");
+  const safeUrl   = (p.file_url || '').replace(/'/g,"\\'");
+  const metaParts = [p.subject, p.pages ? p.pages + ' pages' : null, p.date, p.marks].filter(Boolean).join(' | ');
+
   return `
-    <div class="test-paper-card">
+    <div class="test-paper-card" id="card-${p.id}">
       <div class="tp-header">
         <div class="tp-icon" style="background:${p.color}">${SVG.file}</div>
         <div class="tp-info">
           <div class="tp-title">${p.title}</div>
-          <div class="tp-meta">${p.subject} | ${p.pages} pages | ${p.date}</div>
+          <div class="tp-meta">${metaParts}</div>
         </div>
       </div>
       <div class="tp-view-mode">
         ${SVG.eye} Default: View Mode
       </div>
       <div class="tp-actions">
-        <button class="tp-action-btn view" onclick="openDocViewer('${p.title.replace(/'/g,"\\'")}')">
+        <button class="tp-action-btn view" onclick="openWorksheetViewer('${p.id}', '${safeTitle}', '${safeUrl}')">
           ${SVG.eye} View
         </button>
-        <button class="tp-action-btn download" onclick="handleDownload('${p.title.replace(/'/g,"\\'")}')">
+        <button class="tp-action-btn download" onclick="handleDownload('${safeTitle}', '${safeUrl}')">
           ${SVG.dl} Download
         </button>
-        <button class="tp-action-btn upload" onclick="openUploadModal('${p.title.replace(/'/g,"\\'")}')">
+        <button class="tp-action-btn upload" onclick="openUploadModal('${p.id}', '${safeTitle}')">
           ${SVG.up} Upload Answer
         </button>
-        <button class="tp-action-btn submit" onclick="simulateSubmit(this, '${p.id}')">
+        <button class="tp-action-btn submit" onclick="simulateSubmit(this, '${p.id}', '${safeTitle}')">
           ${SVG.send} Submit
         </button>
       </div>
@@ -1691,6 +1726,107 @@ function openDocViewer(title, url) {
   openModal(modal);
 }
 
+// ─── Worksheet Viewer System ────────────────────────────────────────────────
+let _worksheetsCache = null;
+
+async function fetchWorksheetsHtmlContent() {
+  if (_worksheetsCache) return _worksheetsCache;
+  try {
+    const res = await fetch('/worksheets_html_content.json');
+    if (!res.ok) throw new Error('Failed to load worksheets');
+    _worksheetsCache = await res.json();
+    return _worksheetsCache;
+  } catch (err) {
+    console.error('Error fetching worksheets:', err);
+    return {};
+  }
+}
+
+async function openWorksheetViewer(id, title, fileUrl) {
+  // Auth Gate: require login before viewing worksheet
+  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
+    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
+  })();
+  if (!_session) {
+    try {
+      const _r = await fetch('/api/student/me', { credentials: 'include' });
+      if (!_r.ok) { _showLoginGate(); return; }
+    } catch(e) { _showLoginGate(); return; }
+  }
+
+  const sTitle = (title || 'Worksheet').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+  const sUrl   = (fileUrl || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+
+  let overlay = document.getElementById('fs-doc-overlay');
+  if (overlay) {
+    overlay.remove();
+  }
+
+  overlay = document.createElement('div');
+  overlay.id = 'fs-doc-overlay';
+  overlay.className = 'fs-overlay';
+  overlay.innerHTML = `
+    <div class="fs-header">
+      <button class="fs-back-btn" onclick="closeFsOverlay()">&larr; वापस</button>
+      <div class="fs-breadcrumb">
+        <span class="fs-bc-book">अभ्यास पत्रक (Worksheet)</span>
+        <span class="fs-bc-sep">&rsaquo;</span>
+        <span class="fs-bc-title">${title}</span>
+      </div>
+      <div style="display:flex; gap:0.5rem; align-items:center;">
+        <button class="fs-back-btn" style="background:#10B981; border-color:#10B981;" onclick="handleDownload('${sTitle}', '${sUrl}')">
+          📥 Download
+        </button>
+        <button class="fs-back-btn" style="background:#F59E0B; border-color:#F59E0B;" onclick="closeFsOverlay(); openUploadModal('${id}', '${sTitle}')">
+          📤 Upload Answer
+        </button>
+        <button class="fs-close-btn" onclick="closeFsOverlay()" aria-label="Close">&times;</button>
+      </div>
+    </div>
+    <div class="fs-doc-body" id="fs-doc-body">
+      <div class="fs-loading"><div class="fs-spinner"></div><span>Worksheet लोड हो रही है...</span></div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+
+  const docBody = document.getElementById('fs-doc-body');
+  const store = await fetchWorksheetsHtmlContent();
+  const wsData = store && store[id];
+
+  if (wsData && wsData.html) {
+    docBody.innerHTML = `
+      <div class="fs-doc-content">
+        ${wsData.html}
+        <div style="margin: 2.5rem 0 1.5rem; padding: 1.8rem; background: #F8FAFC; border-radius: 16px; border: 2px dashed #CBD5E1; text-align: center;">
+          <h4 style="font-size: 1.2rem; font-weight: 700; color: #1A2740; margin-bottom: 0.5rem;">अभ्यास पूरा कर लिया? (Solved this Worksheet?)</h4>
+          <p style="color: #64748B; font-size: 0.92rem; margin-bottom: 1.2rem; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            अपनी उत्तर-पुस्तिका (Answer Sheet) की फोटो या PDF अपलोड करें और मेंटर से 48 घंटे के भीतर विस्तृत मूल्यांकन (Evaluation & Feedback) प्राप्त करें।
+          </p>
+          <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" onclick="closeFsOverlay(); openUploadModal('${id}', '${sTitle}')" style="padding: 0.65rem 1.6rem; border-radius: 100px; font-weight: 700; cursor: pointer;">
+              📤 Upload Answer Sheet
+            </button>
+            <button class="btn btn-secondary" onclick="handleDownload('${sTitle}', '${sUrl}')" style="padding: 0.65rem 1.6rem; border-radius: 100px; font-weight: 700; cursor: pointer;">
+              📥 Download Word File
+            </button>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    docBody.innerHTML = `
+      <div class="fs-empty">
+        <div style="font-size:3.5rem;margin-bottom:1rem">📄</div>
+        <h3>${title}</h3>
+        <p>अभ्यास पत्रक उपलब्ध है। नीचे दिए गए बटन से सीधे Word File डाउनलोड करें।</p>
+        <button class="btn btn-primary" onclick="handleDownload('${sTitle}', '${sUrl}')" style="margin-top:1rem; padding:0.6rem 1.4rem; border-radius:100px; cursor:pointer;">
+          📥 Download Word File
+        </button>
+      </div>`;
+  }
+}
+window.openWorksheetViewer = openWorksheetViewer;
 
 // ─── Chapter Summary Viewer System ──────────────────────────────────────────
 let _summariesCache = null;
@@ -1938,27 +2074,40 @@ function initUploadModal() {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Uploading...';
 
+    const _u = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : null;
     const fd = new FormData();
     fd.append('answer_file',    file);
     fd.append('resource_type', 'worksheet');
     fd.append('resource_id',    window._uploadResourceId   || 'general');
     fd.append('resource_title', window._uploadResourceName || 'Answer Sheet');
-    fd.append('student_name',   'Student');
+    fd.append('student_name',   _u?.name || 'Student');
 
     try {
-      const res  = await fetch('/api/student-submit', { method: 'POST', body: fd });
+      const res  = await fetch('/api/student-submit', { method: 'POST', body: fd, credentials: 'include' });
       const data = await res.json();
       if (res.ok) {
-        successEl.textContent = String.fromCharCode(10003) + ' ' + data.message;
+        successEl.textContent = String.fromCharCode(10003) + ' ' + (data.message || 'Answer sheet submitted!');
         fileInput.value = '';
         fileInfo.hidden = true;
         dropArea.style.display = '';
         submitBtn.innerHTML = SVG.send + ' Submit for Evaluation';
+        
+        // Update corresponding card submit button if present
+        if (window._uploadResourceId) {
+          const cBtn = document.querySelector(`#card-${window._uploadResourceId} .tp-action-btn.submit`);
+          if (cBtn) {
+            cBtn.innerHTML = String.fromCharCode(10003) + ' Submitted';
+            cBtn.style.background = '#EAF7EF';
+            cBtn.style.color = '#1A7F4E';
+            cBtn.disabled = true;
+          }
+        }
+
         setTimeout(() => {
           closeModal(modal);
           successEl.textContent = '';
-          showToast('Answer sheet submitted! Feedback in 48 hours.');
-        }, 2000);
+          showToast('Answer sheet submitted! Feedback within 48 hours.');
+        }, 1800);
       } else {
         showToast(data.error || 'Upload failed. Please try again.');
         submitBtn.disabled = false;
@@ -1972,7 +2121,24 @@ function initUploadModal() {
   });
 }
 
-function openUploadModal(resourceName) {
+function openUploadModal(resourceId, resourceTitle) {
+  // Require login before allowing answer sheet upload
+  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
+    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
+  })();
+  if (!_session) {
+    try {
+      fetch('/api/student/me', { credentials: 'include' }).then(r => {
+        if (!r.ok) { _showLoginGate(); }
+        else { _showModalActual(resourceId, resourceTitle); }
+      }).catch(() => _showLoginGate());
+    } catch(e) { _showLoginGate(); }
+    return;
+  }
+  _showModalActual(resourceId, resourceTitle);
+}
+
+function _showModalActual(resourceId, resourceTitle) {
   const modal    = document.getElementById('upload-modal');
   const label    = document.getElementById('upload-for-label');
   const fileInfo = document.getElementById('upload-file-selected');
@@ -1981,7 +2147,14 @@ function openUploadModal(resourceName) {
   const successEl= document.getElementById('upload-success');
   const dropArea = document.getElementById('upload-drop-area');
   if (!modal) return;
-  label.textContent = `Upload your answer sheet for: "${resourceName}"`;
+
+  const title = resourceTitle || resourceId || 'Worksheet';
+  const id    = resourceTitle ? resourceId : (resourceId || 'general');
+
+  window._uploadResourceId   = id;
+  window._uploadResourceName = title;
+
+  label.textContent = `Upload your answer sheet for: "${title}"`;
   fileInfo.hidden = true;
   submitBtn.disabled = true;
   if (fileInput) fileInput.value = '';
@@ -2042,28 +2215,46 @@ function handleDownload(title, url) {
   }
 }
 
-function simulateSubmit(btn, paperId) {
+async function simulateSubmit(btn, paperId, paperTitle) {
+  // Auth check
+  const _session = (typeof EkAuth !== 'undefined') ? EkAuth.getUser() : (() => {
+    try { return JSON.parse(localStorage.getItem('student_session')); } catch(e) { return null; }
+  })();
+  if (!_session) {
+    try {
+      const _r = await fetch('/api/student/me', { credentials: 'include' });
+      if (!_r.ok) { _showLoginGate(); return; }
+    } catch(e) { _showLoginGate(); return; }
+  }
+
+  const pTitle = paperTitle || paperId || 'Worksheet';
   btn.disabled = true;
-  btn.textContent = String.fromCharCode(10003) + ' Submitted';
-  btn.style.background = '#EAF7EF';
-  btn.style.color = '#1A7F4E';
-  showToast('Paper submitted! Feedback within 48 hours.');
-  fetch('/api/student-submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      resource_type:  'test_sheet',
-      resource_id:    paperId,
-      resource_title: 'Test Sheet ' + paperId,
-      student_name:   'Student'
-    })
-  }).catch(() => {});
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.innerHTML = SVG.send + ' Submit';
-    btn.style.background = '';
-    btn.style.color = '';
-  }, 6000);
+  btn.textContent = 'Submitting...';
+
+  try {
+    const res = await fetch('/api/student-submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        resource_type:  'worksheet',
+        resource_id:    paperId || 'general',
+        resource_title: pTitle,
+        student_name:   _session?.name || 'Student'
+      })
+    });
+    btn.innerHTML = String.fromCharCode(10003) + ' Submitted';
+    btn.style.background = '#EAF7EF';
+    btn.style.color = '#1A7F4E';
+    btn.disabled = true;
+    showToast('Worksheet submitted! Your mentor will evaluate and provide feedback within 48 hours.');
+  } catch (err) {
+    btn.innerHTML = String.fromCharCode(10003) + ' Submitted';
+    btn.style.background = '#EAF7EF';
+    btn.style.color = '#1A7F4E';
+    btn.disabled = true;
+    showToast('Worksheet submitted! Feedback within 48 hours.');
+  }
 }
 
 function showToast(message) {
