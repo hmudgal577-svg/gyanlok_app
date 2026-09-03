@@ -356,10 +356,8 @@ const TEST_DATA = {
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'Class 10 ICSE Hindi | 30 Marks', subject: 'Hindi', marks: '30 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_1_30Marks.docx', color: '#3A7BD5' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'Class 10 ICSE Hindi | 40 Marks', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
-        { id: 'WS_ICSE_10_03', title: 'Worksheet 3: ICSE Hindi (अभ्यास प्रश्न-पत्र 3)', subtitle: 'Class 10 ICSE Hindi | 30 Marks', subject: 'Hindi', marks: '30 Marks', date: 'Mar 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_3_30Marks.docx', color: '#9B59B6' },
-        { id: 'WS_ICSE_10_04', title: 'Worksheet 4: ICSE Hindi (अभ्यास प्रश्न-पत्र 4)', subtitle: 'Class 10 ICSE Hindi | 40 Marks', subject: 'Hindi', marks: '40 Marks', date: 'Apr 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_4_40Marks.docx', color: '#E05555' },
+        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_1_40Marks.docx', color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
