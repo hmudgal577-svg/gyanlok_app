@@ -936,28 +936,25 @@ function renderChapter(book, ch) {
 
   var opts = [];
   if (isNayaRaasta) {
-    // Naya Raasta (Novel): Summary, PDF, Notes, PYQ
+    // Naya Raasta (Novel): Summary, Notes, PYQ
     opts = [
       { icon:'📜', label:'पाठ सारांश', sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'पाठ PDF',     sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
       { icon:'📝', label:'नोट्स',       sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
       { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
     ];
   } else if (isICSE) {
-    // ICSE other books: Summary, PDF, Notes, Word Meanings & Muhavare, PYQ, Additional Questions
+    // ICSE other books: Summary, Notes, Word Meanings & Muhavare, PYQ, Additional Questions
     opts = [
       { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'पाठ PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
       { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
       { icon:'📖', label:'शब्दार्थ एवं मुहावरे',       sub:'Word Meanings & Muhavare', cat:'muhavre',    color:'#9B59B6' },
       { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
       { icon:'⭐', label:'अतिरिक्त प्रश्न',            sub:'Additional Questions',    cat:'additional', color:'#27AE60' },
     ];
   } else {
-    // CBSE: Summary, PDF, Notes, Word Meanings & Muhavare, CBQ, Additional Questions
+    // CBSE: Summary, Notes, Word Meanings & Muhavare, CBQ, Additional Questions
     opts = [
       { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📄', label:'पाठ PDF',                    sub:'Chapter PDF',             cat:'pdf',        color:'#3A7BD5' },
       { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
       { icon:'📖', label:'शब्दार्थ एवं मुहावरे',       sub:'Word Meanings & Muhavare', cat:'muhavre',    color:'#9B59B6' },
       { icon:'🎯', label:'योग्यता आधारित प्रश्न (CBQ)', sub:'Competency Based Qs',     cat:'competency', color:'#E8900A' },
@@ -967,9 +964,7 @@ function renderChapter(book, ch) {
 
   var linksHtml = opts.map(function(o) {
     var href = buildReaderUrl(book.name, ch.num, ch.title, o.cat);
-    var clickCode = (o.cat === 'pdf')
-      ? 'openRightPDF(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + safeUrl + '\')'
-      : 'openRightContent(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + o.cat + '\')';
+    var clickCode = 'openRightContent(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + o.cat + '\')';
     return '<a class="ch-link-item" href="' + href + '" onclick="event.preventDefault();' + clickCode + '">'
       + '<span class="ch-link-ic" style="background:' + o.color + '20;color:' + o.color + '">' + o.icon + '</span>'
       + '<span class="ch-link-text"><span class="ch-link-lbl">' + o.label + '</span><span class="ch-link-sub">' + o.sub + '</span></span>'
@@ -1055,35 +1050,33 @@ function getChapterContentKey(bookName, chNum, chTitle) {
 async function openRightContent(bookName, chNum, chTitle, category) {
   const sBook   = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
   const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  const safeCat = category || 'summary';
+  let safeCat = category || 'summary';
+  if (safeCat === 'pdf') safeCat = 'summary';
 
   const isNayaRaasta = bookName.indexOf('नया रास्ता') !== -1 || bookName.toLowerCase().indexOf('naya raasta') !== -1;
   const isICSE = String(state.board || '').toUpperCase() === 'ICSE';
 
   let catTabs = [];
   if (isNayaRaasta) {
-    // Naya Raasta (Novel): Summary, PDF, Notes, PYQ
+    // Naya Raasta (Novel): Summary, Notes, PYQ
     catTabs = [
       { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'pdf',        icon: '📄', label: 'PDF' },
       { key: 'notes',      icon: '📝', label: 'Notes' },
       { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
     ];
   } else if (isICSE) {
-    // ICSE other books: Summary, PDF, Notes, PYQ, Additional Questions, Word Meanings & Muhavare
+    // ICSE other books: Summary, Notes, PYQ, Additional Questions, Word Meanings & Muhavare
     catTabs = [
       { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'pdf',        icon: '📄', label: 'PDF' },
       { key: 'notes',      icon: '📝', label: 'Notes' },
       { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
       { key: 'additional', icon: '⭐', label: 'Additional Questions' },
       { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
     ];
   } else {
-    // CBSE: Summary, PDF, Notes, CBQ, Additional Questions, Word Meanings & Muhavare
+    // CBSE: Summary, Notes, CBQ, Additional Questions, Word Meanings & Muhavare
     catTabs = [
       { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'pdf',        icon: '📄', label: 'PDF' },
       { key: 'notes',      icon: '📝', label: 'Notes' },
       { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
       { key: 'additional', icon: '⭐', label: 'Additional Questions' },
@@ -1137,35 +1130,6 @@ async function openRightContent(bookName, chNum, chTitle, category) {
 
   const docBody = document.getElementById('fs-doc-body');
   if (!docBody) return;
-
-  // Handle PDF category
-  if (safeCat === 'pdf') {
-    let pdfUrl = '';
-    const boardRes = BOARDS_DATA[state.board] && BOARDS_DATA[state.board].resources;
-    const clsRes   = boardRes && boardRes[state.cls];
-    const subjRes  = clsRes && clsRes[state.subj];
-    if (subjRes && subjRes.books) {
-      for (const b of subjRes.books) {
-        if (b.chapters) {
-          const chObj = b.chapters.find(c => c.num === chNum || c.title === chTitle);
-          if (chObj && chObj.file_url) { pdfUrl = chObj.file_url; break; }
-        }
-      }
-    }
-    if (!pdfUrl) {
-      pdfUrl = `/pdf/cbse/class10/hindi/class_10_sparsh_hindi_chapter_${chNum}.pdf`;
-    }
-
-    const isAbsoluteUrl = /^https?:\/\//i.test(pdfUrl);
-    const absoluteUrl = isAbsoluteUrl ? pdfUrl : `${window.location.origin}${pdfUrl}`;
-
-    docBody.innerHTML =
-      '<div class="fs-pdf-wrap" style="width:100%;height:100%;display:flex;flex-direction:column;background:#2A2D32;">'
-      + '<iframe src="https://docs.google.com/viewer?url=' + encodeURIComponent(absoluteUrl) + '&embedded=true" style="width:100%;height:100%;border:none;" title="' + chTitle + ' PDF"></iframe>'
-      + '</div>';
-    setTimeout(() => { docBody.style.opacity = '1'; }, 50);
-    return;
-  }
 
   // Fetch HTML Content
   const key = getChapterContentKey(bookName, chNum, chTitle);
