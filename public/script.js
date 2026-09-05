@@ -1027,6 +1027,7 @@ const CHAPTER_KEY_MAP = [
   { keys: ['bheed','भीड़','भीड़'],                             code: 'bheed'      },
   { keys: ['do kalakar','दो कलाकार'],                         code: 'dokalakar'  },
   { keys: ['sukhi','सूखी'],                                   code: 'sukhidaali' },
+  { keys: ['deepdan','deepdaan','दीपदान'],                    code: 'deepdan'    },
 ];
 
 function getChapterContentKey(bookName, chNum, chTitle) {
