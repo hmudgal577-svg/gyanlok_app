@@ -323,8 +323,21 @@ let BOARDS_DATA = {
 };
 
 /* ══════════════════════════════════════════
-   2. DATA: TEST SHEETS
+   2. DATA: TEST SHEETS & WORKSHEET FOLDERS
 ══════════════════════════════════════════ */
+const WORKSHEET_FOLDERS = {
+  CBSE: [
+    { id: 'practice', name: 'Practice Worksheets', nameHi: 'अभ्यास पत्रक', icon: '📝', desc: 'हिंदी कोर्स-बी के संपूर्ण अभ्यास प्रश्न-पत्र' },
+    { id: 'muhavare', name: 'Muhavare Worksheet', nameHi: 'मुहावरे पत्रक', icon: '📖', desc: 'मुहावरे एवं लोकोक्तियाँ अभ्यास पत्रक' },
+    { id: 'padbandh', name: 'Padbandh Worksheet', nameHi: 'पदबंध पत्रक', icon: '📑', desc: 'पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रिया-विशेषण) अभ्यास' },
+    { id: 'pyq',      name: 'PYQ Based Worksheet', nameHi: 'PYQ आधारित पत्रक', icon: '🎯', desc: 'पिछले वर्षों के बोर्ड प्रश्नों पर आधारित वर्कशीट्स' },
+  ],
+  ICSE: [
+    { id: 'practice', name: 'Practice Worksheets', nameHi: 'अभ्यास पत्रक', icon: '📝', desc: 'ICSE हिंदी के संपूर्ण अभ्यास प्रश्न-पत्र' },
+    { id: 'muhavare', name: 'Muhavare Worksheet', nameHi: 'मुहावरे पत्रक', icon: '📖', desc: 'मुहावरे एवं व्याकरण अभ्यास पत्रक' },
+  ]
+};
+
 const TEST_DATA = {
   UTP: {
     CBSE: {
@@ -347,17 +360,17 @@ const TEST_DATA = {
   Worksheets: {
     CBSE: {
       10: [
-        { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_1_30Marks.docx', color: '#3A7BD5' },
-        { id: 'WS_CBSE_10_02', title: 'Worksheet 2: Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
-        { id: 'WS_CBSE_10_03', title: 'Worksheet 3: Hindi (अभ्यास प्रश्न-पत्र 3)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Mar 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_3_30Marks.docx', color: '#9B59B6' },
-        { id: 'WS_CBSE_10_04', title: 'Worksheet 4: Hindi (अभ्यास प्रश्न-पत्र 4)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Apr 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_4_40Marks.docx', color: '#E05555' },
+        { id: 'WS_CBSE_10_01', folder: 'practice', title: 'Worksheet 1: Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_1_30Marks.docx', color: '#3A7BD5' },
+        { id: 'WS_CBSE_10_02', folder: 'practice', title: 'Worksheet 2: Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
+        { id: 'WS_CBSE_10_03', folder: 'practice', title: 'Worksheet 3: Hindi (अभ्यास प्रश्न-पत्र 3)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 30 अंक | 60 मिनट', subject: 'Hindi', marks: '30 Marks', date: 'Mar 2026', pages: 3, file_url: '/worksheets/Hindi_Practice_Worksheet_3_30Marks.docx', color: '#9B59B6' },
+        { id: 'WS_CBSE_10_04', folder: 'practice', title: 'Worksheet 4: Hindi (अभ्यास प्रश्न-पत्र 4)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Apr 2026', pages: 4, file_url: '/worksheets/Hindi_Practice_Worksheet_4_40Marks.docx', color: '#E05555' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
     ICSE: {
       10: [
-        { id: 'WS_ICSE_10_01', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_1_40Marks.docx', color: '#3A7BD5' },
-        { id: 'WS_ICSE_10_02', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
+        { id: 'WS_ICSE_10_01', folder: 'practice', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_1_40Marks.docx', color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_02', folder: 'practice', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
@@ -406,6 +419,7 @@ let state = {
   subj:  'Hindi',
   testType: 'Worksheets',
   testBoard: 'CBSE',
+  wsFolder: 'practice',
 };
 
 /* ══════════════════════════════════════════
@@ -806,7 +820,7 @@ function renderDefaultRightContent(subjRes) {
       </div>
       
       <div class="rp-intro" style="background:var(--accent-bg); border-left-color:var(--accent); margin-bottom: 1.25rem;">
-        <p class="rp-intro-hi">इस विषय का Syllabus, Marking Scheme और Complete Textbook direct यहाँ से देखें या download करें।</p>
+        <p class="rp-intro-hi">इस विषय का Syllabus और Marking Scheme direct यहाँ से देखें या download करें।</p>
       </div>
 
       <p class="rp-options-label">Syllabus &amp; Marking Scheme:</p>
@@ -836,25 +850,6 @@ function renderDefaultRightContent(subjRes) {
   if (!syllabus && !markingScheme) {
     html += `<p style="color:var(--text-muted);font-size:.9rem;padding:0 .5rem;">Syllabus is being uploaded.</p>`;
   }
-
-  html += `
-      </div>
-
-      <p class="rp-options-label">Complete Book Download/View:</p>
-      <div class="rp-options-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .8rem;">
-  `;
-
-  books.forEach(book => {
-    html += `
-      <button class="rp-opt-btn" onclick="openDocViewer('${book.name}: Complete Book', '${book.file_url || ''}')">
-        <div class="rp-opt-icon" style="background:${book.color || 'var(--accent)'};color:#fff">📚</div>
-        <div class="rp-opt-text">
-          <span class="rp-opt-name">${book.name}</span>
-          <span class="rp-opt-sub">Complete Book PDF</span>
-        </div>
-      </button>
-    `;
-  });
 
   html += `
       </div>
@@ -1322,6 +1317,10 @@ function initTestSheets() {
     pill.addEventListener('click', () => {
       state.testBoard = pill.dataset.filter;
       document.querySelectorAll('.filter-pill').forEach(p => p.classList.toggle('active', p.dataset.filter === state.testBoard));
+      const validFolders = (WORKSHEET_FOLDERS[state.testBoard] || []).map(f => f.id);
+      if (!validFolders.includes(state.wsFolder)) {
+        state.wsFolder = 'practice';
+      }
       renderTestContent();
     });
   });
@@ -1331,6 +1330,7 @@ function initTestSheets() {
 
 function switchToWorksheetsTab() {
   state.testType = 'Worksheets';
+  state.wsFolder = 'practice';
   document.querySelectorAll('.test-tab').forEach(t => {
     const isWs = t.dataset.testType === 'Worksheets';
     t.classList.toggle('active', isWs);
@@ -1340,12 +1340,35 @@ function switchToWorksheetsTab() {
 }
 window.switchToWorksheetsTab = switchToWorksheetsTab;
 
+function setWsFolder(folderId) {
+  state.wsFolder = folderId;
+  renderTestContent();
+}
+window.setWsFolder = setWsFolder;
+
+function getFolderComingSoonDesc(folderId, board) {
+  if (folderId === 'muhavare') {
+    return `कक्षा 10 ${board} हिंदी के महत्वपूर्ण मुहावरों, लोकोक्तियों, अर्थ और वाक्य प्रयोग पर आधारित विशेष वर्कशीट्स तैयार की जा रही हैं।`;
+  }
+  if (folderId === 'padbandh') {
+    return 'कक्षा 10 CBSE हिंदी (कोर्स बी) के व्याकरण खंड के पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया एवं क्रिया-विशेषण पदबंध) पर आधारित अभ्यास पत्रक तैयार किए जा रहे हैं।';
+  }
+  if (folderId === 'pyq') {
+    return 'पिछले 10 वर्षों के बोर्ड परीक्षाओं में पूछे गए सबसे महत्वपूर्ण प्रश्नों पर आधारित विशेष PYQ अभ्यास पत्रक संकलित किए जा रहे हैं।';
+  }
+  return 'इस फ़ोल्डर के अभ्यास पत्रक अभी तैयार किए जा रहे हैं। कृपया जल्द ही दोबारा देखें।';
+}
+window.getFolderComingSoonDesc = getFolderComingSoonDesc;
+
 function renderTestContent() {
   const container = document.getElementById('test-content');
   if (!container) return;
 
+  const folderRow = document.getElementById('test-folder-row');
+
   // Coming soon for Unit Test Papers and Mock Exam as requested
   if (state.testType === 'UTP' || state.testType === 'MockExam') {
+    if (folderRow) { folderRow.style.display = 'none'; folderRow.innerHTML = ''; }
     const isUTP = state.testType === 'UTP';
     const label = isUTP ? 'Unit Test Papers (UTP)' : 'Mock Exam (अभ्यास परीक्षा)';
     container.innerHTML = `
@@ -1367,22 +1390,119 @@ function renderTestContent() {
 
   if (!boardData) { container.innerHTML = '<p style="text-align:center;color:var(--text-muted);padding:2rem">No data available.</p>'; return; }
 
+  // Render Worksheet Folders Row
+  if (state.testType === 'Worksheets' && folderRow) {
+    folderRow.style.display = 'flex';
+    const folders = WORKSHEET_FOLDERS[state.testBoard] || [];
+    const validFolderIds = folders.map(f => f.id);
+    if (!validFolderIds.includes(state.wsFolder)) {
+      state.wsFolder = 'practice';
+    }
+    const class10Papers = (boardData && boardData[10]) || [];
+
+    folderRow.innerHTML = `
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0.5rem; margin-top:0.25rem; margin-bottom:1.5rem; width:100%;">
+        <div style="font-size:0.82rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:0.4rem;">
+          <span>📁</span> <span>वर्कशीट फ़ोल्डर (Worksheet Folders):</span>
+        </div>
+        <div class="filter-pills folder-pills" style="display:flex; gap:0.5rem; flex-wrap:wrap; justify-content:center;">
+          ${folders.map(f => {
+            const count = class10Papers.filter(p => p.folder === f.id).length;
+            const isActive = state.wsFolder === f.id;
+            const badgeText = count > 0 ? `${count}` : 'Soon';
+            const badgeBg = isActive ? 'rgba(255,255,255,0.25)' : (count > 0 ? 'var(--accent-bg)' : '#F1F5F9');
+            const badgeColor = isActive ? '#fff' : (count > 0 ? 'var(--accent)' : '#64748B');
+            return `
+              <button class="folder-pill ${isActive ? 'active' : ''}" onclick="setWsFolder('${f.id}')" style="display:inline-flex; align-items:center; gap:0.45rem; padding:0.45rem 1.1rem; border-radius:100px; font-size:0.85rem; font-weight:600; cursor:pointer; border:1.5px solid ${isActive ? 'var(--accent)' : 'var(--border)'}; background:${isActive ? 'var(--accent)' : 'var(--card-bg)'}; color:${isActive ? '#fff' : 'var(--text-body)'}; transition:all 0.2s; box-shadow:${isActive ? '0 3px 10px rgba(58,123,213,0.25)' : 'none'};">
+                <span>${f.icon}</span>
+                <span>${f.name}</span>
+                <span style="font-size:0.72rem; padding:0.12rem 0.45rem; border-radius:50px; background:${badgeBg}; color:${badgeColor}; font-weight:700;">${badgeText}</span>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  } else if (folderRow) {
+    folderRow.style.display = 'none';
+    folderRow.innerHTML = '';
+  }
+
   const classes = BOARDS_DATA[state.testBoard].classes.slice().reverse(); // descending
   let html = '';
 
   classes.forEach(cls => {
-    const papers = boardData[cls] || [];
+    const allPapers = boardData[cls] || [];
+    let papers = allPapers;
+    let activeFolderObj = null;
+
+    if (state.testType === 'Worksheets') {
+      const folders = WORKSHEET_FOLDERS[state.testBoard] || [];
+      activeFolderObj = folders.find(f => f.id === state.wsFolder) || folders[0];
+      const activeFolderId = activeFolderObj ? activeFolderObj.id : 'practice';
+      papers = allPapers.filter(p => p.folder === activeFolderId);
+    }
+
+    const countLabel = state.testType === 'Worksheets' && activeFolderObj
+      ? `${papers.length} ${papers.length === 1 ? 'paper' : 'papers'} in ${activeFolderObj.name}`
+      : `${papers.length} ${papers.length === 1 ? 'paper' : 'papers'}`;
+
+    let bodyContent = '';
+    if (state.testType === 'Worksheets' && activeFolderObj) {
+      if (papers.length > 0) {
+        bodyContent = `
+          <div class="active-folder-header" style="background: linear-gradient(135deg, #F8FAFC 0%, #EEF2F6 100%); border: 1px solid #E2E8F0; border-radius: 12px; padding: 0.85rem 1.25rem; margin: 0.75rem 1rem 1rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+            <div style="display:flex; align-items:center; gap:0.6rem;">
+              <span style="font-size: 1.5rem;">${activeFolderObj.icon}</span>
+              <div>
+                <div style="font-size: 1rem; font-weight: 700; color: #1E293B;">${activeFolderObj.name} (${activeFolderObj.nameHi})</div>
+                <div style="font-size: 0.78rem; color: #64748B;">${activeFolderObj.desc}</div>
+              </div>
+            </div>
+            <span style="background: #3A7BD5; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.75rem; border-radius: 50px;">
+              ${papers.length} Worksheets Active
+            </span>
+          </div>
+          <div class="test-papers-grid">
+            ${papers.map(p => renderTestPaperCard(p)).join('')}
+          </div>
+        `;
+      } else {
+        bodyContent = `
+          <div class="folder-coming-soon-card" style="text-align:center; padding: 3rem 1.5rem; background:#ffffff; border-radius:14px; border:1px solid #E2E8F0; margin: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.02);">
+            <div style="font-size:2.8rem; margin-bottom:0.7rem;">${activeFolderObj.icon}</div>
+            <h4 style="font-size:1.2rem; font-weight:800; color:#1E293B; margin-bottom:0.35rem;">
+              ${activeFolderObj.name} (${activeFolderObj.nameHi})
+            </h4>
+            <p style="color:#64748B; font-size:0.85rem; font-weight:600; margin-bottom:0.65rem;">
+              कक्षा ${cls} ${state.testBoard} हिंदी | जल्द आ रहा है (Coming Soon)
+            </p>
+            <p style="color:#64748B; max-width:460px; margin: 0 auto 1.25rem; line-height:1.6; font-size:0.9rem;">
+              ${getFolderComingSoonDesc(activeFolderObj.id, state.testBoard)}
+            </p>
+            <button onclick="setWsFolder('practice')" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.6rem 1.3rem; border-radius:100px; font-weight:700; cursor:pointer; background:#3A7BD5; color:#fff; border:none; box-shadow:0 4px 12px rgba(58,123,213,0.25); font-size:0.88rem;">
+              📝 उपलब्ध Practice Worksheets देखें →
+            </button>
+          </div>
+        `;
+      }
+    } else {
+      bodyContent = `
+        <div class="test-papers-grid">
+          ${papers.length > 0 ? papers.map(p => renderTestPaperCard(p)).join('') : '<p class="no-papers-msg">More papers being added soon. Check back or contact a mentor.</p>'}
+        </div>
+      `;
+    }
+
     html += `
       <div class="test-class-item" data-class="${cls}">
         <div class="test-class-header" role="button">
           <span class="tc-label">Class ${cls}</span>
-          <span class="tc-count">${papers.length} ${papers.length === 1 ? 'paper' : 'papers'}</span>
+          <span class="tc-count">${countLabel}</span>
           <span class="tc-toggle">${SVG.chevD}</span>
         </div>
         <div class="test-class-body">
-          <div class="test-papers-grid">
-            ${papers.length > 0 ? papers.map(p => renderTestPaperCard(p)).join('') : '<p class="no-papers-msg">More papers being added soon. Check back or contact a mentor.</p>'}
-          </div>
+          ${bodyContent}
         </div>
       </div>`;
   });
