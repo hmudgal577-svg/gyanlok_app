@@ -382,6 +382,13 @@ const TEST_DATA = {
       10: [
         { id: 'WS_ICSE_10_01', folder: 'practice', title: 'Worksheet 1: ICSE Hindi (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Jan 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_1_40Marks.docx', color: '#3A7BD5' },
         { id: 'WS_ICSE_10_02', folder: 'practice', title: 'Worksheet 2: ICSE Hindi (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 ICSE हिंदी | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Feb 2026', pages: 3, file_url: '/worksheets/ICSE_Hindi_Practice_Worksheet_2_40Marks.docx', color: '#2BA899' },
+        // Muhavare Worksheets (Folder: muhavare)
+        { id: 'WS_ICSE_10_MUH_01', folder: 'muhavare', title: 'Worksheet 1: मुहावरे (ICSE अभ्यास पत्र 1)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_1.docx', color: '#3A7BD5' },
+        { id: 'WS_ICSE_10_MUH_02', folder: 'muhavare', title: 'Worksheet 2: मुहावरे (ICSE अभ्यास पत्र 2)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_2.docx', color: '#2BA899' },
+        { id: 'WS_ICSE_10_MUH_03', folder: 'muhavare', title: 'Worksheet 3: मुहावरे (ICSE अभ्यास पत्र 3)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_3.docx', color: '#8B5CF6' },
+        { id: 'WS_ICSE_10_MUH_04', folder: 'muhavare', title: 'Worksheet 4: मुहावरे (ICSE अभ्यास पत्र 4)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_4.docx', color: '#EC4899' },
+        { id: 'WS_ICSE_10_MUH_05', folder: 'muhavare', title: 'Worksheet 5: मुहावरे (ICSE अभ्यास पत्र 5)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_5.docx', color: '#E05555' },
+        { id: 'WS_ICSE_10_MUH_06', folder: 'muhavare', title: 'Worksheet 6: मुहावरे (ICSE अभ्यास पत्र 6)', subtitle: 'कक्षा 10 ICSE हिंदी | मुहावरे व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/ICSE_Muhavare_Worksheet_6.docx', color: '#F59E0B' },
       ],
       9: [], 8: [], 7: [], 6: []
     }
