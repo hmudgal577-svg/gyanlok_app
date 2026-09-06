@@ -372,6 +372,9 @@ const TEST_DATA = {
         // Padbandh Worksheets (Folder: padbandh)
         { id: 'WS_CBSE_10_PAD_01', folder: 'padbandh', title: 'Worksheet 1: पदबंध (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/Padbandh_Worksheet_1_40Marks.docx', color: '#8B5CF6' },
         { id: 'WS_CBSE_10_PAD_02', folder: 'padbandh', title: 'Worksheet 2: पदबंध (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/Padbandh_Worksheet_2_40Marks.docx', color: '#EC4899' },
+        // PYQ Based Worksheets (Folder: pyq)
+        { id: 'WS_CBSE_10_PYQ_01', folder: 'pyq', title: 'PYQ Worksheet 1: हिंदी (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | PYQ आधारित | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/PYQ_Worksheet_1_40Marks.docx', color: '#E05555' },
+        { id: 'WS_CBSE_10_PYQ_02', folder: 'pyq', title: 'PYQ Worksheet 2: हिंदी (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | PYQ आधारित | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/PYQ_Worksheet_2_40Marks.docx', color: '#9B59B6' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
