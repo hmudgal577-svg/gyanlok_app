@@ -34,7 +34,7 @@ let BOARDS_DATA = {
           books: [
             {
               name: 'स्पर्श (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): मुख्य पाठ्यपुस्तक (NCERT)',
+              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): स्पर्श (NCERT)',
               color: '#3A7BD5',
               file_url: '/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf',
               chapters: [
@@ -56,7 +56,7 @@ let BOARDS_DATA = {
             },
             {
               name: 'संचयन (भाग-2)',
-              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): पूरक पाठ्यपुस्तक (NCERT)',
+              subtitle: 'कक्षा 10 हिंदी (कोर्स बी): संचयन (NCERT)',
               color: '#2BA899',
               file_url: '/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf',
               chapters: [
@@ -159,7 +159,7 @@ let BOARDS_DATA = {
           books: [
             {
               name: 'First Flight',
-              subtitle: 'Class 10 English: Main Textbook',
+              subtitle: 'Class 10 English: NCERT Course',
               color: '#F5A623',
               chapters: [
                 { num: 1,  title: 'A Letter to God',                          worksheets: 2 },
@@ -794,8 +794,8 @@ function renderBoardContent() {
       <div style="display:flex; align-items:center; gap:.5rem;">
         <span style="font-size:1.25rem; margin-right:.15rem;">📋</span>
         <div style="text-align:left;">
-          <strong style="font-size:.84rem; color:var(--accent-dark); display:block; line-height:1.2;">Syllabus &amp; Full Books</strong>
-          <span style="font-size:.72rem; color:var(--text-body); display:block; margin-top:2px;">Syllabus, Marking Scheme aur text books check karein</span>
+          <strong style="font-size:.84rem; color:var(--accent-dark); display:block; line-height:1.2;">Syllabus &amp; Material</strong>
+          <span style="font-size:.72rem; color:var(--text-body); display:block; margin-top:2px;">Syllabus aur Marking Scheme check karein</span>
         </div>
       </div>
       <span style="color:var(--accent); font-weight:700; font-size:.9rem;">&rarr;</span>
