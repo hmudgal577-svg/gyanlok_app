@@ -49,7 +49,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=92.0.0" />
+  <link rel="stylesheet" href="style.css?v=93.0.0" />
 </head>
 <body>
 
@@ -96,7 +96,7 @@
       <a href="#pyqs" class="nav-link">PYQs</a>
       <a href="#testimonials" class="nav-link">Testimonials</a>
       <!-- Auth: shown when logged out -->
-      <a href="/login" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
+      <a href="/login.html" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
 
       <!-- Auth: shown when logged in (profile chip) -->
       <div class="nav-profile-chip" id="nav-profile-chip" hidden>
@@ -104,7 +104,7 @@
         <span id="nav-profile-name">Student</span>
         <svg class="chip-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
         <div class="nav-profile-dropdown">
-          <a href="/login" class="npd-item" id="nav-dashboard-link">
+          <a href="/login.html" class="npd-item" id="nav-dashboard-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
             My Dashboard
           </a>
@@ -756,13 +756,13 @@
     <h3 id="login-gate-title">Login Required</h3>
     <p>Please login or create a free account to access chapter resources, notes, PYQs and more.</p>
     <div class="login-gate-actions">
-      <a href="/login?next=/" class="btn btn-primary">Login / Sign Up</a>
+      <a href="/login.html?next=/" class="btn btn-primary">Login / Sign Up</a>
       <button class="btn btn-ghost" id="login-gate-close">Cancel</button>
     </div>
   </div>
 </div>
 
 <script src="auth.js?v=1.0"></script>
-<script src="script.js?v=92.0.0"></script>
+<script src="script.js?v=93.0.0"></script>
 </body>
 </html>

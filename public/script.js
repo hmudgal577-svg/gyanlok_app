@@ -2407,7 +2407,7 @@ window.closeAboutModal = closeAboutModal;
 // ─── Login Gate Modal ───────────────────────────────────────────────────────
 function _showLoginGate() {
   const modal = document.getElementById('login-gate-modal');
-  if (!modal) { window.location.href = '/login?next=' + encodeURIComponent(window.location.pathname); return; }
+  if (!modal) { window.location.href = '/login.html?next=' + encodeURIComponent(window.location.pathname); return; }
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
 
