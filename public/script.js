@@ -1004,7 +1004,7 @@ let _chapterHtmlCache = null;
 async function fetchChapterHtmlContent() {
   if (_chapterHtmlCache) return _chapterHtmlCache;
   try {
-    const res = await fetch('/chapter_html_content.json');
+    const res = await fetch('/chapter_html_content.json?v=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load chapter content');
     _chapterHtmlCache = await res.json();
     return _chapterHtmlCache;
@@ -1821,7 +1821,7 @@ let _worksheetsCache = null;
 async function fetchWorksheetsHtmlContent() {
   if (_worksheetsCache) return _worksheetsCache;
   try {
-    const res = await fetch('/worksheets_html_content.json');
+    const res = await fetch('/worksheets_html_content.json?v=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load worksheets');
     _worksheetsCache = await res.json();
     return _worksheetsCache;
