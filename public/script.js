@@ -1038,6 +1038,7 @@ const CHAPTER_KEY_MAP = [
   { keys: ['sapno','sapne','सपनों'],                          code: 'sapno'      },
   { keys: ['bade ghar','बड़े घर'],                            code: 'badeghar'   },
   { keys: ['bheed','भीड़','भीड़'],                             code: 'bheed'      },
+  { keys: ['bhede','bhediye','भेड़','भेड़ें','भेड़िए','भेड़ें','भेड़िए'], code: 'bhedein' },
   { keys: ['do kalakar','दो कलाकार'],                         code: 'dokalakar'  },
   { keys: ['sukhi','सूखी'],                                   code: 'sukhidaali' },
   { keys: ['deepdan','deepdaan','दीपदान'],                    code: 'deepdan'    },
