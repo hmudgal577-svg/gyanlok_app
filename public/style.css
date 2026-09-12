@@ -3513,3 +3513,129 @@ html { scroll-behavior: smooth; }
   background: #f3f4f6;
   border-color: #9ca3af;
 }
+
+
+/* ═════════════════════════════════════════════════════════════════
+   EkShala Worksheet Exam Paper Styling & Mobile Responsiveness
+   ═════════════════════════════════════════════════════════════════ */
+
+.ws-exam-header {
+  margin-bottom: 24px;
+  font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif;
+}
+
+.ws-exam-title {
+  text-align: center;
+  font-size: 15.5pt;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  color: #0f172a;
+  font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.ws-exam-subtitle {
+  text-align: center;
+  font-size: 12pt;
+  font-weight: 600;
+  color: #334155;
+  font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif;
+  margin-bottom: 12px;
+}
+
+.ws-exam-meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 8px;
+  column-gap: 24px;
+  font-size: 11.5pt;
+  font-family: 'Noto Sans Devanagari', 'Mangal', sans-serif;
+  color: #1e293b;
+  margin: 16px 0 14px 0;
+  line-height: 1.6;
+}
+
+.ws-exam-meta-item-left {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.ws-exam-meta-item-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 6px;
+  text-align: right;
+}
+
+.ws-exam-meta-item-full {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 6px;
+  grid-column: 1 / -1;
+}
+
+.ws-exam-divider {
+  border: 0;
+  border-top: 1.5px solid #475569;
+  margin: 14px 0 24px 0;
+}
+
+.ws-q-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+  line-height: 1.85;
+}
+
+.ws-q-marks {
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Mobile Responsiveness Enhancements */
+@media (max-width: 640px) {
+  .docx-exact-container {
+    padding: 1.25rem 0.85rem !important;
+    border-radius: 12px !important;
+    font-size: 10.5pt !important;
+    line-height: 1.75 !important;
+  }
+  .ws-exam-title {
+    font-size: 13pt !important;
+  }
+  .ws-exam-subtitle {
+    font-size: 10.5pt !important;
+  }
+  .ws-exam-meta-grid {
+    grid-template-columns: 1fr 1fr !important;
+    font-size: 10pt !important;
+    column-gap: 8px !important;
+    row-gap: 6px !important;
+  }
+  .about-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  .about-stat-card {
+    padding: 1rem 0.65rem !important;
+    border-radius: 14px !important;
+  }
+  .about-stat-card div[style*="font-size:1.7rem"] {
+    font-size: 1.35rem !important;
+  }
+  .about-stat-card p {
+    font-size: 0.78rem !important;
+  }
+}
