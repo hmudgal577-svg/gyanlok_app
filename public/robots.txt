@@ -1,11 +1,13 @@
+# EkShala Robots.txt
 User-agent: *
 Allow: /
 
 # Sitemap
 Sitemap: https://ekshala.in/sitemap.xml
 
-# Block admin pages from indexing
+# Disallow Private & Application Internal Routes
 Disallow: /admin.html
 Disallow: /admin-dashboard.html
 Disallow: /login.html
 Disallow: /api/
+Disallow: /uploads/
