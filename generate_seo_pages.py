@@ -450,55 +450,63 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       font-weight: 600;
     }}
 
-    /* Hero Header */
+    /* Hero Header - Light & Student Friendly */
     .seo-hero {{
-      background: linear-gradient(135deg, #0F172A 0%, #156082 60%, #1E3A8A 100%);
-      color: #FFFFFF;
-      padding: 3.5rem 0 3rem;
+      background: linear-gradient(135deg, #F0F6FD 0%, #E8F2FC 60%, #F5F9FD 100%);
+      border-bottom: 1px solid #D6E4F0;
+      color: #1A2740;
+      padding: 3.25rem 0 2.75rem;
       position: relative;
     }}
     .seo-hero-badge {{
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 14px;
+      padding: 6px 14px;
       border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      background: #E0EFFE;
+      border: 1px solid #BAE0FD;
+      color: #0369A1;
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
       margin-bottom: 1rem;
-      backdrop-filter: blur(8px);
     }}
     .seo-hero h1 {{
       font-size: clamp(1.85rem, 3.5vw, 2.6rem);
       font-weight: 800;
       line-height: 1.25;
       margin-bottom: 0.85rem;
+      color: #0F2B48 !important;
       font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
     }}
     .seo-hero p.lead {{
       font-size: 1.12rem;
-      line-height: 1.65;
-      color: #E2E8F0;
-      max-width: 840px;
+      line-height: 1.7;
+      color: #334E68;
+      max-width: 860px;
       margin-bottom: 1.5rem;
     }}
     .seo-hero-meta {{
       display: flex;
       flex-wrap: wrap;
-      gap: 0.85rem;
-      font-size: 0.9rem;
-      color: #CBD5E1;
+      gap: 0.75rem;
+      font-size: 0.88rem;
     }}
     .seo-hero-meta span {{
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 4px 12px;
-      border-radius: 8px;
+      gap: 6px;
+      background: #FFFFFF;
+      border: 1px solid #DCE7F3;
+      box-shadow: 0 1px 3px rgba(15, 43, 72, 0.05);
+      color: #1E3A5F;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 10px;
+    }}
+    .seo-hero-meta span strong {{
+      color: #0F2B48;
     }}
 
     /* Chapter Quick Nav Pills */
@@ -508,7 +516,7 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       z-index: 40;
       background: #FFFFFF;
       border-bottom: 1px solid #E2E8F0;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 12px rgba(15, 43, 72, 0.04);
       padding: 0.75rem 0;
     }}
     .seo-pill-list {{
@@ -522,21 +530,23 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 7px 16px;
+      padding: 8px 16px;
       border-radius: 9999px;
-      background: #F1F5F9;
-      color: #334155;
+      background: #FFFFFF;
+      color: #334E68;
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 600;
       white-space: nowrap;
       transition: all 0.2s ease;
-      border: 1px solid #E2E8F0;
+      border: 1px solid #DCE7F3;
+      box-shadow: 0 1px 2px rgba(15, 43, 72, 0.03);
     }}
     .seo-pill:hover, .seo-pill.active {{
-      background: #156082;
+      background: #3A7BD5;
       color: #FFFFFF;
-      border-color: #156082;
+      border-color: #3A7BD5;
+      box-shadow: 0 3px 10px rgba(58, 123, 213, 0.25);
       transform: translateY(-1px);
     }}
 
