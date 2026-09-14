@@ -456,17 +456,18 @@ document.addEventListener('DOMContentLoaded', () => {
   checkReaderUrlParams();
 });
 
-// Auto-open reader when page is loaded via a direct shared link
+// Auto-redirect to dedicated canonical chapter page if loaded via legacy query params
 function checkReaderUrlParams() {
   const p = new URLSearchParams(window.location.search);
-  const cat   = p.get('cat');
+  const cat   = p.get('cat') || 'summary';
   const book  = p.get('book');
   const ch    = parseInt(p.get('ch'), 10);
   const title = p.get('title');
-  if (cat && book && ch && title) {
-    setTimeout(() => {
-      openRightContent(book, ch, title, cat);
-    }, 600);
+  if (book && ch && title && typeof getChapterPageUrl === 'function') {
+    const targetUrl = getChapterPageUrl(book, ch, title, cat);
+    if (targetUrl) {
+      window.location.replace(targetUrl);
+    }
   }
 }
 
@@ -829,25 +830,70 @@ function renderDefaultRightContent(subjRes) {
   const panel = document.getElementById('boards-right-panel');
   if (!panel) return;
 
-  const { syllabus, markingScheme, books } = subjRes;
+  const isICSE = String(state.board || '').toUpperCase() === 'ICSE';
+  const boardSlug = isICSE ? 'icse' : 'cbse';
+  const hubUrl = '/' + boardSlug + '/class-10/hindi/';
+  const { syllabus, markingScheme } = subjRes || {};
+
   let html = `
-    <div class="rp-default-view">
+    <div class="rp-default-view" style="padding: 1.5rem; background: #FFFFFF; border-radius: 18px; border: 1px solid #E2E8F0; box-shadow: 0 4px 20px rgba(0,0,0,0.03);">
       <div class="rp-ch-header" style="margin-bottom: 1.25rem;">
-        <div class="rp-ch-breadcrumb">${state.board} &rsaquo; Class ${state.cls} &rsaquo; ${state.subj}</div>
-        <h2 class="rp-ch-title">विषय सामग्री (Subject Materials)</h2>
+        <div class="rp-ch-breadcrumb" style="font-size: 0.85rem; color: #64748B; margin-bottom: 0.35rem;">
+          ${state.board} &rsaquo; Class ${state.cls} &rsaquo; ${state.subj}
+        </div>
+        <h2 class="rp-ch-title" style="font-size: 1.4rem; font-weight: 800; color: #0F172A; margin: 0 0 0.5rem; font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;">
+          ${state.board} कक्षा 10 हिंदी अध्ययन केंद्र (Study Hub)
+        </h2>
       </div>
       
-      <div class="rp-intro" style="background:var(--accent-bg); border-left-color:var(--accent); margin-bottom: 1.25rem;">
-        <p class="rp-intro-hi">इस विषय का Syllabus और Marking Scheme direct यहाँ से देखें या download करें।</p>
+      <div class="rp-intro" style="background: #EFF6FF; border-left: 4px solid #3A7BD5; padding: 1rem 1.15rem; border-radius: 8px; margin-bottom: 1.5rem;">
+        <p style="margin: 0; font-size: 0.95rem; color: #1E3A8A; line-height: 1.6;">
+          👈 बाईं ओर दी गई सूची से किसी भी अध्याय पर क्लिक करके सीधे उस अध्याय के संपूर्ण <strong>पाठ सारांश, मुख्य नोट्स, शब्दार्थ व मुहावरे, योग्यता-आधारित प्रश्न (CBQ/PYQ)</strong> के समर्पित पृष्ठ पर जाएं।
+        </p>
       </div>
 
-      <p class="rp-options-label">Syllabus &amp; Marking Scheme:</p>
-      <div class="resource-row" style="margin-bottom: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+      <!-- Main Hub Action Card -->
+      <div style="background: linear-gradient(135deg, #156082 0%, #3A7BD5 100%); color: #FFFFFF; border-radius: 14px; padding: 1.35rem; margin-bottom: 1.5rem; box-shadow: 0 6px 18px rgba(58,123,213,0.22);">
+        <span style="font-size: 0.72rem; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;">Complete Hub Portal</span>
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0.5rem 0 0.4rem; color: #FFFFFF; font-family: 'Noto Sans Devanagari', sans-serif;">
+          ${state.board} कक्षा 10 हिंदी – संपूर्ण अध्याय संग्रह
+        </h3>
+        <p style="font-size: 0.88rem; color: #E0E7FF; margin: 0 0 1rem; line-height: 1.5;">
+          सभी अध्यायों की क्रमबद्ध सूची, बोर्ड परीक्षा दिशानिर्देश और मॉडल प्रश्न-पत्र एक ही पृष्ठ पर देखें।
+        </p>
+        <a href="${hubUrl}" class="btn" style="background: #FFFFFF; color: #156082; font-weight: 700; font-size: 0.9rem; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+          <span>हब पोर्टल खोलें (Open Hub)</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+
+      <!-- Quick Section Portals Grid -->
+      <p style="font-weight: 700; font-size: 0.95rem; color: #0F172A; margin: 0 0 0.85rem;">त्वरित अध्ययन केंद्र (Quick Access Portals):</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.85rem; margin-bottom: 1.5rem;">
+        <a href="/worksheets/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
+          <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">📄</div>
+          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">20 अभ्यास पत्रक</strong>
+          <span style="font-size: 0.75rem; color: #64748B;">CBSE, ICSE व व्याकरण</span>
+        </a>
+        <a href="/hindi-grammar/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
+          <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">📖</div>
+          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">व्याकरण केंद्र</strong>
+          <span style="font-size: 0.75rem; color: #64748B;">मुहावरे एवं पदबंध</span>
+        </a>
+        <a href="/pyq/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
+          <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">🎯</div>
+          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">बोर्ड PYQs</strong>
+          <span style="font-size: 0.75rem; color: #64748B;">2015-2025 प्रश्न पत्र</span>
+        </a>
+      </div>
+
+      <p style="font-weight: 700; font-size: 0.95rem; color: #0F172A; margin: 0 0 0.85rem;">पाठ्यक्रम एवं अंक विभाजन (Syllabus &amp; Marking Scheme):</p>
+      <div class="resource-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.85rem;">
   `;
 
   if (syllabus) {
     html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')">
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${syllabus.title}', '${syllabus.file_url || ''}')" style="cursor: pointer;">
         <div class="rc-icon" style="background:#3A7BD5">${SVG.file}</div>
         <div class="rc-info">
           <strong>Syllabus</strong>
@@ -857,7 +903,7 @@ function renderDefaultRightContent(subjRes) {
   }
   if (markingScheme) {
     html += `
-      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')">
+      <div class="resource-card" role="button" tabindex="0" onclick="openDocViewer('${markingScheme.title}', '${markingScheme.file_url || ''}')" style="cursor: pointer;">
         <div class="rc-icon" style="background:#2BA899">${SVG.check}</div>
         <div class="rc-info">
           <strong>Marking Scheme</strong>
@@ -866,7 +912,7 @@ function renderDefaultRightContent(subjRes) {
       </div>`;
   }
   if (!syllabus && !markingScheme) {
-    html += `<p style="color:var(--text-muted);font-size:.9rem;padding:0 .5rem;">Syllabus is being uploaded.</p>`;
+    html += `<p style="color:var(--text-muted);font-size:.9rem;padding:0 .5rem;">पाठ्यक्रम सामग्री लोड हो रही है...</p>`;
   }
 
   html += `
@@ -914,9 +960,109 @@ function getIntroData(bookName, chNum) {
   return (CHAPTER_INTROS[bookKey] || {})[chNum] || null;
 }
 
-// Build a shareable URL for a chapter+category (for right-click "Open in New Tab")
+/// ─── Chapter Slug & Canonical URL Mapping ──────────────────────────────────
+const CHAPTER_KEY_MAP = [
+  { keys: ['kabir','कबीर'],                                        code: 'kabir'      },
+  { keys: ['meera','mira','मीरा'],                                  code: 'meera'      },
+  { keys: ['bihari','बिहारी'],                                     code: 'bihari'     },
+  { keys: ['manushyata','मनुष्यता'],                               code: 'manushyata' },
+  { keys: ['pavas','paavas','parvat','पावस','पर्वत'],              code: 'pavas'      },
+  { keys: ['madhur','deepak','दीपक','मधुर'],                       code: 'deepak'     },
+  { keys: ['topi','टोपी'],                                         code: 'topi'       },
+  { keys: ['top','tope','तोप'],                                    code: 'top'        },
+  { keys: ['fida','fidaa','कर चले','फ़िदा','फिदा'],                 code: 'fida'       },
+  { keys: ['aatmtran','atmtran','आत्मत्राण'],                      code: 'aatmtran'   },
+  { keys: ['bade bhai','bade bha','बड़े भाई'],                     code: 'badebhai'   },
+  { keys: ['diary','डायरी'],                                       code: 'diary'      },
+  { keys: ['tantara','tatara','तताँरा','ततारा'],                   code: 'tantara'    },
+  { keys: ['shailendra','teesri kasam','शैलेंद्र','शैलन्द्र','तीसरी कसम'], code: 'shailendra' },
+  { keys: ['ab kahan','अब कहाँ','दूसरे के दुख'],                   code: 'abkahan'    },
+  { keys: ['patjhar','pattiya','पतझर','गिन्नी','झेन'],            code: 'patjhar'    },
+  { keys: ['kartoos','कारतूस'],                                     code: 'kartoos'    },
+  { keys: ['girgit','गिरगिट'],                                     code: 'girgit'     },
+  { keys: ['harihar','हरिहर'],                                     code: 'harihar'    },
+  { keys: ['sapno','sapne','सपनों','सपने'],                        code: 'sapno'      },
+  { keys: ['bade ghar','बड़े घर'],                                 code: 'badeghar'   },
+  { keys: ['bheed','भीड़','भीड़'],                                  code: 'bheed'      },
+  { keys: ['bhede','bhediye','भेड़','भेड़ें','भेड़िए','भेड़ें','भेड़िए'], code: 'bhedein' },
+  { keys: ['do kalakar','दो कलाकार'],                              code: 'dokalakar'  },
+  { keys: ['sukhi','सूखी'],                                        code: 'sukhidaali' },
+  { keys: ['deepdan','deepdaan','दीपदान'],                         code: 'deepdan'    },
+  { keys: ['mahabharat','महाभारत','साँझ','सांझ','sanjh'],        code: 'mahabharat' },
+];
+
+const CHAPTER_SLUG_MAP = {
+  'kabir':      { board: 'cbse', slug: 'sakhi-kabir' },
+  'meera':      { board: 'cbse', slug: 'pad-meera' },
+  'bihari':     { board: 'cbse', slug: 'dohe-bihari' },
+  'manushyata': { board: 'cbse', slug: 'manushyata' },
+  'pavas':      { board: 'cbse', slug: 'parvat-pradesh-mein-pavas' },
+  'deepak':     { board: 'cbse', slug: 'madhur-madhur-mere-deepak-jal' },
+  'top':        { board: 'cbse', slug: 'top' },
+  'fida':       { board: 'cbse', slug: 'kar-chale-hum-fida' },
+  'aatmtran':   { board: 'cbse', slug: 'aatmtran' },
+  'badebhai':   { board: 'cbse', slug: 'bade-bhai-sahab' },
+  'diary':      { board: 'cbse', slug: 'diary-ka-ek-panna' },
+  'tantara':    { board: 'cbse', slug: 'tatara-vamiro-katha' },
+  'shailendra': { board: 'cbse', slug: 'teesri-kasam-ke-shilpkar-shailendra' },
+  'girgit':     { board: 'cbse', slug: 'girgit' },
+  'abkahan':    { board: 'cbse', slug: 'ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale' },
+  'patjhar':    { board: 'cbse', slug: 'patjhar-mein-tooti-pattiyan' },
+  'kartoos':    { board: 'cbse', slug: 'kartoos' },
+  'harihar':    { board: 'cbse', slug: 'harihar-kaka' },
+  'sapno':      { board: 'cbse', slug: 'sapno-ke-se-din' },
+  'topi':       { board: 'cbse', slug: 'topi-shukla' },
+  'badeghar':   { board: 'icse', slug: 'bade-ghar-ki-beti' },
+  'bheed':      { board: 'icse', slug: 'bheed-mein-khoya-aadmi' },
+  'bhedein':    { board: 'icse', slug: 'bhedein-aur-bhediye' },
+  'dokalakar':  { board: 'icse', slug: 'do-kalakar' },
+  'sukhidaali': { board: 'icse', slug: 'sukhi-daali' },
+  'deepdan':    { board: 'icse', slug: 'deepdan' },
+  'mahabharat': { board: 'icse', slug: 'mahabharat-ki-ek-saanjh' },
+};
+
+function getChapterPageUrl(bookName, chNum, chTitle, category) {
+  const isICSE = String(state.board || '').toUpperCase() === 'ICSE' ||
+                 (bookName && (bookName.includes('साहित्य सागर') || bookName.includes('एकांकी संचय') || bookName.toLowerCase().includes('sahitya') || bookName.toLowerCase().includes('ekanki')));
+  const defaultBoard = isICSE ? 'icse' : 'cbse';
+
+  const title = String(chTitle || '').toLowerCase();
+  let chCode = null;
+  for (const entry of CHAPTER_KEY_MAP) {
+    for (const kw of entry.keys) {
+      if (title.includes(kw.toLowerCase())) {
+        chCode = entry.code;
+        break;
+      }
+    }
+    if (chCode) break;
+  }
+
+  const mapping = chCode ? CHAPTER_SLUG_MAP[chCode] : null;
+  const board = mapping ? mapping.board : defaultBoard;
+  const slug = mapping ? mapping.slug : null;
+
+  if (!slug) {
+    return '/' + board + '/class-10/hindi/';
+  }
+
+  let hash = '';
+  if (category) {
+    const c = String(category).toLowerCase();
+    if (c === 'summary') hash = '#summary';
+    else if (c === 'notes') hash = '#notes';
+    else if (c === 'competency' || c === 'pyq' || c === 'cbq') hash = '#competency';
+    else if (c === 'additional') hash = '#additional';
+    else if (c === 'muhavre' || c === 'muhavare') hash = '#muhavre';
+    else if (c === 'worksheets') hash = '#worksheets';
+  }
+
+  return '/' + board + '/class-10/hindi/' + slug + '/' + hash;
+}
+
+// Build a canonical direct URL for a chapter+category
 function buildReaderUrl(bookName, chNum, chTitle, cat) {
-  return '/?' + new URLSearchParams({ book: bookName, ch: chNum, title: chTitle, cat: cat }).toString();
+  return getChapterPageUrl(bookName, chNum, chTitle, cat);
 }
 
 // Toggle chapter dropdown accordion
@@ -940,9 +1086,6 @@ function toggleChapterDropdown(chId) {
 function renderChapter(book, ch) {
   var cleanName = book.name.replace(/[^\w\u0900-\u097F]+/g, '-');
   var chId     = 'ch-' + cleanName + '-' + ch.num;
-  var safeBook = book.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  var safeTitle= ch.title.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  var safeUrl  = (ch.file_url || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
 
   var isNayaRaasta = book.name.indexOf('नया रास्ता') !== -1 || book.name.toLowerCase().indexOf('naya raasta') !== -1;
   var isICSE = String(state.board || '').toUpperCase() === 'ICSE';
@@ -951,8 +1094,8 @@ function renderChapter(book, ch) {
   if (isNayaRaasta) {
     // Naya Raasta (Novel): Summary, Notes, PYQ
     opts = [
-      { icon:'📜', label:'पाठ सारांश', sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📝', label:'नोट्स',       sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
+      { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
+      { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
       { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
     ];
   } else if (isICSE) {
@@ -975,10 +1118,16 @@ function renderChapter(book, ch) {
     ];
   }
 
-  var linksHtml = opts.map(function(o) {
-    var href = buildReaderUrl(book.name, ch.num, ch.title, o.cat);
-    var clickCode = 'openRightContent(\'' + safeBook + '\',' + ch.num + ',\'' + safeTitle + '\',\'' + o.cat + '\')';
-    return '<a class="ch-link-item" href="' + href + '" onclick="event.preventDefault();' + clickCode + '">'
+  var chapterUrl = getChapterPageUrl(book.name, ch.num, ch.title, '');
+
+  var mainLinkHtml = '<a class="ch-link-item ch-link-main" href="' + chapterUrl + '" style="background:#EFF6FF;border-left:3px solid var(--accent);font-weight:700;">'
+    + '<span class="ch-link-ic" style="background:#3A7BD5;color:#fff">📖</span>'
+    + '<span class="ch-link-text"><span class="ch-link-lbl" style="color:#1E3A8A">संपूर्ण अध्याय पेज खोलें</span><span class="ch-link-sub">Full Chapter Guide, Notes &amp; Q&A</span></span>'
+    + '<span class="ch-link-arr" style="color:#1E3A8A;opacity:1">&rarr;</span></a>';
+
+  var linksHtml = mainLinkHtml + opts.map(function(o) {
+    var href = getChapterPageUrl(book.name, ch.num, ch.title, o.cat);
+    return '<a class="ch-link-item" href="' + href + '">'
       + '<span class="ch-link-ic" style="background:' + o.color + '20;color:' + o.color + '">' + o.icon + '</span>'
       + '<span class="ch-link-text"><span class="ch-link-lbl">' + o.label + '</span><span class="ch-link-sub">' + o.sub + '</span></span>'
       + '<span class="ch-link-arr">&rarr;</span></a>';
@@ -988,19 +1137,41 @@ function renderChapter(book, ch) {
     + '<div class="chapter-header" role="button" tabindex="0" aria-expanded="false" onclick="toggleChapterDropdown(\'' + chId + '\')">'
     + '<div class="ch-num">' + ch.num + '</div>'
     + '<div class="ch-title">' + ch.title + '</div>'
+    + '<a class="ch-open-btn" href="' + chapterUrl + '" onclick="event.stopPropagation();" title="अध्याय का पूरा पेज खोलें">अध्याय खोलें &rarr;</a>'
     + '<div class="ch-toggle">▾</div>'
     + '</div>'
     + '<div class="ch-dropdown" id="drop-' + chId + '" hidden>' + linksHtml + '</div>'
     + '</div>';
 }
-// Called when user clicks a chapter row: loads details in the right panel
+
+// Redirect directly to canonical chapter page when user clicks chapter or option
 function selectChapter(bookName, chNum, chTitle, fileUrl) {
-  openRightContent(bookName, chNum, chTitle, 'summary');
+  var url = getChapterPageUrl(bookName, chNum, chTitle, 'summary');
+  window.location.href = url;
 }
 
-// ─── HTML Content Viewer & Editor Helpers ─────────────────────────────────────
-let _chapterHtmlCache = null;
+function openRightContent(bookName, chNum, chTitle, category) {
+  var url = getChapterPageUrl(bookName, chNum, chTitle, category);
+  window.location.href = url;
+}
 
+function closeFsOverlay() {
+  var overlay = document.getElementById('fs-doc-overlay');
+  if (overlay) overlay.remove();
+}
+
+function openRightComingSoon(type, chTitle) {
+  window.location.href = (String(state.board || '').toUpperCase() === 'ICSE') ? '/icse/class-10/hindi/' : '/cbse/class-10/hindi/';
+}
+
+function openRightPDF(bookName, chNum, chTitle, fileUrl) {
+  var url = (fileUrl || '').trim();
+  if (url) window.open(url, '_blank');
+  else selectChapter(bookName, chNum, chTitle, '');
+}
+
+// Legacy helper compatibility
+let _chapterHtmlCache = null;
 async function fetchChapterHtmlContent() {
   if (_chapterHtmlCache) return _chapterHtmlCache;
   try {
@@ -1009,41 +1180,9 @@ async function fetchChapterHtmlContent() {
     _chapterHtmlCache = await res.json();
     return _chapterHtmlCache;
   } catch (err) {
-    console.error('Error fetching chapter content:', err);
     return {};
   }
 }
-
-// Maps chapter title keywords (English or Hindi) to short key names
-const CHAPTER_KEY_MAP = [
-  { keys: ['kabir','कबीर'],                                        code: 'kabir'      },
-  { keys: ['meera','mira','मीरा'],                                  code: 'meera'      },
-  { keys: ['bihari','बिहारी'],                          code: 'bihari'     },
-  { keys: ['manushyata','मनुष्यता'],         code: 'manushyata' },
-  { keys: ['pavas','paavas','parvat','पावस'],                       code: 'pavas'      },
-  { keys: ['madhur','deepak','दीपक'],                               code: 'deepak'     },
-  { keys: ['topi','टोपी'],                                         code: 'topi'       },
-  { keys: ['top','tope','तोप'],                                          code: 'top'        },
-  { keys: ['fida','fidaa','कर चले','फ़िदा'], code: 'fida' },
-  { keys: ['aatmtran','atmtran','आत्मत्राण'],      code: 'aatmtran'  },
-  { keys: ['bade bhai','bade bha','बड़े भाई'],           code: 'badebhai'   },
-  { keys: ['diary','डायरी'],                                  code: 'diary'      },
-  { keys: ['tantara','tatara','तताँरा'],                code: 'tantara'    },
-  { keys: ['shailendra','teesri kasam','शैलेंद्र'], code: 'shailendra' },
-  { keys: ['ab kahan','अब कहाँ'],                      code: 'abkahan'    },
-  { keys: ['patjhar','pattiya','पतझर'],                             code: 'patjhar'    },
-  { keys: ['kartoos','कारतूस'],                         code: 'kartoos'    },
-  { keys: ['girgit','गिरगिट'],                         code: 'girgit'     },
-  { keys: ['harihar','हरिहर'],                               code: 'harihar'    },
-  { keys: ['sapno','sapne','सपनों'],                          code: 'sapno'      },
-  { keys: ['bade ghar','बड़े घर'],                            code: 'badeghar'   },
-  { keys: ['bheed','भीड़','भीड़'],                             code: 'bheed'      },
-  { keys: ['bhede','bhediye','भेड़','भेड़ें','भेड़िए','भेड़ें','भेड़िए'], code: 'bhedein' },
-  { keys: ['do kalakar','दो कलाकार'],                         code: 'dokalakar'  },
-  { keys: ['sukhi','सूखी'],                                   code: 'sukhidaali' },
-  { keys: ['deepdan','deepdaan','दीपदान'],                    code: 'deepdan'    },
-  { keys: ['mahabharat','महाभारत','साँझ','सांझ','sanjh'],   code: 'mahabharat' },
-];
 
 function getChapterContentKey(bookName, chNum, chTitle) {
   const board = String(state.board || 'CBSE').toLowerCase();
@@ -1061,171 +1200,6 @@ function getChapterContentKey(bookName, chNum, chTitle) {
   if (!chCode) chCode = 'ch' + chNum;
 
   return board + '_' + cls + '_' + subj + '_' + chCode;
-}
-
-async function openRightContent(bookName, chNum, chTitle, category) {
-  const sBook   = bookName.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  const sTitle  = chTitle.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-  let safeCat = category || 'summary';
-  if (safeCat === 'pdf') safeCat = 'summary';
-
-  const isNayaRaasta = bookName.indexOf('नया रास्ता') !== -1 || bookName.toLowerCase().indexOf('naya raasta') !== -1;
-  const isICSE = String(state.board || '').toUpperCase() === 'ICSE';
-
-  let catTabs = [];
-  if (isNayaRaasta) {
-    // Naya Raasta (Novel): Summary, Notes, PYQ
-    catTabs = [
-      { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'notes',      icon: '📝', label: 'Notes' },
-      { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
-    ];
-  } else if (isICSE) {
-    // ICSE other books: Summary, Notes, PYQ, Additional Questions, Word Meanings & Muhavare
-    catTabs = [
-      { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'notes',      icon: '📝', label: 'Notes' },
-      { key: 'competency', icon: '🎯', label: 'PYQ (Previous Year Questions)' },
-      { key: 'additional', icon: '⭐', label: 'Additional Questions' },
-      { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
-    ];
-  } else {
-    // CBSE: Summary, Notes, CBQ, Additional Questions, Word Meanings & Muhavare
-    catTabs = [
-      { key: 'summary',    icon: '📜', label: 'Summary' },
-      { key: 'notes',      icon: '📝', label: 'Notes' },
-      { key: 'competency', icon: '🎯', label: 'CBQ (Competency Based Qs)' },
-      { key: 'additional', icon: '⭐', label: 'Additional Questions' },
-      { key: 'muhavre',    icon: '📖', label: 'Word Meanings & Muhavare' },
-    ];
-  }
-
-  const tabsHtml = catTabs.map(t => {
-    const cls = t.key === safeCat ? 'fs-tab fs-tab--active' : 'fs-tab';
-    return '<button class="' + cls + '" data-cat="' + t.key + '" onclick="openRightContent(\'' + sBook + '\',' + chNum + ',\'' + sTitle + '\',\'' + t.key + '\')">' + t.icon + ' ' + t.label + '</button>';
-  }).join('');
-
-  let overlay = document.getElementById('fs-doc-overlay');
-
-  if (overlay) {
-    // Overlay already open: update tabs without removing DOM to prevent background flash/teardown
-    const tabsBar = overlay.querySelector('.fs-tabs-bar');
-    if (tabsBar) tabsBar.innerHTML = tabsHtml;
-
-    const docBody = document.getElementById('fs-doc-body');
-    if (docBody) {
-      docBody.scrollTop = 0;
-      docBody.style.opacity = '0.4';
-    }
-  } else {
-    // Build full-screen overlay
-    overlay = document.createElement('div');
-    overlay.id = 'fs-doc-overlay';
-    overlay.className = 'fs-overlay';
-    overlay.innerHTML =
-      '<div class="fs-header">'
-      + '<button class="fs-back-btn" onclick="closeFsOverlay()">&larr; वापस</button>'
-      + '<div class="fs-breadcrumb">'
-      + '<span class="fs-bc-book">' + bookName + '</span>'
-      + '<span class="fs-bc-sep">&rsaquo;</span>'
-      + '<span class="fs-bc-ch">Ch. ' + chNum + '</span>'
-      + '<span class="fs-bc-sep">&rsaquo;</span>'
-      + '<span class="fs-bc-title">' + chTitle + '</span>'
-      + '</div>'
-      + '<button class="fs-close-btn" onclick="closeFsOverlay()" aria-label="Close">&times;</button>'
-      + '</div>'
-      + '<div class="fs-tabs-bar">' + tabsHtml + '</div>'
-      + '<div class="fs-doc-body" id="fs-doc-body">'
-      + '<div class="fs-loading"><div class="fs-spinner"></div><span>Content लोड हो रहा है...</span></div>'
-      + '</div>';
-
-    document.body.appendChild(overlay);
-    document.documentElement.style.overflow = 'hidden';
-    document.body.style.overflow = 'hidden';
-  }
-
-  const docBody = document.getElementById('fs-doc-body');
-  if (!docBody) return;
-
-  // Fetch HTML Content
-  const key = getChapterContentKey(bookName, chNum, chTitle);
-  const store = await fetchChapterHtmlContent();
-  let htmlContent = '';
-  if (store && store[key]) {
-    htmlContent = store[key][safeCat] 
-      || (safeCat === 'competency' ? store[key]['pyq'] : '') 
-      || (safeCat === 'pyq' ? store[key]['competency'] : '') 
-      || '';
-  }
-
-  if (!htmlContent) {
-    docBody.innerHTML = '<div class="fs-empty"><div style="font-size:3.5rem;margin-bottom:1rem">🚧</div><h3>जल्द आएगा!</h3><p>इस section का content तैयार किया जा रहा है।</p></div>';
-  } else {
-    docBody.innerHTML = '<div class="fs-doc-content">' + htmlContent + '</div>';
-  }
-
-  setTimeout(() => { docBody.style.opacity = '1'; }, 50);
-}
-
-function closeFsOverlay() {
-  const overlay = document.getElementById('fs-doc-overlay');
-  if (overlay) {
-    overlay.classList.add('fs-overlay--exit');
-    setTimeout(() => {
-      overlay.remove();
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    }, 250);
-  }
-}
-
-// Close on Escape key
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeFsOverlay();
-});
-
-function openRightComingSoon(type, chTitle) {
-  const panel = document.getElementById('boards-right-panel');
-  if (!panel) return;
-  panel.innerHTML = `
-    <div class="rp-summary-wrap">
-      <div class="rp-summary-header">
-        <span style="font-weight:700;color:var(--text-primary)">${type}: ${chTitle}</span>
-      </div>
-      <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
-        <div style="font-size:2.5rem;margin-bottom:1rem">🚧</div>
-        <h3 style="color:var(--text-primary);margin-bottom:.5rem">जल्द आएगा!</h3>
-        <p style="color:var(--text-muted)">यह सामग्री तैयार की जा रही है।</p>
-      </div>
-    </div>`;
-}
-
-function openRightPDF(bookName, chNum, chTitle, fileUrl) {
-  const panel = document.getElementById('boards-right-panel');
-  if (!panel) return;
-  const url = (fileUrl || '').trim();
-  if (!url) { openRightComingSoon('PDF', chTitle); return; }
-  const sBook = bookName.replace(/'/g,"\\'");
-  const sTitle = chTitle.replace(/'/g,"\\'");
-  
-  const isAbsoluteUrl = /^https?:\/\//i.test(url);
-  const absoluteUrl = isAbsoluteUrl ? url : `${window.location.origin}${url}`;
-
-  panel.innerHTML = `
-    <div class="rp-summary-wrap">
-      <div class="rp-summary-header">
-        <div>
-          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} &rsaquo; Chapter ${chNum}</div>
-          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${chTitle}: PDF</span>
-        </div>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','${url.replace(/'/g,"\\'")}')">â† वापस</button>
-      </div>
-      <div style="height:calc(100vh - var(--nav-h) - 180px);background:#fff">
-        <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}&embedded=true"
-          style="width:100%;height:100%;border:none" loading="lazy" title="${chTitle} PDF">
-        </iframe>
-      </div>
-    </div>`;
 }
 
 // Placeholder: these are no longer needed but kept for backward compat
@@ -2016,79 +1990,9 @@ function parseSummaryArray(arr, bookName, chNum, chTitle) {
   };
 }
 
-async function openSummary(bookName, chNum, chTitle) {
-  const panel = document.getElementById('boards-right-panel');
-  if (!panel) return;
-
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  const sBook  = bookName.replace(/'/g,"\\'");
-  const sTitle = chTitle.replace(/'/g,"\\'");
-
-  panel.innerHTML = `
-    <div class="rp-summary-wrap">
-      <div class="rp-summary-header">
-        <span style="font-weight:700;color:var(--text-primary)">${bookName} Ch.${chNum}: Summary</span>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† वापस</button>
-      </div>
-      <div class="rp-summary-body" style="display:flex;align-items:center;gap:.75rem;padding:2rem">
-        <div style="width:32px;height:32px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin 1s linear infinite"></div>
-        <p style="color:var(--text-muted);font-weight:500">Summary लोड हो रही है...</p>
-      </div>
-    </div>`;
-
-  const summaries = await fetchSummaries();
-  const summaryKey = getSummaryKey(bookName, chNum, chTitle);
-
-  if (!summaries || !summaryKey || !summaries[summaryKey]) {
-    panel.innerHTML = `
-      <div class="rp-summary-wrap">
-        <div class="rp-summary-header">
-          <span style="font-weight:700;color:var(--text-primary)">${chTitle}: Summary</span>
-          <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† वापस</button>
-        </div>
-        <div class="rp-summary-body" style="text-align:center;padding:3rem 2rem">
-          <div style="font-size:2.5rem;margin-bottom:1rem">📜</div>
-          <h3 style="color:var(--text-primary);margin-bottom:.5rem">Summary जल्द आएगी</h3>
-          <p style="color:var(--text-muted)"><strong>${chTitle}</strong> का सारांश तैयार किया जा रहा है।</p>
-        </div>
-      </div>`;
-    return;
-  }
-
-  const rawData = summaries[summaryKey];
-  const data = parseSummaryArray(rawData, bookName, chNum, chTitle);
-
-  let pts = '';
-  if (data.introText) {
-    pts += `<div class="summary-intro-box"><strong>${data.introTitle || 'अध्याय एक नज़र में'}:</strong><br/>${data.introText}</div>`;
-  }
-  pts += `<div class="summary-points-list">`;
-  data.points.forEach(pt => {
-    pts += `<div class="summary-point-item">
-      <div class="summary-point-title"><strong>${pt.title}</strong></div>
-      ${pt.hindi   ? `<div class="summary-text-hindi">${pt.hindi}</div>` : ''}
-      ${pt.english ? `<div class="summary-text-english"><strong>English:</strong> ${pt.english}</div>` : ''}
-    </div>`;
-  });
-  pts += `</div>`;
-
-  panel.innerHTML = `
-    <div class="rp-summary-wrap">
-      <div class="rp-summary-header">
-        <div>
-          <div style="font-size:.72rem;color:var(--text-muted);margin-bottom:.15rem">${bookName} › Chapter ${chNum}</div>
-          <span style="font-weight:700;font-size:1.05rem;color:var(--text-primary)">${data.bookTitle || chTitle}</span>
-        </div>
-        <button class="rp-summary-back" onclick="selectChapter('${sBook}',${chNum},'${sTitle}','')">â† वापस</button>
-      </div>
-      <div class="rp-summary-body">
-        <div class="summary-viewer-wrap">
-          <h3 class="summary-section-title">पाठ का सार (Quick Revision Summary)</h3>
-          ${pts}
-        </div>
-      </div>
-    </div>`;
+function openSummary(bookName, chNum, chTitle) {
+  var url = getChapterPageUrl(bookName, chNum, chTitle, 'summary');
+  window.location.href = url;
 }
 
 

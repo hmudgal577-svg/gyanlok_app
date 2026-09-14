@@ -3151,6 +3151,39 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   flex-shrink: 0;
 }
 
+/* Chapter direct open button in accordion header */
+.ch-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid rgba(58, 123, 213, 0.25);
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  margin-left: auto;
+  margin-right: 6px;
+}
+.ch-open-btn:hover {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+  transform: translateX(1px);
+}
+@media (max-width: 480px) {
+  .ch-open-btn {
+    font-size: 0.72rem;
+    padding: 3px 7px;
+    margin-right: 2px;
+  }
+}
+
 
 /* ─── ABOUT SECTION STYLES ─────────────────────────────────────────── */
 .about-section { background: var(--bg-alt); padding: 5rem 0; }
