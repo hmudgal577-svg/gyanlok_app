@@ -387,38 +387,67 @@
 
 
 <!-- """"""""""""""""""""""""""""""""""""""""
-     TEST SHEETS SECTION
+     WORKSHETS SHOWCASE SECTION (Dedicated Portal: /worksheets/)
 """""""""""""""""""""""""""""""""""""""" -->
-<section class="test-section section" id="test-sheets" aria-labelledby="test-heading">
+<section class="worksheets-showcase-section section bg-soft" id="test-sheets" aria-labelledby="test-heading">
   <div class="container">
     <div class="section-header fade-in">
       <span class="section-badge">Practice &amp; Evaluate</span>
-      <h2 id="test-heading">Test Sheets</h2>
-      <p class="test-tagline">Give a Try! Get Evaluated too.</p>
+      <h2 id="test-heading">Class 10 Hindi Practice Worksheets</h2>
+      <p class="test-tagline">सीबीएसई, आईसीएसई एवं हिंदी व्याकरण के सभी 20 उच्च-गुणवत्ता वाले अभ्यास पत्रक अब 3 अलग-अलग पार्टिशन्स में उपलब्ध हैं।</p>
     </div>
 
-    <!-- Category Tabs -->
-    <div class="test-tabs fade-in" role="tablist" aria-label="Test sheet type">
-      <button class="test-tab active" data-test-type="Worksheets" role="tab" aria-selected="true">Worksheets</button>
-      <button class="test-tab" data-test-type="UTP" role="tab" aria-selected="false">Unit Test Papers</button>
-      <button class="test-tab" data-test-type="MockExam" role="tab" aria-selected="false">Mock Exam</button>
-    </div>
+    <!-- 3 Partition Cards Grid -->
+    <div class="fade-in" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:1.5rem; margin:2.5rem 0 1.5rem;">
+      <!-- CBSE Partition Card -->
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:1.85rem; box-shadow:0 4px 20px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.2s, box-shadow 0.2s;">
+        <div>
+          <div style="width:48px; height:48px; border-radius:14px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:1.15rem; border:1px solid #BFDBFE;">📘</div>
+          <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#2563EB; background:#EFF6FF; padding:3px 10px; border-radius:50px; border:1px solid #BFDBFE;">CBSE Course B</span>
+          <h3 style="font-size:1.25rem; font-weight:800; color:#0F172A; margin:0.75rem 0 0.5rem; font-family:'Noto Sans Devanagari','Plus Jakarta Sans',sans-serif;">CBSE Worksheets</h3>
+          <p style="color:#64748B; font-size:0.92rem; line-height:1.65; margin-bottom:1.25rem;">कोर्स-बी के संपूर्ण पाठ्यक्रम (स्पर्श व संचयन) एवं विगत वर्षों के बोर्ड प्रश्नों पर आधारित 6 अभ्यास प्रश्न-पत्र।</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #F1F5F9; padding-top:1.1rem; margin-top:0.5rem;">
+          <span style="font-size:0.86rem; font-weight:700; color:#334E68;">6 Worksheets</span>
+          <a href="/worksheets/#cbse-worksheets" class="btn btn-outline" style="padding:0.5rem 1.15rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none;">हल करें &rarr;</a>
+        </div>
+      </div>
 
-    <!-- Board Filter -->
-    <div class="test-filter-row fade-in">
-      <span class="selector-label">Board:</span>
-      <div class="filter-pills">
-        <button class="filter-pill active" data-filter="CBSE">CBSE</button>
-        <button class="filter-pill" data-filter="ICSE">ICSE</button>
+      <!-- ICSE Partition Card -->
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:1.85rem; box-shadow:0 4px 20px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.2s, box-shadow 0.2s;">
+        <div>
+          <div style="width:48px; height:48px; border-radius:14px; background:#F0FDF4; color:#16A34A; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:1.15rem; border:1px solid #BBF7D0;">📗</div>
+          <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#16A34A; background:#F0FDF4; padding:3px 10px; border-radius:50px; border:1px solid #BBF7D0;">ICSE Literature</span>
+          <h3 style="font-size:1.25rem; font-weight:800; color:#0F172A; margin:0.75rem 0 0.5rem; font-family:'Noto Sans Devanagari','Plus Jakarta Sans',sans-serif;">ICSE Worksheets</h3>
+          <p style="color:#64748B; font-size:0.92rem; line-height:1.65; margin-bottom:1.25rem;">साहित्य सागर (गद्य-पद्य) एवं एकांकी संचय के अवतरण-आधारित प्रश्न (RTC) एवं 40-40 अंकों के अभ्यास पत्र।</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #F1F5F9; padding-top:1.1rem; margin-top:0.5rem;">
+          <span style="font-size:0.86rem; font-weight:700; color:#334E68;">2 Worksheets</span>
+          <a href="/worksheets/#icse-worksheets" class="btn btn-outline" style="padding:0.5rem 1.15rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none;">हल करें &rarr;</a>
+        </div>
+      </div>
+
+      <!-- Grammar Partition Card -->
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:1.85rem; box-shadow:0 4px 20px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.2s, box-shadow 0.2s;">
+        <div>
+          <div style="width:48px; height:48px; border-radius:14px; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:1.5rem; margin-bottom:1.15rem; border:1px solid #FDE68A;">📙</div>
+          <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:#D97706; background:#FEF3C7; padding:3px 10px; border-radius:50px; border:1px solid #FDE68A;">व्याकरण खंड</span>
+          <h3 style="font-size:1.25rem; font-weight:800; color:#0F172A; margin:0.75rem 0 0.5rem; font-family:'Noto Sans Devanagari','Plus Jakarta Sans',sans-serif;">Grammar Worksheets</h3>
+          <p style="color:#64748B; font-size:0.92rem; line-height:1.65; margin-bottom:1.25rem;">मुहावरे (10 पत्रक + उत्तर कुंजी) एवं पदबंध (2 पत्रक) के 40-40 अंकों के संपूर्ण व्याकरण अभ्यास पत्र।</p>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid #F1F5F9; padding-top:1.1rem; margin-top:0.5rem;">
+          <span style="font-size:0.86rem; font-weight:700; color:#334E68;">12 Worksheets</span>
+          <a href="/worksheets/#grammar-worksheets" class="btn btn-outline" style="padding:0.5rem 1.15rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none;">हल करें &rarr;</a>
+        </div>
       </div>
     </div>
 
-    <!-- Worksheet Folders Filter -->
-    <div class="test-folder-row fade-in" id="test-folder-row"></div>
-
-    <!-- Test Content (class accordions) -->
-    <div class="test-content" id="test-content">
-      <!-- Generated by JS -->
+    <!-- Direct CTA button to /worksheets/ -->
+    <div class="fade-in" style="text-align:center; margin-top:1.75rem;">
+      <a href="/worksheets/" class="btn btn-primary" style="padding:0.85rem 2.25rem; font-size:1rem; border-radius:100px; font-weight:700; box-shadow:0 4px 16px rgba(58,123,213,0.3); display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none;">
+        <span>📄 सभी 20 अभ्यास पत्रक हल करें (Open Worksheets Portal)</span>
+        <span>&rarr;</span>
+      </a>
     </div>
   </div>
 </section>

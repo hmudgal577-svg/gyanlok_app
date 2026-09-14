@@ -769,8 +769,8 @@ def get_navbar(active_link=''):
 </header>
 """
 
-def get_footer():
-    return """<footer class="ek-footer" role="contentinfo">
+def get_footer(extra_html="", extra_scripts=""):
+    return f"""<footer class="ek-footer" role="contentinfo">
   <div class="container">
     <div class="ek-footer-grid">
       <div>
@@ -841,17 +841,20 @@ def get_footer():
   </div>
 </footer>
 
+{extra_html}
+
 <script src="/auth.js?v=1.0"></script>
+{extra_scripts}
 <script>
   // Mobile hamburger toggle
   const ham = document.getElementById('hamburger');
   const nav = document.getElementById('nav-links');
-  if (ham && nav) {
-    ham.addEventListener('click', () => {
+  if (ham && nav) {{
+    ham.addEventListener('click', () => {{
       nav.classList.toggle('open');
       ham.setAttribute('aria-expanded', nav.classList.contains('open'));
-    });
-  }
+    }});
+  }}
 </script>
 </body>
 </html>
@@ -1440,43 +1443,79 @@ def generate_worksheets_hub():
     canonical_url = f"{BASE_URL}/{rel_dir}/"
     ALL_CANONICAL_URLS.append(canonical_url)
 
-    seo_title = "Class 10 Hindi Worksheets | CBSE & ICSE | EkShala"
-    desc = "Explore 20 free Class 10 Hindi worksheets for CBSE and ICSE students. Chapter practice sheets, Muhavare, Padbandh, and board PYQs with complete solution keys."
+    seo_title = "Class 10 Hindi Worksheets | CBSE, ICSE & Grammar Practice Papers | EkShala"
+    desc = "20 free Class 10 Hindi worksheets for CBSE, ICSE, and Hindi Grammar. Solved practice sheets, Muhavare, Padbandh, and board PYQs with instant online view and Word downloads."
 
-    cbse_ws = []
-    icse_ws = []
-    grammar_ws = []
-    pyq_ws = []
+    # Categorize worksheets into 3 distinct partitions
+    cbse_keys = [
+        ('WS_CBSE_10_01', 'अभ्यास पत्रक 1'),
+        ('WS_CBSE_10_02', 'अभ्यास पत्रक 2'),
+        ('WS_CBSE_10_03', 'अभ्यास पत्रक 3'),
+        ('WS_CBSE_10_04', 'अभ्यास पत्रक 4'),
+        ('WS_CBSE_10_PYQ_01', 'Board PYQ 1'),
+        ('WS_CBSE_10_PYQ_02', 'Board PYQ 2')
+    ]
 
-    for k, v in WORKSHEETS_DATA.items():
+    icse_keys = [
+        ('WS_ICSE_10_01', 'ICSE अभ्यास 1'),
+        ('WS_ICSE_10_02', 'ICSE अभ्यास 2')
+    ]
+
+    grammar_keys = [
+        ('WS_CBSE_10_MUH_01', 'CBSE मुहावरे 1'),
+        ('WS_CBSE_10_MUH_01_ANS', 'उत्तर कुंजी (Key)'),
+        ('WS_CBSE_10_MUH_02', 'CBSE मुहावरे 2'),
+        ('WS_CBSE_10_MUH_02_ANS', 'उत्तर कुंजी (Key)'),
+        ('WS_CBSE_10_PAD_01', 'CBSE पदबंध 1'),
+        ('WS_CBSE_10_PAD_02', 'CBSE पदबंध 2'),
+        ('WS_ICSE_10_MUH_01', 'ICSE मुहावरे 1'),
+        ('WS_ICSE_10_MUH_02', 'ICSE मुहावरे 2'),
+        ('WS_ICSE_10_MUH_03', 'ICSE मुहावरे 3'),
+        ('WS_ICSE_10_MUH_04', 'ICSE मुहावरे 4'),
+        ('WS_ICSE_10_MUH_05', 'ICSE मुहावरे 5'),
+        ('WS_ICSE_10_MUH_06', 'ICSE मुहावरे 6')
+    ]
+
+    def render_card(k, badge_category):
+        v = WORKSHEETS_DATA.get(k, {})
         title = v.get('title', k)
+        safe_title = title.replace("'", "\\'").replace('"', '&quot;')
         subtitle = v.get('subtitle', '')
         marks = v.get('marks', '40 Marks')
-        time = v.get('time', '60 Mins')
+        time_limit = v.get('time', '60 Mins')
         file_url = v.get('file_url', '')
+        safe_url = file_url.replace("'", "\\'")
+        is_ans_key = 'ANS' in k
 
-        card = f"""<div class="seo-card" style="background:#FFFFFF;">
+        badge_bg = '#DCFCE7' if is_ans_key else '#EFF6FF'
+        badge_color = '#15803D' if is_ans_key else '#1D4ED8'
+        badge_border = '#BBF7D0' if is_ans_key else '#BFDBFE'
+
+        return f"""<div class="seo-card ws-card" id="card-{k}" style="background:#FFFFFF; border-radius:16px; border:1px solid #E2E8F0; padding:1.4rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 3px 12px rgba(15,43,72,0.03); transition:transform 0.2s, box-shadow 0.2s;">
   <div>
-    <span class="seo-card-badge">{marks} &bull; {time}</span>
-    <h3>{title}</h3>
-    <p>{subtitle}</p>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem; gap:0.5rem; flex-wrap:wrap;">
+      <span class="seo-card-badge" style="background:{badge_bg}; color:{badge_color}; font-weight:700; border:1px solid {badge_border}; font-size:0.76rem; padding:3px 10px; border-radius:50px; margin-bottom:0;">{marks} &bull; {time_limit}</span>
+      <span style="font-size:0.74rem; font-weight:700; color:#475569; background:#F1F5F9; padding:3px 9px; border-radius:6px;">{badge_category}</span>
+    </div>
+    <h3 style="font-size:1.15rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.45rem; line-height:1.4; font-family:'Noto Sans Devanagari','Plus Jakarta Sans',sans-serif;">{title}</h3>
+    <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin:0 0 1.15rem;">{subtitle}</p>
   </div>
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
-    <a href="/#test-sheets" class="btn btn-primary" style="padding:0.5rem 1rem; font-size:0.85rem;">ऑनलाइन हल करें</a>
-    {f'<a href="{file_url}" download class="btn btn-outline" style="padding:0.5rem 1rem; font-size:0.85rem;">DOCX डाउनलोड</a>' if file_url else ''}
+  <div style="display:flex; flex-direction:column; gap:0.55rem; border-top:1px solid #F1F5F9; padding-top:0.85rem;">
+    <div style="display:flex; gap:0.5rem;">
+      <button class="btn btn-primary" onclick="openWorksheetViewer('{k}', '{safe_title}', '{safe_url}')" style="flex:1; padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer;">
+        👁️ हल करें (View)
+      </button>
+      {f'<a href="{file_url}" download class="btn btn-outline" style="padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; text-decoration:none;" title="Download Word Document">📥 DOCX</a>' if file_url else ''}
+    </div>
+    <button class="btn btn-ghost" onclick="openUploadModal('{k}', '{safe_title}')" style="width:100%; padding:0.5rem 0.75rem; font-size:0.82rem; border-radius:8px; border:1px dashed #CBD5E1; color:#1E3A5F; background:#F8FAFC; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; cursor:pointer;">
+      📤 उत्तर पुस्तिका सबमिट करें (Evaluation)
+    </button>
   </div>
 </div>"""
 
-        if 'MUH' in k or 'PAD' in k:
-            grammar_ws.append(card)
-        elif 'PYQ' in k:
-            pyq_ws.append(card)
-        elif 'CBSE' in k:
-            cbse_ws.append(card)
-        elif 'ICSE' in k:
-            icse_ws.append(card)
-        else:
-            cbse_ws.append(card)
+    cbse_cards = [render_card(k, cat) for k, cat in cbse_keys]
+    icse_cards = [render_card(k, cat) for k, cat in icse_keys]
+    grammar_cards = [render_card(k, cat) for k, cat in grammar_keys]
 
     schema_dict = {
         "@context": "https://schema.org",
@@ -1506,7 +1545,7 @@ def generate_worksheets_hub():
       </li>
       <li class="sep">&rsaquo;</li>
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <span class="current" itemprop="name">Worksheets</span>
+        <span class="current" itemprop="name">Worksheets (अभ्यास पत्रक)</span>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
@@ -1515,13 +1554,13 @@ def generate_worksheets_hub():
 
     hero_html = f"""<header class="seo-hero">
   <div class="container">
-    <span class="seo-hero-badge">CBSE &amp; ICSE &bull; 20 Practice Worksheets</span>
-    <h1>Class 10 Hindi Worksheets</h1>
-    <p class="lead">कक्षा 10 हिंदी (सीबीएसई एवं आईसीएसई) के सभी 20 उच्च-गुणवत्ता वाले अभ्यास प्रश्न-पत्र। मुहावरे, पदबंध, बोर्ड मॉडल पेपर्स और उत्तर कुंजी सहित संपूर्ण अभ्यास सामग्री।</p>
+    <span class="seo-hero-badge">CBSE &bull; ICSE &bull; व्याकरण खंड &bull; 20 Worksheets</span>
+    <h1>Class 10 Hindi Practice Worksheets</h1>
+    <p class="lead">कक्षा 10 हिंदी (सीबीएसई एवं आईसीएसई) के सभी 20 उच्च-गुणवत्ता वाले अभ्यास पत्रक। अब 3 अलग-अलग पार्टिशन्स में उपलब्ध: ऑनलाइन हल करें, Word फ़ाइल डाउनलोड करें और उत्तर पुस्तिका सबमिट करके मेंटर मूल्यांकन प्राप्त करें।</p>
     <div class="seo-hero-meta">
-      <span>📄 <strong>20 फुल टेस्ट शीट्स</strong></span>
-      <span>⏱️ <strong>समयबद्ध अभ्यास (60-90 मिनट)</strong></span>
-      <span>💯 <strong>पूर्णांक: 30 से 40 अंक</strong></span>
+      <span>📘 <strong>6 CBSE Worksheets</strong></span>
+      <span>📗 <strong>2 ICSE Worksheets</strong></span>
+      <span>📙 <strong>12 Grammar Worksheets</strong></span>
       <span>✓ <strong>उत्तर कुंजी व शिक्षक मूल्यांकन</strong></span>
     </div>
   </div>
@@ -1529,59 +1568,168 @@ def generate_worksheets_hub():
 
     body_html = f"""<main class="seo-content-wrap">
   <div class="container">
-    <!-- CBSE Worksheets -->
-    <section class="seo-section-card">
-      <div class="seo-section-header">
-        <span class="seo-section-icon">📘</span>
-        <h2>CBSE Class 10 Hindi अभ्यास प्रश्न-पत्र (Full Syllabus &amp; Chapter Tests)</h2>
+    <!-- Partition Switcher Toolbar -->
+    <div class="ws-partition-nav" style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.25rem; position:sticky; top:70px; z-index:40; background:#FFFFFF; padding:0.85rem 1.25rem; border-radius:100px; box-shadow:0 4px 16px rgba(15,43,72,0.06); border:1px solid #E2E8F0; width:fit-content; margin-left:auto; margin-right:auto;">
+      <button class="ws-partition-btn active" data-partition="all" onclick="filterPartition('all')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:700; font-size:0.88rem; cursor:pointer; border:1.5px solid #3A7BD5; background:#3A7BD5; color:#FFFFFF; transition:all 0.2s;">
+        <span>🌟 All Worksheets</span> <span style="background:rgba(255,255,255,0.25); padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem;">20</span>
+      </button>
+      <button class="ws-partition-btn" data-partition="cbse" onclick="filterPartition('cbse')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
+        <span>📘 CBSE Worksheets</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">6</span>
+      </button>
+      <button class="ws-partition-btn" data-partition="icse" onclick="filterPartition('icse')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
+        <span>📗 ICSE Worksheets</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">2</span>
+      </button>
+      <button class="ws-partition-btn" data-partition="grammar" onclick="filterPartition('grammar')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
+        <span>📙 Grammar Worksheets (व्याकरण)</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">12</span>
+      </button>
+    </div>
+
+    <!-- PARTITION 1: CBSE Worksheets -->
+    <section class="seo-section-card ws-partition-block" id="cbse-worksheets" data-partition="cbse" style="margin-bottom:2.5rem; scroll-margin-top:140px;">
+      <div class="seo-section-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="width:40px; height:40px; border-radius:10px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📘</span>
+          <div>
+            <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A; margin:0;">CBSE Class 10 Hindi Worksheets</h2>
+            <p style="color:#64748B; font-size:0.88rem; margin:0.25rem 0 0;">स्पर्श भाग-2, संचयन भाग-2 एवं विगत वर्षों के बोर्ड परीक्षा प्रश्नों पर आधारित 6 अभ्यास प्रश्न-पत्र।</p>
+          </div>
+        </div>
+        <span style="background:#EFF6FF; color:#1D4ED8; font-size:0.8rem; font-weight:700; padding:0.35rem 0.9rem; border-radius:50px; border:1px solid #BFDBFE;">
+          6 Worksheets Active
+        </span>
       </div>
       <div class="seo-grid">
-        {"".join(cbse_ws)}
+        {"".join(cbse_cards)}
       </div>
     </section>
 
-    <!-- Grammar Worksheets -->
-    <section class="seo-section-card">
-      <div class="seo-section-header">
-        <span class="seo-section-icon">📖</span>
-        <h2>व्याकरण अभ्यास पत्र: मुहावरे एवं पदबंध (Grammar Worksheets with Answer Keys)</h2>
+    <!-- PARTITION 2: ICSE Worksheets -->
+    <section class="seo-section-card ws-partition-block" id="icse-worksheets" data-partition="icse" style="margin-bottom:2.5rem; scroll-margin-top:140px;">
+      <div class="seo-section-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="width:40px; height:40px; border-radius:10px; background:#F0FDF4; color:#16A34A; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📗</span>
+          <div>
+            <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A; margin:0;">ICSE Class 10 Hindi Worksheets</h2>
+            <p style="color:#64748B; font-size:0.88rem; margin:0.25rem 0 0;">साहित्य सागर (गद्य व पद्य खंड) एवं एकांकी संचय के अवतरण-आधारित प्रश्न (RTC) एवं संपूर्ण अभ्यास पत्र।</p>
+          </div>
+        </div>
+        <span style="background:#F0FDF4; color:#15803D; font-size:0.8rem; font-weight:700; padding:0.35rem 0.9rem; border-radius:50px; border:1px solid #BBF7D0;">
+          2 Worksheets Active
+        </span>
       </div>
       <div class="seo-grid">
-        {"".join(grammar_ws)}
+        {"".join(icse_cards)}
       </div>
     </section>
 
-    <!-- ICSE Worksheets -->
-    <section class="seo-section-card">
-      <div class="seo-section-header">
-        <span class="seo-section-icon">📗</span>
-        <h2>ICSE Class 10 Hindi अभ्यास प्रश्न-पत्र (Literature &amp; Muhavare)</h2>
+    <!-- PARTITION 3: Grammar Worksheets -->
+    <section class="seo-section-card ws-partition-block" id="grammar-worksheets" data-partition="grammar" style="margin-bottom:2.5rem; scroll-margin-top:140px;">
+      <div class="seo-section-header" style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem;">
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <span style="width:40px; height:40px; border-radius:10px; background:#FEF3C7; color:#D97706; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📙</span>
+          <div>
+            <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A; margin:0;">Class 10 Hindi Grammar Worksheets (व्याकरण कार्यपत्रिकाएँ)</h2>
+            <p style="color:#64748B; font-size:0.88rem; margin:0.25rem 0 0;">मुहावरे (10 अभ्यास पत्रक + व्याख्या सहित उत्तर कुंजियाँ) एवं पदबंध (2 अभ्यास पत्रक) के संपूर्ण 40-40 अंकों के पत्र।</p>
+          </div>
+        </div>
+        <span style="background:#FEF3C7; color:#B45309; font-size:0.8rem; font-weight:700; padding:0.35rem 0.9rem; border-radius:50px; border:1px solid #FDE68A;">
+          12 Worksheets Active
+        </span>
       </div>
       <div class="seo-grid">
-        {"".join(icse_ws)}
-      </div>
-    </section>
-
-    <!-- PYQ Worksheets -->
-    <section class="seo-section-card">
-      <div class="seo-section-header">
-        <span class="seo-section-icon">🎯</span>
-        <h2>बोर्ड परीक्षा PYQ अभ्यास पत्र (Board Question Paper Worksheets)</h2>
-      </div>
-      <div class="seo-grid">
-        {"".join(pyq_ws)}
+        {"".join(grammar_cards)}
       </div>
     </section>
   </div>
 </main>"""
+
+    upload_modal_html = """
+<!-- Upload Answer Sheet Modal -->
+<div class="modal-overlay" id="upload-modal" role="dialog" aria-modal="true" aria-labelledby="upload-modal-title" hidden>
+  <div class="modal-box upload-modal-box">
+    <div class="modal-header">
+      <h3 id="upload-modal-title">Upload Answer Sheet</h3>
+      <button class="modal-close-btn" id="upload-modal-close" aria-label="Close upload">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <p class="upload-subtitle" id="upload-for-label">Upload your completed answer sheet for evaluation.</p>
+    <label class="upload-drop-area" id="upload-drop-area" for="answer-file-input">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <span class="drop-text">Drag &amp; drop your PDF here</span>
+      <span class="drop-subtext">or click to browse (PDF, JPG, PNG)</span>
+      <input type="file" id="answer-file-input" accept=".pdf,.jpg,.jpeg,.png" aria-label="Choose answer sheet file" />
+    </label>
+    <div class="upload-file-selected" id="upload-file-selected" hidden>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span id="upload-filename">filename.pdf</span>
+      <button class="remove-file" id="remove-file" aria-label="Remove selected file">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div style="margin: 0.85rem 0; display: flex; flex-direction: column; gap: 0.5rem;">
+      <input type="text" id="upload-student-name" placeholder="विद्यार्थी का नाम (Student Name) *" style="width:100%; padding:0.65rem 0.85rem; border:1px solid #CBD5E1; border-radius:8px; font-size:0.9rem;" required />
+      <input type="text" id="upload-student-contact" placeholder="फ़ोन नंबर या ईमेल (Phone / Email for Feedback)" style="width:100%; padding:0.65rem 0.85rem; border:1px solid #CBD5E1; border-radius:8px; font-size:0.9rem;" />
+    </div>
+    <button class="btn btn-primary upload-submit-btn" id="upload-submit-btn" disabled>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      Submit for Evaluation
+    </button>
+    <p class="upload-note">We will evaluate your answers and share feedback within 48 hours via email or WhatsApp.</p>
+    <p class="upload-success" id="upload-success" role="status"></p>
+  </div>
+</div>
+"""
+
+    extra_scripts = """
+<script src="/script.js?v=106.0.0"></script>
+<script>
+function filterPartition(p) {
+  document.querySelectorAll('.ws-partition-btn').forEach(function(btn) {
+    var active = btn.dataset.partition === p;
+    btn.classList.toggle('active', active);
+    btn.style.background = active ? '#3A7BD5' : '#FFFFFF';
+    btn.style.color = active ? '#FFFFFF' : '#1E3A5F';
+    btn.style.borderColor = active ? '#3A7BD5' : '#DCE7F3';
+    btn.style.boxShadow = active ? '0 3px 10px rgba(58,123,213,0.25)' : 'none';
+  });
+
+  document.querySelectorAll('.ws-partition-block').forEach(function(sec) {
+    if (p === 'all' || sec.dataset.partition === p) {
+      sec.style.display = 'block';
+    } else {
+      sec.style.display = 'none';
+    }
+  });
+
+  if (p !== 'all') {
+    var target = document.getElementById(p + '-worksheets');
+    if (target) {
+      var navOffset = 135;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - navOffset;
+      window.scrollTo({ top: top, behavior: 'smooth' });
+    }
+  }
+}
+window.filterPartition = filterPartition;
+
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash.replace('#', '').replace('-worksheets', '');
+  if (['cbse', 'icse', 'grammar'].indexOf(hash) !== -1) {
+    filterPartition(hash);
+  }
+});
+</script>
+"""
 
     full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2))
     full_page += get_navbar(active_link='worksheets')
     full_page += breadcrumbs_html
     full_page += hero_html
     full_page += body_html
-    full_page += get_footer()
+    full_page += get_footer(extra_html=upload_modal_html, extra_scripts=extra_scripts)
     write_html_file(rel_dir, full_page)
+
 
 
 # ==============================================================================
