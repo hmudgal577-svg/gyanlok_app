@@ -136,7 +136,7 @@
       line-height: 1.25;
       margin-bottom: 0.85rem;
       color: #0F2B48 !important;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-hero p.lead {
       font-size: 1.12rem;
@@ -237,7 +237,7 @@
       font-weight: 800;
       color: #0F172A;
       margin: 0;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-section-icon {
       font-size: 1.5rem;
@@ -249,7 +249,7 @@
       font-size: 1.05rem !important;
     }
     .docx-exact-container h1, .docx-exact-container h2, .docx-exact-container h3 {
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif !important;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif !important;
       color: #0F172A !important;
     }
     .docx-exact-container p {
@@ -299,7 +299,7 @@
       font-weight: 700;
       color: #0F172A;
       margin: 0 0 0.4rem;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-card p {
       font-size: 0.88rem;
@@ -395,11 +395,72 @@
 
     <nav class="nav-links" id="nav-links" role="navigation" aria-label="Main navigation">
       <a href="/" class="nav-link ">Home</a>
-      <a href="/cbse/class-10/hindi/" class="nav-link active">CBSE Class 10</a>
-      <a href="/icse/class-10/hindi/" class="nav-link ">ICSE Class 10</a>
-      <a href="/worksheets/" class="nav-link ">Worksheets</a>
+
+      <!-- School Boards dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger active" aria-haspopup="true" aria-expanded="false" id="boards-trigger">
+          School Boards
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="boards-dropdown" role="menu">
+          <a href="/cbse/class-10/hindi/" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE Class 10 Hindi
+          </a>
+          <a href="/icse/class-10/hindi/" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE Class 10 Hindi
+          </a>
+          <a href="/worksheets/" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">W</span> Practice Worksheets
+          </a>
+          <a href="/hindi-grammar/" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Hindi Grammar Hub
+          </a>
+        </div>
+      </div>
+
+      <!-- Worksheets dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger " aria-haspopup="true" aria-expanded="false" id="worksheets-trigger">
+          Worksheets
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="worksheets-dropdown" role="menu">
+          <a href="/worksheets/#cbse-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE Worksheets
+          </a>
+          <a href="/worksheets/#icse-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE Worksheets
+          </a>
+          <a href="/worksheets/#grammar-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Grammar Worksheets
+          </a>
+          <a href="/worksheets/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
+            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">All</span> All 20 Worksheets
+          </a>
+        </div>
+      </div>
+
       <a href="/hindi-grammar/" class="nav-link ">Hindi Grammar</a>
-      <a href="/pyq/" class="nav-link ">PYQs</a>
+
+      <!-- PYQs dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger " aria-haspopup="true" aria-expanded="false" id="pyq-trigger">
+          PYQs
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="pyq-dropdown" role="menu">
+          <a href="/cbse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE PYQs
+          </a>
+          <a href="/icse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE PYQs
+          </a>
+          <a href="/pyq/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
+            <span class="di-tag" style="background:#EFF6FF; color:#2563EB;">Hub</span> All PYQs Hub
+          </a>
+        </div>
+      </div>
+
       <a href="/about/" class="nav-link ">About Us</a>
       <a href="/login.html" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
 
@@ -459,6 +520,88 @@
       <p style="font-size:1.05rem; line-height:1.75; color:#334155;">
         CBSE Class 10 Hindi Course B में मुख्य रूप से दो पाठ्यपुस्तकें शामिल हैं: <strong>स्पर्श भाग-2</strong> (गद्य और पद्य खंड) तथा <strong>संचयन भाग-2</strong> (पूरक पाठ्यपुस्तक)। बोर्ड परीक्षा में उच्च अंक प्राप्त करने के लिए प्रत्येक पाठ के केंद्रीय भाव, लेखक के दृष्टिकोण, कठिन शब्दार्थ, तथा योग्यता-आधारित प्रश्नों (Competency Based Questions) की गहरी समझ अत्यंत आवश्यक है। नीचे दोनों पुस्तकों के सभी 20 अध्यायों के अध्ययन संसाधन उपलब्ध हैं:
       </p>
+    </section>
+
+    <!-- Syllabus & Marking Scheme Section -->
+    <section class="seo-section-card" id="syllabus-marking-scheme" style="background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+      <div class="seo-section-header">
+        <span class="seo-section-icon">📑</span>
+        <h2>पाठ्यक्रम एवं अंक योजना (Syllabus &amp; Marking Scheme 2026-27)</h2>
+      </div>
+      <p style="font-size:1.02rem; line-height:1.75; color:#334155; margin-bottom:1.5rem;">
+        सीबीएसई बोर्ड परीक्षा 2026-27 के लिए कक्षा 10 हिंदी कोर्स 'बी' का आधिकारिक पाठ्यक्रम, प्रश्न-पत्र का प्रारूप और अंक विभाजन (Blueprint) यहाँ सीधे देखें व डाउनलोड करें:
+      </p>
+      <div class="seo-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+        <!-- Syllabus Card -->
+        <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+              <span style="background:#E0F2FE; color:#0284C7; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">CBSE Official</span>
+              <span style="font-size:1.4rem;">📘</span>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0 0 0.5rem; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">CBSE Class 10 Hindi Syllabus 2026-27</h3>
+            <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin-bottom:1.25rem;">
+              कोर्स 'बी' का संपूर्ण पाठ्य विवरण: अपठित गद्यांश (14 अंक), व्यावहारिक व्याकरण (16 अंक), पाठ्यपुस्तकें स्पर्श व संचयन (28 अंक), और रचनात्मक लेखन (22 अंक)।
+            </p>
+          </div>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1rem;">
+            <a href="/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; justify-content:center; padding:0.6rem 1rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Syllabus
+            </a>
+            <a href="/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf" download="class_10_hindi_syllabus_cbse.pdf" class="btn btn-outline" style="padding:0.6rem 0.9rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Marking Scheme Card -->
+        <div style="background:#FFFFFF; border:1px solid #BBF7D0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(22,163,74,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+              <span style="background:#DCFCE7; color:#15803D; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Schema</span>
+              <span style="font-size:1.4rem;">📊</span>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0 0 0.5rem; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">CBSE Hindi Marking Scheme &amp; Blueprint</h3>
+            <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin-bottom:1.25rem;">
+              80 अंकों का विस्तृत प्रश्नवार अंक विभाजन, स्टेप-मार्किंग नियम, बहुविकल्पीय प्रश्न (MCQ) व वर्णनात्मक प्रश्नों की आधिकारिक उत्तर गाइड।
+            </p>
+          </div>
+          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1rem;">
+            <a href="/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; justify-content:center; padding:0.6rem 1rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#16A34A; border-color:#16A34A;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Marking Scheme
+            </a>
+            <a href="/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf" download="class_10_hindi_marking_schema_cbse.pdf" class="btn btn-outline" style="padding:0.6rem 0.9rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              PDF
+            </a>
+          </div>
+        </div>
+
+        <!-- Complete NCERT Books Card -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+              <span style="background:#F1F5F9; color:#475569; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">NCERT Full Textbooks</span>
+              <span style="font-size:1.4rem;">📚</span>
+            </div>
+            <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0 0 0.5rem; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">Complete Books (Sparsh &amp; Sanchayan)</h3>
+            <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin-bottom:1.25rem;">
+              एनसीईआरटी कक्षा 10 स्पर्श भाग-2 और संचयन भाग-2 की मूल डिजिटल पाठ्यपुस्तकें (Full PDFs) बिना किसी रुकावट के पढ़ें।
+            </p>
+          </div>
+          <div style="display:flex; gap:0.5rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1rem;">
+            <a href="/pdf/cbse/class10/hindi/class_10_sparsh_complete_book.pdf" target="_blank" rel="noopener" class="btn btn-outline" style="flex:1; justify-content:center; padding:0.55rem 0.6rem; font-size:0.82rem; border-radius:8px; font-weight:600; text-decoration:none;">
+              📖 Sparsh Book
+            </a>
+            <a href="/pdf/cbse/class10/hindi/class_10_hindi_book_complete_sanchayan.pdf" target="_blank" rel="noopener" class="btn btn-outline" style="flex:1; justify-content:center; padding:0.55rem 0.6rem; font-size:0.82rem; border-radius:8px; font-weight:600; text-decoration:none;">
+              📖 Sanchayan Book
+            </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Sparsh Chapters -->
@@ -742,6 +885,33 @@
       ham.setAttribute('aria-expanded', nav.classList.contains('open'));
     });
   }
+  // Dropdown menus
+  document.querySelectorAll('.dropdown-trigger').forEach(trig => {
+    const wrap = trig.closest('.nav-dropdown-wrapper');
+    if (!wrap) return;
+    trig.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrapper').forEach(w => {
+        if (w !== wrap) {
+          w.classList.remove('open');
+          const otherTrig = w.querySelector('.dropdown-trigger');
+          if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
+        }
+      });
+      wrap.classList.toggle('open', !isOpen);
+      trig.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-dropdown-wrapper').forEach(wrap => {
+      if (!wrap.contains(e.target)) {
+        wrap.classList.remove('open');
+        const trig = wrap.querySelector('.dropdown-trigger');
+        if (trig) trig.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 </script>
 </body>
 </html>

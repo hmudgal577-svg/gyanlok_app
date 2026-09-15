@@ -187,7 +187,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   box-shadow: var(--shadow-md);
-  min-width: 160px;
+  min-width: 205px;
   overflow: hidden;
   opacity: 0; transform: translateY(-8px);
   pointer-events: none;
@@ -196,6 +196,11 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .nav-dropdown-wrapper.open .nav-dropdown-menu {
   opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+@media (hover: hover) and (pointer: fine) {
+  .nav-dropdown-wrapper:hover .nav-dropdown-menu {
+    opacity: 1; transform: translateY(0); pointer-events: auto;
+  }
 }
 
 .dropdown-item {

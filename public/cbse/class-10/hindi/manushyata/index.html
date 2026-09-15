@@ -72,7 +72,7 @@
       },
       "mainEntityOfPage": "https://ekshala.in/cbse/class-10/hindi/manushyata/",
       "datePublished": "2026-09-10",
-      "dateModified": "2026-09-14",
+      "dateModified": "2026-09-16",
       "educationalLevel": "Class 10",
       "about": [
         {
@@ -172,7 +172,7 @@
       line-height: 1.25;
       margin-bottom: 0.85rem;
       color: #0F2B48 !important;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-hero p.lead {
       font-size: 1.12rem;
@@ -273,7 +273,7 @@
       font-weight: 800;
       color: #0F172A;
       margin: 0;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-section-icon {
       font-size: 1.5rem;
@@ -285,7 +285,7 @@
       font-size: 1.05rem !important;
     }
     .docx-exact-container h1, .docx-exact-container h2, .docx-exact-container h3 {
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif !important;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif !important;
       color: #0F172A !important;
     }
     .docx-exact-container p {
@@ -335,7 +335,7 @@
       font-weight: 700;
       color: #0F172A;
       margin: 0 0 0.4rem;
-      font-family: 'Noto Sans Devanagari', 'Plus Jakarta Sans', sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', 'Noto Sans Devanagari', sans-serif;
     }
     .seo-card p {
       font-size: 0.88rem;
@@ -431,11 +431,72 @@
 
     <nav class="nav-links" id="nav-links" role="navigation" aria-label="Main navigation">
       <a href="/" class="nav-link ">Home</a>
-      <a href="/cbse/class-10/hindi/" class="nav-link active">CBSE Class 10</a>
-      <a href="/icse/class-10/hindi/" class="nav-link ">ICSE Class 10</a>
-      <a href="/worksheets/" class="nav-link ">Worksheets</a>
+
+      <!-- School Boards dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger active" aria-haspopup="true" aria-expanded="false" id="boards-trigger">
+          School Boards
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="boards-dropdown" role="menu">
+          <a href="/cbse/class-10/hindi/" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE Class 10 Hindi
+          </a>
+          <a href="/icse/class-10/hindi/" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE Class 10 Hindi
+          </a>
+          <a href="/worksheets/" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">W</span> Practice Worksheets
+          </a>
+          <a href="/hindi-grammar/" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Hindi Grammar Hub
+          </a>
+        </div>
+      </div>
+
+      <!-- Worksheets dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger " aria-haspopup="true" aria-expanded="false" id="worksheets-trigger">
+          Worksheets
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="worksheets-dropdown" role="menu">
+          <a href="/worksheets/#cbse-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE Worksheets
+          </a>
+          <a href="/worksheets/#icse-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE Worksheets
+          </a>
+          <a href="/worksheets/#grammar-worksheets" class="dropdown-item" role="menuitem">
+            <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Grammar Worksheets
+          </a>
+          <a href="/worksheets/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
+            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">All</span> All 20 Worksheets
+          </a>
+        </div>
+      </div>
+
       <a href="/hindi-grammar/" class="nav-link ">Hindi Grammar</a>
-      <a href="/pyq/" class="nav-link ">PYQs</a>
+
+      <!-- PYQs dropdown -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger " aria-haspopup="true" aria-expanded="false" id="pyq-trigger">
+          PYQs
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="pyq-dropdown" role="menu">
+          <a href="/cbse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE PYQs
+          </a>
+          <a href="/icse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE PYQs
+          </a>
+          <a href="/pyq/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
+            <span class="di-tag" style="background:#EFF6FF; color:#2563EB;">Hub</span> All PYQs Hub
+          </a>
+        </div>
+      </div>
+
       <a href="/about/" class="nav-link ">About Us</a>
       <a href="/login.html" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
 
@@ -708,6 +769,33 @@
       ham.setAttribute('aria-expanded', nav.classList.contains('open'));
     });
   }
+  // Dropdown menus
+  document.querySelectorAll('.dropdown-trigger').forEach(trig => {
+    const wrap = trig.closest('.nav-dropdown-wrapper');
+    if (!wrap) return;
+    trig.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrapper').forEach(w => {
+        if (w !== wrap) {
+          w.classList.remove('open');
+          const otherTrig = w.querySelector('.dropdown-trigger');
+          if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
+        }
+      });
+      wrap.classList.toggle('open', !isOpen);
+      trig.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+  document.addEventListener('click', (e) => {
+    document.querySelectorAll('.nav-dropdown-wrapper').forEach(wrap => {
+      if (!wrap.contains(e.target)) {
+        wrap.classList.remove('open');
+        const trig = wrap.querySelector('.dropdown-trigger');
+        if (trig) trig.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 </script>
 </body>
 </html>

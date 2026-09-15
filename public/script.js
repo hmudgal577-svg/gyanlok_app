@@ -499,28 +499,48 @@ function initNavbar() {
     });
   });
 
-  /* School Boards dropdown */
-  if (boardsTrig && boardsWrap) {
-    boardsTrig.addEventListener('click', (e) => {
+  /* All Nav Dropdowns (Boards, Worksheets, PYQs) */
+  document.querySelectorAll('.dropdown-trigger').forEach(trig => {
+    const wrap = trig.closest('.nav-dropdown-wrapper');
+    if (!wrap) return;
+    trig.addEventListener('click', (e) => {
       e.stopPropagation();
-      boardsWrap.classList.toggle('open');
-      const isOpen = boardsWrap.classList.contains('open');
-      boardsTrig.setAttribute('aria-expanded', String(isOpen));
-    });
-
-    /* Dropdown item click: pre-select board and scroll */
-    boardsDrop.querySelectorAll('.dropdown-item').forEach(item => {
-      item.addEventListener('click', (e) => {
-        const board = item.dataset.board;
-        if (board) selectBoard(board);
-        boardsWrap.classList.remove('open');
+      const isOpen = wrap.classList.contains('open');
+      document.querySelectorAll('.nav-dropdown-wrapper').forEach(w => {
+        if (w !== wrap) {
+          w.classList.remove('open');
+          const otherTrig = w.querySelector('.dropdown-trigger');
+          if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
+        }
       });
+      wrap.classList.toggle('open', !isOpen);
+      trig.setAttribute('aria-expanded', String(!isOpen));
     });
-  }
+  });
+
+  /* Dropdown item clicks */
+  document.querySelectorAll('.nav-dropdown-menu .dropdown-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      const board = item.dataset.board;
+      if (board && typeof selectBoard === 'function') selectBoard(board);
+      const wrap = item.closest('.nav-dropdown-wrapper');
+      if (wrap) {
+        wrap.classList.remove('open');
+        const trig = wrap.querySelector('.dropdown-trigger');
+        if (trig) trig.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
 
   /* Close dropdown/nav on outside click */
   document.addEventListener('click', (e) => {
-    if (boardsWrap && !boardsWrap.contains(e.target)) boardsWrap.classList.remove('open');
+    document.querySelectorAll('.nav-dropdown-wrapper').forEach(wrap => {
+      if (!wrap.contains(e.target)) {
+        wrap.classList.remove('open');
+        const trig = wrap.querySelector('.dropdown-trigger');
+        if (trig) trig.setAttribute('aria-expanded', 'false');
+      }
+    });
     if (!navEl.contains(e.target)) {
       navLinks.classList.remove('open');
       hamburger.classList.remove('open');
