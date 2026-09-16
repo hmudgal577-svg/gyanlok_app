@@ -72,7 +72,7 @@
       },
       "mainEntityOfPage": "https://ekshala.in/icse/class-10/hindi/bade-ghar-ki-beti/",
       "datePublished": "2026-09-10",
-      "dateModified": "2026-09-16",
+      "dateModified": "2026-09-17",
       "educationalLevel": "Class 10",
       "about": [
         {
@@ -101,7 +101,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css?v=105.0.0" />
+  <link rel="stylesheet" href="/style.css?v=107.0.0" />
 
   <style>
     /* ─── Global SEO Layout & Typography Enhancements ─── */
@@ -413,6 +413,127 @@
     .ek-footer-bottom a:hover {
       color: #94A3B8;
     }
+
+    /* Robust Nav Dropdown & Mobile Accordion Styles */
+    .nav-dropdown-wrapper {
+      position: relative;
+    }
+    .dropdown-trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+    .chevron-icon {
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+    .nav-dropdown-wrapper.open .chevron-icon {
+      transform: rotate(180deg);
+    }
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      min-width: 220px;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(6px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 1005 !important;
+      padding: 0.35rem 0;
+    }
+    .nav-dropdown-menu::before {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 0;
+      right: 0;
+      height: 12px;
+    }
+    .nav-dropdown-wrapper.open .nav-dropdown-menu {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      pointer-events: auto !important;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .nav-dropdown-wrapper:hover .nav-dropdown-menu {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+        pointer-events: auto !important;
+      }
+    }
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.65rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: #334155;
+      text-decoration: none;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .dropdown-item:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+    }
+    .di-tag {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+    .di-tag.cbse { background: #2563EB; }
+    .di-tag.icse { background: #059669; }
+
+    /* Mobile Accordion */
+    @media (max-width: 900px) {
+      .nav-dropdown-wrapper {
+        border-bottom: 1px solid #E2E8F0;
+        width: 100%;
+      }
+      .dropdown-trigger {
+        width: 100%;
+        justify-content: space-between;
+        padding: 0.85rem 0.5rem;
+      }
+      .nav-dropdown-menu {
+        position: static !important;
+        box-shadow: none !important;
+        border: none !important;
+        border-top: 1px solid #E2E8F0 !important;
+        border-radius: 0 !important;
+        background: #F8FAFC !important;
+        padding: 0 !important;
+        transform: none !important;
+        display: none !important;
+        opacity: 0;
+      }
+      .nav-dropdown-wrapper.open .nav-dropdown-menu {
+        display: block !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        padding: 0.35rem 0 !important;
+      }
+      .dropdown-item {
+        padding: 0.7rem 1.25rem !important;
+      }
+    }
   </style>
 </head>
 <body class="seo-page-body">
@@ -450,6 +571,9 @@
           </a>
           <a href="/hindi-grammar/" class="dropdown-item" role="menuitem">
             <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Hindi Grammar Hub
+          </a>
+          <a href="/#school-boards" class="dropdown-item" role="menuitem" style="border-top:1px solid #E2E8F0; font-weight:600;">
+            <span class="di-tag" style="background:#EFF6FF; color:#2563EB;">🏛️</span> All School Boards
           </a>
         </div>
       </div>
@@ -742,19 +866,27 @@
   // Mobile hamburger toggle
   const ham = document.getElementById('hamburger');
   const nav = document.getElementById('nav-links');
-  if (ham && nav) {
+  if (ham && nav && !ham.dataset.bound) {
+    ham.dataset.bound = 'true';
     ham.addEventListener('click', () => {
-      nav.classList.toggle('open');
-      ham.setAttribute('aria-expanded', nav.classList.contains('open'));
+      const open = nav.classList.toggle('open');
+      ham.classList.toggle('open', open);
+      ham.setAttribute('aria-expanded', String(open));
     });
   }
+
   // Dropdown menus
   document.querySelectorAll('.dropdown-trigger').forEach(trig => {
+    if (trig.dataset.dropdownBound) return;
+    trig.dataset.dropdownBound = 'true';
     const wrap = trig.closest('.nav-dropdown-wrapper');
     if (!wrap) return;
+
     trig.addEventListener('click', (e) => {
       e.stopPropagation();
+      const isMobile = window.innerWidth <= 900;
       const isOpen = wrap.classList.contains('open');
+
       document.querySelectorAll('.nav-dropdown-wrapper').forEach(w => {
         if (w !== wrap) {
           w.classList.remove('open');
@@ -762,10 +894,40 @@
           if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
         }
       });
+
+      // Desktop: clicking navigates directly to respective hub section/page
+      if (!isMobile) {
+        if (trig.id === 'boards-trigger') {
+          if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+            window.location.href = '/#school-boards';
+            return;
+          } else {
+            const sb = document.getElementById('school-boards');
+            if (sb) {
+              sb.scrollIntoView({ behavior: 'smooth' });
+              wrap.classList.remove('open');
+              trig.setAttribute('aria-expanded', 'false');
+              return;
+            }
+          }
+        } else if (trig.id === 'worksheets-trigger') {
+          if (window.location.pathname !== '/worksheets/' && window.location.pathname !== '/worksheets') {
+            window.location.href = '/worksheets/';
+            return;
+          }
+        } else if (trig.id === 'pyq-trigger') {
+          if (window.location.pathname !== '/pyq/' && window.location.pathname !== '/pyq') {
+            window.location.href = '/pyq/';
+            return;
+          }
+        }
+      }
+
       wrap.classList.toggle('open', !isOpen);
       trig.setAttribute('aria-expanded', String(!isOpen));
     });
   });
+
   document.addEventListener('click', (e) => {
     document.querySelectorAll('.nav-dropdown-wrapper').forEach(wrap => {
       if (!wrap.contains(e.target)) {

@@ -501,11 +501,16 @@ function initNavbar() {
 
   /* All Nav Dropdowns (Boards, Worksheets, PYQs) */
   document.querySelectorAll('.dropdown-trigger').forEach(trig => {
+    if (trig.dataset.dropdownBound) return;
+    trig.dataset.dropdownBound = 'true';
     const wrap = trig.closest('.nav-dropdown-wrapper');
     if (!wrap) return;
+
     trig.addEventListener('click', (e) => {
       e.stopPropagation();
+      const isMobile = window.innerWidth <= 900;
       const isOpen = wrap.classList.contains('open');
+
       document.querySelectorAll('.nav-dropdown-wrapper').forEach(w => {
         if (w !== wrap) {
           w.classList.remove('open');
@@ -513,6 +518,35 @@ function initNavbar() {
           if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
         }
       });
+
+      // Desktop: clicking navigates directly to respective hub section/page
+      if (!isMobile) {
+        if (trig.id === 'boards-trigger') {
+          if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
+            window.location.href = '/#school-boards';
+            return;
+          } else {
+            const sb = document.getElementById('school-boards');
+            if (sb) {
+              sb.scrollIntoView({ behavior: 'smooth' });
+              wrap.classList.remove('open');
+              trig.setAttribute('aria-expanded', 'false');
+              return;
+            }
+          }
+        } else if (trig.id === 'worksheets-trigger') {
+          if (window.location.pathname !== '/worksheets/' && window.location.pathname !== '/worksheets') {
+            window.location.href = '/worksheets/';
+            return;
+          }
+        } else if (trig.id === 'pyq-trigger') {
+          if (window.location.pathname !== '/pyq/' && window.location.pathname !== '/pyq') {
+            window.location.href = '/pyq/';
+            return;
+          }
+        }
+      }
+
       wrap.classList.toggle('open', !isOpen);
       trig.setAttribute('aria-expanded', String(!isOpen));
     });
