@@ -300,9 +300,8 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 
 .boards-section {
   background: var(--bg);
-  border-top: 1px solid var(--border);
+  padding: var(--sp-2xl) 0;
   border-bottom: 1px solid var(--border);
-  min-height: 100vh;
 }
 
 /* Sticky top bar */
