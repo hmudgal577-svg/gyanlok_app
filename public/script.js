@@ -937,7 +937,7 @@ function renderDefaultRightContent(subjRes) {
         <a href="/pyq/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
           <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">🎯</div>
           <strong style="font-size: 0.88rem; color: #0F172A; display: block;">बोर्ड PYQs</strong>
-          <span style="font-size: 0.75rem; color: #64748B;">2015-2025 प्रश्न पत्र</span>
+          <span style="font-size: 0.75rem; color: #64748B;">2018-2026 प्रश्न पत्र</span>
         </a>
       </div>
 
