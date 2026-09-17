@@ -101,7 +101,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css?v=107.0.0" />
+  <link rel="stylesheet" href="/style.css?v=108.0.0" />
 
   <style>
     /* ─── Global SEO Layout & Typography Enhancements ─── */
@@ -953,34 +953,6 @@
           if (otherTrig) otherTrig.setAttribute('aria-expanded', 'false');
         }
       });
-
-      // Desktop: clicking navigates directly to respective hub section/page
-      if (!isMobile) {
-        if (trig.id === 'boards-trigger') {
-          if (window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-            window.location.href = '/#school-boards';
-            return;
-          } else {
-            const sb = document.getElementById('school-boards');
-            if (sb) {
-              sb.scrollIntoView({ behavior: 'smooth' });
-              wrap.classList.remove('open');
-              trig.setAttribute('aria-expanded', 'false');
-              return;
-            }
-          }
-        } else if (trig.id === 'worksheets-trigger') {
-          if (window.location.pathname !== '/worksheets/' && window.location.pathname !== '/worksheets') {
-            window.location.href = '/worksheets/';
-            return;
-          }
-        } else if (trig.id === 'pyq-trigger') {
-          if (window.location.pathname !== '/pyq/' && window.location.pathname !== '/pyq') {
-            window.location.href = '/pyq/';
-            return;
-          }
-        }
-      }
 
       wrap.classList.toggle('open', !isOpen);
       trig.setAttribute('aria-expanded', String(!isOpen));

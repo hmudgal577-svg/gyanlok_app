@@ -203,7 +203,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
   height: 12px;
 }
 .nav-dropdown-wrapper.open .nav-dropdown-menu {
-  opacity: 1; transform: translateY(0); pointer-events: auto;
+  opacity: 1 !important; transform: translateY(0) !important; pointer-events: auto !important;
 }
 @media (hover: hover) and (pointer: fine) {
   .nav-dropdown-wrapper:hover .nav-dropdown-menu {
