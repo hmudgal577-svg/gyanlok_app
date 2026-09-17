@@ -57,24 +57,12 @@ CBSE_CHAPTERS = [
         'desc': 'कक्षा 10 हिंदी स्पर्श भाग-2 पाठ पद (मीराबाई) का सरल भावार्थ, सप्रसंग व्याख्या, परीक्षा उपयोगी महत्वपूर्ण प्रश्न-उत्तर और शब्दार्थ।'
     },
     {
-        'key': 'cbse_10_hindi_bihari',
-        'title': 'दोहे',
-        'author': 'बिहारी',
-        'book': 'स्पर्श (भाग-2)',
-        'book_en': 'Sparsh Part 2',
-        'num': 3,
-        'type': 'पद्य खंड',
-        'slug': 'dohe-bihari',
-        'board': 'CBSE',
-        'desc': 'कक्षा 10 हिंदी दोहे (बिहारीलाल) का विस्तृत भावार्थ, काव्य-सौंदर्य, महत्वपूर्ण प्रश्नोत्तर, दोहों की व्याख्या एवं परीक्षा नोट्स।'
-    },
-    {
         'key': 'cbse_10_hindi_manushyata',
         'title': 'मनुष्यता',
         'author': 'मैथिलीशरण गुप्त',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 4,
+        'num': 3,
         'type': 'पद्य खंड',
         'slug': 'manushyata',
         'board': 'CBSE',
@@ -86,23 +74,11 @@ CBSE_CHAPTERS = [
         'author': 'सुमित्रानंदन पंत',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 5,
+        'num': 4,
         'type': 'पद्य खंड',
         'slug': 'parvat-pradesh-mein-pavas',
         'board': 'CBSE',
         'desc': 'पर्वत प्रदेश में पावस (सुमित्रानंदन पंत) कविता का भावार्थ, प्राकृतिक सौंदर्य का मानवीकरण, शब्दार्थ, प्रश्नोत्तर एवं बोर्ड PYQ।'
-    },
-    {
-        'key': 'cbse_10_hindi_deepak',
-        'title': 'मधुर-मधुर मेरे दीपक जल',
-        'author': 'महादेवी वर्मा',
-        'book': 'स्पर्श (भाग-2)',
-        'book_en': 'Sparsh Part 2',
-        'num': 6,
-        'type': 'पद्य खंड',
-        'slug': 'madhur-madhur-mere-deepak-jal',
-        'board': 'CBSE',
-        'desc': 'महादेवी वर्मा की रहस्यवादी कविता मधुर-मधुर मेरे दीपक जल की सरल व्याख्या, प्रतीकात्मक अर्थ, मुख्य बिंदु एवं अभ्यास प्रश्न।'
     },
     {
         'key': 'cbse_10_hindi_top',
@@ -110,7 +86,7 @@ CBSE_CHAPTERS = [
         'author': 'वीरेन डंगवाल',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 7,
+        'num': 5,
         'type': 'पद्य खंड',
         'slug': 'top',
         'board': 'CBSE',
@@ -122,7 +98,7 @@ CBSE_CHAPTERS = [
         'author': 'कैफ़ी आज़मी',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 8,
+        'num': 6,
         'type': 'पद्य खंड',
         'slug': 'kar-chale-hum-fida',
         'board': 'CBSE',
@@ -134,7 +110,7 @@ CBSE_CHAPTERS = [
         'author': 'रवींद्रनाथ ठाकुर',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 9,
+        'num': 7,
         'type': 'पद्य खंड',
         'slug': 'aatmtran',
         'board': 'CBSE',
@@ -146,7 +122,7 @@ CBSE_CHAPTERS = [
         'author': 'प्रेमचंद',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 10,
+        'num': 8,
         'type': 'गद्य खंड',
         'slug': 'bade-bhai-sahab',
         'board': 'CBSE',
@@ -158,7 +134,7 @@ CBSE_CHAPTERS = [
         'author': 'सीताराम सेकसरिया',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 11,
+        'num': 9,
         'type': 'गद्य खंड',
         'slug': 'diary-ka-ek-panna',
         'board': 'CBSE',
@@ -170,7 +146,7 @@ CBSE_CHAPTERS = [
         'author': 'लीलाधर मंडलोई',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 12,
+        'num': 10,
         'type': 'गद्य खंड',
         'slug': 'tatara-vamiro-katha',
         'board': 'CBSE',
@@ -182,23 +158,11 @@ CBSE_CHAPTERS = [
         'author': 'प्रहलाद अग्रवाल',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 13,
+        'num': 11,
         'type': 'गद्य खंड',
         'slug': 'teesri-kasam-ke-shilpkar-shailendra',
         'board': 'CBSE',
         'desc': 'गीतकार शैलेंद्र और फिल्म तीसरी कसम के निर्माण पर आधारित संस्मरण का सारांश, सिनेमाई कला दृष्टि, प्रश्न-उत्तर एवं नोट्स।'
-    },
-    {
-        'key': 'cbse_10_hindi_girgit',
-        'title': 'गिरगिट',
-        'author': 'अंतोन चेखव',
-        'book': 'स्पर्श (भाग-2)',
-        'book_en': 'Sparsh Part 2',
-        'num': 14,
-        'type': 'गद्य खंड',
-        'slug': 'girgit',
-        'board': 'CBSE',
-        'desc': 'विश्वप्रसिद्ध रूसी कथाकार अंतोन चेखव की व्यंग्य कहानी गिरगिट का सारांश, चाटुकारिता पर व्यंग्य, ओचुमेलोव का चरित्र, प्रश्नोत्तर।'
     },
     {
         'key': 'cbse_10_hindi_abkahan',
@@ -206,7 +170,7 @@ CBSE_CHAPTERS = [
         'author': 'निदा फ़ाज़ली',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 15,
+        'num': 12,
         'type': 'गद्य खंड',
         'slug': 'ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale',
         'board': 'CBSE',
@@ -218,7 +182,7 @@ CBSE_CHAPTERS = [
         'author': 'रवींद्र केलेकर',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 16,
+        'num': 13,
         'type': 'गद्य खंड',
         'slug': 'patjhar-mein-tooti-pattiyan',
         'board': 'CBSE',
@@ -230,7 +194,7 @@ CBSE_CHAPTERS = [
         'author': 'हबीब तनवीर',
         'book': 'स्पर्श (भाग-2)',
         'book_en': 'Sparsh Part 2',
-        'num': 17,
+        'num': 14,
         'type': 'गद्य खंड',
         'slug': 'kartoos',
         'board': 'CBSE',
@@ -1405,7 +1369,7 @@ def generate_cbse_landing_page():
     <h1>CBSE Class 10 Hindi Study Material</h1>
     <p class="lead">एनसीईआरटी स्पर्श (भाग-2) एवं संचयन (भाग-2) के सभी अध्यायों के विस्तृत सारांश, सप्रसंग व्याख्या, योग्यता-आधारित प्रश्न (CBQ), व्याकरण, अभ्यास वर्कशीट एवं विगत वर्षों के प्रश्न-पत्र (PYQs)।</p>
     <div class="seo-hero-meta">
-      <span>📚 <strong>20 संपूर्ण अध्याय</strong></span>
+      <span>📚 <strong>17 संपूर्ण अध्याय</strong></span>
       <span>📝 <strong>स्पर्श एवं संचयन भाग-2</strong></span>
       <span>🎯 <strong>CBSE Board Pattern</strong></span>
       <span>📄 <strong>प्रैक्टिस वर्कशीट उपलब्ध</strong></span>
@@ -1422,7 +1386,7 @@ def generate_cbse_landing_page():
         <h2>सीबीएसई कक्षा 10 हिंदी (कोर्स बी) पाठ्यक्रम रूपरेखा</h2>
       </div>
       <p style="font-size:1.05rem; line-height:1.75; color:#334155;">
-        CBSE Class 10 Hindi Course B में मुख्य रूप से दो पाठ्यपुस्तकें शामिल हैं: <strong>स्पर्श भाग-2</strong> (गद्य और पद्य खंड) तथा <strong>संचयन भाग-2</strong> (पूरक पाठ्यपुस्तक)। बोर्ड परीक्षा में उच्च अंक प्राप्त करने के लिए प्रत्येक पाठ के केंद्रीय भाव, लेखक के दृष्टिकोण, कठिन शब्दार्थ, तथा योग्यता-आधारित प्रश्नों (Competency Based Questions) की गहरी समझ अत्यंत आवश्यक है। नीचे दोनों पुस्तकों के सभी 20 अध्यायों के अध्ययन संसाधन उपलब्ध हैं:
+        CBSE Class 10 Hindi Course B में मुख्य रूप से दो पाठ्यपुस्तकें शामिल हैं: <strong>स्पर्श भाग-2</strong> (गद्य और पद्य खंड) तथा <strong>संचयन भाग-2</strong> (पूरक पाठ्यपुस्तक)। बोर्ड परीक्षा में उच्च अंक प्राप्त करने के लिए प्रत्येक पाठ के केंद्रीय भाव, लेखक के दृष्टिकोण, कठिन शब्दार्थ, तथा योग्यता-आधारित प्रश्नों (Competency Based Questions) की गहरी समझ अत्यंत आवश्यक है। नीचे दोनों पुस्तकों के सभी 17 अध्यायों के अध्ययन संसाधन उपलब्ध हैं:
       </p>
     </section>
 
