@@ -78,7 +78,7 @@ CBSE_CHAPTERS = [
         'type': 'पद्य खंड',
         'slug': 'parvat-pradesh-mein-pavas',
         'board': 'CBSE',
-        'desc': 'पर्वत प्रदेश में पावस (सुमित्रानंदन पंत) कविता का भावार्थ, प्राकृतिक सौंदर्य का मानवीकरण, शब्दार्थ, प्रश्नोत्तर एवं बोर्ड PYQ।'
+        'desc': 'पर्वत प्रदेश में पावस (सुमित्रानंदन पंत) कविता का भावार्थ, प्राकृतिक सौंदर्य का मानवीकरण, शब्दार्थ एवं महत्वपूर्ण प्रश्नोत्तर।'
     },
     {
         'key': 'cbse_10_hindi_top',
@@ -273,7 +273,7 @@ ICSE_CHAPTERS = [
         'type': 'गद्य खंड',
         'slug': 'bhedein-aur-bhediye',
         'board': 'ICSE',
-        'desc': 'हरिशंकर परसाई द्वारा रचित प्रसिद्ध राजनीतिक व्यंग्य भेड़ें और भेड़िए का विस्तृत सारांश, प्रतीकार्थ, मुहावरे, अतिरिक्त प्रश्न और बोर्ड PYQ।'
+        'desc': 'हरिशंकर परसाई द्वारा रचित प्रसिद्ध राजनीतिक व्यंग्य भेड़ें और भेड़िए का विस्तृत सारांश, प्रतीकार्थ, मुहावरे एवं महत्वपूर्ण प्रश्नोत्तर।'
     },
     {
         'key': 'icse_10_hindi_dokalakar',
@@ -928,31 +928,12 @@ def get_navbar(active_link=''):
             <span class="di-tag" style="background:#FFF4E0; color:#E8900A;">G</span> Grammar Worksheets
           </a>
           <a href="/worksheets/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
-            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">All</span> All 20 Worksheets
+            <span class="di-tag" style="background:#E8F8F6; color:#2BA899;">All</span> All 18 Worksheets
           </a>
         </div>
       </div>
 
       <a href="/hindi-grammar/" class="nav-link {'active' if active_link=='grammar' else ''}">Hindi Grammar</a>
-
-      <!-- PYQs dropdown -->
-      <div class="nav-dropdown-wrapper">
-        <button class="nav-link dropdown-trigger {'active' if active_link=='pyq' else ''}" aria-haspopup="true" aria-expanded="false" id="pyq-trigger">
-          PYQs
-          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
-        <div class="nav-dropdown-menu" id="pyq-dropdown" role="menu">
-          <a href="/cbse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
-            <span class="di-tag cbse">C</span> CBSE PYQs
-          </a>
-          <a href="/icse/class-10/hindi/pyq/" class="dropdown-item" role="menuitem">
-            <span class="di-tag icse">I</span> ICSE PYQs
-          </a>
-          <a href="/pyq/" class="dropdown-item" role="menuitem" style="border-top:1px solid var(--border); font-weight:600;">
-            <span class="di-tag" style="background:#EFF6FF; color:#2563EB;">Hub</span> All PYQs Hub
-          </a>
-        </div>
-      </div>
 
       <a href="/about/" class="nav-link {'active' if active_link=='about' else ''}">About Us</a>
       <a href="/login.html" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
@@ -1007,7 +988,6 @@ def get_footer(extra_html="", extra_scripts=""):
           <li><a href="/cbse/class-10/hindi/pad-meera/">पद – मीराबाई</a></li>
           <li><a href="/cbse/class-10/hindi/harihar-kaka/">हरिहर काका – मिथिलेश्वर</a></li>
           <li><a href="/cbse/class-10/hindi/topi-shukla/">टोपी शुक्ला – राही मासूम रज़ा</a></li>
-          <li><a href="/cbse/class-10/hindi/pyq/">CBSE Hindi Board PYQs</a></li>
         </ul>
       </div>
 
@@ -1020,7 +1000,6 @@ def get_footer(extra_html="", extra_scripts=""):
           <li><a href="/icse/class-10/hindi/do-kalakar/">दो कलाकार – मन्नू भंडारी</a></li>
           <li><a href="/icse/class-10/hindi/sukhi-daali/">सूखी डाली – उपेंद्रनाथ अश्क</a></li>
           <li><a href="/icse/class-10/hindi/deepdan/">दीपदान – डॉ. रामकुमार वर्मा</a></li>
-          <li><a href="/icse/class-10/hindi/pyq/">ICSE Hindi Board PYQs</a></li>
         </ul>
       </div>
 
@@ -1031,7 +1010,6 @@ def get_footer(extra_html="", extra_scripts=""):
           <li><a href="/hindi-grammar/">Hindi Grammar Hub</a></li>
           <li><a href="/hindi-grammar/muhavare/">मुहावरे (Idioms & Expressions)</a></li>
           <li><a href="/hindi-grammar/padbandh/">पदबंध (Padbandh Practice)</a></li>
-          <li><a href="/pyq/">Board Previous Year Questions</a></li>
           <li><a href="/about/">About EkShala</a></li>
           <li><a href="/contact/">Contact Us & Mentorship</a></li>
         </ul>
@@ -1280,7 +1258,7 @@ def generate_chapter_pages():
 </section>"""
 
         if competency_html:
-            cbq_label = "Competency-Based Question Answers &amp; PYQs (योग्यता-आधारित प्रश्नोत्तर)"
+            cbq_label = "Competency-Based Question Answers (योग्यता-आधारित प्रश्नोत्तर)"
             is_act = " active" if first_tab_id == "competency" else ""
             sections_html += f"""<section id="competency" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="competency">
   <div class="seo-section-header">
@@ -1498,8 +1476,8 @@ def generate_cbse_landing_page():
     canonical_url = f"{BASE_URL}/{rel_dir}/"
     ALL_CANONICAL_URLS.append(canonical_url)
 
-    seo_title = "CBSE Class 10 Hindi Study Material | Notes, Worksheets & PYQs | EkShala"
-    desc = "Complete CBSE Class 10 Hindi (Course B) study material. Sparsh & Sanchayan chapter-wise summaries, deep notes, competency question answers, worksheets, grammar and board PYQs."
+    seo_title = "CBSE Class 10 Hindi Study Material | Notes & Worksheets | EkShala"
+    desc = "Complete CBSE Class 10 Hindi (Course B) study material. Sparsh & Sanchayan chapter-wise summaries, deep notes, competency question answers, worksheets, and grammar tutorials."
 
     sparsh_chapters = [c for c in CBSE_CHAPTERS if 'स्पर्श' in c['book']]
     sanchayan_chapters = [c for c in CBSE_CHAPTERS if 'संचयन' in c['book']]
@@ -1563,7 +1541,7 @@ def generate_cbse_landing_page():
   <div class="container">
     <span class="seo-hero-badge">CBSE Board Exam 2026-27 &bull; Hindi Course B</span>
     <h1>CBSE Class 10 Hindi Study Material</h1>
-    <p class="lead">एनसीईआरटी स्पर्श (भाग-2) एवं संचयन (भाग-2) के सभी अध्यायों के विस्तृत सारांश, सप्रसंग व्याख्या, योग्यता-आधारित प्रश्न (CBQ), व्याकरण, अभ्यास वर्कशीट एवं विगत वर्षों के प्रश्न-पत्र (PYQs)।</p>
+    <p class="lead">एनसीईआरटी स्पर्श (भाग-2) एवं संचयन (भाग-2) के सभी अध्यायों के विस्तृत सारांश, सप्रसंग व्याख्या, योग्यता-आधारित प्रश्न (CBQ), व्याकरण एवं अभ्यास वर्कशीट।</p>
     <div class="seo-hero-meta">
       <span>📚 <strong>17 संपूर्ण अध्याय</strong></span>
       <span>📝 <strong>स्पर्श एवं संचयन भाग-2</strong></span>
@@ -1691,13 +1669,13 @@ def generate_cbse_landing_page():
           </div>
           <span class="seo-card-cta">व्याकरण पढ़ें &rarr;</span>
         </a>
-        <a href="/cbse/class-10/hindi/pyq/" class="seo-card">
+        <a href="/worksheets/#cbse-worksheets" class="seo-card">
           <div>
-            <span class="seo-card-badge">बोर्ड पेपर</span>
-            <h3>CBSE Class 10 Hindi PYQs</h3>
-            <p>विगत वर्षों के बोर्ड प्रश्न-पत्र, मॉडल हल एवं अंक योजना।</p>
+            <span class="seo-card-badge">अभ्यास पत्रक</span>
+            <h3>CBSE अभ्यास वर्कशीट्स</h3>
+            <p>पाठ आधारित 40 अंक एवं 80 अंक के अभ्यास प्रश्न-पत्र एवं आदर्श उत्तर।</p>
           </div>
-          <span class="seo-card-cta">PYQs देखें &rarr;</span>
+          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
       </div>
     </section>
@@ -1723,7 +1701,7 @@ def generate_icse_landing_page():
     ALL_CANONICAL_URLS.append(canonical_url)
 
     seo_title = "ICSE Class 10 Hindi Study Material | Notes, Worksheets & Exam Preparation | EkShala"
-    desc = "Free ICSE Class 10 Hindi study material. Sahitya Sagar (Prose) & Ekanki Sanchay chapter-wise summaries, deep notes, important questions, character sketches, worksheets & board PYQs."
+    desc = "Free ICSE Class 10 Hindi study material. Sahitya Sagar (Prose) & Ekanki Sanchay chapter-wise summaries, deep notes, important questions, character sketches, worksheets & grammar."
 
     sahitya_chapters = [c for c in ICSE_CHAPTERS if 'साहित्य सागर' in c['book']]
     ekanki_chapters = [c for c in ICSE_CHAPTERS if 'एकांकी' in c['book']]
@@ -1923,13 +1901,13 @@ def generate_icse_landing_page():
           </div>
           <span class="seo-card-cta">मुहावरे पढ़ें &rarr;</span>
         </a>
-        <a href="/icse/class-10/hindi/pyq/" class="seo-card">
+        <a href="/worksheets/#icse-worksheets" class="seo-card">
           <div>
-            <span class="seo-card-badge">बोर्ड पेपर्स</span>
-            <h3>ICSE Class 10 Hindi PYQs</h3>
-            <p>विगत वर्षों के बोर्ड प्रश्न एवं मानक अंकन योजना।</p>
+            <span class="seo-card-badge">अभ्यास पत्रक</span>
+            <h3>ICSE अभ्यास वर्कशीट्स</h3>
+            <p>साहित्य सागर और एकांकी संचय के अवतरण-आधारित अभ्यास प्रश्न-पत्र।</p>
           </div>
-          <span class="seo-card-cta">PYQs देखें &rarr;</span>
+          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
       </div>
     </section>
@@ -1955,7 +1933,7 @@ def generate_worksheets_hub():
     ALL_CANONICAL_URLS.append(canonical_url)
 
     seo_title = "Class 10 Hindi Worksheets | CBSE, ICSE & Grammar Practice Papers | EkShala"
-    desc = "20 free Class 10 Hindi worksheets for CBSE, ICSE, and Hindi Grammar. Solved practice sheets, Muhavare, Padbandh, and board PYQs with instant online view and Word downloads."
+    desc = "18 free Class 10 Hindi worksheets for CBSE, ICSE, and Hindi Grammar. Solved practice sheets, Muhavare, and Padbandh with instant online view and Word downloads."
 
     # Categorize worksheets into 3 distinct partitions
     cbse_keys = [
@@ -1963,8 +1941,6 @@ def generate_worksheets_hub():
         ('WS_CBSE_10_02', 'अभ्यास पत्रक 2'),
         ('WS_CBSE_10_03', 'अभ्यास पत्रक 3'),
         ('WS_CBSE_10_04', 'अभ्यास पत्रक 4'),
-        ('WS_CBSE_10_PYQ_01', 'Board PYQ 1'),
-        ('WS_CBSE_10_PYQ_02', 'Board PYQ 2')
     ]
 
     icse_keys = [
@@ -2439,7 +2415,9 @@ def generate_grammar_pages():
 # 6. GENERATE PYQ PAGES
 # ==============================================================================
 def generate_pyq_pages():
-    print("\n--- Generating PYQ Pages ---")
+    pass
+def _disabled_generate_pyq_pages():
+    print("\n--- Disabled PYQ Pages ---")
     
     # Main PYQ Hub
     rel_dir = "pyq"
@@ -2735,9 +2713,6 @@ def generate_sitemap_and_robots():
         f"{BASE_URL}/hindi-grammar/",
         f"{BASE_URL}/hindi-grammar/muhavare/",
         f"{BASE_URL}/hindi-grammar/padbandh/",
-        f"{BASE_URL}/pyq/",
-        f"{BASE_URL}/cbse/class-10/hindi/pyq/",
-        f"{BASE_URL}/icse/class-10/hindi/pyq/",
         f"{BASE_URL}/about/",
         f"{BASE_URL}/contact/",
         f"{BASE_URL}/privacy-policy/",
@@ -2797,7 +2772,6 @@ if __name__ == '__main__':
     generate_icse_landing_page()
     generate_worksheets_hub()
     generate_grammar_pages()
-    generate_pyq_pages()
     generate_trust_and_legal_pages()
     generate_sitemap_and_robots()
     print("\n🎉 ALL EKSHALA SEO PAGES GENERATED SUCCESSFULLY!")

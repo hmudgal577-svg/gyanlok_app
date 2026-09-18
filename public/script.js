@@ -328,7 +328,6 @@ const WORKSHEET_FOLDERS = {
     { id: 'practice', name: 'Practice Worksheets', nameHi: 'अभ्यास पत्रक', icon: '📝', desc: 'हिंदी कोर्स-बी के संपूर्ण अभ्यास प्रश्न-पत्र' },
     { id: 'muhavare', name: 'Muhavare Worksheet', nameHi: 'मुहावरे पत्रक', icon: '📖', desc: 'मुहावरे एवं लोकोक्तियाँ अभ्यास पत्रक' },
     { id: 'padbandh', name: 'Padbandh Worksheet', nameHi: 'पदबंध पत्रक', icon: '📑', desc: 'पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रिया-विशेषण) अभ्यास' },
-    { id: 'pyq',      name: 'PYQ Based Worksheet', nameHi: 'PYQ आधारित पत्रक', icon: '🎯', desc: 'पिछले वर्षों के बोर्ड प्रश्नों पर आधारित वर्कशीट्स' },
   ],
   ICSE: [
     { id: 'practice', name: 'Practice Worksheets', nameHi: 'अभ्यास पत्रक', icon: '📝', desc: 'ICSE हिंदी के संपूर्ण अभ्यास प्रश्न-पत्र' },
@@ -370,9 +369,6 @@ const TEST_DATA = {
         // Padbandh Worksheets (Folder: padbandh)
         { id: 'WS_CBSE_10_PAD_01', folder: 'padbandh', title: 'Worksheet 1: पदबंध (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/Padbandh_Worksheet_1_40Marks.docx', color: '#8B5CF6' },
         { id: 'WS_CBSE_10_PAD_02', folder: 'padbandh', title: 'Worksheet 2: पदबंध (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) व्याकरण | 40 अंक | 60 मिनट', subject: 'Hindi Grammar', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/Padbandh_Worksheet_2_40Marks.docx', color: '#EC4899' },
-        // PYQ Based Worksheets (Folder: pyq)
-        { id: 'WS_CBSE_10_PYQ_01', folder: 'pyq', title: 'PYQ Worksheet 1: हिंदी (अभ्यास प्रश्न-पत्र 1)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | PYQ आधारित | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/PYQ_Worksheet_1_40Marks.docx', color: '#E05555' },
-        { id: 'WS_CBSE_10_PYQ_02', folder: 'pyq', title: 'PYQ Worksheet 2: हिंदी (अभ्यास प्रश्न-पत्र 2)', subtitle: 'कक्षा 10 हिंदी (कोर्स बी) | PYQ आधारित | 40 अंक | 90 मिनट', subject: 'Hindi', marks: '40 Marks', date: 'Sep 2026', pages: 4, file_url: '/worksheets/PYQ_Worksheet_2_40Marks.docx', color: '#9B59B6' },
       ],
       9: [], 8: [], 7: [], 6: []
     },
@@ -497,7 +493,7 @@ function initNavbar() {
     });
   });
 
-  /* All Nav Dropdowns (Boards, Worksheets, PYQs) */
+  /* All Nav Dropdowns (Boards, Worksheets) */
   document.querySelectorAll('.dropdown-trigger').forEach(trig => {
     if (trig.dataset.dropdownBound) return;
     trig.dataset.dropdownBound = 'true';
@@ -872,7 +868,7 @@ function renderDefaultRightContent(subjRes) {
       
       <div class="rp-intro" style="background: #EFF6FF; border-left: 4px solid #3A7BD5; padding: 1rem 1.15rem; border-radius: 8px; margin-bottom: 1.5rem;">
         <p style="margin: 0; font-size: 0.95rem; color: #1E3A8A; line-height: 1.6;">
-          👈 बाईं ओर दी गई सूची से किसी भी अध्याय पर क्लिक करके सीधे उस अध्याय के संपूर्ण <strong>पाठ सारांश, मुख्य नोट्स, शब्दार्थ व मुहावरे, योग्यता-आधारित प्रश्न (CBQ/PYQ)</strong> के समर्पित पृष्ठ पर जाएं।
+          👈 बाईं ओर दी गई सूची से किसी भी अध्याय पर क्लिक करके सीधे उस अध्याय के संपूर्ण <strong>पाठ सारांश, मुख्य नोट्स, शब्दार्थ व मुहावरे, योग्यता-आधारित प्रश्न (CBQ)</strong> के समर्पित पृष्ठ पर जाएं।
         </p>
       </div>
 
@@ -896,7 +892,7 @@ function renderDefaultRightContent(subjRes) {
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.85rem; margin-bottom: 1.5rem;">
         <a href="/worksheets/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
           <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">📄</div>
-          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">20 अभ्यास पत्रक</strong>
+          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">18 अभ्यास पत्रक</strong>
           <span style="font-size: 0.75rem; color: #64748B;">CBSE, ICSE व व्याकरण</span>
         </a>
         <a href="/hindi-grammar/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
@@ -904,10 +900,10 @@ function renderDefaultRightContent(subjRes) {
           <strong style="font-size: 0.88rem; color: #0F172A; display: block;">व्याकरण केंद्र</strong>
           <span style="font-size: 0.75rem; color: #64748B;">मुहावरे एवं पदबंध</span>
         </a>
-        <a href="/pyq/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
-          <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">🎯</div>
-          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">बोर्ड PYQs</strong>
-          <span style="font-size: 0.75rem; color: #64748B;">2018-2026 प्रश्न पत्र</span>
+        <a href="/about/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
+          <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">ℹ️</div>
+          <strong style="font-size: 0.88rem; color: #0F172A; display: block;">About EkShala</strong>
+          <span style="font-size: 0.75rem; color: #64748B;">Free Education Mission</span>
         </a>
       </div>
 
@@ -1069,7 +1065,7 @@ function getChapterPageUrl(bookName, chNum, chTitle, category) {
     const c = String(category).toLowerCase();
     if (c === 'summary') hash = '#summary';
     else if (c === 'notes') hash = '#notes';
-    else if (c === 'competency' || c === 'pyq' || c === 'cbq') hash = '#competency';
+    else if (c === 'competency' || c === 'cbq') hash = '#competency';
     else if (c === 'additional') hash = '#additional';
     else if (c === 'muhavre' || c === 'muhavare') hash = '#muhavre';
     else if (c === 'worksheets') hash = '#worksheets';
@@ -1110,19 +1106,19 @@ function renderChapter(book, ch) {
 
   var opts = [];
   if (isNayaRaasta) {
-    // Naya Raasta (Novel): Summary, Notes, PYQ
+    // Naya Raasta (Novel): Summary, Notes
     opts = [
       { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
       { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
-      { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+      { icon:'🎯', label:'महत्वपूर्ण प्रश्नोत्तर (CBQ)', sub:'Competency Questions', cat:'competency', color:'#E8900A' },
     ];
   } else if (isICSE) {
-    // ICSE other books: Summary, Notes, Word Meanings & Muhavare, PYQ, Additional Questions
+    // ICSE other books: Summary, Notes, Word Meanings & Muhavare, Additional Questions
     opts = [
       { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
       { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
       { icon:'📖', label:'शब्दार्थ एवं मुहावरे',       sub:'Word Meanings & Muhavare', cat:'muhavre',    color:'#9B59B6' },
-      { icon:'🎯', label:'पिछले वर्ष के प्रश्न (PYQ)', sub:'Previous Year Questions', cat:'competency', color:'#E8900A' },
+      { icon:'🎯', label:'महत्वपूर्ण प्रश्नोत्तर (CBQ)', sub:'Competency Questions', cat:'competency', color:'#E8900A' },
       { icon:'⭐', label:'अतिरिक्त प्रश्न',            sub:'Additional Questions',    cat:'additional', color:'#27AE60' },
     ];
   } else {
@@ -1364,9 +1360,6 @@ function getFolderComingSoonDesc(folderId, board) {
   }
   if (folderId === 'padbandh') {
     return 'कक्षा 10 CBSE हिंदी (कोर्स बी) के व्याकरण खंड के पदबंध (संज्ञा, सर्वनाम, विशेषण, क्रिया एवं क्रिया-विशेषण पदबंध) पर आधारित अभ्यास पत्रक तैयार किए जा रहे हैं।';
-  }
-  if (folderId === 'pyq') {
-    return 'पिछले 10 वर्षों के बोर्ड परीक्षाओं में पूछे गए सबसे महत्वपूर्ण प्रश्नों पर आधारित विशेष PYQ अभ्यास पत्रक संकलित किए जा रहे हैं।';
   }
   return 'इस फ़ोल्डर के अभ्यास पत्रक अभी तैयार किए जा रहे हैं। कृपया जल्द ही दोबारा देखें।';
 }
@@ -2303,7 +2296,7 @@ function showEmptyRightPanel() {
     <div class="boards-detail-empty">
       <div class="detail-empty-icon">📖</div>
       <h3>Select a Chapter</h3>
-      <p>Choose any chapter from the left panel to view <strong>Summary, PDF, Notes, PYQs &amp; Worksheets</strong>.</p>
+      <p>Choose any chapter from the left panel to view <strong>Summary, Notes, CBQ &amp; Worksheets</strong>.</p>
     </div>
   `;
 }
