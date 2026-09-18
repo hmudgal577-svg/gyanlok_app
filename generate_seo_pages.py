@@ -1084,12 +1084,12 @@ def generate_chapter_pages():
   <div class="container">
     <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a href="/" itemprop="item"><span itemprop="name">होम</span></a>
+        <a href="/" itemprop="item"><span itemprop="name">Home</span></a>
         <meta itemprop="position" content="1" />
       </li>
       <li class="sep">&rsaquo;</li>
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <a href="{board_hub_url}" itemprop="item"><span itemprop="name">{board} कक्षा 10 हिंदी</span></a>
+        <a href="{board_hub_url}" itemprop="item"><span itemprop="name">{board} Class 10 Hindi</span></a>
         <meta itemprop="position" content="2" />
       </li>
       <li class="sep">&rsaquo;</li>
@@ -1108,8 +1108,8 @@ def generate_chapter_pages():
                 {
                     "@type": "BreadcrumbList",
                     "itemListElement": [
-                        { "@type": "ListItem", "position": 1, "name": "होम", "item": f"{BASE_URL}/" },
-                        { "@type": "ListItem", "position": 2, "name": f"{board} कक्षा 10 हिंदी", "item": f"{BASE_URL}{board_hub_url}" },
+                        { "@type": "ListItem", "position": 1, "name": "Home", "item": f"{BASE_URL}/" },
+                        { "@type": "ListItem", "position": 2, "name": f"{board} Class 10 Hindi", "item": f"{BASE_URL}{board_hub_url}" },
                         { "@type": "ListItem", "position": 3, "name": title, "item": canonical_url }
                     ]
                 },
@@ -1149,20 +1149,28 @@ def generate_chapter_pages():
   <div>
     <span class="seo-card-badge">{rc['book']}</span>
     <h3>{rc['title']}</h3>
-    <p>लेखक/कवि: {rc['author']} &bull; {rc['type']}</p>
+    <p>Author/Poet: {rc['author']} &bull; {rc['type']}</p>
   </div>
-  <span class="seo-card-cta">अध्याय पढ़ें &rarr;</span>
+  <span class="seo-card-cta">Read Chapter &rarr;</span>
 </a>"""
 
-        # Navigation Pills
+        # Navigation Pills (English tab navigation)
         pills = []
-        if summary_html: pills.append(('summary', '📜 पाठ का सार'))
-        if notes_html: pills.append(('notes', '📝 मुख्य बिंदु एवं व्याख्या'))
-        if competency_html: pills.append(('competency', '🎯 योग्यता-आधारित प्रश्न (CBQ)'))
-        if additional_html: pills.append(('additional', '⭐ महत्वपूर्ण प्रश्नोत्तर'))
-        if muhavre_html: pills.append(('muhavre', '📖 शब्दार्थ व मुहावरे'))
-        pills.append(('worksheets', '📄 अभ्यास वर्कशीट'))
-        pills.append(('related', '🔗 संबंधित अध्याय'))
+        if summary_html:
+            pills.append(('summary', '📜 Chapter Summary'))
+        if notes_html:
+            pills.append(('notes', '📝 Revision Notes'))
+        if competency_html and additional_html:
+            pills.append(('competency', '🎯 Question Answers (CBQ)'))
+            pills.append(('additional', '⭐ Important Q&A'))
+        elif competency_html:
+            pills.append(('competency', '🎯 Question Answers'))
+        elif additional_html:
+            pills.append(('additional', '🎯 Question Answers'))
+        if muhavre_html:
+            pills.append(('muhavre', '📖 Word Meanings'))
+        pills.append(('worksheets', '📄 Practice Worksheets'))
+        pills.append(('related', '🔗 Related Chapters'))
 
         pills_html = "".join([f'<a href="#{p[0]}" class="seo-pill">{p[1]}</a>' for p in pills])
 
@@ -1172,7 +1180,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="summary" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">📜</span>
-    <h2>पाठ का सार एवं परिचय (Chapter Summary)</h2>
+    <h2>Chapter Summary (पाठ का सार एवं परिचय)</h2>
   </div>
   <div class="seo-section-body">
     {summary_html}
@@ -1183,7 +1191,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="notes" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">📝</span>
-    <h2>मुख्य बिंदु एवं परीक्षा उपयोगी नोट्स (Revision Notes)</h2>
+    <h2>Revision Notes &amp; Explanation (मुख्य बिंदु एवं व्याख्या)</h2>
   </div>
   <div class="seo-section-body">
     {notes_html}
@@ -1191,7 +1199,7 @@ def generate_chapter_pages():
 </section>"""
 
         if competency_html:
-            cbq_label = "योग्यता-आधारित प्रश्न एवं बोर्ड PYQ (Competency Based Questions & PYQs)"
+            cbq_label = "Competency-Based Question Answers &amp; PYQs (योग्यता-आधारित प्रश्नोत्तर)"
             sections_html += f"""<section id="competency" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">🎯</span>
@@ -1206,7 +1214,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="additional" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">⭐</span>
-    <h2>अतिरिक्त महत्वपूर्ण प्रश्न एवं उत्तर (Additional Practice Questions)</h2>
+    <h2>Important Questions &amp; Answers (महत्वपूर्ण प्रश्नोत्तर)</h2>
   </div>
   <div class="seo-section-body">
     {additional_html}
@@ -1217,7 +1225,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="muhavre" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">📖</span>
-    <h2>कठिन शब्दार्थ एवं महत्वपूर्ण मुहावरे (Word Meanings & Idioms)</h2>
+    <h2>Word Meanings &amp; Vocabulary (कठिन शब्दार्थ एवं मुहावरे)</h2>
   </div>
   <div class="seo-section-body">
     {muhavre_html}
@@ -1228,17 +1236,17 @@ def generate_chapter_pages():
         sections_html += f"""<section id="worksheets" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">📄</span>
-    <h2>अभ्यास वर्कशीट एवं मूल्यांकन (Practice Worksheet & Evaluation)</h2>
+    <h2>Practice Worksheets &amp; Evaluation (अभ्यास वर्कशीट)</h2>
   </div>
   <div class="seo-section-body" style="background:#F8FAFC; padding:1.75rem; border-radius:14px; border:1px solid #E2E8F0;">
     <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1.25rem;">
       <div>
         <h3 style="font-size:1.2rem; margin:0 0 0.5rem; color:#0F172A;">{title} – Class 10 Hindi Practice Worksheet</h3>
-        <p style="margin:0; color:#64748B; font-size:0.95rem;">डाउनलोड करें या ऑनलाइन अभ्यास कर अपने उत्तर शिक्षक से जांच करवाएं।</p>
+        <p style="margin:0; color:#64748B; font-size:0.95rem;">Download or practice online to get your answers evaluated by teachers.</p>
       </div>
       <div style="display:flex; gap:0.75rem;">
-        <a href="/worksheets/" class="btn btn-primary" style="padding:0.7rem 1.4rem;">सभी वर्कशीट देखें &rarr;</a>
-        <a href="/hindi-grammar/" class="btn btn-outline" style="padding:0.7rem 1.4rem;">हिंदी व्याकरण</a>
+        <a href="/worksheets/" class="btn btn-primary" style="padding:0.7rem 1.4rem;">View All Worksheets &rarr;</a>
+        <a href="/hindi-grammar/" class="btn btn-outline" style="padding:0.7rem 1.4rem;">Hindi Grammar</a>
       </div>
     </div>
   </div>
@@ -1248,7 +1256,7 @@ def generate_chapter_pages():
         sections_html += f"""<section id="related" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">🔗</span>
-    <h2>संबंधित अध्याय एवं अध्ययन सामग्री ({board} Class 10 Hindi)</h2>
+    <h2>Related Chapters ({board} Class 10 Hindi)</h2>
   </div>
   <div class="seo-grid">
     {related_cards_html}
@@ -1262,11 +1270,11 @@ def generate_chapter_pages():
     <h1>{title} – Class 10 Hindi Summary, Notes &amp; Question Answers</h1>
     <p class="lead">{desc}</p>
     <div class="seo-hero-meta">
-      <span>✍️ <strong>रचनाकार:</strong> {author}</span>
-      <span>📖 <strong>पाठ्यपुस्तक:</strong> {book}</span>
-      <span>🏷️ <strong>अध्याय संख्या:</strong> {num} ({ch['type']})</span>
-      <span>🎓 <strong>बोर्ड:</strong> {board} Class 10</span>
-      <span>✓ <strong>100% निःशुल्क</strong></span>
+      <span>✍️ <strong>Author:</strong> {author}</span>
+      <span>📖 <strong>Book:</strong> {book}</span>
+      <span>🏷️ <strong>Chapter:</strong> {num} ({ch['type']})</span>
+      <span>🎓 <strong>Board:</strong> {board} Class 10</span>
+      <span>✓ <strong>100% Free</strong></span>
     </div>
   </div>
 </header>"""
