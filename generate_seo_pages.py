@@ -507,10 +507,65 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       box-shadow: 0 1px 2px rgba(15, 43, 72, 0.03);
     }}
     .seo-pill:hover, .seo-pill.active {{
-      background: #3A7BD5;
+      background: #2563EB;
       color: #FFFFFF;
-      border-color: #3A7BD5;
-      box-shadow: 0 3px 10px rgba(58, 123, 213, 0.25);
+      border-color: #2563EB;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+      transform: translateY(-1px);
+    }}
+
+    /* Chapter Interactive Tabs System */
+    .seo-tab-pane {{
+      display: none;
+    }}
+    .seo-tab-pane.active {{
+      display: block;
+      animation: tabFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }}
+    @keyframes tabFadeIn {{
+      from {{ opacity: 0; transform: translateY(6px); }}
+      to {{ opacity: 1; transform: translateY(0); }}
+    }}
+    .tab-nav-footer {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2.25rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #E2E8F0;
+      flex-wrap: wrap;
+    }}
+    .tab-nav-btn {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid #CBD5E1;
+      background: #FFFFFF;
+      color: #1E293B;
+      text-decoration: none;
+    }}
+    .tab-nav-btn:hover {{
+      background: #F1F5F9;
+      border-color: #94A3B8;
+      color: #0F172A;
+    }}
+    .tab-nav-btn.primary {{
+      background: #2563EB;
+      color: #FFFFFF;
+      border-color: #2563EB;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    }}
+    .tab-nav-btn.primary:hover {{
+      background: #1D4ED8;
+      border-color: #1D4ED8;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
       transform: translateY(-1px);
     }}
 
@@ -805,6 +860,11 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       }}
     }}
   </style>
+  <noscript>
+    <style>
+      .seo-tab-pane {{ display: block !important; }}
+    </style>
+  </noscript>
 </head>
 <body class="seo-page-body">
 """
@@ -1154,30 +1214,48 @@ def generate_chapter_pages():
   <span class="seo-card-cta">Read Chapter &rarr;</span>
 </a>"""
 
+        # Available study tab definitions in order:
+        tab_defs = []
+        if summary_html:
+            tab_defs.append(('summary', 'Chapter Summary', '📜'))
+        if notes_html:
+            tab_defs.append(('notes', 'Revision Notes', '📝'))
+        if competency_html and additional_html:
+            tab_defs.append(('competency', 'Question Answers (CBQ)', '🎯'))
+            tab_defs.append(('additional', 'Important Q&A', '⭐'))
+        elif competency_html:
+            tab_defs.append(('competency', 'Question Answers', '🎯'))
+        elif additional_html:
+            tab_defs.append(('additional', 'Question Answers', '🎯'))
+        if muhavre_html:
+            tab_defs.append(('muhavre', 'Word Meanings', '📖'))
+        tab_defs.append(('worksheets', 'Practice Worksheets', '📄'))
+
         # Navigation Pills (English tab navigation)
         pills = []
-        if summary_html:
-            pills.append(('summary', '📜 Chapter Summary'))
-        if notes_html:
-            pills.append(('notes', '📝 Revision Notes'))
-        if competency_html and additional_html:
-            pills.append(('competency', '🎯 Question Answers (CBQ)'))
-            pills.append(('additional', '⭐ Important Q&A'))
-        elif competency_html:
-            pills.append(('competency', '🎯 Question Answers'))
-        elif additional_html:
-            pills.append(('additional', '🎯 Question Answers'))
-        if muhavre_html:
-            pills.append(('muhavre', '📖 Word Meanings'))
-        pills.append(('worksheets', '📄 Practice Worksheets'))
+        for t_id, t_label, t_icon in tab_defs:
+            pills.append((t_id, f'{t_icon} {t_label}'))
         pills.append(('related', '🔗 Related Chapters'))
 
-        pills_html = "".join([f'<a href="#{p[0]}" class="seo-pill">{p[1]}</a>' for p in pills])
+        first_tab_id = tab_defs[0][0] if tab_defs else 'summary'
+        pills_html = "".join([f'<a href="#{p[0]}" class="seo-pill {"active" if p[0] == first_tab_id else ""}">{p[1]}</a>' for p in pills])
 
-        # Content Sections
+        def get_tab_footer(t_id):
+            ids = [t[0] for t in tab_defs]
+            if t_id not in ids:
+                return ""
+            idx = ids.index(t_id)
+            prev_t = tab_defs[idx - 1] if idx > 0 else None
+            next_t = tab_defs[idx + 1] if idx < len(tab_defs) - 1 else None
+            prev_btn = f'<button type="button" class="tab-nav-btn" data-switch-tab="{prev_t[0]}">&larr; {prev_t[2]} {prev_t[1]}</button>' if prev_t else '<div></div>'
+            next_btn = f'<button type="button" class="tab-nav-btn primary" data-switch-tab="{next_t[0]}">{next_t[2]} {next_t[1]} &rarr;</button>' if next_t else '<div></div>'
+            return f'<div class="tab-nav-footer">{prev_btn}{next_btn}</div>'
+
+        # Content Sections (Interactive Tab Panes)
         sections_html = ""
         if summary_html:
-            sections_html += f"""<section id="summary" class="seo-section-card">
+            is_act = " active" if first_tab_id == "summary" else ""
+            sections_html += f"""<section id="summary" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="summary">
   <div class="seo-section-header">
     <span class="seo-section-icon">📜</span>
     <h2>Chapter Summary (पाठ का सार एवं परिचय)</h2>
@@ -1185,10 +1263,12 @@ def generate_chapter_pages():
   <div class="seo-section-body">
     {summary_html}
   </div>
+  {get_tab_footer('summary')}
 </section>"""
 
         if notes_html:
-            sections_html += f"""<section id="notes" class="seo-section-card">
+            is_act = " active" if first_tab_id == "notes" else ""
+            sections_html += f"""<section id="notes" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="notes">
   <div class="seo-section-header">
     <span class="seo-section-icon">📝</span>
     <h2>Revision Notes &amp; Explanation (मुख्य बिंदु एवं व्याख्या)</h2>
@@ -1196,11 +1276,13 @@ def generate_chapter_pages():
   <div class="seo-section-body">
     {notes_html}
   </div>
+  {get_tab_footer('notes')}
 </section>"""
 
         if competency_html:
             cbq_label = "Competency-Based Question Answers &amp; PYQs (योग्यता-आधारित प्रश्नोत्तर)"
-            sections_html += f"""<section id="competency" class="seo-section-card">
+            is_act = " active" if first_tab_id == "competency" else ""
+            sections_html += f"""<section id="competency" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="competency">
   <div class="seo-section-header">
     <span class="seo-section-icon">🎯</span>
     <h2>{cbq_label}</h2>
@@ -1208,10 +1290,12 @@ def generate_chapter_pages():
   <div class="seo-section-body">
     {competency_html}
   </div>
+  {get_tab_footer('competency')}
 </section>"""
 
         if additional_html:
-            sections_html += f"""<section id="additional" class="seo-section-card">
+            is_act = " active" if first_tab_id == "additional" else ""
+            sections_html += f"""<section id="additional" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="additional">
   <div class="seo-section-header">
     <span class="seo-section-icon">⭐</span>
     <h2>Important Questions &amp; Answers (महत्वपूर्ण प्रश्नोत्तर)</h2>
@@ -1219,10 +1303,12 @@ def generate_chapter_pages():
   <div class="seo-section-body">
     {additional_html}
   </div>
+  {get_tab_footer('additional')}
 </section>"""
 
         if muhavre_html:
-            sections_html += f"""<section id="muhavre" class="seo-section-card">
+            is_act = " active" if first_tab_id == "muhavre" else ""
+            sections_html += f"""<section id="muhavre" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="muhavre">
   <div class="seo-section-header">
     <span class="seo-section-icon">📖</span>
     <h2>Word Meanings &amp; Vocabulary (कठिन शब्दार्थ एवं मुहावरे)</h2>
@@ -1230,10 +1316,12 @@ def generate_chapter_pages():
   <div class="seo-section-body">
     {muhavre_html}
   </div>
+  {get_tab_footer('muhavre')}
 </section>"""
 
         # Worksheet Card in chapter
-        sections_html += f"""<section id="worksheets" class="seo-section-card">
+        is_act = " active" if first_tab_id == "worksheets" else ""
+        sections_html += f"""<section id="worksheets" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="worksheets">
   <div class="seo-section-header">
     <span class="seo-section-icon">📄</span>
     <h2>Practice Worksheets &amp; Evaluation (अभ्यास वर्कशीट)</h2>
@@ -1250,9 +1338,10 @@ def generate_chapter_pages():
       </div>
     </div>
   </div>
+  {get_tab_footer('worksheets')}
 </section>"""
 
-        # Related Chapters Section
+        # Related Chapters Section (permanent at bottom of main content container)
         sections_html += f"""<section id="related" class="seo-section-card">
   <div class="seo-section-header">
     <span class="seo-section-icon">🔗</span>
@@ -1279,6 +1368,104 @@ def generate_chapter_pages():
   </div>
 </header>"""
 
+        chapter_tab_script = """<script>
+(function() {
+  const pills = Array.from(document.querySelectorAll('.seo-quick-nav .seo-pill'));
+  const panes = Array.from(document.querySelectorAll('.seo-tab-pane'));
+  const quickNav = document.querySelector('.seo-quick-nav');
+
+  if (!pills.length || !panes.length) return;
+
+  function activateTab(tabId, shouldScroll) {
+    if (!tabId) return false;
+    const cleanId = tabId.replace(/^#/, '');
+
+    if (cleanId === 'related') {
+      const relSec = document.getElementById('related');
+      if (relSec) {
+        relSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        pills.forEach(p => {
+          if ((p.getAttribute('href') || '') === '#related') p.classList.add('active');
+          else p.classList.remove('active');
+        });
+        return true;
+      }
+    }
+
+    const targetPane = document.getElementById(cleanId);
+    if (!targetPane || !targetPane.classList.contains('seo-tab-pane')) {
+      return false;
+    }
+
+    panes.forEach(pane => pane.classList.remove('active'));
+    targetPane.classList.add('active');
+
+    pills.forEach(pill => {
+      const href = pill.getAttribute('href') || '';
+      if (href === '#' + cleanId) {
+        pill.classList.add('active');
+        pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } else {
+        pill.classList.remove('active');
+      }
+    });
+
+    if (shouldScroll && quickNav) {
+      const navRect = quickNav.getBoundingClientRect();
+      const targetScroll = window.pageYOffset + navRect.top - 70;
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+    }
+
+    return true;
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href && href.startsWith('#')) {
+        const targetId = href.substring(1);
+        if (targetId !== 'related') {
+          e.preventDefault();
+          activateTab(targetId, true);
+          if (history.replaceState) {
+            history.replaceState(null, null, href);
+          } else {
+            location.hash = href;
+          }
+        }
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-switch-tab]').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('data-switch-tab');
+      if (targetId) {
+        activateTab(targetId, true);
+        if (history.replaceState) {
+          history.replaceState(null, null, '#' + targetId);
+        }
+      }
+    });
+  });
+
+  window.addEventListener('hashchange', function() {
+    if (location.hash) {
+      activateTab(location.hash, false);
+    }
+  });
+
+  let activated = false;
+  if (window.location.hash) {
+    activated = activateTab(window.location.hash, false);
+  }
+  if (!activated && panes.length > 0) {
+    activateTab(panes[0].id, false);
+  }
+})();
+</script>"""
+
         # Assemble Full Page
         full_page = get_common_head(seo_title, desc, canonical_url, schema_json_ld)
         full_page += get_navbar(active_link=board_lower)
@@ -1295,7 +1482,8 @@ def generate_chapter_pages():
   <div class="container">
     {sections_html}
   </div>
-</main>"""
+</main>
+{chapter_tab_script}"""
         full_page += get_footer()
 
         write_html_file(rel_dir, full_page)
