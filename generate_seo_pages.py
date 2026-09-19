@@ -1197,16 +1197,16 @@ def generate_chapter_pages():
         if summary_html:
             tab_defs.append(('summary', 'Chapter Summary', '📜'))
         if notes_html:
-            tab_defs.append(('notes', 'Revision Notes', '📝'))
+            tab_defs.append(('notes', 'Questions and Answers', '📝'))
         if competency_html and additional_html:
-            tab_defs.append(('competency', 'Question Answers (CBQ)', '🎯'))
-            tab_defs.append(('additional', 'Important Q&A', '⭐'))
+            tab_defs.append(('competency', 'Competency Based Questions', '🎯'))
+            tab_defs.append(('additional', 'Additional Questions', '⭐'))
         elif competency_html:
-            tab_defs.append(('competency', 'Question Answers', '🎯'))
+            tab_defs.append(('competency', 'Competency Based Questions', '🎯'))
         elif additional_html:
-            tab_defs.append(('additional', 'Question Answers', '🎯'))
+            tab_defs.append(('additional', 'Additional Questions', '⭐'))
         if muhavre_html:
-            tab_defs.append(('muhavre', 'Word Meanings', '📖'))
+            tab_defs.append(('muhavre', 'Idioms', '📖'))
         tab_defs.append(('worksheets', 'Practice Worksheets', '📄'))
 
         # Navigation Pills (English tab navigation)
@@ -1249,7 +1249,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="notes" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="notes">
   <div class="seo-section-header">
     <span class="seo-section-icon">📝</span>
-    <h2>Revision Notes &amp; Explanation (मुख्य बिंदु एवं व्याख्या)</h2>
+    <h2>Questions and Answers (प्रश्नोत्तर)</h2>
   </div>
   <div class="seo-section-body">
     {notes_html}
@@ -1258,7 +1258,7 @@ def generate_chapter_pages():
 </section>"""
 
         if competency_html:
-            cbq_label = "Competency-Based Question Answers (योग्यता-आधारित प्रश्नोत्तर)"
+            cbq_label = "Competency Based Questions (योग्यता-आधारित प्रश्नोत्तर)"
             is_act = " active" if first_tab_id == "competency" else ""
             sections_html += f"""<section id="competency" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="competency">
   <div class="seo-section-header">
@@ -1276,7 +1276,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="additional" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="additional">
   <div class="seo-section-header">
     <span class="seo-section-icon">⭐</span>
-    <h2>Important Questions &amp; Answers (महत्वपूर्ण प्रश्नोत्तर)</h2>
+    <h2>Additional Questions (अतिरिक्त प्रश्नोत्तर)</h2>
   </div>
   <div class="seo-section-body">
     {additional_html}
@@ -1289,7 +1289,7 @@ def generate_chapter_pages():
             sections_html += f"""<section id="muhavre" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="muhavre">
   <div class="seo-section-header">
     <span class="seo-section-icon">📖</span>
-    <h2>Word Meanings &amp; Vocabulary (कठिन शब्दार्थ एवं मुहावरे)</h2>
+    <h2>Idioms (मुहावरे एवं शब्दार्थ)</h2>
   </div>
   <div class="seo-section-body">
     {muhavre_html}
