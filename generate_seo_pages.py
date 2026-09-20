@@ -4,7 +4,7 @@ Generates permanent, crawlable, pre-rendered HTML pages for:
 - CBSE Class 10 Hindi Hub (/cbse/class-10/hindi/)
 - ICSE Class 10 Hindi Hub (/icse/class-10/hindi/)
 - 20 CBSE Chapter Pages (/cbse/class-10/hindi/[chapter-slug]/)
-- 7 ICSE Chapter Pages (/icse/class-10/hindi/[chapter-slug]/)
+- 8 ICSE Chapter Pages (/icse/class-10/hindi/[chapter-slug]/)
 - Worksheets Hub (/worksheets/)
 - Hindi Grammar Hub (/hindi-grammar/) and Topic Pages (/hindi-grammar/muhavare/, /hindi-grammar/padbandh/)
 - PYQ Hub (/pyq/, /cbse/class-10/hindi/pyq/, /icse/class-10/hindi/pyq/)
@@ -286,6 +286,18 @@ ICSE_CHAPTERS = [
         'slug': 'do-kalakar',
         'board': 'ICSE',
         'desc': 'चित्रा और अरुणा की मित्रता और सच्ची कला के अर्थ पर केंद्रित कहानी दो कलाकार (मन्नू भंडारी) का सारांश, चरित्र-चित्रण और प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_sandeh',
+        'title': 'संदेह',
+        'author': 'जयशंकर प्रसाद',
+        'book': 'साहित्य सागर: गद्य',
+        'book_en': 'Sahitya Sagar',
+        'num': 5,
+        'type': 'गद्य खंड',
+        'slug': 'sandeh',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी साहित्य सागर की प्रसिद्ध कहानी संदेह (रामनिहाल, श्यामा, मनोरमा और मोहन बाबू) का संपूर्ण सारांश, चरित्र-चित्रण व महत्वपूर्ण प्रश्नोत्तर।'
     },
     {
         'key': 'icse_10_hindi_sukhidaali',
