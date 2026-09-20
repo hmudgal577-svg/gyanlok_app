@@ -1193,16 +1193,19 @@ def generate_chapter_pages():
 </a>"""
 
         # Available study tab definitions in order:
+        pyq_slugs = ['sukhi-daali', 'deepdan', 'mahabharat-ki-ek-saanjh']
+        cbq_title = 'PYQs Based Questions' if slug in pyq_slugs else 'Competency Based Questions'
+
         tab_defs = []
         if summary_html:
             tab_defs.append(('summary', 'Chapter Summary', '📜'))
         if notes_html:
             tab_defs.append(('notes', 'Questions and Answers', '📝'))
         if competency_html and additional_html:
-            tab_defs.append(('competency', 'Competency Based Questions', '🎯'))
+            tab_defs.append(('competency', cbq_title, '🎯'))
             tab_defs.append(('additional', 'Additional Questions', '⭐'))
         elif competency_html:
-            tab_defs.append(('competency', 'Competency Based Questions', '🎯'))
+            tab_defs.append(('competency', cbq_title, '🎯'))
         elif additional_html:
             tab_defs.append(('additional', 'Additional Questions', '⭐'))
         if muhavre_html:
@@ -1258,7 +1261,7 @@ def generate_chapter_pages():
 </section>"""
 
         if competency_html:
-            cbq_label = "Competency Based Questions (योग्यता-आधारित प्रश्नोत्तर)"
+            cbq_label = f"{cbq_title} (विगत वर्षों के बोर्ड प्रश्नोत्तर)" if slug in pyq_slugs else "Competency Based Questions (योग्यता-आधारित प्रश्नोत्तर)"
             is_act = " active" if first_tab_id == "competency" else ""
             sections_html += f"""<section id="competency" class="seo-section-card seo-tab-pane{is_act}" data-tab-id="competency">
   <div class="seo-section-header">
