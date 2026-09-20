@@ -266,7 +266,7 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 }
 .hero-title { font-size: clamp(1.35rem,2.65vw,2.35rem); font-weight: 800; margin-bottom: var(--sp-sm); line-height: 1.25; }
 .hero-line1 { display: block; white-space: nowrap; }
-.hero-line2 { display: block; white-space: nowrap; color: var(--accent); }
+.hero-line2 { display: block; white-space: nowrap; color: inherit; }
 @media (max-width: 580px) {
   .hero-line1, .hero-line2 { white-space: normal; }
 }
