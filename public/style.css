@@ -113,11 +113,16 @@ h1,h2,h3,h4 { font-family: var(--font-head); color: var(--text-primary); line-he
 
 .btn-sm { padding: .45rem 1rem; font-size: .82rem; }
 
-/* Fade-in */
-.fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.fade-in.visible { opacity: 1; transform: translateY(0); }
-/* Hero content always visible – never hidden by fade-in */
-.hero .fade-in { opacity: 1; transform: translateY(0); }
+/* Fade-in — Progressive Enhancement
+   By default all elements are visible (no JS = still works).
+   JS adds .js-ready to <body>, which enables the hidden state.
+   Then IntersectionObserver adds .visible to animate them in. */
+.fade-in { transition: opacity .6s ease, transform .6s ease; }
+.js-ready .fade-in { opacity: 0; transform: translateY(24px); }
+.fade-in.visible,
+.js-ready .fade-in.visible { opacity: 1; transform: translateY(0); }
+/* Hero always visible regardless */
+.hero .fade-in { opacity: 1 !important; transform: translateY(0) !important; }
 
 /* ─────────────────────────────────────────
    4. NAVBAR

@@ -595,6 +595,9 @@ function initNavbar() {
 ══════════════════════════════════════════ */
 let fadeObserver;
 function initFadeIn() {
+  // Mark body as JS-ready: enables fade-in hidden state via CSS
+  document.body.classList.add('js-ready');
+
   fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -608,6 +611,13 @@ function initFadeIn() {
   }, { threshold: 0.08 });
 
   document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+  // Fallback: if any .fade-in still not visible after 2s, force-show them
+  setTimeout(() => {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
+      el.classList.add('visible');
+    });
+  }, 2000);
 }
 
 function observeFade(el) {
