@@ -335,6 +335,97 @@ ICSE_CHAPTERS = [
         'board': 'ICSE',
         'desc': 'महाभारत युद्ध के अंतिम क्षणों में दुर्योधन और युधिष्ठिर के संवाद पर आधारित एकांकी महाभारत की एक साँझ का सारांश, युद्ध की व्यर्थता व प्रश्नोत्तर।'
     },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch14',
+        'title': 'नया रास्ता: अध्याय 14',
+        'subtitle': 'आशा का रिश्ता तय होना और मीनू की उलझन',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 14,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-14',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता (सुषमा अग्रवाल) अध्याय 14 का संपूर्ण सारांश (हिंदी व अंग्रेजी), चरित्र-चित्रण व महत्वपूर्ण अवतरण-आधारित प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch15',
+        'title': 'नया रास्ता: अध्याय 15',
+        'subtitle': 'अमित से अनायास भेंट',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 15,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-15',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 15 (अमित से अनायास भेंट) का विस्तृत सारांश एवं महत्वपूर्ण अवतरण-आधारित प्रश्न-उत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch16',
+        'title': 'नया रास्ता: अध्याय 16',
+        'subtitle': 'आशा का विवाह',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 16,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-16',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 16 (आशा का विवाह) का संपूर्ण सारांश, मीनू के विचार व बोर्ड परीक्षा हेतु अवतरण आधारित प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch17',
+        'title': 'नया रास्ता: अध्याय 17',
+        'subtitle': 'नीलिमा के घर अमित से पुनः भेंट',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 17,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-17',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 17 (नीलिमा के घर अमित से पुनः भेंट) का सारांश, चरित्र-चित्रण और महत्वपूर्ण अवतरण प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch18',
+        'title': 'नया रास्ता: अध्याय 18',
+        'subtitle': 'नीलिमा के घर मीनू के विचार',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 18,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-18',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 18 (नीलिमा के घर मीनू के विचार) का सारांश, देश-प्रेम व स्वावलंबन पर विचार और प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch19',
+        'title': 'नया रास्ता: अध्याय 19',
+        'subtitle': 'अमित के घर में उदासी',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 19,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-19',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 19 (अमित के घर में उदासी) का संपूर्ण सारांश और महत्वपूर्ण अवतरण आधारित प्रश्नोत्तर।'
+    },
+    {
+        'key': 'icse_10_hindi_naya_rasta_ch20',
+        'title': 'नया रास्ता: अध्याय 20',
+        'subtitle': 'अमित की दुर्घटना और क्षमा-याचना',
+        'author': 'सुषमा अग्रवाल',
+        'book': 'नया रास्ता (उपन्यास)',
+        'book_en': 'Naya Raasta',
+        'num': 20,
+        'type': 'उपन्यास',
+        'slug': 'naya-rasta-chapter-20',
+        'board': 'ICSE',
+        'desc': 'ICSE कक्षा 10 हिंदी उपन्यास नया रास्ता अध्याय 20 (अमित की दुर्घटना और क्षमा-याचना) का मार्मिक सारांश और बोर्ड परीक्षा हेतु विस्तृत प्रश्नोत्तर।'
+    },
 ]
 
 ALL_CHAPTERS = CBSE_CHAPTERS + ICSE_CHAPTERS
@@ -1190,8 +1281,13 @@ def generate_chapter_pages():
         }
         schema_json_ld = json.dumps(schema_dict, ensure_ascii=False, indent=2)
 
-        # Related Chapters in same board
-        related_list = [c for c in (CBSE_CHAPTERS if board=='CBSE' else ICSE_CHAPTERS) if c['key'] != key][:6]
+        # Related Chapters in same board (prioritizing same book)
+        if board == 'ICSE':
+            same_book = [c for c in ICSE_CHAPTERS if c['book'] == book and c['key'] != key]
+            other_books = [c for c in ICSE_CHAPTERS if c['book'] != book and c['key'] != key]
+            related_list = (same_book + other_books)[:6]
+        else:
+            related_list = [c for c in CBSE_CHAPTERS if c['key'] != key][:6]
         related_cards_html = ""
         for rc in related_list:
             rc_url = f"/{board_lower}/class-10/hindi/{rc['slug']}/"
@@ -1716,10 +1812,11 @@ def generate_icse_landing_page():
     ALL_CANONICAL_URLS.append(canonical_url)
 
     seo_title = "ICSE Class 10 Hindi Study Material | Notes, Worksheets & Exam Preparation | EkShala"
-    desc = "Free ICSE Class 10 Hindi study material. Sahitya Sagar (Prose) & Ekanki Sanchay chapter-wise summaries, deep notes, important questions, character sketches, worksheets & grammar."
+    desc = "Free ICSE Class 10 Hindi study material. Sahitya Sagar (Prose), Ekanki Sanchay & Naya Raasta (Novel) chapter-wise summaries, deep notes, important questions, character sketches, worksheets & grammar."
 
     sahitya_chapters = [c for c in ICSE_CHAPTERS if 'साहित्य सागर' in c['book']]
     ekanki_chapters = [c for c in ICSE_CHAPTERS if 'एकांकी' in c['book']]
+    naya_rasta_chapters = [c for c in ICSE_CHAPTERS if 'नया रास्ता' in c['book']]
 
     sahitya_cards = "".join([f"""<a href="/icse/class-10/hindi/{c['slug']}/" class="seo-card">
   <div>
@@ -1738,6 +1835,15 @@ def generate_icse_landing_page():
   </div>
   <span class="seo-card-cta">एकांकी पढ़ें &rarr;</span>
 </a>""" for c in ekanki_chapters])
+
+    naya_rasta_cards = "".join([f"""<a href="/icse/class-10/hindi/{c['slug']}/" class="seo-card">
+  <div>
+    <span class="seo-card-badge">अध्याय {c['num']} &bull; उपन्यास</span>
+    <h3>{c['title']}</h3>
+    <p>{c.get('subtitle', '')} &bull; बोर्ड परीक्षा अवतरण-आधारित प्रश्नोत्तर</p>
+  </div>
+  <span class="seo-card-cta">प्रश्नोत्तर पढ़ें &rarr;</span>
+</a>""" for c in naya_rasta_chapters])
 
     schema_dict = {
         "@context": "https://schema.org",
@@ -1780,9 +1886,9 @@ def generate_icse_landing_page():
   <div class="container">
     <span class="seo-hero-badge">ICSE Board Exam 2026-27 &bull; Hindi Literature</span>
     <h1>ICSE Class 10 Hindi Study Material</h1>
-    <p class="lead">साहित्य सागर (गद्य खंड) एवं एकांकी संचय के सभी अध्यायों के प्रामाणिक सारांश, चरित्र-चित्रण, अवतरण-आधारित प्रश्न (Reference to Context), मुहावरे एवं बोर्ड परीक्षा अभ्यास वर्कशीट।</p>
+    <p class="lead">साहित्य सागर (गद्य खंड), एकांकी संचय एवं नया रास्ता (उपन्यास) के सभी अध्यायों के प्रामाणिक सारांश, चरित्र-चित्रण, अवतरण-आधारित प्रश्न (Reference to Context), मुहावरे एवं बोर्ड परीक्षा अभ्यास वर्कशीट।</p>
     <div class="seo-hero-meta">
-      <span>📚 <strong>साहित्य सागर एवं एकांकी संचय</strong></span>
+      <span>📚 <strong>साहित्य सागर, एकांकी संचय व नया रास्ता</strong></span>
       <span>✍️ <strong>चरित्र-चित्रण एवं व्याख्या</strong></span>
       <span>🎯 <strong>ICSE Board Pattern</strong></span>
       <span>📄 <strong>अभ्यास पत्र उपलब्ध</strong></span>
@@ -1883,6 +1989,17 @@ def generate_icse_landing_page():
       </div>
       <div class="seo-grid">
         {ekanki_cards}
+      </div>
+    </section>
+
+    <!-- Naya Raasta Section -->
+    <section class="seo-section-card">
+      <div class="seo-section-header">
+        <span class="seo-section-icon">📕</span>
+        <h2>नया रास्ता – सामाजिक उपन्यास (Naya Raasta Novel by सुषमा अग्रवाल)</h2>
+      </div>
+      <div class="seo-grid">
+        {naya_rasta_cards}
       </div>
     </section>
 

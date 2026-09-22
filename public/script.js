@@ -1007,6 +1007,13 @@ const CHAPTER_KEY_MAP = [
   { keys: ['sukhi','सूखी'],                                        code: 'sukhidaali' },
   { keys: ['deepdan','deepdaan','दीपदान'],                         code: 'deepdan'    },
   { keys: ['mahabharat','महाभारत','साँझ','सांझ','sanjh'],        code: 'mahabharat' },
+  { keys: ['अध्याय 14','chapter 14','naya rasta 14'],              code: 'nayach14'   },
+  { keys: ['अध्याय 15','chapter 15','naya rasta 15'],              code: 'nayach15'   },
+  { keys: ['अध्याय 16','chapter 16','naya rasta 16'],              code: 'nayach16'   },
+  { keys: ['अध्याय 17','chapter 17','naya rasta 17'],              code: 'nayach17'   },
+  { keys: ['अध्याय 18','chapter 18','naya rasta 18'],              code: 'nayach18'   },
+  { keys: ['अध्याय 19','chapter 19','naya rasta 19'],              code: 'nayach19'   },
+  { keys: ['अध्याय 20','chapter 20','naya rasta 20'],              code: 'nayach20'   },
 ];
 
 const CHAPTER_SLUG_MAP = {
@@ -1035,12 +1042,35 @@ const CHAPTER_SLUG_MAP = {
   'sukhidaali': { board: 'icse', slug: 'sukhi-daali' },
   'deepdan':    { board: 'icse', slug: 'deepdan' },
   'mahabharat': { board: 'icse', slug: 'mahabharat-ki-ek-saanjh' },
+  'nayach14':   { board: 'icse', slug: 'naya-rasta-chapter-14' },
+  'nayach15':   { board: 'icse', slug: 'naya-rasta-chapter-15' },
+  'nayach16':   { board: 'icse', slug: 'naya-rasta-chapter-16' },
+  'nayach17':   { board: 'icse', slug: 'naya-rasta-chapter-17' },
+  'nayach18':   { board: 'icse', slug: 'naya-rasta-chapter-18' },
+  'nayach19':   { board: 'icse', slug: 'naya-rasta-chapter-19' },
+  'nayach20':   { board: 'icse', slug: 'naya-rasta-chapter-20' },
 };
 
 function getChapterPageUrl(bookName, chNum, chTitle, category) {
-  const isICSE = String(state.board || '').toUpperCase() === 'ICSE' ||
+  const isNayaRasta = bookName && (bookName.includes('नया रास्ता') || bookName.toLowerCase().includes('naya'));
+  const isICSE = String(state.board || '').toUpperCase() === 'ICSE' || isNayaRasta ||
                  (bookName && (bookName.includes('साहित्य सागर') || bookName.includes('एकांकी संचय') || bookName.toLowerCase().includes('sahitya') || bookName.toLowerCase().includes('ekanki')));
   const defaultBoard = isICSE ? 'icse' : 'cbse';
+
+  let hash = '';
+  if (category) {
+    const c = String(category).toLowerCase();
+    if (c === 'summary') hash = '#summary';
+    else if (c === 'notes') hash = '#notes';
+    else if (c === 'competency' || c === 'cbq') hash = '#competency';
+    else if (c === 'additional') hash = '#additional';
+    else if (c === 'muhavre' || c === 'muhavare') hash = '#muhavre';
+    else if (c === 'worksheets') hash = '#worksheets';
+  }
+
+  if (isNayaRasta && chNum >= 14 && chNum <= 20) {
+    return '/icse/class-10/hindi/naya-rasta-chapter-' + chNum + '/' + hash;
+  }
 
   const title = String(chTitle || '').toLowerCase();
   let chCode = null;
@@ -1106,13 +1136,10 @@ function renderChapter(book, ch) {
   var isNayaRaasta = book.name.indexOf('नया रास्ता') !== -1 || book.name.toLowerCase().indexOf('naya raasta') !== -1;
   var isICSE = String(state.board || '').toUpperCase() === 'ICSE';
 
-  var opts = [];
   if (isNayaRaasta) {
-    // Naya Raasta (Novel): Summary, Notes
+    // Naya Raasta (Novel): Only Question & Answers (Notes)
     opts = [
-      { icon:'📜', label:'पाठ सारांश',                sub:'Chapter Summary',         cat:'summary',    color:'#2BA899' },
-      { icon:'📝', label:'नोट्स',                      sub:'Revision Notes',          cat:'notes',      color:'#E05555' },
-      { icon:'🎯', label:'महत्वपूर्ण प्रश्नोत्तर (CBQ)', sub:'Competency Questions', cat:'competency', color:'#E8900A' },
+      { icon:'📝', label:'प्रश्नोत्तर (Notes)', sub:'Question & Answers', cat:'notes', color:'#E05555' },
     ];
   } else if (isICSE) {
     // ICSE other books: Summary, Notes, Word Meanings & Muhavare, Additional Questions
