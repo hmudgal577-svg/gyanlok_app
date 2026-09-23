@@ -256,6 +256,45 @@
       from { opacity: 0; transform: translateY(6px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* Summary Content Styles (matching docx formatting) */
+    .chapter-summary-wrap {
+      font-family: 'Noto Sans Devanagari', 'Hind', 'Arial', sans-serif;
+      line-height: 1.9;
+      color: #1a2740;
+    }
+    .summary-author {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #3A7BD5;
+      background: #EBF3FD;
+      border-left: 4px solid #3A7BD5;
+      padding: 0.6rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 1.2rem;
+    }
+    .summary-heading {
+      font-size: 1.12rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin: 1.6rem 0 0.6rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 2px solid #E2E8F0;
+    }
+    .summary-para {
+      font-size: 1.02rem;
+      line-height: 1.85;
+      color: #374151;
+      margin-bottom: 0.9rem;
+      text-align: justify;
+    }
+    .summary-para strong {
+      color: #1a2740;
+      font-weight: 700;
+    }
+    .summary-spacer {
+      height: 0.5rem;
+    }
     .tab-nav-footer {
       display: flex;
       justify-content: space-between;
@@ -731,15 +770,19 @@
     <h2>Chapter Summary (पाठ का सार एवं परिचय)</h2>
   </div>
   <div class="seo-section-body">
-    <p><strong>लेखिका - सुषमा अग्रवाल (Sushma Agarwal)</strong></p>
-<p><strong>अमित से अनायास भेंट</strong><strong> </strong></p>
-<h4 class="ch-subheading2">मीनू ने प्रथम श्रेणी में अपनी परीक्षा पास की। आज वह बहुत अधिक प्रसन्न थी। मीनू की दो महीने की छुट्टियाँ समाप्त हो चली थीं। अभी तक वह और आशा तैयारी में व्यस्त थीं। दो दिन बाद उसे होस्टल जाना था, अतः तैयारी करने लगी।</h4>
-<h4 class="ch-subheading2">होस्टल पहुँचने पर मीनू को कई नये चेहरे दिखाई दिये। माया उससे मिलकर बहुत खुश हुई। कॉलेज खुलते ही उसकी नियमित पढ़ाई शुरू हो गई। रविवार को वह माया के साथ बाजार गई, आशा के लिए साड़ियाँ और चप्पल खरीदने के लिए। जब वह चप्पल खरीद रही थी तो उसे अमित दिखाई दिया। वह उसे एकटक देखता रहा। अमित कुछ कहना चाहता था लेकिन मीनू ने बात करने का अवसर ही नहीं दिया। मीनू फिर माया को लेकर वहाँ से चल दी। माया उसकी जल्दबाजी का कारण नहीं समझ पा रही थी। मीनू के हृदय में भी बेचैनी का आभास हो रहा था। उसे याद आ जाता कि अमित के घरवालों ने उसे धोखा दिया है। अमित का सामना होते ही उसके मन में घृणा भर जाती।</h4>
-<h4 class="ch-subheading2">होस्टल में सभी लड़कियों ने उसकी खरीदी हुई साड़ियाँ देखकर मजाक किया कि क्या ये साड़ियाँ अपनी शादी के लिए खरीदी हैं। मीनू ने बताया कि उसकी छोटी बहन की शादी है। थोड़ी देर बाद सब लड़कियाँ वहाँ से चली गईं।</h4>
-<p><strong>An Unexpected Encounter with Amit</strong></p>
-<h4 class="ch-subheading2"><strong>English:</strong> Meenu passed her examination in the first division and was extremely happy today. Her two-month vacation was about to end, and until then she and Asha had been busy with preparations. She had to return to the hostel in two days, so she started packing.</h4>
-<h4 class="ch-subheading2">Upon reaching the hostel, Meenu saw many new faces, and Maya was very happy to meet her. Regular studies resumed as soon as college reopened. On Sunday, she went to the market with Maya to buy sarees and slippers for Asha. While buying slippers, she saw Amit, who kept staring at her. Amit wanted to say something, but Meenu did not give him the opportunity to talk and walked away with Maya. Maya could not understand the reason for her rush. A sense of restlessness was also stirring in Meenu's heart, as she remembered that Amit's family had betrayed her. Facing Amit filled her heart with hatred.</h4>
-<h4 class="ch-subheading2">In the hostel, all the girls saw the sarees she had bought and joked, asking if she bought them for her own wedding. Meenu explained that it was for her younger sister's wedding. Shortly after, all the girls left.</h4>
+    <div class="chapter-summary-wrap">
+<p class="summary-author"><strong><strong>लेखिका - सुषमा अग्रवाल (Sushma Agarwal)</strong></strong></p>
+<h3 class="summary-heading"><strong>अमित से अनायास भेंट</strong><strong> </strong></h3>
+<p class="summary-para">मीनू ने प्रथम श्रेणी में अपनी परीक्षा पास की। आज वह बहुत अधिक प्रसन्न थी। मीनू की दो महीने की छुट्टियाँ समाप्त हो चली थीं। अभी तक वह और आशा तैयारी में व्यस्त थीं। दो दिन बाद उसे होस्टल जाना था, अतः तैयारी करने लगी।</p>
+<p class="summary-para">होस्टल पहुँचने पर मीनू को कई नये चेहरे दिखाई दिये। माया उससे मिलकर बहुत खुश हुई। कॉलेज खुलते ही उसकी नियमित पढ़ाई शुरू हो गई। रविवार को वह माया के साथ बाजार गई, आशा के लिए साड़ियाँ और चप्पल खरीदने के लिए। जब वह चप्पल खरीद रही थी तो उसे अमित दिखाई दिया। वह उसे एकटक देखता रहा। अमित कुछ कहना चाहता था लेकिन मीनू ने बात करने का अवसर ही नहीं दिया। मीनू फिर माया को लेकर वहाँ से चल दी। माया उसकी जल्दबाजी का कारण नहीं समझ पा रही थी। मीनू के हृदय में भी बेचैनी का आभास हो रहा था। उसे याद आ जाता कि अमित के घरवालों ने उसे धोखा दिया है। अमित का सामना होते ही उसके मन में घृणा भर जाती।</p>
+<p class="summary-para">होस्टल में सभी लड़कियों ने उसकी खरीदी हुई साड़ियाँ देखकर मजाक किया कि क्या ये साड़ियाँ अपनी शादी के लिए खरीदी हैं। मीनू ने बताया कि उसकी छोटी बहन की शादी है। थोड़ी देर बाद सब लड़कियाँ वहाँ से चली गईं।</p>
+<h3 class="summary-heading"><strong>An Unexpected Encounter with Amit</strong></h3>
+<p class="summary-para"><strong>English:</strong> Meenu passed her examination in the first division and was extremely happy today. Her two-month vacation was about to end, and until then she and Asha had been busy with preparations. She had to return to the hostel in two days, so she started packing.</p>
+<p class="summary-para">Upon reaching the hostel, Meenu saw many new faces, and Maya was very happy to meet her. Regular studies resumed as soon as college reopened. On Sunday, she went to the market with Maya to buy sarees and slippers for Asha. While buying slippers, she saw Amit, who kept staring at her. Amit wanted to say something, but Meenu did not give him the opportunity to talk and walked away with Maya. Maya could not understand the reason for her rush. A sense of restlessness was also stirring in Meenu's heart, as she remembered that Amit's family had betrayed her. Facing Amit filled her heart with hatred.</p>
+<p class="summary-para">In the hostel, all the girls saw the sarees she had bought and joked, asking if she bought them for her own wedding. Meenu explained that it was for her younger sister's wedding. Shortly after, all the girls left.</p>
+<div class="summary-spacer"></div>
+<div class="summary-spacer"></div>
+</div>
   </div>
   <div class="tab-nav-footer"><div></div><button type="button" class="tab-nav-btn primary" data-switch-tab="notes">📝 Questions and Answers &rarr;</button></div>
 </section><section id="notes" class="seo-section-card seo-tab-pane" data-tab-id="notes">
