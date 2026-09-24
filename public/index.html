@@ -48,9 +48,17 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%233A7BD5'/><path d='M9 10h14M9 16h9M9 22h12' stroke='white' stroke-width='2' stroke-linecap='round'/></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css?v=108.0.2" />
+  <link rel="stylesheet" href="style.css?v=110.0.0" />
+  <style>
+    /* Instant complete load: ensure no element is ever hidden or delayed */
+    .fade-in, .js-ready .fade-in, .fade-in.visible, .hero .fade-in {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+      visibility: visible !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -164,7 +172,7 @@
 " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " " "  -->
 <section class="hero" id="home" aria-label="Hero">
   <div class="container hero-inner">
-    <div class="hero-content fade-in">
+    <div class="hero-content">
       <span class="hero-badge">CBSE & ICSE | Class 10</span>
       <h1 class="hero-title">
         <span class="hero-line1">Class 10 Hindi Study Material</span>
@@ -190,7 +198,7 @@
         <div class="stat"><strong>Free</strong><span>Resources</span></div>
       </div>
     </div>
-    <div class="hero-visual fade-in" aria-label="Students studying Hindi in library">
+    <div class="hero-visual" aria-label="Students studying Hindi in library">
       <img src="/hindi_hero.jpg?v=4" alt="Class 10 Hindi study material for CBSE and ICSE students" class="hero-img" loading="eager" width="720" height="480" />
     </div>
   </div>
@@ -246,14 +254,14 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="about-section section bg-soft" id="about" aria-labelledby="about-heading" style="scroll-margin-top: 80px; padding: 4.5rem 0;">
   <div class="container">
-    <div class="section-header fade-in" style="text-align:center; max-width:800px; margin:0 auto 2.5rem;">
+    <div class="section-header" style="text-align:center; max-width:800px; margin:0 auto 2.5rem;">
       <span class="section-badge">About EkShala</span>
       <h2 id="about-heading" style="font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight:800; margin-bottom:1rem;">Empowering Class 10 Students in Hindi</h2>
       <p style="font-size:1.1rem; color:var(--text-body); line-height:1.7;">EkShala is a dedicated, 100% free educational platform built specifically to simplify Class 10 Hindi Literature &amp; Grammar for CBSE and ICSE students across India.</p>
     </div>
 
     <!-- Impact Stats Grid -->
-    <div class="about-stats-grid fade-in" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1.25rem; margin-bottom:3rem;">
+    <div class="about-stats-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:1.25rem; margin-bottom:3rem;">
       <div class="about-stat-card" style="background:var(--card-bg); padding:1.5rem 1.25rem; border-radius:18px; border:1px solid var(--border); text-align:center; box-shadow:var(--shadow-card);">
         <div style="font-size:2rem; margin-bottom:0.4rem;"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#156082" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; margin-bottom:0.4rem;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></div>
         <div style="font-size:1.7rem; color:var(--accent); font-weight:800; margin-bottom:0.2rem;">17</div>
@@ -277,7 +285,7 @@
     </div>
 
     <!-- Main About Content Layout -->
-    <div class="about-wrapper fade-in" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:2.5rem; align-items:center;">
+    <div class="about-wrapper" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:2.5rem; align-items:center;">
       <div class="about-content">
         <h3 style="font-size:1.45rem; color:var(--text-primary); font-weight:700; margin-bottom:1rem;">Our Core Mission</h3>
         <p style="font-size:0.98rem; color:var(--text-secondary); line-height:1.7; margin-bottom:1.25rem;">EkShala was created to eliminate the stress of Class 10 Hindi board exam preparation for both CBSE and ICSE students. We combine complete syllabus coverage (Sparsh, Sanchayan, Sahitya Sagar &amp; Ekanki Sanchay), in-depth chapter summaries, character sketches, RTC extracts, practice worksheets, grammar notes, and direct 1-on-1 mentor guidance &mdash; all in one accessible, ad-free environment.</p>
@@ -322,7 +330,7 @@
         </div>
       </div>
 
-      <div class="about-card-banner fade-in" style="background:linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color:#fff; padding:2.25rem 1.75rem; border-radius:24px; box-shadow:0 20px 40px rgba(15,23,42,0.15); position:relative; overflow:hidden;">
+      <div class="about-card-banner" style="background:linear-gradient(135deg, #1E293B 0%, #0F172A 100%); color:#fff; padding:2.25rem 1.75rem; border-radius:24px; box-shadow:0 20px 40px rgba(15,23,42,0.15); position:relative; overflow:hidden;">
         <div class="acb-inner">
           <span style="display:inline-block; background:rgba(255,255,255,0.15); color:#60A5FA; font-size:0.8rem; font-weight:700; padding:0.3rem 0.75rem; border-radius:20px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:0.85rem;">Student-First Learning</span>
           <h3 style="font-size:1.45rem; color:#fff; font-weight:700; line-height:1.35; margin-bottom:1rem;">Score 95%+ in Class 10 Hindi Board Exams</h3>
@@ -345,28 +353,28 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="why-section section" id="why-EkShala" aria-labelledby="why-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Why Choose Us</span>
       <h2 id="why-heading">Everything a Student Needs</h2>
       <p>One trusted stop for CBSE and ICSE school students: no distractions, just focused, structured learning.</p>
     </div>
     <div class="features-grid">
-      <div class="feature-card fade-in">
+      <div class="feature-card">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
         <h3>Chapter-wise Resources</h3>
         <p>Summaries, notes, word meanings, Q&amp;A, and worksheets: organised by chapter.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
         <h3>Practice &amp; Evaluate</h3>
         <p>Download test sheets, upload your answers, and get evaluated: real exam practice at home.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
         <h3>1-on-1 Mentor Support</h3>
         <p>Reach out to an experienced mentor for personalised subject guidance and doubt clearance anytime you are stuck.</p>
       </div>
-      <div class="feature-card fade-in">
+      <div class="feature-card">
         <div class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div>
         <h3>Revision Classes</h3>
         <p>Structured live batches, chapter-wise revision, and exam strategy to boost board exam scores.</p>
@@ -383,14 +391,14 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="boards-section section" id="school-boards" aria-labelledby="boards-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Study Material &amp; Resources</span>
       <h2 id="boards-heading">Class 10 Hindi Study Material</h2>
       <p>Comprehensive chapter-wise summaries, explanations, deep notes, competency Q&amp;A, and official syllabus resources for CBSE and ICSE students.</p>
     </div>
 
     <!-- Study Material Cards Grid -->
-    <div class="fade-in" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.75rem; margin:2.5rem 0 1.5rem;">
+    <div  style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.75rem; margin:2.5rem 0 1.5rem;">
 
       <!-- CBSE Study Material Card -->
       <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.2s, box-shadow 0.2s;">
@@ -450,7 +458,7 @@
     </div>
 
     <!-- Helpful Bottom Quick Banner -->
-    <div class="fade-in" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:1.15rem 1.75rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:1rem; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
+    <div  style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:1.15rem 1.75rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:1rem; box-shadow:0 2px 10px rgba(0,0,0,0.02);">
       <div style="display:flex; align-items:center; gap:0.75rem;">
         <span style="font-size:1.5rem;">⚡</span>
         <span style="font-size:0.92rem; color:#334155; font-weight:500;">Looking for Grammar practice or previous board exams?</span>
@@ -470,14 +478,14 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="worksheets-showcase-section section bg-soft" id="test-sheets" aria-labelledby="test-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Practice &amp; Evaluate</span>
       <h2 id="test-heading">Class 10 Hindi Practice Worksheets</h2>
       <p class="test-tagline">All 20 premium practice worksheets across CBSE, ICSE, and Hindi Grammar organised into 3 dedicated sections.</p>
     </div>
 
     <!-- 3 Partition Cards Grid -->
-    <div class="fade-in" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:1.5rem; margin:2.5rem 0 1.5rem;">
+    <div  style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:1.5rem; margin:2.5rem 0 1.5rem;">
       <!-- CBSE Partition Card -->
       <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:18px; padding:1.5rem; box-shadow:0 4px 20px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between; transition:transform 0.2s, box-shadow 0.2s;">
         <div>
@@ -522,7 +530,7 @@
     </div>
 
     <!-- Direct CTA button to /worksheets/ -->
-    <div class="fade-in" style="text-align:center; margin-top:1.75rem;">
+    <div  style="text-align:center; margin-top:1.75rem;">
       <a href="/worksheets/" class="btn btn-primary" style="padding:0.85rem 2.25rem; font-size:1rem; border-radius:100px; font-weight:700; box-shadow:0 4px 16px rgba(58,123,213,0.3); display:inline-flex; align-items:center; gap:0.5rem; text-decoration:none;">
         <span>Solve All 20 Practice Worksheets (Open Worksheets Hub)</span>
         <span>&rarr;</span>
@@ -536,13 +544,13 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="guidance-section section" id="board-guidance" aria-labelledby="guidance-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Expert Tips</span>
       <h2 id="guidance-heading">Guidance for Board Exams</h2>
       <p>Strategic tips and structured guidance to help students prepare smarter for CBSE and ICSE board examinations.</p>
     </div>
     <div class="guidance-grid">
-      <div class="guidance-card fade-in">
+      <div class="guidance-card">
         <div class="guidance-num">01</div>
         <h3>Know the Exam Pattern</h3>
         <p>Understand mark distribution, question types (MCQ, short answer, long answer), and time allocation for each subject before you start preparing.</p>
@@ -572,7 +580,7 @@
           </li>
         </ul>
       </div>
-      <div class="guidance-card fade-in">
+      <div class="guidance-card">
         <div class="guidance-num">02</div>
         <h3>Smart Revision Strategy</h3>
         <p>Revision is more important than re-reading. Use active recall, spaced repetition, and chapter summaries to retain what you've studied.</p>
@@ -582,7 +590,7 @@
           <li>Use our summary sheets to revise fast</li>
         </ul>
       </div>
-      <div class="guidance-card fade-in">
+      <div class="guidance-card">
         <div class="guidance-num">03</div>
         <h3>Time Management in Exams</h3>
         <p>Allocate time per section, don't get stuck on one question, and always leave 10 minutes for revision at the end of the exam.</p>
@@ -593,7 +601,7 @@
         </ul>
       </div>
     </div>
-    <div class="guidance-cta fade-in">
+    <div class="guidance-cta">
       <p>Need personalised guidance? <a href="#contact" class="btn btn-outline">Talk to a Mentor </a></p>
     </div>
   </div>
@@ -604,12 +612,12 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="revision-section section bg-soft" id="revision-classes" aria-labelledby="revision-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Live Classes</span>
       <h2 id="revision-heading">Revision Classes</h2>
       <p>Structured live revision sessions before board exams: conducted by subject experts, covering important topics and doubt resolution.</p>
     </div>
-    <div class="revision-card fade-in">
+    <div class="revision-card">
       <div class="revision-inner">
         <div class="revision-info">
           <span class="revision-label">Schedule Launching Soon for November</span>
@@ -651,12 +659,12 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="testimonials-section section bg-soft" id="testimonials" aria-labelledby="testimonials-heading">
   <div class="container">
-    <div class="section-header fade-in">
+    <div class="section-header">
       <span class="section-badge">Student Stories</span>
       <h2 id="testimonials-heading">What Students &amp; Parents Say</h2>
     </div>
     <div class="testimonials-grid">
-      <div class="testimonial-card fade-in">
+      <div class="testimonial-card">
         <div class="testimonial-quote" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 11H6a4 4 0 0 1 4-4V5a6 6 0 0 0-6 6v6h6v-6zm10 0h-4a4 4 0 0 1 4-4V5a6 6 0 0 0-6 6v6h6v-6z"/></svg></div>
         <p class="testimonial-text">The chapter-wise resources on EkShala are incredible! I found Sparsh summaries and word meanings that helped me score 92 in Hindi board exam.</p>
         <div class="testimonial-author">
@@ -674,7 +682,7 @@
 """""""""""""""""""""""""""""""""""""""" -->
 <section class="contact-section section" id="contact" aria-labelledby="contact-heading">
   <div class="container contact-inner">
-    <div class="contact-info fade-in">
+    <div class="contact-info">
       <span class="section-badge">Get in Touch</span>
       <h2 id="contact-heading">Talk to a Mentor</h2>
       <p>Have any queries? Our mentors are here to help. Reply within 24 hours.</p>
@@ -693,7 +701,7 @@
         </div>
       </div>
     </div>
-    <form class="contact-form fade-in" id="contact-form" novalidate aria-label="Contact a mentor form">
+    <form class="contact-form" id="contact-form" novalidate aria-label="Contact a mentor form">
       <div class="form-group">
         <label for="name">Full Name <span class="required" aria-hidden="true">*</span></label>
         <input type="text" id="name" name="name" placeholder="e.g. Arjun Verma" autocomplete="name" required />
@@ -903,8 +911,8 @@
   </div>
 </div>
 
-<script src="auth.js?v=1.0"></script>
-<script src="script.js?v=108.0.0"></script>
+<script src="auth.js?v=1.1"></script>
+<script src="script.js?v=110.0.0"></script>
 </body>
 </html>
 

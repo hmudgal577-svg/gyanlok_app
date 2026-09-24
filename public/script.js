@@ -595,34 +595,21 @@ function initNavbar() {
 ══════════════════════════════════════════ */
 let fadeObserver;
 function initFadeIn() {
-  // Mark body as JS-ready: enables fade-in hidden state via CSS
-  document.body.classList.add('js-ready');
-
-  fadeObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const sibs = [...entry.target.parentElement.children].filter(c => c.classList.contains('fade-in'));
-        const idx  = sibs.indexOf(entry.target);
-        entry.target.style.transitionDelay = `${idx * 70}ms`;
-        entry.target.classList.add('visible');
-        fadeObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
-
-  document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
-
-  // Fallback: if any .fade-in still not visible after 2s, force-show them
-  setTimeout(() => {
-    document.querySelectorAll('.fade-in:not(.visible)').forEach(el => {
-      el.classList.add('visible');
-    });
-  }, 2000);
+  // Instant load: immediately make every element visible
+  document.querySelectorAll('.fade-in').forEach(el => {
+    el.classList.add('visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    el.style.transition = 'none';
+  });
 }
 
 function observeFade(el) {
-  if (fadeObserver) fadeObserver.observe(el);
-  else el.classList.add('visible');
+  if (el) {
+    el.classList.add('visible');
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+  }
 }
 
 /* ══════════════════════════════════════════
