@@ -1340,7 +1340,7 @@ def generate_chapter_pages():
 </a>"""
 
         # Available study tab definitions in order:
-        pyq_slugs = ['sukhi-daali', 'deepdan', 'mahabharat-ki-ek-saanjh']
+        pyq_slugs = ['sukhi-daali', 'deepdan', 'mahabharat-ki-ek-saanjh', 'bhedein-aur-bhediye']
         cbq_title = 'PYQs Based Questions' if slug in pyq_slugs else 'Competency Based Questions'
 
         tab_defs = []
