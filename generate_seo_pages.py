@@ -2384,18 +2384,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 # ==============================================================================
-# 5. GENERATE HINDI GRAMMAR HUB & TOPIC PAGES
+# 5. GENERATE HINDI GRAMMAR HUB & TOPIC PAGES WITH DUAL BOARD TABS
 # ==============================================================================
 def generate_grammar_pages():
-    print("\n--- Generating Hindi Grammar Hub & Topic Pages ---")
+    print("\n--- Generating Hindi Grammar Hub & Topic Pages (CBSE & ICSE Board Tabs) ---")
     
+    # Load converted grammar worksheets from D:\Hindi Grammer
+    grammar_data_file = os.path.join(WORKSPACE_DIR, "grammar_converted_data.json")
+    g_data = {}
+    if os.path.exists(grammar_data_file):
+        with open(grammar_data_file, 'r', encoding='utf-8') as f:
+            g_data = json.load(f)
+
     # Hub
     rel_dir = "hindi-grammar"
     canonical_url = f"{BASE_URL}/{rel_dir}/"
     ALL_CANONICAL_URLS.append(canonical_url)
 
-    seo_title = "Class 10 Hindi Grammar | Notes, Practice & Worksheets | EkShala"
-    desc = "Class 10 Hindi Grammar (व्याकरण) study material for CBSE and ICSE boards. Detailed notes, rules, and practice worksheets for Muhavare (मुहावरे) and Padbandh (पदबंध)."
+    seo_title = "Class 10 Hindi Grammar | CBSE & ICSE Board Notes, Muhavare & Worksheets | EkShala"
+    desc = "Complete Class 10 Hindi Grammar (व्याकरण) study material for CBSE and ICSE boards. Chapter-wise Muhavare (मुहावरे), Padbandh (पदबंध), Vakya Rupantar, and solved practice worksheets."
 
     schema_dict = {
         "@context": "https://schema.org",
@@ -2436,54 +2443,291 @@ def generate_grammar_pages():
   <div class="container">
     <span class="seo-hero-badge">CBSE &bull; ICSE &bull; कक्षा 10 व्याकरण</span>
     <h1>Class 10 Hindi Grammar (हिंदी व्याकरण)</h1>
-    <p class="lead">कक्षा 10 बोर्ड परीक्षा के लिए संपूर्ण हिंदी व्याकरण: मुहावरे, पदबंध, समास, वाक्य रूपांतरण और अभ्यास प्रश्न-पत्र। 16 में से 16 अंक सुनिश्चित करने के लिए प्रामाणिक नियम एवं उदाहरण।</p>
+    <p class="lead">कक्षा 10 बोर्ड परीक्षा के लिए संपूर्ण हिंदी व्याकरण: पाठ-वार मुहावरे, पदबंध, रचना के आधार पर वाक्य रूपांतरण एवं अभ्यास वर्क्शीट्स। 16 में से 16 अंक सुनिश्चित करने के लिए प्रामाणिक अध्ययन सामग्री।</p>
     <div class="seo-hero-meta">
-      <span>📖 <strong>मुहावरे (Muhavare)</strong></span>
-      <span>🔗 <strong>पदबंध (Padbandh)</strong></span>
-      <span>📄 <strong>अभ्यास वर्कशीट एवं उत्तर कुंजी</strong></span>
-      <span>🎯 <strong>100% बोर्ड आधारित</strong></span>
+      <span>🏛️ <strong>CBSE &amp; ICSE बोर्ड टैब्स</strong></span>
+      <span>📖 <strong>पाठ-वार मुहावरे (Chapter-wise Idioms)</strong></span>
+      <span>🔗 <strong>पदबंध एवं वाक्य रूपांतरण</strong></span>
+      <span>📄 <strong>अभ्यास वर्क्शीट्स एवं उत्तर कुंजी</strong></span>
     </div>
   </div>
 </header>"""
 
+    # CBSE Chapter List with Muhavare Links
+    cbse_chapters = [
+        ("बड़े भाई साहब", "प्रेमचंद", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/bade-bhai-sahab/"),
+        ("साखी", "कबीरदास", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/sakhi-kabir/"),
+        ("पद", "मीराबाई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/pad-meera/"),
+        ("तताँरा-वामीरो कथा", "लीलाधर मंडलोई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/tatara-vamiro-katha/"),
+        ("तीसरी कसम के शिल्पकार शैलेंद्र", "प्रहलाद अग्रवाल", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/teesri-kasam-ke-shilpkar-shailendra/"),
+        ("अब कहाँ दूसरे के दुख से दुखी होने वाले", "निदा फ़ाज़ली", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale/"),
+        ("पतझड़ में टूटी पत्तियाँ", "रवींद्र केलेकर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/patjhar-mein-tooti-pattiyan/"),
+        ("कारतूस", "हबीब तनवीर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/kartoos/"),
+        ("हरिहर काका", "मिथिलेश्वर", "संचयन (भाग-2)", "/cbse/class-10/hindi/harihar-kaka/"),
+        ("सपनों के-से दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/"),
+        ("टोपी शुक्ला", "राही मासूम रज़ा", "संचयन (भाग-2)", "/cbse/class-10/hindi/topi-shukla/")
+    ]
+
+    cbse_ch_cards = []
+    for title, author, book, link in cbse_chapters:
+        cbse_ch_cards.append(f"""
+        <div class="seo-card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between; border-radius:14px; padding:1.25rem; background:#FFFFFF; border:1px solid #E2E8F0; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div>
+            <span class="seo-card-badge" style="background:#E0EFFE; color:#0284C7; font-weight:700; padding:3px 8px; border-radius:6px; font-size:0.75rem;">{book}</span>
+            <h3 style="font-size:1.1rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.2rem;">{title}</h3>
+            <p style="font-size:0.85rem; color:#64748B; margin-bottom:0.75rem;">लेखक: {author}</p>
+          </div>
+          <a href="{link}" class="btn btn-outline btn-sm" style="width:100%; justify-content:center; text-decoration:none; font-size:0.85rem; padding:0.45rem 0.75rem; border-radius:8px; background:#F8FAFC; color:#1E40AF; border-color:#BFDBFE; font-weight:600; text-align:center;">
+            📖 चैप्टर मुहावरे देखें &rarr;
+          </a>
+        </div>""")
+
+    # ICSE Chapter List with Muhavare Links
+    icse_chapters = [
+        ("बड़े घर की बेटी", "प्रेमचंद", "साहित्य सागर", "/icse/class-10/hindi/bade-ghar-ki-beti/"),
+        ("भीड़ में खोया आदमी", "लीलाधर शर्मा पर्वतीय", "साहित्य सागर", "/icse/class-10/hindi/bheed-mein-khoya-aadmi/"),
+        ("भेड़ें और भेड़िये", "हरिशंकर परसाई", "साहित्य सागर", "/icse/class-10/hindi/bhedein-aur-bhediye/"),
+        ("दो कलाकार", "मन्नू भंडारी", "साहित्य सागर", "/icse/class-10/hindi/do-kalakar/"),
+        ("बात अठन्नी की", "सुदर्शन", "साहित्य सागर", "/icse/class-10/hindi/sandeh/"),
+        ("सूखी डाली", "उपेंद्रनाथ अश्क", "एकांकी संचय", "/icse/class-10/hindi/sukhi-daali/"),
+        ("दीपदान", "डॉ. रामकुमार वर्मा", "एकांकी संचय", "/icse/class-10/hindi/deepdan/"),
+        ("महाभारत की एक सांझ", "भारतभूषण अग्रवाल", "एकांकी संचय", "/icse/class-10/hindi/mahabharat-ki-ek-saanjh/"),
+        ("नया रास्ता (अध्याय 14-20)", "सुषमा अग्रवाल", "नया रास्ता", "/icse/class-10/hindi/naya-rasta-chapter-16/")
+    ]
+
+    icse_ch_cards = []
+    for title, author, book, link in icse_chapters:
+        icse_ch_cards.append(f"""
+        <div class="seo-card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between; border-radius:14px; padding:1.25rem; background:#FFFFFF; border:1px solid #E2E8F0; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+          <div>
+            <span class="seo-card-badge" style="background:#ECFDF5; color:#059669; font-weight:700; padding:3px 8px; border-radius:6px; font-size:0.75rem;">{book}</span>
+            <h3 style="font-size:1.1rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.2rem;">{title}</h3>
+            <p style="font-size:0.85rem; color:#64748B; margin-bottom:0.75rem;">लेखक: {author}</p>
+          </div>
+          <a href="{link}" class="btn btn-outline btn-sm" style="width:100%; justify-content:center; text-decoration:none; font-size:0.85rem; padding:0.45rem 0.75rem; border-radius:8px; background:#F8FAFC; color:#047857; border-color:#A7F3D0; font-weight:600; text-align:center;">
+            📖 चैप्टर मुहावरे देखें &rarr;
+          </a>
+        </div>""")
+
     body_html = f"""<main class="seo-content-wrap">
   <div class="container">
-    <section class="seo-section-card">
-      <div class="seo-section-header">
-        <span class="seo-section-icon">📖</span>
-        <h2>व्याकरण विषय एवं विस्तृत अभ्यास (Grammar Topics)</h2>
-      </div>
-      <div class="seo-grid">
-        <a href="/hindi-grammar/muhavare/" class="seo-card">
-          <div>
-            <span class="seo-card-badge">विषय 1 &bull; 4 अंक</span>
-            <h3>मुहावरे (Muhavare)</h3>
-            <p>स्पर्श, साखी, बड़े भाई साहब आदि से जुड़े महत्वपूर्ण मुहावरों का अर्थ, वाक्य प्रयोग एवं बहुविकल्पीय प्रश्न (MCQs)।</p>
-          </div>
-          <span class="seo-card-cta">मुहावरे पढ़ें &rarr;</span>
-        </a>
+    
+    <!-- Top-Level Board Switcher Tabs -->
+    <div class="board-nav-switcher" style="display:flex; justify-content:center; gap:0.75rem; margin-bottom:2rem; flex-wrap:wrap;">
+      <button class="board-tab-btn active" id="btn-tab-cbse" onclick="switchGrammarBoard('cbse')" style="padding:0.75rem 1.75rem; border-radius:12px; font-size:1.05rem; font-weight:700; cursor:pointer; border:2px solid #2563EB; background:#2563EB; color:#ffffff; transition:all 0.2s ease; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
+        🏛️ CBSE Board Class 10
+      </button>
+      <button class="board-tab-btn" id="btn-tab-icse" onclick="switchGrammarBoard('icse')" style="padding:0.75rem 1.75rem; border-radius:12px; font-size:1.05rem; font-weight:700; cursor:pointer; border:2px solid #059669; background:#FFFFFF; color:#059669; transition:all 0.2s ease;">
+        🏛️ ICSE Board Class 10
+      </button>
+    </div>
 
-        <a href="/hindi-grammar/padbandh/" class="seo-card">
-          <div>
-            <span class="seo-card-badge">विषय 2 &bull; 4 अंक</span>
-            <h3>पदबंध (Padbandh)</h3>
-            <p>संज्ञा, सर्वनाम, विशेषण, क्रिया एवं क्रियाविशेषण पदबंध के नियम, पहचान की विधियां एवं 80+ अभ्यास प्रश्न।</p>
-          </div>
-          <span class="seo-card-cta">पदबंध पढ़ें &rarr;</span>
-        </a>
-
-        <a href="/worksheets/" class="seo-card">
-          <div>
-            <span class="seo-card-badge">वर्कशीट</span>
-            <h3>व्याकरण अभ्यास प्रश्न-पत्र</h3>
-            <p>मुहावरे और पदबंध की हल सहित 40-40 अंकों की मॉडल टेस्ट शीट्स।</p>
-          </div>
-          <span class="seo-card-cta">वर्कशीट हल करें &rarr;</span>
-        </a>
+    <!-- ========================================================================= -->
+    <!-- PANEL 1: CBSE BOARD HINDI GRAMMAR -->
+    <!-- ========================================================================= -->
+    <div id="board-panel-cbse" class="grammar-board-panel" style="display:block;">
+      
+      <!-- CBSE Sub-tabs bar -->
+      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.75rem; border-bottom:1px solid #E2E8F0;">
+        <button class="subpill-btn active" id="btn-cbse-ch-muhavre" onclick="switchCbseSubtab('ch-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer; white-space:nowrap;">
+          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
+        </button>
+        <button class="subpill-btn" id="btn-cbse-ws-muhavre" onclick="switchCbseSubtab('ws-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          ✍️ मुहावरे वर्क्शीट (Worksheets)
+        </button>
+        <button class="subpill-btn" id="btn-cbse-ws-padbandh" onclick="switchCbseSubtab('ws-padbandh')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          🔗 पदबंध (Padbandh Worksheets)
+        </button>
+        <button class="subpill-btn" id="btn-cbse-ws-vakya" onclick="switchCbseSubtab('ws-vakya')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          🔄 रचना के आधार पर वाक्य रूपांतरण
+        </button>
       </div>
-    </section>
+
+      <!-- CBSE Sub-content 1: Chapter-wise Muhavare Grid -->
+      <div id="cbse-subpanel-ch-muhavre" class="cbse-subpanel" style="display:block;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">📖</span>
+            <div>
+              <h2 style="margin:0; font-size:1.35rem;">CBSE Class 10 - पाठ-वार मुहावरे (Chapter-wise Idioms)</h2>
+              <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">स्पर्श (भाग-2) एवं संचयन (भाग-2) के पाठों में दिए गए सभी मुहावरों का अर्थ एवं वाक्य प्रयोग:</p>
+            </div>
+          </div>
+          <div class="seo-grid">
+            {"".join(cbse_ch_cards)}
+          </div>
+        </section>
+      </div>
+
+      <!-- CBSE Sub-content 2: Muhavare Worksheets -->
+      <div id="cbse-subpanel-ws-muhavre" class="cbse-subpanel" style="display:none;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">✍️</span>
+            <h2>CBSE मुहावरे अभ्यास वर्क्शीट्स</h2>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            {g_data.get('cbse_muhavre_1', {}).get('html', '')}
+          </div>
+          <div style="margin-top:2rem;">
+            {g_data.get('cbse_muhavre_2', {}).get('html', '')}
+          </div>
+        </section>
+      </div>
+
+      <!-- CBSE Sub-content 3: Padbandh Worksheets -->
+      <div id="cbse-subpanel-ws-padbandh" class="cbse-subpanel" style="display:none;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">🔗</span>
+            <h2>CBSE पदबंध अभ्यास वर्क्शीट्स</h2>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            {g_data.get('cbse_padbandh_1', {}).get('html', '')}
+          </div>
+          <div style="margin-top:2rem;">
+            {g_data.get('cbse_padbandh_2', {}).get('html', '')}
+          </div>
+        </section>
+      </div>
+
+      <!-- CBSE Sub-content 4: Vakya Rupantar Worksheets -->
+      <div id="cbse-subpanel-ws-vakya" class="cbse-subpanel" style="display:none;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">🔄</span>
+            <h2>CBSE वाक्य रूपांतरण अभ्यास वर्क्शीट्स</h2>
+          </div>
+          <div style="margin-bottom:1.5rem;">
+            {g_data.get('cbse_vakya_1', {}).get('html', '')}
+          </div>
+          <div style="margin-top:2rem;">
+            {g_data.get('cbse_vakya_2', {}).get('html', '')}
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- PANEL 2: ICSE BOARD HINDI GRAMMAR -->
+    <!-- ========================================================================= -->
+    <div id="board-panel-icse" class="grammar-board-panel" style="display:none;">
+      
+      <!-- ICSE Sub-tabs bar -->
+      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.75rem; border-bottom:1px solid #E2E8F0;">
+        <button class="subpill-btn active" id="btn-icse-ch-muhavre" onclick="switchIcseSubtab('ch-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
+          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
+        </button>
+        <button class="subpill-btn" id="btn-icse-ws-muhavre" onclick="switchIcseSubtab('ws-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          ✍️ मुहावरे अभ्यास वर्क्शीट्स (6 Worksheets)
+        </button>
+      </div>
+
+      <!-- ICSE Sub-content 1: Chapter-wise Muhavare Grid -->
+      <div id="icse-subpanel-ch-muhavre" class="icse-subpanel" style="display:block;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">📖</span>
+            <div>
+              <h2 style="margin:0; font-size:1.35rem;">ICSE Class 10 - पाठ-वार मुहावरे (Chapter-wise Idioms)</h2>
+              <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">साहित्य सागर, एकांकी संचय एवं नया रास्ता के पाठों के मुहावरे:</p>
+            </div>
+          </div>
+          <div class="seo-grid">
+            {"".join(icse_ch_cards)}
+          </div>
+        </section>
+      </div>
+
+      <!-- ICSE Sub-content 2: Muhavare Practice Worksheets 1 to 6 -->
+      <div id="icse-subpanel-ws-muhavre" class="icse-subpanel" style="display:none;">
+        <section class="seo-section-card">
+          <div class="seo-section-header">
+            <span class="seo-section-icon">✍️</span>
+            <h2>ICSE मुहावरे अभ्यास वर्क्शीट्स (Worksheets 1 - 6)</h2>
+          </div>
+          <div style="margin-bottom:2rem;">{g_data.get('icse_muhavre_1', {}).get('html', '')}</div>
+          <div style="margin-bottom:2rem;">{g_data.get('icse_muhavre_2', {}).get('html', '')}</div>
+          <div style="margin-bottom:2rem;">{g_data.get('icse_muhavre_3', {}).get('html', '')}</div>
+          <div style="margin-bottom:2rem;">{g_data.get('icse_muhavre_4', {}).get('html', '')}</div>
+          <div style="margin-bottom:2rem;">{g_data.get('icse_muhavre_5', {}).get('html', '')}</div>
+          <div>{g_data.get('icse_muhavre_6', {}).get('html', '')}</div>
+        </section>
+      </div>
+
+    </div>
+
   </div>
-</main>"""
+</main>
+
+<script>
+  function switchGrammarBoard(board) {{
+    const cbseBtn = document.getElementById('btn-tab-cbse');
+    const icseBtn = document.getElementById('btn-tab-icse');
+    const cbsePanel = document.getElementById('board-panel-cbse');
+    const icsePanel = document.getElementById('board-panel-icse');
+
+    if (board === 'cbse') {{
+      cbseBtn.style.background = '#2563EB';
+      cbseBtn.style.color = '#ffffff';
+      cbseBtn.style.borderColor = '#2563EB';
+      icseBtn.style.background = '#FFFFFF';
+      icseBtn.style.color = '#059669';
+      icseBtn.style.borderColor = '#059669';
+      cbsePanel.style.display = 'block';
+      icsePanel.style.display = 'none';
+    }} else {{
+      icseBtn.style.background = '#059669';
+      icseBtn.style.color = '#ffffff';
+      icseBtn.style.borderColor = '#059669';
+      cbseBtn.style.background = '#FFFFFF';
+      cbseBtn.style.color = '#2563EB';
+      cbseBtn.style.borderColor = '#2563EB';
+      icsePanel.style.display = 'block';
+      cbsePanel.style.display = 'none';
+    }}
+  }}
+
+  function switchCbseSubtab(subtabKey) {{
+    const keys = ['ch-muhavre', 'ws-muhavre', 'ws-padbandh', 'ws-vakya'];
+    keys.forEach(k => {{
+      const btn = document.getElementById('btn-cbse-' + k);
+      const panel = document.getElementById('cbse-subpanel-' + k);
+      if (k === subtabKey) {{
+        btn.style.background = '#2563EB';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#2563EB';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+
+  function switchIcseSubtab(subtabKey) {{
+    const keys = ['ch-muhavre', 'ws-muhavre'];
+    keys.forEach(k => {{
+      const btn = document.getElementById('btn-icse-' + k);
+      const panel = document.getElementById('icse-subpanel-' + k);
+      if (k === subtabKey) {{
+        btn.style.background = '#059669';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#059669';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+</script>
+"""
 
     full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2))
     full_page += get_navbar(active_link='grammar')
@@ -2497,10 +2741,6 @@ def generate_grammar_pages():
     rel_dir_muh = "hindi-grammar/muhavare"
     can_muh = f"{BASE_URL}/{rel_dir_muh}/"
     ALL_CANONICAL_URLS.append(can_muh)
-    
-    # Extract muhavare content from worksheets
-    ws_muh_1 = WORKSHEETS_DATA.get('WS_CBSE_10_MUH_01', {}).get('html', '')
-    ws_muh_ans = WORKSHEETS_DATA.get('WS_CBSE_10_MUH_01_ANS', {}).get('html', '')
 
     muh_page = get_common_head("Class 10 Hindi Muhavare (मुहावरे) | अर्थ, वाक्य प्रयोग एवं अभ्यास | EkShala", 
         "Class 10 Hindi Muhavare (मुहावरे) notes, important list with meanings and sentences, CBSE & ICSE board practice worksheets and questions.", 
@@ -2513,24 +2753,9 @@ def generate_grammar_pages():
             "inLanguage": "hi"
         }))
     muh_page += get_navbar(active_link='grammar')
-    muh_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li itemprop="itemListElement"><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li><a href="/hindi-grammar/">हिंदी व्याकरण</a></li><li class="sep">&rsaquo;</li><li class="current">मुहावरे (Muhavare)</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <span class="seo-hero-badge">व्याकरण &bull; 4 अंक अनिवार्य</span>
-  <h1>Class 10 Hindi मुहावरे (Muhavare)</h1>
-  <p class="lead">पाठ्यपुस्तक आधारित सभी महत्वपूर्ण मुहावरों का अर्थ, वाक्य प्रयोग, बोर्ड परीक्षा में पूछे जाने वाले प्रश्न एवं अभ्यास पत्र।</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card">
-    <div class="seo-section-header"><span class="seo-section-icon">📖</span><h2>मुहावरे अभ्यास प्रश्न-पत्र (40 अंक)</h2></div>
-    {ws_muh_1}
-  </section>
-  <section class="seo-section-card">
-    <div class="seo-section-header"><span class="seo-section-icon">✓</span><h2>उत्तर कुंजी एवं व्याख्या सहित स्पष्टीकरण (Answer Key)</h2></div>
-    {ws_muh_ans}
-  </section>
-</div></main>"""
+    muh_page += breadcrumbs_html
+    muh_page += hero_html
+    muh_page += body_html
     muh_page += get_footer()
     write_html_file(rel_dir_muh, muh_page)
 
@@ -2538,12 +2763,9 @@ def generate_grammar_pages():
     rel_dir_pad = "hindi-grammar/padbandh"
     can_pad = f"{BASE_URL}/{rel_dir_pad}/"
     ALL_CANONICAL_URLS.append(can_pad)
-    
-    ws_pad_1 = WORKSHEETS_DATA.get('WS_CBSE_10_PAD_01', {}).get('html', '')
-    ws_pad_2 = WORKSHEETS_DATA.get('WS_CBSE_10_PAD_02', {}).get('html', '')
 
     pad_page = get_common_head("Class 10 Hindi Padbandh (पदबंध) | भेद, नियम एवं अभ्यास प्रश्न | EkShala",
-        "Class 10 Hindi Padbandh (पदबंध) notes, types (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रियाविशेषण), identification rules and practice worksheets.",
+        "Class 10 Hindi Padbandh (पदबंध) notes, types, identification rules and practice worksheets.",
         can_pad, json.dumps({
             "@context": "https://schema.org",
             "@type": "Article",
@@ -2553,29 +2775,13 @@ def generate_grammar_pages():
             "inLanguage": "hi"
         }))
     pad_page += get_navbar(active_link='grammar')
-    pad_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li itemprop="itemListElement"><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li><a href="/hindi-grammar/">हिंदी व्याकरण</a></li><li class="sep">&rsaquo;</li><li class="current">पदबंध (Padbandh)</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <span class="seo-hero-badge">व्याकरण &bull; 4 अंक अनिवार्य</span>
-  <h1>Class 10 Hindi पदबंध (Padbandh)</h1>
-  <p class="lead">पदबंध के पांचों भेदों (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रियाविशेषण पदबंध) के नियम, पहचानने की आसान ट्रिक्स और अभ्यास प्रश्न-पत्र।</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card">
-    <div class="seo-section-header"><span class="seo-section-icon">🔗</span><h2>पदबंध अभ्यास प्रश्न-पत्र 1 (40 अंक)</h2></div>
-    {ws_pad_1}
-  </section>
-  <section class="seo-section-card">
-    <div class="seo-section-header"><span class="seo-section-icon">📝</span><h2>पदबंध अभ्यास प्रश्न-पत्र 2 (40 अंक)</h2></div>
-    {ws_pad_2}
-  </section>
-</div></main>"""
+    pad_page += breadcrumbs_html
+    pad_page += hero_html
+    pad_page += body_html
     pad_page += get_footer()
     write_html_file(rel_dir_pad, pad_page)
 
 
-# ==============================================================================
 
 # ==============================================================================
 # 7. GENERATE TRUST & LEGAL PAGES (About, Contact, Privacy, Terms, 404)
