@@ -2384,10 +2384,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 # ==============================================================================
-# 5. GENERATE HINDI GRAMMAR HUB & TOPIC PAGES WITH DUAL BOARD TABS
+# 5. GENERATE HINDI GRAMMAR HUB & TOPIC PAGES WITH DUAL BOARD & NESTED WORKSHEET TABS
 # ==============================================================================
 def generate_grammar_pages():
-    print("\n--- Generating Hindi Grammar Hub & Topic Pages (Separate Worksheet Tabs) ---")
+    print("\n--- Generating Hindi Grammar Hub & Topic Pages (Nested Worksheet Tabs) ---")
     
     # Load converted grammar worksheets from D:\Hindi Grammer
     grammar_data_file = os.path.join(WORKSPACE_DIR, "grammar_converted_data.json")
@@ -2443,12 +2443,12 @@ def generate_grammar_pages():
   <div class="container">
     <span class="seo-hero-badge">CBSE &bull; ICSE &bull; कक्षा 10 व्याकरण</span>
     <h1>Class 10 Hindi Grammar (हिंदी व्याकरण)</h1>
-    <p class="lead">कक्षा 10 बोर्ड परीक्षा के लिए संपूर्ण हिंदी व्याकरण: पाठ-वार मुहावरे, पदबंध, रचना के आधार पर वाक्य रूपांतरण एवं पृथक अभ्यास वर्क्शीट्स। 16 में से 16 अंक सुनिश्चित करने के लिए प्रामाणिक अध्ययन सामग्री।</p>
+    <p class="lead">कक्षा 10 बोर्ड परीक्षा के लिए संपूर्ण हिंदी व्याकरण: पाठ-वार मुहावरे, पदबंध, रचना के आधार पर वाक्य रूपांतरण एवं अभ्यास वर्क्शीट्स। 16 में से 16 अंक सुनिश्चित करने के लिए प्रामाणिक अध्ययन सामग्री।</p>
     <div class="seo-hero-meta">
       <span>🏛️ <strong>CBSE &amp; ICSE बोर्ड टैब्स</strong></span>
       <span>📖 <strong>पाठ-वार मुहावरे (Chapter-wise Idioms)</strong></span>
       <span>🔗 <strong>पदबंध एवं वाक्य रूपांतरण</strong></span>
-      <span>📄 <strong>पृथक वर्क्शीट्स एवं उत्तर कुंजी</strong></span>
+      <span>📄 <strong>अभ्यास वर्क्शीट्स एवं उत्तर कुंजी</strong></span>
     </div>
   </div>
 </header>"""
@@ -2464,7 +2464,7 @@ def generate_grammar_pages():
         ("पतझड़ में टूटी पत्तियाँ", "रवींद्र केलेकर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/patjhar-mein-tooti-pattiyan/"),
         ("कारतूस", "हबीब तनवीर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/kartoos/"),
         ("हरिहर काका", "मिथिलेश्वर", "संचयन (भाग-2)", "/cbse/class-10/hindi/harihar-kaka/"),
-        ("सपनों के-से दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/"),
+        ("सपनों के-се दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/"),
         ("टोपी शुक्ला", "राही मासूम रज़ा", "संचयन (भाग-2)", "/cbse/class-10/hindi/topi-shukla/")
     ]
 
@@ -2527,33 +2527,24 @@ def generate_grammar_pages():
     <!-- ========================================================================= -->
     <div id="board-panel-cbse" class="grammar-board-panel" style="display:block;">
       
-      <!-- CBSE Separate Sub-tabs bar -->
-      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.75rem; border-bottom:1px solid #E2E8F0;">
-        <button class="subpill-btn active" id="btn-cbse-ch-muhavre" onclick="switchCbseSubtab('ch-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer; white-space:nowrap;">
-          📖 पाठ-वार मुहावरे
+      <!-- CBSE Topic Sub-pills (Level 1) -->
+      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.5rem; border-bottom:1px solid #E2E8F0;">
+        <button class="subpill-btn active" id="btn-cbse-topic-ch" onclick="switchCbseTopic('ch')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer; white-space:nowrap;">
+          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
         </button>
-        <button class="subpill-btn" id="btn-cbse-m1" onclick="switchCbseSubtab('m1')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 1
+        <button class="subpill-btn" id="btn-cbse-topic-muhavre" onclick="switchCbseTopic('muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          ✍️ मुहावरे वर्क्शीट
         </button>
-        <button class="subpill-btn" id="btn-cbse-m2" onclick="switchCbseSubtab('m2')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 2
+        <button class="subpill-btn" id="btn-cbse-topic-padbandh" onclick="switchCbseTopic('padbandh')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          🔗 पदबंध (Padbandh Worksheets)
         </button>
-        <button class="subpill-btn" id="btn-cbse-p1" onclick="switchCbseSubtab('p1')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔗 पदबंध वर्क्शीट 1
-        </button>
-        <button class="subpill-btn" id="btn-cbse-p2" onclick="switchCbseSubtab('p2')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔗 पदबंध वर्क्शीट 2
-        </button>
-        <button class="subpill-btn" id="btn-cbse-v1" onclick="switchCbseSubtab('v1')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔄 वाक्य रूपांतरण वर्क्शीट 1
-        </button>
-        <button class="subpill-btn" id="btn-cbse-v2" onclick="switchCbseSubtab('v2')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔄 वाक्य रूपांतरण वर्क्शीट 2
+        <button class="subpill-btn" id="btn-cbse-topic-vakya" onclick="switchCbseTopic('vakya')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          🔄 रचना के आधार पर वाक्य रूपांतरण
         </button>
       </div>
 
-      <!-- CBSE Sub-content 1: Chapter-wise Muhavare Grid -->
-      <div id="cbse-subpanel-ch-muhavre" class="cbse-subpanel" style="display:block;">
+      <!-- CBSE Topic 1: Chapter-wise Muhavare Grid -->
+      <div id="cbse-topicpanel-ch" class="cbse-topicpanel" style="display:block;">
         <section class="seo-section-card">
           <div class="seo-section-header">
             <span class="seo-section-icon">📖</span>
@@ -2568,70 +2559,82 @@ def generate_grammar_pages():
         </section>
       </div>
 
-      <!-- CBSE Sub-content 2: Muhavare Worksheet 1 -->
-      <div id="cbse-subpanel-m1" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">✍️</span>
-            <h2>CBSE मुहावरे अभ्यास वर्क्शीट 1 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_muhavre_1', {}).get('html', '')}
-        </section>
+      <!-- CBSE Topic 2: Muhavare Worksheets (Nested Level 2 Tabs) -->
+      <div id="cbse-topicpanel-muhavre" class="cbse-topicpanel" style="display:none;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
+          <button id="btn-cbse-m-w1" onclick="switchCbseMuhavreWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
+            📝 मुहावरे वर्क्शीट 1 (40 अंक)
+          </button>
+          <button id="btn-cbse-m-w2" onclick="switchCbseMuhavreWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
+            📝 मुहावरे वर्क्शीट 2 (40 अंक)
+          </button>
+        </div>
+
+        <div id="cbse-m-panel-w1" style="display:block;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>CBSE मुहावरे अभ्यास वर्क्शीट 1</h2></div>
+            {g_data.get('cbse_muhavre_1', {}).get('html', '')}
+          </section>
+        </div>
+
+        <div id="cbse-m-panel-w2" style="display:none;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>CBSE मुहावरे अभ्यास वर्क्शीट 2</h2></div>
+            {g_data.get('cbse_muhavre_2', {}).get('html', '')}
+          </section>
+        </div>
       </div>
 
-      <!-- CBSE Sub-content 3: Muhavare Worksheet 2 -->
-      <div id="cbse-subpanel-m2" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">✍️</span>
-            <h2>CBSE मुहावरे अभ्यास वर्क्शीट 2 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_muhavre_2', {}).get('html', '')}
-        </section>
+      <!-- CBSE Topic 3: Padbandh Worksheets (Nested Level 2 Tabs) -->
+      <div id="cbse-topicpanel-padbandh" class="cbse-topicpanel" style="display:none;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
+          <button id="btn-cbse-p-w1" onclick="switchCbsePadbandhWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
+            🔗 पदबंध वर्क्शीट 1 (40 अंक)
+          </button>
+          <button id="btn-cbse-p-w2" onclick="switchCbsePadbandhWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
+            🔗 पदबंध वर्क्शीट 2 (40 अंक)
+          </button>
+        </div>
+
+        <div id="cbse-p-panel-w1" style="display:block;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">🔗</span><h2>CBSE पदबंध अभ्यास वर्क्शीट 1</h2></div>
+            {g_data.get('cbse_padbandh_1', {}).get('html', '')}
+          </section>
+        </div>
+
+        <div id="cbse-p-panel-w2" style="display:none;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">🔗</span><h2>CBSE पदबंध अभ्यास वर्क्शीट 2</h2></div>
+            {g_data.get('cbse_padbandh_2', {}).get('html', '')}
+          </section>
+        </div>
       </div>
 
-      <!-- CBSE Sub-content 4: Padbandh Worksheet 1 -->
-      <div id="cbse-subpanel-p1" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">🔗</span>
-            <h2>CBSE पदबंध अभ्यास वर्क्शीट 1 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_padbandh_1', {}).get('html', '')}
-        </section>
-      </div>
+      <!-- CBSE Topic 4: Vakya Rupantar Worksheets (Nested Level 2 Tabs) -->
+      <div id="cbse-topicpanel-vakya" class="cbse-topicpanel" style="display:none;">
+        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
+          <button id="btn-cbse-v-w1" onclick="switchCbseVakyaWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
+            🔄 वाक्य रूपांतरण वर्क्शीट 1 (40 अंक)
+          </button>
+          <button id="btn-cbse-v-w2" onclick="switchCbseVakyaWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
+            🔄 वाक्य रूपांतरण वर्क्शीट 2 (40 अंक)
+          </button>
+        </div>
 
-      <!-- CBSE Sub-content 5: Padbandh Worksheet 2 -->
-      <div id="cbse-subpanel-p2" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">🔗</span>
-            <h2>CBSE पदबंध अभ्यास वर्क्शीट 2 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_padbandh_2', {}).get('html', '')}
-        </section>
-      </div>
+        <div id="cbse-v-panel-w1" style="display:block;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">🔄</span><h2>CBSE वाक्य रूपांतरण वर्क्शीट 1</h2></div>
+            {g_data.get('cbse_vakya_1', {}).get('html', '')}
+          </section>
+        </div>
 
-      <!-- CBSE Sub-content 6: Vakya Rupantar Worksheet 1 -->
-      <div id="cbse-subpanel-v1" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">🔄</span>
-            <h2>CBSE वाक्य रूपांतरण अभ्यास वर्क्शीट 1 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_vakya_1', {}).get('html', '')}
-        </section>
-      </div>
-
-      <!-- CBSE Sub-content 7: Vakya Rupantar Worksheet 2 -->
-      <div id="cbse-subpanel-v2" class="cbse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">🔄</span>
-            <h2>CBSE वाक्य रूपांतरण अभ्यास वर्क्शीट 2 (40 अंक)</h2>
-          </div>
-          {g_data.get('cbse_vakya_2', {}).get('html', '')}
-        </section>
+        <div id="cbse-v-panel-w2" style="display:none;">
+          <section class="seo-section-card">
+            <div class="seo-section-header"><span class="seo-section-icon">🔄</span><h2>CBSE वाक्य रूपांतरण वर्क्शीट 2</h2></div>
+            {g_data.get('cbse_vakya_2', {}).get('html', '')}
+          </section>
+        </div>
       </div>
 
     </div>
@@ -2641,33 +2644,18 @@ def generate_grammar_pages():
     <!-- ========================================================================= -->
     <div id="board-panel-icse" class="grammar-board-panel" style="display:none;">
       
-      <!-- ICSE Separate Sub-tabs bar -->
-      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.75rem; border-bottom:1px solid #E2E8F0;">
-        <button class="subpill-btn active" id="btn-icse-ch-muhavre" onclick="switchIcseSubtab('ch-muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
-          📖 पाठ-वार मुहावरे
+      <!-- ICSE Topic Sub-pills (Level 1) -->
+      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.5rem; border-bottom:1px solid #E2E8F0;">
+        <button class="subpill-btn active" id="btn-icse-topic-ch" onclick="switchIcseTopic('ch')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
+          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
         </button>
-        <button class="subpill-btn" id="btn-icse-im1" onclick="switchIcseSubtab('im1')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 1
-        </button>
-        <button class="subpill-btn" id="btn-icse-im2" onclick="switchIcseSubtab('im2')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 2
-        </button>
-        <button class="subpill-btn" id="btn-icse-im3" onclick="switchIcseSubtab('im3')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 3
-        </button>
-        <button class="subpill-btn" id="btn-icse-im4" onclick="switchIcseSubtab('im4')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 4
-        </button>
-        <button class="subpill-btn" id="btn-icse-im5" onclick="switchIcseSubtab('im5')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 5
-        </button>
-        <button class="subpill-btn" id="btn-icse-im6" onclick="switchIcseSubtab('im6')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.88rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट 6
+        <button class="subpill-btn" id="btn-icse-topic-muhavre" onclick="switchIcseTopic('muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+          ✍️ मुहावरे अभ्यास वर्क्शीट्स
         </button>
       </div>
 
-      <!-- ICSE Sub-content 1: Chapter-wise Muhavare Grid -->
-      <div id="icse-subpanel-ch-muhavre" class="icse-subpanel" style="display:block;">
+      <!-- ICSE Topic 1: Chapter-wise Muhavare Grid -->
+      <div id="icse-topicpanel-ch" class="icse-topicpanel" style="display:block;">
         <section class="seo-section-card">
           <div class="seo-section-header">
             <span class="seo-section-icon">📖</span>
@@ -2682,47 +2670,47 @@ def generate_grammar_pages():
         </section>
       </div>
 
-      <!-- ICSE Worksheets 1 to 6 as Separate Sub-panels -->
-      <div id="icse-subpanel-im1" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 1</h2></div>
-          {g_data.get('icse_muhavre_1', {}).get('html', '')}
-        </section>
-      </div>
+      <!-- ICSE Topic 2: Muhavare Worksheets (Nested Level 2 Tabs 1 to 6) -->
+      <div id="icse-topicpanel-muhavre" class="icse-topicpanel" style="display:none;">
+        <div style="display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.4rem; margin-bottom:1.25rem;">
+          <button id="btn-icse-m-w1" onclick="switchIcseMuhavreWs('w1')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 1
+          </button>
+          <button id="btn-icse-m-w2" onclick="switchIcseMuhavreWs('w2')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 2
+          </button>
+          <button id="btn-icse-m-w3" onclick="switchIcseMuhavreWs('w3')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 3
+          </button>
+          <button id="btn-icse-m-w4" onclick="switchIcseMuhavreWs('w4')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 4
+          </button>
+          <button id="btn-icse-m-w5" onclick="switchIcseMuhavreWs('w5')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 5
+          </button>
+          <button id="btn-icse-m-w6" onclick="switchIcseMuhavreWs('w6')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
+            📝 वर्क्शीट 6
+          </button>
+        </div>
 
-      <div id="icse-subpanel-im2" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 2</h2></div>
-          {g_data.get('icse_muhavre_2', {}).get('html', '')}
-        </section>
-      </div>
-
-      <div id="icse-subpanel-im3" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 3</h2></div>
-          {g_data.get('icse_muhavre_3', {}).get('html', '')}
-        </section>
-      </div>
-
-      <div id="icse-subpanel-im4" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 4</h2></div>
-          {g_data.get('icse_muhavre_4', {}).get('html', '')}
-        </section>
-      </div>
-
-      <div id="icse-subpanel-im5" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 5</h2></div>
-          {g_data.get('icse_muhavre_5', {}).get('html', '')}
-        </section>
-      </div>
-
-      <div id="icse-subpanel-im6" class="icse-subpanel" style="display:none;">
-        <section class="seo-section-card">
-          <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 6</h2></div>
-          {g_data.get('icse_muhavre_6', {}).get('html', '')}
-        </section>
+        <div id="icse-m-panel-w1" style="display:block;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 1</h2></div>{g_data.get('icse_muhavre_1', {}).get('html', '')}</section>
+        </div>
+        <div id="icse-m-panel-w2" style="display:none;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 2</h2></div>{g_data.get('icse_muhavre_2', {}).get('html', '')}</section>
+        </div>
+        <div id="icse-m-panel-w3" style="display:none;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 3</h2></div>{g_data.get('icse_muhavre_3', {}).get('html', '')}</section>
+        </div>
+        <div id="icse-m-panel-w4" style="display:none;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 4</h2></div>{g_data.get('icse_muhavre_4', {}).get('html', '')}</section>
+        </div>
+        <div id="icse-m-panel-w5" style="display:none;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 5</h2></div>{g_data.get('icse_muhavre_5', {}).get('html', '')}</section>
+        </div>
+        <div id="icse-m-panel-w6" style="display:none;">
+          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 6</h2></div>{g_data.get('icse_muhavre_6', {}).get('html', '')}</section>
+        </div>
       </div>
 
     </div>
@@ -2758,12 +2746,13 @@ def generate_grammar_pages():
     }}
   }}
 
-  function switchCbseSubtab(subtabKey) {{
-    const keys = ['ch-muhavre', 'm1', 'm2', 'p1', 'p2', 'v1', 'v2'];
-    keys.forEach(k => {{
-      const btn = document.getElementById('btn-cbse-' + k);
-      const panel = document.getElementById('cbse-subpanel-' + k);
-      if (k === subtabKey) {{
+  // CBSE Level 1 Topic Switcher
+  function switchCbseTopic(topicKey) {{
+    const topics = ['ch', 'muhavre', 'padbandh', 'vakya'];
+    topics.forEach(t => {{
+      const btn = document.getElementById('btn-cbse-topic-' + t);
+      const panel = document.getElementById('cbse-topicpanel-' + t);
+      if (t === topicKey) {{
         btn.style.background = '#2563EB';
         btn.style.color = '#ffffff';
         btn.style.borderColor = '#2563EB';
@@ -2777,12 +2766,86 @@ def generate_grammar_pages():
     }});
   }}
 
-  function switchIcseSubtab(subtabKey) {{
-    const keys = ['ch-muhavre', 'im1', 'im2', 'im3', 'im4', 'im5', 'im6'];
-    keys.forEach(k => {{
-      const btn = document.getElementById('btn-icse-' + k);
-      const panel = document.getElementById('icse-subpanel-' + k);
-      if (k === subtabKey) {{
+  // CBSE Level 2 Worksheet Switchers
+  function switchCbseMuhavreWs(wsKey) {{
+    ['w1', 'w2'].forEach(k => {{
+      const btn = document.getElementById('btn-cbse-m-' + k);
+      const panel = document.getElementById('cbse-m-panel-' + k);
+      if (k === wsKey) {{
+        btn.style.background = '#2563EB';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#2563EB';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+
+  function switchCbsePadbandhWs(wsKey) {{
+    ['w1', 'w2'].forEach(k => {{
+      const btn = document.getElementById('btn-cbse-p-' + k);
+      const panel = document.getElementById('cbse-p-panel-' + k);
+      if (k === wsKey) {{
+        btn.style.background = '#2563EB';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#2563EB';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+
+  function switchCbseVakyaWs(wsKey) {{
+    ['w1', 'w2'].forEach(k => {{
+      const btn = document.getElementById('btn-cbse-v-' + k);
+      const panel = document.getElementById('cbse-v-panel-' + k);
+      if (k === wsKey) {{
+        btn.style.background = '#2563EB';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#2563EB';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+
+  // ICSE Level 1 Topic Switcher
+  function switchIcseTopic(topicKey) {{
+    ['ch', 'muhavre'].forEach(t => {{
+      const btn = document.getElementById('btn-icse-topic-' + t);
+      const panel = document.getElementById('icse-topicpanel-' + t);
+      if (t === topicKey) {{
+        btn.style.background = '#059669';
+        btn.style.color = '#ffffff';
+        btn.style.borderColor = '#059669';
+        panel.style.display = 'block';
+      }} else {{
+        btn.style.background = '#FFFFFF';
+        btn.style.color = '#334155';
+        btn.style.borderColor = '#CBD5E1';
+        panel.style.display = 'none';
+      }}
+    }});
+  }}
+
+  // ICSE Level 2 Worksheet Switcher (w1 to w6)
+  function switchIcseMuhavreWs(wsKey) {{
+    ['w1', 'w2', 'w3', 'w4', 'w5', 'w6'].forEach(k => {{
+      const btn = document.getElementById('btn-icse-m-' + k);
+      const panel = document.getElementById('icse-m-panel-' + k);
+      if (k === wsKey) {{
         btn.style.background = '#059669';
         btn.style.color = '#ffffff';
         btn.style.borderColor = '#059669';
