@@ -444,7 +444,7 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="robots" content="index, follow" />
   <title>{title}</title>
   <meta name="description" content="{description}" />
@@ -474,7 +474,7 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style.css?v=108.0.0" />
+  <link rel="stylesheet" href="/style.css?v=112.0.0" />
 
   <style>
     /* ─── Global SEO Layout & Typography Enhancements ─── */
@@ -1807,7 +1807,7 @@ def generate_cbse_landing_page():
           <div>
             <span class="seo-card-badge">अभ्यास कार्य</span>
             <h3>Class 10 Hindi Worksheets</h3>
-            <p>कक्षा 10 हिंदी के सभी 20 अभ्यास प्रश्न-पत्र एवं उत्तर कुंजी।</p>
+            <p>कक्षा 10 हिंदी के सभी 20 अभ्यास कार्य-पत्र एवं उत्तर कुंजी।</p>
           </div>
           <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
@@ -1823,7 +1823,7 @@ def generate_cbse_landing_page():
           <div>
             <span class="seo-card-badge">अभ्यास पत्रक</span>
             <h3>CBSE अभ्यास वर्कशीट्स</h3>
-            <p>पाठ आधारित 40 अंक एवं 80 अंक के अभ्यास प्रश्न-पत्र एवं आदर्श उत्तर।</p>
+            <p>पाठ आधारित 40 अंक एवं 80 अंक के अभ्यास कार्य-पत्र एवं आदर्श उत्तर।</p>
           </div>
           <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
@@ -2053,7 +2053,7 @@ def generate_icse_landing_page():
           <div>
             <span class="seo-card-badge">अभ्यास पत्र</span>
             <h3>ICSE Hindi Worksheets</h3>
-            <p>ICSE मुहावरे एवं साहित्य सागर के विशेष अभ्यास प्रश्न-पत्र।</p>
+            <p>ICSE मुहावरे एवं साहित्य सागर के विशेष अभ्यास कार्य-पत्र।</p>
           </div>
           <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
@@ -2069,7 +2069,7 @@ def generate_icse_landing_page():
           <div>
             <span class="seo-card-badge">अभ्यास पत्रक</span>
             <h3>ICSE अभ्यास वर्कशीट्स</h3>
-            <p>साहित्य सागर और एकांकी संचय के अवतरण-आधारित अभ्यास प्रश्न-पत्र।</p>
+            <p>साहित्य सागर और एकांकी संचय के अवतरण-आधारित अभ्यास कार्य-पत्र।</p>
           </div>
           <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
         </a>
@@ -2156,7 +2156,7 @@ def generate_worksheets_hub():
       <button class="btn btn-primary" onclick="openWorksheetViewer('{k}', '{safe_title}', '{safe_url}')" style="flex:1; padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer;">
         👁️ हल करें (View)
       </button>
-      {f'<a href="{file_url}" download class="btn btn-outline" style="padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; text-decoration:none;" title="Download Word Document">📥 DOCX</a>' if file_url else ''}
+      {f'<a href="{file_url}" download class="btn btn-outline" style="padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; text-decoration:none;" title="Download Word Document">📥 Download</a>' if file_url else ''}
     </div>
     <button class="btn btn-ghost" onclick="openUploadModal('{k}', '{safe_title}')" style="width:100%; padding:0.5rem 0.75rem; font-size:0.82rem; border-radius:8px; border:1px dashed #CBD5E1; color:#1E3A5F; background:#F8FAFC; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; cursor:pointer;">
       📤 उत्तर पुस्तिका सबमिट करें (Evaluation)
@@ -2242,7 +2242,7 @@ def generate_worksheets_hub():
           <span style="width:40px; height:40px; border-radius:10px; background:#EFF6FF; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📘</span>
           <div>
             <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A; margin:0;">CBSE Class 10 Hindi Worksheets</h2>
-            <p style="color:#64748B; font-size:0.88rem; margin:0.25rem 0 0;">स्पर्श भाग-2, संचयन भाग-2 एवं विगत वर्षों के बोर्ड परीक्षा प्रश्नों पर आधारित 6 अभ्यास प्रश्न-पत्र।</p>
+            <p style="color:#64748B; font-size:0.88rem; margin:0.25rem 0 0;">स्पर्श भाग-2, संचयन भाग-2 एवं विगत वर्षों के बोर्ड परीक्षा प्रश्नों पर आधारित 6 अभ्यास कार्य-पत्र।</p>
           </div>
         </div>
         <span style="background:#EFF6FF; color:#1D4ED8; font-size:0.8rem; font-weight:700; padding:0.35rem 0.9rem; border-radius:50px; border:1px solid #BFDBFE;">
@@ -2333,7 +2333,7 @@ def generate_worksheets_hub():
 """
 
     extra_scripts = """
-<script src="/script.js?v=108.0.0"></script>
+<script src="/script.js?v=112.0.0"></script>
 <script>
 function filterPartition(p) {
   document.querySelectorAll('.ws-partition-btn').forEach(function(btn) {
@@ -2368,6 +2368,30 @@ document.addEventListener('DOMContentLoaded', function() {
   var hash = window.location.hash.replace('#', '').replace('-worksheets', '');
   if (['cbse', 'icse', 'grammar'].indexOf(hash) !== -1) {
     filterPartition(hash);
+  }
+  // Upload modal close button
+  var closeBtn = document.getElementById('upload-modal-close');
+  var uploadModal = document.getElementById('upload-modal');
+  if (closeBtn && uploadModal) {
+    closeBtn.addEventListener('click', function() {
+      uploadModal.hidden = true;
+      document.body.style.overflow = '';
+    });
+    uploadModal.addEventListener('click', function(e) {
+      if (e.target === uploadModal) {
+        uploadModal.hidden = true;
+        document.body.style.overflow = '';
+      }
+    });
+  }
+  // Scroll-to-top
+  if (typeof initScrollTop === 'function') initScrollTop();
+  // Navbar scroll shadow
+  var navEl = document.getElementById('navbar');
+  if (navEl) {
+    window.addEventListener('scroll', function() {
+      navEl.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
   }
 });
 </script>
@@ -2455,17 +2479,17 @@ def generate_grammar_pages():
 
     # CBSE Chapter List with Muhavare Links
     cbse_chapters = [
-        ("बड़े भाई साहब", "प्रेमचंद", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/bade-bhai-sahab/"),
-        ("साखी", "कबीरदास", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/sakhi-kabir/"),
-        ("पद", "मीराबाई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/pad-meera/"),
-        ("तताँरा-वामीरो कथा", "लीलाधर मंडलोई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/tatara-vamiro-katha/"),
-        ("तीसरी कसम के शिल्पकार शैलेंद्र", "प्रहलाद अग्रवाल", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/teesri-kasam-ke-shilpkar-shailendra/"),
-        ("अब कहाँ दूसरे के दुख से दुखी होने वाले", "निदा फ़ाज़ली", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale/"),
-        ("पतझड़ में टूटी पत्तियाँ", "रवींद्र केलेकर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/patjhar-mein-tooti-pattiyan/"),
-        ("कारतूस", "हबीब तनवीर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/kartoos/"),
-        ("हरिहर काका", "मिथिलेश्वर", "संचयन (भाग-2)", "/cbse/class-10/hindi/harihar-kaka/"),
-        ("सपनों के-се दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/"),
-        ("टोपी शुक्ला", "राही मासूम रज़ा", "संचयन (भाग-2)", "/cbse/class-10/hindi/topi-shukla/")
+        ("बड़े भाई साहब", "प्रेमचंद", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/bade-bhai-sahab/#muhavre"),
+        ("साखी", "कबीरदास", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/sakhi-kabir/#muhavre"),
+        ("पद", "मीराबाई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/pad-meera/#muhavre"),
+        ("तताँरा-वामीरो कथा", "लीलाधर मंडलोई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/tatara-vamiro-katha/#muhavre"),
+        ("तीसरी कसम के शिल्पकार शैलेंद्र", "प्रहलाद अग्रवाल", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/teesri-kasam-ke-shilpkar-shailendra/#muhavre"),
+        ("अब कहाँ दूसरे के दुख से दुखी होने वाले", "निदा फ़ाज़ली", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale/#muhavre"),
+        ("पतझड़ में टूटी पत्तियाँ", "रवींद्र केलेकर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/patjhar-mein-tooti-pattiyan/#muhavre"),
+        ("कारतूस", "हबीब तनवीर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/kartoos/#muhavre"),
+        ("हरिहर काका", "मिथिलेश्वर", "संचयन (भाग-2)", "/cbse/class-10/hindi/harihar-kaka/#muhavre"),
+        ("सपनों के-се दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/#muhavre"),
+        ("टोपी शुक्ला", "राही मासूम रज़ा", "संचयन (भाग-2)", "/cbse/class-10/hindi/topi-shukla/#muhavre")
     ]
 
     cbse_ch_cards = []
@@ -2484,15 +2508,15 @@ def generate_grammar_pages():
 
     # ICSE Chapter List with Muhavare Links
     icse_chapters = [
-        ("बड़े घर की बेटी", "प्रेमचंद", "साहित्य सागर", "/icse/class-10/hindi/bade-ghar-ki-beti/"),
-        ("भीड़ में खोया आदमी", "लीलाधर शर्मा पर्वतीय", "साहित्य सागर", "/icse/class-10/hindi/bheed-mein-khoya-aadmi/"),
-        ("भेड़ें और भेड़िये", "हरिशंकर परसाई", "साहित्य सागर", "/icse/class-10/hindi/bhedein-aur-bhediye/"),
-        ("दो कलाकार", "मन्नू भंडारी", "साहित्य सागर", "/icse/class-10/hindi/do-kalakar/"),
-        ("बात अठन्नी की", "सुदर्शन", "साहित्य सागर", "/icse/class-10/hindi/sandeh/"),
-        ("सूखी डाली", "उपेंद्रनाथ अश्क", "एकांकी संचय", "/icse/class-10/hindi/sukhi-daali/"),
-        ("दीपदान", "डॉ. रामकुमार वर्मा", "एकांकी संचय", "/icse/class-10/hindi/deepdan/"),
-        ("महाभारत की एक सांझ", "भारतभूषण अग्रवाल", "एकांकी संचय", "/icse/class-10/hindi/mahabharat-ki-ek-saanjh/"),
-        ("नया रास्ता (अध्याय 14-20)", "सुषमा अग्रवाल", "नया रास्ता", "/icse/class-10/hindi/naya-rasta-chapter-16/")
+        ("बड़े घर की बेटी", "प्रेमचंद", "साहित्य सागर", "/icse/class-10/hindi/bade-ghar-ki-beti/#muhavre"),
+        ("भीड़ में खोया आदमी", "लीलाधर शर्मा पर्वतीय", "साहित्य सागर", "/icse/class-10/hindi/bheed-mein-khoya-aadmi/#muhavre"),
+        ("भेड़ें और भेड़िये", "हरिशंकर परसाई", "साहित्य सागर", "/icse/class-10/hindi/bhedein-aur-bhediye/#muhavre"),
+        ("दो कलाकार", "मन्नू भंडारी", "साहित्य सागर", "/icse/class-10/hindi/do-kalakar/#muhavre"),
+        ("बात अठन्नी की", "सुदर्शन", "साहित्य सागर", "/icse/class-10/hindi/sandeh/#muhavre"),
+        ("सूखी डाली", "उपेंद्रनाथ अश्क", "एकांकी संचय", "/icse/class-10/hindi/sukhi-daali/#muhavre"),
+        ("दीपदान", "डॉ. रामकुमार वर्मा", "एकांकी संचय", "/icse/class-10/hindi/deepdan/#muhavre"),
+        ("महाभारत की एक सांझ", "भारतभूषण अग्रवाल", "एकांकी संचय", "/icse/class-10/hindi/mahabharat-ki-ek-saanjh/#muhavre"),
+        ("नया रास्ता (अध्याय 14-20)", "सुषमा अग्रवाल", "नया रास्ता", "/icse/class-10/hindi/naya-rasta-chapter-16/#muhavre")
     ]
 
     icse_ch_cards = []
