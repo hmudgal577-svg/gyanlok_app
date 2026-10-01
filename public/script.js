@@ -2521,7 +2521,7 @@ async function openWorksheetMaster(worksheetId, worksheetTitle, fileUrl) {
   document.body.style.overflow = 'hidden';
 
   try {
-    const res = await fetch(API_BASE + '/api/worksheets', { headers: getAuthHeaders(), cache: 'no-store' });
+    const res = await fetch(API_BASE + '/api/ws-api', { headers: getAuthHeaders(), cache: 'no-store' });
     const data = await res.json();
     const worksheets = (data && data.worksheets) || [];
     let ws = worksheets.find(w => w.id === worksheetId);
@@ -2824,7 +2824,7 @@ async function processWorksheetPayment(wsId, wsTitle) {
   `;
 
   try {
-    const orderRes = await fetch(API_BASE + '/api/worksheets/payment/create-order', {
+    const orderRes = await fetch(API_BASE + '/api/ws-api/payment/create-order', {
       method: 'POST',
       headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ worksheetId: wsId })
@@ -2836,7 +2836,7 @@ async function processWorksheetPayment(wsId, wsTitle) {
       return;
     }
 
-    const verifyRes = await fetch(API_BASE + '/api/worksheets/payment/verify', {
+    const verifyRes = await fetch(API_BASE + '/api/ws-api/payment/verify', {
       method: 'POST',
       headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({
@@ -2968,7 +2968,7 @@ async function startWorksheetAttempt(wsId, wsTitle) {
   `;
 
   try {
-    const res = await fetch(API_BASE + '/api/worksheets/start-attempt', {
+    const res = await fetch(API_BASE + '/api/ws-api/start-attempt', {
       method: 'POST',
       headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
       body: JSON.stringify({ worksheetId: wsId })
@@ -2989,7 +2989,7 @@ window.startWorksheetAttempt = startWorksheetAttempt;
 
 async function startOrResumeAttempt(ws) {
   try {
-    const res = await fetch(API_BASE + '/api/worksheets/attempt-status/' + ws.id, {
+    const res = await fetch(API_BASE + '/api/ws-api/attempt-status/' + ws.id, {
       headers: getAuthHeaders()
     });
     const data = await res.json();
@@ -3244,7 +3244,7 @@ async function submitWsAnswerFiles(wsId, attemptId) {
   });
 
   try {
-    const res = await fetch(API_BASE + '/api/worksheets/submit', {
+    const res = await fetch(API_BASE + '/api/ws-api/submit', {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData
@@ -3372,7 +3372,7 @@ async function openStudentDashboardModal() {
   overlay.classList.add('active');
 
   try {
-    const res = await fetch(API_BASE + '/api/worksheets', { headers: getAuthHeaders(), cache: 'no-store' });
+    const res = await fetch(API_BASE + '/api/ws-api', { headers: getAuthHeaders(), cache: 'no-store' });
     const data = await res.json();
     const list = (data && data.worksheets) || [];
     renderStudentDashList(list);

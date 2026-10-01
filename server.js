@@ -582,8 +582,8 @@ const DEFAULT_WORKSHEETS_MAP = {
   'WS_ICSE_10_MUH_06': { title: 'Worksheet 6: मुहावरे (ICSE अभ्यास पत्र 6)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 6)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 }
 };
 
-// GET /api/worksheets
-app.get(['/api/worksheets', '/worksheets'], async (req, res) => {
+// GET /api/worksheets & /api/ws-api
+app.get(['/api/ws-api', '/ws-api', '/api/worksheets', '/worksheets'], async (req, res) => {
   try {
     let user = null;
     const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
@@ -693,7 +693,7 @@ app.get(['/api/worksheets', '/worksheets'], async (req, res) => {
 });
 
 // GET /api/worksheets/:id
-app.get(['/api/worksheets/:id', '/worksheets/:id'], async (req, res) => {
+app.get(['/api/ws-api/:id', '/ws-api/:id', '/api/worksheets/:id', '/worksheets/:id'], async (req, res) => {
   const wsId = req.params.id;
   try {
     let ws = null;
@@ -717,7 +717,7 @@ app.get(['/api/worksheets/:id', '/worksheets/:id'], async (req, res) => {
 });
 
 // POST /api/worksheets/payment/create-order
-app.post(['/api/worksheets/payment/create-order', '/worksheets/payment/create-order'], auth, async (req, res) => {
+app.post(['/api/ws-api/payment/create-order', '/ws-api/payment/create-order', '/api/worksheets/payment/create-order', '/worksheets/payment/create-order'], auth, async (req, res) => {
   const { worksheetId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
@@ -762,7 +762,7 @@ app.post(['/api/worksheets/payment/create-order', '/worksheets/payment/create-or
 });
 
 // POST /api/worksheets/payment/verify
-app.post(['/api/worksheets/payment/verify', '/worksheets/payment/verify'], auth, async (req, res) => {
+app.post(['/api/ws-api/payment/verify', '/ws-api/payment/verify', '/api/worksheets/payment/verify', '/worksheets/payment/verify'], auth, async (req, res) => {
   const { worksheetId, paymentId, orderId, orderToken } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID required.' });
 
@@ -819,7 +819,7 @@ app.post(['/api/worksheets/payment/verify', '/worksheets/payment/verify'], auth,
 });
 
 // POST /api/worksheets/start-attempt
-app.post(['/api/worksheets/start-attempt', '/worksheets/start-attempt'], auth, async (req, res) => {
+app.post(['/api/ws-api/start-attempt', '/ws-api/start-attempt', '/api/worksheets/start-attempt', '/worksheets/start-attempt'], auth, async (req, res) => {
   const { worksheetId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
@@ -927,7 +927,7 @@ app.post(['/api/worksheets/start-attempt', '/worksheets/start-attempt'], auth, a
 });
 
 // GET /api/worksheets/attempt-status/:worksheetId
-app.get(['/api/worksheets/attempt-status/:worksheetId', '/worksheets/attempt-status/:worksheetId'], auth, async (req, res) => {
+app.get(['/api/ws-api/attempt-status/:worksheetId', '/ws-api/attempt-status/:worksheetId', '/api/worksheets/attempt-status/:worksheetId', '/worksheets/attempt-status/:worksheetId'], auth, async (req, res) => {
   const { worksheetId } = req.params;
   const userEmail = req.user.email;
 
@@ -975,7 +975,7 @@ app.get(['/api/worksheets/attempt-status/:worksheetId', '/worksheets/attempt-sta
 });
 
 // POST /api/worksheets/submit
-app.post(['/api/worksheets/submit', '/worksheets/submit'], auth, upload.array('answer_files', 10), async (req, res) => {
+app.post(['/api/ws-api/submit', '/ws-api/submit', '/api/worksheets/submit', '/worksheets/submit'], auth, upload.array('answer_files', 10), async (req, res) => {
   const { worksheetId, attemptId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
