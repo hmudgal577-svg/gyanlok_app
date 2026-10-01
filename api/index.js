@@ -11,9 +11,27 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
-  // Ensure req.url starts with /api so Express routes match correctly
-  if (req.url && !req.url.startsWith('/api')) {
-    req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+  // Extract path from Vercel rewrite parameter or headers
+  let targetPath = '';
+  if (req.query && req.query.__path) {
+    targetPath = req.query.__path;
+  } else if (req.headers['x-forwarded-uri']) {
+    targetPath = req.headers['x-forwarded-uri'];
+  } else {
+    targetPath = req.url || '';
+  }
+
+  // Remove duplicate query strings if present
+  if (targetPath.includes('?')) {
+    targetPath = targetPath.split('?')[0];
+  }
+
+  // Reconstruct req.url to ensure /api prefix
+  if (targetPath) {
+    if (!targetPath.startsWith('/api')) {
+      targetPath = '/api' + (targetPath.startsWith('/') ? '' : '/') + targetPath;
+    }
+    req.url = targetPath;
   }
 
   return app(req, res);
