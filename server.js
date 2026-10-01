@@ -232,14 +232,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ─── Static files ───────────────────────────────────────────────────────────
-app.use((req, res, next) => {
-  if ((req.path && req.path.startsWith('/api')) || (req.url && req.url.startsWith('/api'))) {
-    return next();
-  }
-  express.static(path.join(__dirname, 'public'))(req, res, next);
-});
-app.use('/uploads', express.static(UPLOADS_DIR));
+// ─── Static files (Disabled on Vercel to avoid HTML route collisions with API) ───
+if (!process.env.VERCEL) {
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use('/uploads', express.static(UPLOADS_DIR));
+}
 
 // ─── Rate Limiters ──────────────────────────────────────────────────────────
 const generalLimiter = process.env.VERCEL ? (req, res, next) => next() : rateLimit({

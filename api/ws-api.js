@@ -11,5 +11,11 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
+  if (req.url === '/' || req.url === '') {
+    req.url = '/api/ws-api';
+  } else if (!req.url.startsWith('/api/ws-api') && !req.url.startsWith('/api/worksheets')) {
+    req.url = '/api/ws-api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+  }
+
   return app(req, res);
 };
