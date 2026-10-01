@@ -207,44 +207,26 @@ function writeJson(filename, data) {
 }
 
 
-// ─── Security Middleware ────────────────────────────────────────────────────
+// ─── Security & Global CORS Middleware ──────────────────────────────────────
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  next();
+});
+
 app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc:   ["'self'"],
-      scriptSrc:    ["'self'", "'unsafe-inline'"],
-      scriptSrcAttr: ["'unsafe-inline'"],
-      styleSrc:     ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc:      ["'self'", "https://fonts.gstatic.com"],
-      imgSrc:       ["'self'", "data:", "blob:"],
-      connectSrc:   ["'self'"],
-    },
-  },
-}));
-
-const ALLOWED_ORIGINS = [
-  'https://ekshala.in',
-  'https://www.ekshala.in',
-  'http://ekshala.in',
-  'http://www.ekshala.in',
-  'https://EkShala.vercel.app',
-  'https://ekshala.vercel.app',
-  'https://EkShala-backend.onrender.com',
-  'http://localhost:3000',
-  'http://127.0.0.1:3000',
-  /\.vercel\.app$/,
-  /\.ekshala\.in$/
-];
-
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow non-browser (Postman, curl)
-    const allowed = ALLOWED_ORIGINS.some(o =>
-      typeof o === 'string' ? o === origin : o.test(origin)
-    );
-    callback(null, allowed);
-  },
-  credentials: true,
+  contentSecurityPolicy: false,
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
