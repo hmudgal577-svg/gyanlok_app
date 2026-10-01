@@ -2435,18 +2435,30 @@ function getStudentToken() {
 // 1. Current Logged In Student helper
 function getStudentUser() {
   try {
-    const raw = localStorage.getItem('student_user');
+    const raw = localStorage.getItem('student_user') ||
+                localStorage.getItem('student_session') ||
+                localStorage.getItem('ek_user') ||
+                localStorage.getItem('user');
     if (raw) return JSON.parse(raw);
+    if (typeof EkAuth !== 'undefined' && EkAuth.getUser) {
+      const u = EkAuth.getUser();
+      if (u) return u;
+    }
   } catch(e) {}
   return null;
 }
 
 function setStudentUser(user, token) {
   if (user) {
-    localStorage.setItem('student_user', JSON.stringify(user));
+    const sStr = JSON.stringify(user);
+    localStorage.setItem('student_user', sStr);
+    localStorage.setItem('student_session', sStr);
+    localStorage.setItem('ek_user', sStr);
     if (token) localStorage.setItem('student_token', token);
   } else {
     localStorage.removeItem('student_user');
+    localStorage.removeItem('student_session');
+    localStorage.removeItem('ek_user');
     localStorage.removeItem('student_token');
   }
   if (typeof updateNavbarAuthUI === 'function') {
@@ -2536,6 +2548,11 @@ async function openWorksheetMaster(worksheetId, worksheetTitle, fileUrl) {
     if (!student) {
       renderLoginModal(ws);
       return;
+    }
+
+    // Logged in student must never be forced back to login modal
+    if (ws.computedStatus === 'login_required') {
+      ws.computedStatus = 'payment_required';
     }
 
     switch (ws.computedStatus) {
@@ -2727,14 +2744,28 @@ async function handleWsSignup(e, wsId, wsTitle) {
     });
     const data = await res.json();
     if (!res.ok || !data.success) {
-      errEl.textContent = data.error || 'Registration failed.';
+      const errMsg = data.error || 'Registration failed.';
+      errEl.textContent = errMsg;
       errEl.style.display = 'block';
+
+      if (errMsg.toLowerCase().includes('already registered')) {
+        setTimeout(() => {
+          switchAuthTab('login');
+          const loginEmailEl = document.getElementById('ws-auth-email');
+          if (loginEmailEl) loginEmailEl.value = email;
+          const loginErr = document.getElementById('ws-auth-err');
+          if (loginErr) {
+            loginErr.textContent = 'यह अकाउंट पहले से बना हुआ है। कृपया अपना पासवर्ड दर्ज कर लॉगिन करें।';
+            loginErr.style.display = 'block';
+          }
+        }, 1200);
+      }
       return;
     }
     setStudentUser(data.user, data.token);
     openWorksheetMaster(wsId, wsTitle);
   } catch (err) {
-    errEl.textContent = 'Server error during signup.';
+    errEl.textContent = err.message || 'Server error during signup.';
     errEl.style.display = 'block';
   }
 }
