@@ -12,7 +12,7 @@ module.exports = (req, res) => {
   }
 
   // Ensure req.url starts with /api so Express routes match correctly
-  if (req.url && !req.url.startsWith('/api/')) {
+  if (req.url && !req.url.startsWith('/api')) {
     req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
   }
 

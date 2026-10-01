@@ -233,7 +233,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // ─── Static files ───────────────────────────────────────────────────────────
-app.use(express.static(path.join(__dirname, 'public')));
+app.use((req, res, next) => {
+  if ((req.path && req.path.startsWith('/api')) || (req.url && req.url.startsWith('/api'))) {
+    return next();
+  }
+  express.static(path.join(__dirname, 'public'))(req, res, next);
+});
 app.use('/uploads', express.static(UPLOADS_DIR));
 
 // ─── Rate Limiters ──────────────────────────────────────────────────────────
@@ -447,15 +452,20 @@ app.post('/api/admin/logout', (req, res) => {
 app.get('/api/admin/me', auth, (req, res) => res.json({ user: req.user }));
 
 // ────────────────────────────────────────────────────────────
+// ─── Global In-Memory Store (Persists across Vercel Serverless Function hot re-uses) ───
+const GLOBAL_USERS = global._ekUsersList || (global._ekUsersList = []);
+
+// ────────────────────────────────────────────────────────────
 // Student Portal Endpoints
 // ────────────────────────────────────────────────────────────
 
 // POST /api/student/register
-app.post('/api/student/register', async (req, res) => {
+app.post(['/api/student/register', '/student/register'], async (req, res) => {
   const { name, email, class_num, password } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password are required.' });
   }
+  const cleanEmail = email.toLowerCase().trim();
   const userClassNum = parseInt(class_num) || 10;
 
   try {
@@ -463,29 +473,32 @@ app.post('/api/student/register', async (req, res) => {
     let newUser;
 
     if (usingDb) {
-      const existing = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      const existing = await db.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
       if (existing.rows.length > 0) return res.status(400).json({ error: 'Email or phone already registered.' });
 
       const result = await db.query(
         "INSERT INTO users (name, email, password_hash, role, class_num) VALUES ($1, $2, $3, 'student', $4) RETURNING id, name, email, role, class_num",
-        [name, email, hash, userClassNum]
+        [name, cleanEmail, hash, userClassNum]
       );
       newUser = result.rows[0];
     } else {
-      const users = readJson('users.json', []);
-      if (users.find(u => u.email === email)) return res.status(400).json({ error: 'Email or phone already registered.' });
+      const fileUsers = readJson('users.json', []);
+      const existsInFile = fileUsers.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+      const existsInMem  = GLOBAL_USERS.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+      if (existsInFile || existsInMem) return res.status(400).json({ error: 'Email or phone already registered.' });
 
-      newUser = { id: Date.now(), name, email, password_hash: hash, role: 'student', class_num: userClassNum };
-      users.push(newUser);
-      writeJson('users.json', users);
+      newUser = { id: Date.now(), name, email: cleanEmail, password_hash: hash, role: 'student', class_num: userClassNum };
+      GLOBAL_USERS.push(newUser);
+      fileUsers.push(newUser);
+      writeJson('users.json', fileUsers);
     }
 
-    const token = jwt.sign({ id: newUser.id, name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ id: newUser.id, name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num }, JWT_SECRET, { expiresIn: '7d' });
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({ success: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num }, token });
@@ -496,18 +509,26 @@ app.post('/api/student/register', async (req, res) => {
 });
 
 // POST /api/student/login
-app.post('/api/student/login', async (req, res) => {
+app.post(['/api/student/login', '/student/login'], async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) return res.status(400).json({ error: 'Email and password are required.' });
+
+  const cleanEmail = email.toLowerCase().trim();
 
   try {
     let user;
     if (usingDb) {
-      const result = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+      const result = await db.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [cleanEmail]);
       user = result.rows[0];
     } else {
-      const users = readJson('users.json', []);
-      user = users.find(u => u.email === email);
+      user = GLOBAL_USERS.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+      if (!user) {
+        const fileUsers = readJson('users.json', []);
+        user = fileUsers.find(u => u.email && u.email.toLowerCase() === cleanEmail);
+        if (user && !GLOBAL_USERS.find(u => u.email === user.email)) {
+          GLOBAL_USERS.push(user);
+        }
+      }
     }
 
     if (!user || user.role !== 'student') return res.status(401).json({ error: 'Invalid email/phone or password.' });
@@ -515,12 +536,12 @@ app.post('/api/student/login', async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
     if (!isMatch) return res.status(401).json({ error: 'Invalid email/phone or password.' });
 
-    const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: 'student', class_num: user.class_num }, JWT_SECRET, { expiresIn: '1d' });
+    const token = jwt.sign({ id: user.id, name: user.name, email: user.email, role: 'student', class_num: user.class_num }, JWT_SECRET, { expiresIn: '7d' });
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({ success: true, user: { id: user.id, name: user.name, email: user.email, role: 'student', class_num: user.class_num }, token });
@@ -562,7 +583,7 @@ const DEFAULT_WORKSHEETS_MAP = {
 };
 
 // GET /api/worksheets
-app.get('/api/worksheets', async (req, res) => {
+app.get(['/api/worksheets', '/worksheets'], async (req, res) => {
   try {
     let user = null;
     const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
@@ -672,7 +693,7 @@ app.get('/api/worksheets', async (req, res) => {
 });
 
 // GET /api/worksheets/:id
-app.get('/api/worksheets/:id', async (req, res) => {
+app.get(['/api/worksheets/:id', '/worksheets/:id'], async (req, res) => {
   const wsId = req.params.id;
   try {
     let ws = null;

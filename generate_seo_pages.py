@@ -442,7 +442,7 @@ def write_html_file(rel_dir, html_content):
         f.write(html_content)
     print(f"  ✓ Generated: {rel_dir}/index.html ({len(html_content):,} bytes)")
 
-def get_common_head(title, description, canonical_url, schema_json_ld, og_image="https://ekshala.in/logo-preview.png"):
+def get_common_head(title, description, canonical_url, schema_json_ld, og_image="https://ekshala.in/logo-preview.png", body_class="seo-page-body"):
     return f"""<!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -519,6 +519,78 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
       color: #0F172A;
       font-weight: 600;
     }}
+
+    /* ─── ICSE Board Dedicated Emerald Green Styling ─── */
+    .icse-page .seo-hero {{
+      background: linear-gradient(135deg, #ECFDF5 0%, #E6F4EA 60%, #F0FDF4 100%) !important;
+      border-bottom: 1px solid #A7F3D0 !important;
+    }}
+    .icse-page .seo-hero-badge {{
+      background: #D1FAE5 !important;
+      border: 1px solid #A7F3D0 !important;
+      color: #047857 !important;
+    }}
+    .icse-page .seo-hero h1 {{
+      color: #064E3B !important;
+    }}
+    .icse-page .seo-hero p.lead {{
+      color: #065F46 !important;
+    }}
+    .icse-page .seo-hero-meta span {{
+      background: #FFFFFF !important;
+      border: 1px solid #A7F3D0 !important;
+      box-shadow: 0 1px 3px rgba(4, 120, 87, 0.06) !important;
+      color: #065F46 !important;
+    }}
+    .icse-page .seo-hero-meta span strong {{
+      color: #064E3B !important;
+    }}
+    .icse-page .seo-pill:hover, .icse-page .seo-pill.active {{
+      background: #059669 !important;
+      color: #FFFFFF !important;
+      border-color: #059669 !important;
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.28) !important;
+    }}
+    .icse-page .tab-nav-btn.primary {{
+      background: #059669 !important;
+      color: #FFFFFF !important;
+      border-color: #059669 !important;
+      box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25) !important;
+    }}
+    .icse-page .tab-nav-btn.primary:hover {{
+      background: #047857 !important;
+      border-color: #047857 !important;
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35) !important;
+    }}
+    .icse-page .seo-card:hover {{
+      border-color: #059669 !important;
+      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.12) !important;
+    }}
+    .icse-page .seo-card-badge {{
+      background: #ECFDF5 !important;
+      color: #047857 !important;
+      border: 1px solid #A7F3D0 !important;
+    }}
+    .icse-page .seo-card-cta {{
+      color: #059669 !important;
+      font-weight: 700 !important;
+    }}
+    .icse-page .summary-author {{
+      color: #047857 !important;
+      background: #ECFDF5 !important;
+      border-left: 4px solid #059669 !important;
+    }}
+    .icse-page .seo-breadcrumbs a {{
+      color: #047857 !important;
+    }}
+    .icse-page .seo-breadcrumbs a:hover {{
+      color: #059669 !important;
+    }}
+    .dropdown-item[href*="icse"]:hover {{
+      background: #ECFDF5 !important;
+      color: #047857 !important;
+    }}
+
 
     /* Hero Header - Light & Student Friendly */
     .seo-hero {{
@@ -1011,7 +1083,7 @@ def get_common_head(title, description, canonical_url, schema_json_ld, og_image=
     </style>
   </noscript>
 </head>
-<body class="seo-page-body">
+<body class="{body_class}">
 """
 
 def get_navbar(active_link=''):
@@ -1612,7 +1684,8 @@ def generate_chapter_pages():
 </script>"""
 
         # Assemble Full Page
-        full_page = get_common_head(seo_title, desc, canonical_url, schema_json_ld)
+        body_cls = "seo-page-body icse-page" if board == "ICSE" else "seo-page-body"
+        full_page = get_common_head(seo_title, desc, canonical_url, schema_json_ld, body_class=body_cls)
         full_page += get_navbar(active_link=board_lower)
         full_page += breadcrumbs_html
         full_page += hero_html
@@ -2051,24 +2124,24 @@ def generate_icse_landing_page():
       </p>
       <div class="seo-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
         <!-- ICSE Syllabus Card -->
-        <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="background:#FFFFFF; border:1px solid #A7F3D0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(5,150,105,0.06); display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-              <span style="background:#E0F2FE; color:#0284C7; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">ICSE Official 2026-27</span>
+              <span style="background:#ECFDF5; color:#047857; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">ICSE Official 2026-27</span>
               <span style="font-size:1.4rem;">📘</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">ICSE Class 10 Hindi Syllabus 2026-27</h3>
           </div>
           <div style="display:flex; gap:0.6rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1.15rem; margin-top:1.25rem;">
-            <a href="/pdf/icse/class10/hindi/class_10_hindi_syllabus_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+            <a href="/pdf/icse/class10/hindi/class_10_hindi_syllabus_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#059669; border-color:#059669;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               View Syllabus
             </a>
-            <a href="/pdf/icse/class10/hindi/class_10_hindi_syllabus_icse.pdf" download="ICSE_Hindi_Class_10_Latest_Syllabus_2026.pdf" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Download PDF">
+            <a href="/pdf/icse/class10/hindi/class_10_hindi_syllabus_icse.pdf" download="ICSE_Hindi_Class_10_Latest_Syllabus_2026.pdf" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#047857; border-color:#A7F3D0; background:#F0FDF4;" title="Download PDF">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               PDF
             </a>
-            <a href="/documents/icse/class10/hindi/ICSE_Hindi_Class_10_Latest_Syllabus_2026.docx" download="ICSE_Hindi_Class_10_Latest_Syllabus_2026.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#0284C7; border-color:#BAE6FD;" title="Download Word DOCX">
+            <a href="/documents/icse/class10/hindi/ICSE_Hindi_Class_10_Latest_Syllabus_2026.docx" download="ICSE_Hindi_Class_10_Latest_Syllabus_2026.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#047857; border-color:#A7F3D0; background:#F0FDF4;" title="Download Word DOCX">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
               DOCX
             </a>
@@ -2076,24 +2149,24 @@ def generate_icse_landing_page():
         </div>
 
         <!-- ICSE Marking Scheme Card -->
-        <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="background:#FFFFFF; border:1px solid #A7F3D0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(5,150,105,0.06); display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-              <span style="background:#EBF3FD; color:#156082; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Marks Weightage</span>
+              <span style="background:#ECFDF5; color:#047857; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Marks Weightage</span>
               <span style="font-size:1.4rem;">📊</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">ICSE Hindi Marking Scheme &amp; Blueprint</h3>
           </div>
           <div style="display:flex; gap:0.6rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1.15rem; margin-top:1.25rem;">
-            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#156082; border-color:#156082;">
+            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#059669; border-color:#059669;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               View Marking Scheme
             </a>
-            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" download="ICSE_Class10_Hindi_Marks_Weightage.pdf" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Download PDF">
+            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" download="ICSE_Class10_Hindi_Marks_Weightage.pdf" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#047857; border-color:#A7F3D0; background:#F0FDF4;" title="Download PDF">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               PDF
             </a>
-            <a href="/documents/icse/class10/hindi/ICSE_Class10_Hindi_Marks_Weightage.docx" download="ICSE_Class10_Hindi_Marks_Weightage.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#156082; border-color:#BAE6FD;" title="Download Word DOCX">
+            <a href="/documents/icse/class10/hindi/ICSE_Class10_Hindi_Marks_Weightage.docx" download="ICSE_Class10_Hindi_Marks_Weightage.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#047857; border-color:#A7F3D0; background:#F0FDF4;" title="Download Word DOCX">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
               DOCX
             </a>
@@ -2155,7 +2228,7 @@ def generate_icse_landing_page():
   </div>
 </main>"""
 
-    full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2))
+    full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2), body_class="seo-page-body icse-page")
     full_page += get_navbar(active_link='icse')
     full_page += breadcrumbs_html
     full_page += hero_html
@@ -2214,22 +2287,35 @@ def generate_worksheets_hub():
         file_url = v.get('file_url', '')
         safe_url = file_url.replace("'", "\\'")
         is_ans_key = 'ANS' in k
+        is_icse = 'ICSE' in badge_category or k.startswith('WS_ICSE')
 
-        badge_bg = '#DCFCE7' if is_ans_key else '#EFF6FF'
-        badge_color = '#15803D' if is_ans_key else '#1D4ED8'
-        badge_border = '#BBF7D0' if is_ans_key else '#BFDBFE'
+        if is_ans_key:
+            badge_bg = '#DCFCE7'
+            badge_color = '#15803D'
+            badge_border = '#BBF7D0'
+        elif is_icse:
+            badge_bg = '#ECFDF5'
+            badge_color = '#047857'
+            badge_border = '#A7F3D0'
+        else:
+            badge_bg = '#EFF6FF'
+            badge_color = '#1D4ED8'
+            badge_border = '#BFDBFE'
+
+        btn_bg = '#059669' if is_icse else '#2563EB'
+        btn_border = '#059669' if is_icse else '#2563EB'
 
         return f"""<div class="seo-card ws-card" id="card-{k}" style="background:#FFFFFF; border-radius:16px; border:1px solid #E2E8F0; padding:1.4rem; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 3px 12px rgba(15,43,72,0.03); transition:transform 0.2s, box-shadow 0.2s;">
   <div>
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.65rem; gap:0.5rem; flex-wrap:wrap;">
       <span class="seo-card-badge" style="background:{badge_bg}; color:{badge_color}; font-weight:700; border:1px solid {badge_border}; font-size:0.76rem; padding:3px 10px; border-radius:50px; margin-bottom:0;">{marks} &bull; {time_limit}</span>
-      <span style="font-size:0.74rem; font-weight:700; color:#475569; background:#F1F5F9; padding:3px 9px; border-radius:6px;">{badge_category}</span>
+      <span style="font-size:0.74rem; font-weight:700; color:{'#047857' if is_icse else '#475569'}; background:{'#ECFDF5' if is_icse else '#F1F5F9'}; padding:3px 9px; border-radius:6px;">{badge_category}</span>
     </div>
     <h3 style="font-size:1.15rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.45rem; line-height:1.4; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">{title}</h3>
     <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin:0 0 1.15rem;">{subtitle}</p>
   </div>
   <div style="display:flex; flex-direction:column; gap:0.55rem; border-top:1px solid #F1F5F9; padding-top:0.85rem;">
-    <button class="btn btn-primary" onclick="openWorksheetMaster('{k}', '{safe_title}', '{safe_url}')" style="width:100%; padding:0.65rem 1rem; font-size:0.92rem; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer;">
+    <button class="btn btn-primary" onclick="openWorksheetMaster('{k}', '{safe_title}', '{safe_url}')" style="width:100%; padding:0.65rem 1rem; font-size:0.92rem; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer; background:{btn_bg}; border:1.5px solid {btn_border}; color:#FFFFFF;">
       📝 Worksheet Attempt
     </button>
   </div>
@@ -2409,10 +2495,28 @@ def generate_worksheets_hub():
 function filterPartition(p) {
   document.querySelectorAll('.ws-partition-btn').forEach(function(btn) {
     var active = btn.dataset.partition === p;
+    var part = btn.dataset.partition;
     btn.classList.toggle('active', active);
-    btn.style.background = active ? '#156082' : '#F8FAFC';
-    btn.style.color = active ? '#FFFFFF' : '#334155';
-    btn.style.borderColor = active ? '#156082' : '#E2E8F0';
+    if (active) {
+      if (part === 'icse') {
+        btn.style.background = '#059669';
+        btn.style.borderColor = '#059669';
+      } else if (part === 'cbse') {
+        btn.style.background = '#2563EB';
+        btn.style.borderColor = '#2563EB';
+      } else if (part === 'grammar') {
+        btn.style.background = '#D97706';
+        btn.style.borderColor = '#D97706';
+      } else {
+        btn.style.background = '#156082';
+        btn.style.borderColor = '#156082';
+      }
+      btn.style.color = '#FFFFFF';
+    } else {
+      btn.style.background = '#F8FAFC';
+      btn.style.borderColor = '#E2E8F0';
+      btn.style.color = '#334155';
+    }
     btn.style.boxShadow = 'none';
   });
 
