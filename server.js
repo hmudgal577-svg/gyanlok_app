@@ -1882,14 +1882,19 @@ app.get('/api/health', async (req, res) => {
   });
 });
 
-// ─── Catch-all: serve frontend ──────────────────────────────────────────────
-app.get('*', (req, res) => {
-  // Serve admin panel for /admin path
-  if (req.path.startsWith('/admin')) {
-    return res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-  }
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+// ─── Catch-all: serve frontend (Local dev only) / 404 JSON (Vercel) ──────────
+if (!process.env.VERCEL) {
+  app.get('*', (req, res) => {
+    if (req.path.startsWith('/admin')) {
+      return res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+    }
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+} else {
+  app.use((req, res) => {
+    res.status(404).json({ error: `API route not found: ${req.method} ${req.url}` });
+  });
+}
 
 // ─── Start Server (local dev) / Export for Vercel ───────────────────────────
 if (process.env.VERCEL) {

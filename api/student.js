@@ -11,11 +11,6 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
-  if (req.url === '/' || req.url === '') {
-    req.url = '/api/student';
-  } else if (!req.url.startsWith('/api/student')) {
-    req.url = '/api/student' + (req.url.startsWith('/') ? '' : '/') + req.url;
-  }
-
+  req.url = '/api/student';
   return app(req, res);
 };

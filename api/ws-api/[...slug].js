@@ -11,9 +11,9 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
-  if (!req.url.startsWith('/api/ws-api') && !req.url.startsWith('/api/worksheets')) {
-    req.url = '/api/ws-api' + (req.url.startsWith('/') ? '' : '/') + req.url;
-  }
+  const slugParts = req.query.slug ? (Array.isArray(req.query.slug) ? req.query.slug : [req.query.slug]) : [];
+  const slugPath = slugParts.join('/');
+  req.url = '/api/ws-api' + (slugPath ? '/' + slugPath : '');
 
   return app(req, res);
 };
