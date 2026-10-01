@@ -1,5 +1,23 @@
 {
   "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/ws-api",
+      "destination": "/api/ws-api.js"
+    },
+    {
+      "source": "/api/ws-api/:path*",
+      "destination": "/api/ws-api/[...slug].js?slug=:path*"
+    },
+    {
+      "source": "/api/student",
+      "destination": "/api/student.js"
+    },
+    {
+      "source": "/api/student/:path*",
+      "destination": "/api/student/[...slug].js?slug=:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
