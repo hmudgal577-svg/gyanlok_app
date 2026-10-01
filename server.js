@@ -581,7 +581,9 @@ const DEFAULT_WORKSHEETS_MAP = {
 
 // GET /api/worksheets & /api/ws-api
 app.get(['/api/ws-api', '/ws-api', '/api/worksheets', '/worksheets'], async (req, res) => {
-  try {
+  return res.json({ success: true, message: "WS API REACHED!", worksheets: [
+    { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (अभ्यास कार्य-पत्र 1)', board: 'CBSE', subject: 'Hindi', price: 100 }
+  ] });
     let user = null;
     const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
     if (token) {
