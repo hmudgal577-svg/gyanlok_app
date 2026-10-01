@@ -161,6 +161,74 @@ CREATE TABLE doubt_sessions (
   replied_at   TIMESTAMP
 );
 
+-- 14. WORKSHEETS CONFIGURATION
+CREATE TABLE worksheets (
+  id               VARCHAR(100) PRIMARY KEY,
+  title            VARCHAR(300) NOT NULL,
+  board            VARCHAR(20) NOT NULL DEFAULT 'CBSE',
+  subject          VARCHAR(100) NOT NULL DEFAULT 'Hindi',
+  chapter          VARCHAR(300),
+  price            NUMERIC DEFAULT 100,
+  duration_minutes INTEGER DEFAULT 30,
+  questions_count  INTEGER DEFAULT 10,
+  total_marks      INTEGER DEFAULT 50,
+  page_size        VARCHAR(20) DEFAULT 'A4',
+  accepted_formats VARCHAR(100) DEFAULT 'JPG, PNG, PDF',
+  max_file_size_mb INTEGER DEFAULT 10,
+  instructions     TEXT,
+  file_url         TEXT,
+  is_active        BOOLEAN DEFAULT TRUE,
+  created_at       TIMESTAMP DEFAULT NOW()
+);
+
+-- 15. WORKSHEET PURCHASES
+CREATE TABLE worksheet_purchases (
+  id           SERIAL PRIMARY KEY,
+  user_id      INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_email   VARCHAR(200) NOT NULL,
+  worksheet_id VARCHAR(100) NOT NULL,
+  payment_id   VARCHAR(100) NOT NULL,
+  amount       NUMERIC DEFAULT 100,
+  currency     VARCHAR(10) DEFAULT 'INR',
+  status       VARCHAR(30) DEFAULT 'paid',
+  created_at   TIMESTAMP DEFAULT NOW(),
+  UNIQUE(user_email, worksheet_id)
+);
+
+-- 16. WORKSHEET ATTEMPTS
+CREATE TABLE worksheet_attempts (
+  id               SERIAL PRIMARY KEY,
+  user_id          INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_email       VARCHAR(200) NOT NULL,
+  worksheet_id     VARCHAR(100) NOT NULL,
+  purchase_id      INTEGER,
+  start_time       TIMESTAMP NOT NULL DEFAULT NOW(),
+  end_time         TIMESTAMP NOT NULL,
+  duration_minutes INTEGER NOT NULL DEFAULT 30,
+  status           VARCHAR(30) DEFAULT 'in_progress',
+  created_at       TIMESTAMP DEFAULT NOW()
+);
+
+-- 17. WORKSHEET SUBMISSIONS
+CREATE TABLE worksheet_submissions (
+  id             SERIAL PRIMARY KEY,
+  user_id        INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  user_email     VARCHAR(200) NOT NULL,
+  student_name   VARCHAR(200) NOT NULL,
+  worksheet_id   VARCHAR(100) NOT NULL,
+  attempt_id     INTEGER REFERENCES worksheet_attempts(id) ON DELETE SET NULL,
+  file_name      VARCHAR(300),
+  file_path      TEXT,
+  file_urls      TEXT[],
+  file_names     TEXT[],
+  status         VARCHAR(30) DEFAULT 'under_evaluation',
+  marks_obtained INTEGER,
+  total_marks    INTEGER DEFAULT 50,
+  feedback       TEXT,
+  evaluated_at   TIMESTAMP,
+  created_at     TIMESTAMP DEFAULT NOW()
+);
+
 -- ─── INDEXES ──────────────────────────────────────────────────
 CREATE INDEX idx_users_email          ON users(email);
 CREATE INDEX idx_users_role           ON users(role);
@@ -169,6 +237,9 @@ CREATE INDEX idx_chapters_book        ON chapters(book_id);
 CREATE INDEX idx_test_sheets_board    ON test_sheets(board, class_num);
 CREATE INDEX idx_submissions_student  ON student_submissions(student_name);
 CREATE INDEX idx_mentor_requests_status ON mentor_requests(status);
+CREATE INDEX idx_ws_purchases_user    ON worksheet_purchases(user_email, worksheet_id);
+CREATE INDEX idx_ws_attempts_user     ON worksheet_attempts(user_email, worksheet_id);
+CREATE INDEX idx_ws_submissions_user  ON worksheet_submissions(user_email, worksheet_id);
 
 -- ─── SEED: Boards ─────────────────────────────────────────────
 INSERT INTO boards (name) VALUES ('CBSE') ON CONFLICT (name) DO NOTHING;

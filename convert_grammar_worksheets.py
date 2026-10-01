@@ -167,63 +167,63 @@ def convert_docx_to_html(filepath, title, badge_label):
 
 files_map = {
     'cbse_muhavre_1': {
-        'path': r'D:\Hindi Grammer\CBSE\Muhavre\Muhavre_Worksheet_1_40Marks (1).docx',
-        'title': 'CBSE मुहावरे अभ्यास प्रश्न-पत्र 1 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Muhavre Worksheets\Muhavre_Worksheet_1_40Marks (1).docx',
+        'title': 'CBSE मुहावरे अभ्यास कार्य-पत्रक 1 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'cbse_muhavre_2': {
-        'path': r'D:\Hindi Grammer\CBSE\Muhavre\Muhavre_Worksheet_2_40Marks (1).docx',
-        'title': 'CBSE मुहावरे अभ्यास प्रश्न-पत्र 2 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Muhavre Worksheets\Muhavre_Worksheet_2_40Marks (1).docx',
+        'title': 'CBSE मुहावरे अभ्यास कार्य-पत्रक 2 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'cbse_padbandh_1': {
-        'path': r'D:\Hindi Grammer\CBSE\Padbandh\Padbandh_Worksheet_1_40Marks (1).docx',
-        'title': 'CBSE पदबंध अभ्यास प्रश्न-पत्र 1 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Padbandh Worksheets\Padbandh_Worksheet_1_40Marks (1).docx',
+        'title': 'CBSE पदबंध अभ्यास कार्य-पत्रक 1 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'cbse_padbandh_2': {
-        'path': r'D:\Hindi Grammer\CBSE\Padbandh\Padbandh_Worksheet_2_40Marks (2).docx',
-        'title': 'CBSE पदबंध अभ्यास प्रश्न-पत्र 2 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Padbandh Worksheets\Padbandh_Worksheet_2_40Marks (2).docx',
+        'title': 'CBSE पदबंध अभ्यास कार्य-पत्रक 2 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'cbse_vakya_1': {
-        'path': r'D:\Hindi Grammer\CBSE\Rachna ke aadhar par\Worksheet_1_Vakya_Rupantar_40Marks (1).docx',
-        'title': 'CBSE वाक्य रूपांतरण अभ्यास प्रश्न-पत्र 1 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Rachna ke aadhar par Worksheets\Worksheet_1_Vakya_Rupantar_40Marks (1).docx',
+        'title': 'CBSE वाक्य रूपांतरण अभ्यास कार्य-पत्रक 1 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'cbse_vakya_2': {
-        'path': r'D:\Hindi Grammer\CBSE\Rachna ke aadhar par\Worksheet_2_Vakya_Rupantar_40Marks .docx',
-        'title': 'CBSE वाक्य रूपांतरण अभ्यास प्रश्न-पत्र 2 (40 अंक)',
+        'path': r'D:\Hindi Grammer\CBSE\Rachna ke aadhar par Worksheets\Worksheet_2_Vakya_Rupantar_40Marks .docx',
+        'title': 'CBSE वाक्य रूपांतरण अभ्यास कार्य-पत्रक 2 (40 अंक)',
         'badge': 'CBSE Class 10 Grammar'
     },
     'icse_muhavre_1': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_1 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 1',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 1',
         'badge': 'ICSE Class 10 Grammar'
     },
     'icse_muhavre_2': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_2 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 2',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 2',
         'badge': 'ICSE Class 10 Grammar'
     },
     'icse_muhavre_3': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_3 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 3',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 3',
         'badge': 'ICSE Class 10 Grammar'
     },
     'icse_muhavre_4': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_4 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 4',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 4',
         'badge': 'ICSE Class 10 Grammar'
     },
     'icse_muhavre_5': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_5 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 5',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 5',
         'badge': 'ICSE Class 10 Grammar'
     },
     'icse_muhavre_6': {
         'path': r'D:\Hindi Grammer\ICSE\Muhavare Worksheets\Hindi_Muhavare_Practice_Worksheet_6 (1).docx',
-        'title': 'ICSE मुहावरे अभ्यास प्रश्न-पत्र 6',
+        'title': 'ICSE मुहावरे अभ्यास कार्य-पत्रक 6',
         'badge': 'ICSE Class 10 Grammar'
     }
 }

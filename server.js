@@ -223,11 +223,17 @@ app.use(helmet({
 }));
 
 const ALLOWED_ORIGINS = [
+  'https://ekshala.in',
+  'https://www.ekshala.in',
+  'http://ekshala.in',
+  'http://www.ekshala.in',
   'https://EkShala.vercel.app',
+  'https://ekshala.vercel.app',
   'https://EkShala-backend.onrender.com',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
   /\.vercel\.app$/,
+  /\.ekshala\.in$/
 ];
 
 app.use(cors({
@@ -294,7 +300,13 @@ function getFileUrl(req) {
 
 // ─── JWT Middleware ──────────────────────────────────────────────────────────
 function auth(req, res, next) {
-  const token = req.cookies?.token;
+  let token = req.cookies?.token;
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+  if (!token && req.query?.token) {
+    token = req.query.token;
+  }
   if (!token) return res.status(401).json({ error: 'Unauthorized. Please log in.' });
   try {
     req.user = jwt.verify(token, JWT_SECRET);
@@ -303,6 +315,7 @@ function auth(req, res, next) {
     res.status(401).json({ error: 'Session expired. Please log in again.' });
   }
 }
+
 
 // ─── In-memory boards cache ──────────────────────────────────────────────────
 let boardsDataCache = null;
@@ -458,9 +471,10 @@ app.get('/api/admin/me', auth, (req, res) => res.json({ user: req.user }));
 // POST /api/student/register
 app.post('/api/student/register', async (req, res) => {
   const { name, email, class_num, password } = req.body;
-  if (!name || !email || !class_num || !password) {
-    return res.status(400).json({ error: 'All fields are required.' });
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'Name, email, and password are required.' });
   }
+  const userClassNum = parseInt(class_num) || 10;
 
   try {
     const hash = await bcrypt.hash(password, 12);
@@ -472,14 +486,14 @@ app.post('/api/student/register', async (req, res) => {
 
       const result = await db.query(
         "INSERT INTO users (name, email, password_hash, role, class_num) VALUES ($1, $2, $3, 'student', $4) RETURNING id, name, email, role, class_num",
-        [name, email, hash, parseInt(class_num)]
+        [name, email, hash, userClassNum]
       );
       newUser = result.rows[0];
     } else {
       const users = readJson('users.json', []);
       if (users.find(u => u.email === email)) return res.status(400).json({ error: 'Email or phone already registered.' });
 
-      newUser = { id: Date.now(), name, email, password_hash: hash, role: 'student', class_num: parseInt(class_num) };
+      newUser = { id: Date.now(), name, email, password_hash: hash, role: 'student', class_num: userClassNum };
       users.push(newUser);
       writeJson('users.json', users);
     }
@@ -492,7 +506,7 @@ app.post('/api/student/register', async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.json({ success: true, user: { name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num } });
+    res.json({ success: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: 'student', class_num: newUser.class_num }, token });
   } catch (err) {
     console.error('[student-register]', err);
     res.status(500).json({ error: 'Failed to create account.' });
@@ -527,7 +541,7 @@ app.post('/api/student/login', async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res.json({ success: true, user: { name: user.name, email: user.email, role: 'student', class_num: user.class_num } });
+    res.json({ success: true, user: { id: user.id, name: user.name, email: user.email, role: 'student', class_num: user.class_num }, token });
   } catch (err) {
     console.error('[student-login]', err);
     res.status(500).json({ error: 'Server error.' });
@@ -539,6 +553,608 @@ app.post('/api/student/logout', (req, res) => {
   res.clearCookie('token');
   res.json({ success: true, message: 'Logged out.' });
 });
+
+// ============================================================
+// WORKSHEET PLATFORM API (Access, Payment, Timed Attempt, Expiry, Upload, Submission, Dashboard)
+// ============================================================
+
+const DEFAULT_WORKSHEETS_MAP = {
+  // CBSE Worksheets
+  'WS_CBSE_10_01': { title: 'Worksheet 1: Hindi (अभ्यास कार्य-पत्र 1)', board: 'CBSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 1', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 50, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_02': { title: 'Worksheet 2: Hindi (अभ्यास कार्य-पत्र 2)', board: 'CBSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 2', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 50, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_03': { title: 'Worksheet 3: Hindi (अभ्यास कार्य-पत्र 3)', board: 'CBSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 3', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 50, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_04': { title: 'Worksheet 4: Hindi (अभ्यास कार्य-पत्र 4)', board: 'CBSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 4', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 50, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_MUH_01': { title: 'Worksheet 1: मुहावरे (अभ्यास कार्य-पत्र 1)', board: 'CBSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (अभ्यास कार्य-पत्र 1)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_MUH_02': { title: 'Worksheet 2: मुहावरे (अभ्यास कार्य-पत्र 2)', board: 'CBSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (अभ्यास कार्य-पत्र 2)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_PAD_01': { title: 'Worksheet 1: पदबंध (अभ्यास कार्य-पत्र 1)', board: 'CBSE', subject: 'Hindi Grammar', chapter: 'पदबंध (अभ्यास कार्य-पत्र 1)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_CBSE_10_PAD_02': { title: 'Worksheet 2: पदबंध (अभ्यास कार्य-पत्र 2)', board: 'CBSE', subject: 'Hindi Grammar', chapter: 'पदबंध (अभ्यास कार्य-पत्र 2)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  // ICSE Worksheets
+  'WS_ICSE_10_01': { title: 'Worksheet 1: ICSE Hindi (अभ्यास कार्य-पत्र 1)', board: 'ICSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 1', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_02': { title: 'Worksheet 2: ICSE Hindi (अभ्यास कार्य-पत्र 2)', board: 'ICSE', subject: 'Hindi', chapter: 'अभ्यास कार्य-पत्र 2', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_01': { title: 'Worksheet 1: मुहावरे (ICSE अभ्यास पत्र 1)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 1)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_02': { title: 'Worksheet 2: मुहावरे (ICSE अभ्यास पत्र 2)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 2)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_03': { title: 'Worksheet 3: मुहावरे (ICSE अभ्यास पत्र 3)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 3)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_04': { title: 'Worksheet 4: मुहावरे (ICSE अभ्यास पत्र 4)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 4)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_05': { title: 'Worksheet 5: मुहावरे (ICSE अभ्यास पत्र 5)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 5)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 },
+  'WS_ICSE_10_MUH_06': { title: 'Worksheet 6: मुहावरे (ICSE अभ्यास पत्र 6)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 6)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 }
+};
+
+// GET /api/worksheets
+app.get('/api/worksheets', async (req, res) => {
+  try {
+    let user = null;
+    const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (token) {
+      try { user = jwt.verify(token, JWT_SECRET); } catch(e) {}
+    }
+
+    let worksheetsList = [];
+    if (usingDb) {
+      const dbRes = await db.query('SELECT * FROM worksheets WHERE is_active = true ORDER BY id');
+      if (dbRes.rows.length > 0) worksheetsList = dbRes.rows;
+    }
+    
+    if (worksheetsList.length === 0) {
+      const stored = readJson('worksheets.json', null);
+      if (stored && stored.length > 0) {
+        worksheetsList = stored;
+      } else {
+        worksheetsList = Object.keys(DEFAULT_WORKSHEETS_MAP).map(id => ({ id, ...DEFAULT_WORKSHEETS_MAP[id] }));
+        writeJson('worksheets.json', worksheetsList);
+      }
+    }
+
+    let purchases = [];
+    let attempts = [];
+    let submissions = [];
+
+    if (user && user.email) {
+      if (usingDb) {
+        const pRes = await db.query('SELECT * FROM worksheet_purchases WHERE user_email = $1', [user.email]);
+        purchases = pRes.rows;
+        const aRes = await db.query('SELECT * FROM worksheet_attempts WHERE user_email = $1 ORDER BY created_at DESC', [user.email]);
+        attempts = aRes.rows;
+        const sRes = await db.query('SELECT * FROM worksheet_submissions WHERE user_email = $1 ORDER BY created_at DESC', [user.email]);
+        submissions = sRes.rows;
+      } else {
+        const pFile = readJson('worksheet_purchases.json', []);
+        purchases = pFile.filter(p => p.user_email === user.email);
+        const aFile = readJson('worksheet_attempts.json', []);
+        attempts = aFile.filter(a => a.user_email === user.email);
+        const sFile = readJson('worksheet_submissions.json', []);
+        submissions = sFile.filter(s => s.user_email === user.email);
+      }
+    }
+
+    const decorated = worksheetsList.map(ws => {
+      const isPurchased = purchases.some(p => p.worksheet_id === ws.id && (p.status === 'paid' || p.status === 'successful'));
+      const userAttempt = attempts.find(a => a.worksheet_id === ws.id);
+      const userSubmission = submissions.find(s => s.worksheet_id === ws.id);
+
+      let computedStatus = 'login_required';
+      let remainingSeconds = 0;
+
+      if (user) {
+        if (!isPurchased) {
+          computedStatus = 'payment_required';
+        } else if (userSubmission) {
+          if (userSubmission.status === 'evaluated') {
+            computedStatus = 'evaluated';
+          } else {
+            computedStatus = 'under_evaluation';
+          }
+        } else if (userAttempt) {
+          const endTime = new Date(userAttempt.end_time).getTime();
+          const now = Date.now();
+          remainingSeconds = Math.max(0, Math.floor((endTime - now) / 1000));
+          
+          if (userAttempt.status === 'submitted') {
+            computedStatus = 'under_evaluation';
+          } else if (remainingSeconds > 0) {
+            computedStatus = 'in_progress';
+          } else {
+            computedStatus = 'time_expired';
+          }
+        } else {
+          computedStatus = 'ready_to_start';
+        }
+      }
+
+      return {
+        ...ws,
+        isPurchased,
+        attempt: userAttempt ? {
+          id: userAttempt.id,
+          startTime: userAttempt.start_time,
+          endTime: userAttempt.end_time,
+          status: userAttempt.status,
+          remainingSeconds
+        } : null,
+        submission: userSubmission ? {
+          id: userSubmission.id,
+          status: userSubmission.status,
+          marksObtained: userSubmission.marks_obtained,
+          totalMarks: userSubmission.total_marks || ws.total_marks,
+          feedback: userSubmission.feedback,
+          submittedAt: userSubmission.created_at
+        } : null,
+        computedStatus
+      };
+    });
+
+    res.json({ success: true, worksheets: decorated });
+  } catch (err) {
+    console.error('[GET /api/worksheets]', err);
+    res.status(500).json({ error: 'Failed to fetch worksheets.' });
+  }
+});
+
+// GET /api/worksheets/:id
+app.get('/api/worksheets/:id', async (req, res) => {
+  const wsId = req.params.id;
+  try {
+    let ws = null;
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM worksheets WHERE id = $1', [wsId]);
+      ws = r.rows[0];
+    }
+    if (!ws) {
+      const stored = readJson('worksheets.json', []);
+      ws = stored.find(w => w.id === wsId);
+    }
+    if (!ws && DEFAULT_WORKSHEETS_MAP[wsId]) {
+      ws = { id: wsId, ...DEFAULT_WORKSHEETS_MAP[wsId] };
+    }
+    if (!ws) return res.status(404).json({ error: 'Worksheet not found.' });
+
+    res.json({ success: true, worksheet: ws });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch worksheet details.' });
+  }
+});
+
+// POST /api/worksheets/payment/create-order
+app.post('/api/worksheets/payment/create-order', auth, async (req, res) => {
+  const { worksheetId } = req.body;
+  if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
+
+  try {
+    let ws = DEFAULT_WORKSHEETS_MAP[worksheetId];
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM worksheets WHERE id = $1', [worksheetId]);
+      if (r.rows.length > 0) ws = r.rows[0];
+    } else {
+      const stored = readJson('worksheets.json', []);
+      const found = stored.find(w => w.id === worksheetId);
+      if (found) ws = found;
+    }
+
+    const price = ws ? parseFloat(ws.price || 100) : 100;
+    const title = ws ? (ws.title || ws.chapter || worksheetId) : worksheetId;
+
+    const orderId = 'ORDER_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
+    const orderToken = jwt.sign({
+      userEmail: req.user.email,
+      worksheetId,
+      orderId,
+      amount: price,
+      currency: 'INR'
+    }, JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({
+      success: true,
+      order: {
+        orderId,
+        worksheetId,
+        worksheetTitle: title,
+        amount: price,
+        currency: 'INR',
+        orderToken
+      }
+    });
+  } catch (err) {
+    console.error('[create-order]', err);
+    res.status(500).json({ error: 'Failed to create payment order.' });
+  }
+});
+
+// POST /api/worksheets/payment/verify
+app.post('/api/worksheets/payment/verify', auth, async (req, res) => {
+  const { worksheetId, paymentId, orderId, orderToken } = req.body;
+  if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID required.' });
+
+  try {
+    let amount = 100;
+    if (orderToken) {
+      try {
+        const decoded = jwt.verify(orderToken, JWT_SECRET);
+        if (decoded.worksheetId === worksheetId) amount = decoded.amount || 100;
+      } catch(e) {}
+    }
+
+    const payId = paymentId || ('PAY_' + Date.now() + '_' + Math.floor(Math.random() * 10000));
+    const userEmail = req.user.email;
+    const userId = req.user.id || null;
+
+    const purchaseRecord = {
+      id: Date.now(),
+      user_id: userId,
+      user_email: userEmail,
+      worksheet_id: worksheetId,
+      payment_id: payId,
+      amount: amount,
+      currency: 'INR',
+      status: 'paid',
+      created_at: new Date().toISOString()
+    };
+
+    if (usingDb) {
+      await db.query(
+        `INSERT INTO worksheet_purchases (user_id, user_email, worksheet_id, payment_id, amount, currency, status)
+         VALUES ($1, $2, $3, $4, $5, $6, $7)
+         ON CONFLICT (user_email, worksheet_id) DO UPDATE SET status = 'paid'`,
+        [userId, userEmail, worksheetId, payId, amount, 'INR', 'paid']
+      );
+    } else {
+      const purchases = readJson('worksheet_purchases.json', []);
+      const existingIdx = purchases.findIndex(p => p.user_email === userEmail && p.worksheet_id === worksheetId);
+      if (existingIdx !== -1) {
+        purchases[existingIdx].status = 'paid';
+        purchases[existingIdx].payment_id = payId;
+      } else {
+        purchases.push(purchaseRecord);
+      }
+      writeJson('worksheet_purchases.json', purchases);
+    }
+
+    console.log(`[Payment Verified] User ${userEmail} unlocked ${worksheetId} for ₹${amount}`);
+    res.json({ success: true, message: 'Payment verified! Worksheet unlocked.', purchase: purchaseRecord });
+  } catch (err) {
+    console.error('[payment-verify]', err);
+    res.status(500).json({ error: 'Payment verification failed.' });
+  }
+});
+
+// POST /api/worksheets/start-attempt
+app.post('/api/worksheets/start-attempt', auth, async (req, res) => {
+  const { worksheetId } = req.body;
+  if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
+
+  const userEmail = req.user.email;
+  const userId = req.user.id || null;
+
+  try {
+    let isPurchased = false;
+    if (usingDb) {
+      const p = await db.query('SELECT * FROM worksheet_purchases WHERE user_email = $1 AND worksheet_id = $2 AND status = $3', [userEmail, worksheetId, 'paid']);
+      if (p.rows.length > 0) isPurchased = true;
+    } else {
+      const p = readJson('worksheet_purchases.json', []);
+      if (p.some(item => item.user_email === userEmail && item.worksheet_id === worksheetId && item.status === 'paid')) {
+        isPurchased = true;
+      }
+    }
+
+    if (!isPurchased) {
+      return res.status(403).json({ error: 'Please unlock/pay for this worksheet before starting the attempt.' });
+    }
+
+    let durationMinutes = 30;
+    if (usingDb) {
+      const r = await db.query('SELECT duration_minutes FROM worksheets WHERE id = $1', [worksheetId]);
+      if (r.rows.length > 0 && r.rows[0].duration_minutes) durationMinutes = r.rows[0].duration_minutes;
+    } else {
+      const stored = readJson('worksheets.json', []);
+      const found = stored.find(w => w.id === worksheetId);
+      if (found && found.duration_minutes) durationMinutes = found.duration_minutes;
+      else if (DEFAULT_WORKSHEETS_MAP[worksheetId]) durationMinutes = DEFAULT_WORKSHEETS_MAP[worksheetId].duration_minutes || 30;
+    }
+
+    let existingAttempt = null;
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM worksheet_attempts WHERE user_email = $1 AND worksheet_id = $2 ORDER BY created_at DESC LIMIT 1', [userEmail, worksheetId]);
+      if (r.rows.length > 0) existingAttempt = r.rows[0];
+    } else {
+      const attempts = readJson('worksheet_attempts.json', []);
+      existingAttempt = attempts.find(a => a.user_email === userEmail && a.worksheet_id === worksheetId);
+    }
+
+    const nowMs = Date.now();
+    if (existingAttempt) {
+      const endTimeMs = new Date(existingAttempt.end_time).getTime();
+      const remaining = Math.max(0, Math.floor((endTimeMs - nowMs) / 1000));
+      return res.json({
+        success: true,
+        attempt: {
+          id: existingAttempt.id,
+          startTime: existingAttempt.start_time,
+          endTime: existingAttempt.end_time,
+          durationMinutes: existingAttempt.duration_minutes,
+          status: remaining <= 0 ? 'time_expired' : existingAttempt.status,
+          remainingSeconds: remaining
+        }
+      });
+    }
+
+    const startTimeDate = new Date();
+    const endTimeDate = new Date(nowMs + durationMinutes * 60 * 1000);
+    let newAttempt = null;
+
+    if (usingDb) {
+      const ins = await db.query(
+        `INSERT INTO worksheet_attempts (user_id, user_email, worksheet_id, start_time, end_time, duration_minutes, status)
+         VALUES ($1, $2, $3, $4, $5, $6, 'in_progress') RETURNING *`,
+        [userId, userEmail, worksheetId, startTimeDate, endTimeDate, durationMinutes]
+      );
+      newAttempt = ins.rows[0];
+    } else {
+      const attempts = readJson('worksheet_attempts.json', []);
+      newAttempt = {
+        id: Date.now(),
+        user_id: userId,
+        user_email: userEmail,
+        worksheet_id: worksheetId,
+        start_time: startTimeDate.toISOString(),
+        end_time: endTimeDate.toISOString(),
+        duration_minutes: durationMinutes,
+        status: 'in_progress',
+        created_at: startTimeDate.toISOString()
+      };
+      attempts.push(newAttempt);
+      writeJson('worksheet_attempts.json', attempts);
+    }
+
+    const remaining = durationMinutes * 60;
+    console.log(`[Attempt Started] ${userEmail} started ${worksheetId} (${durationMinutes} mins)`);
+    res.json({
+      success: true,
+      attempt: {
+        id: newAttempt.id,
+        startTime: newAttempt.start_time,
+        endTime: newAttempt.end_time,
+        durationMinutes,
+        status: 'in_progress',
+        remainingSeconds: remaining
+      }
+    });
+  } catch (err) {
+    console.error('[start-attempt]', err);
+    res.status(500).json({ error: 'Failed to start worksheet attempt.' });
+  }
+});
+
+// GET /api/worksheets/attempt-status/:worksheetId
+app.get('/api/worksheets/attempt-status/:worksheetId', auth, async (req, res) => {
+  const { worksheetId } = req.params;
+  const userEmail = req.user.email;
+
+  try {
+    let attempt = null;
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM worksheet_attempts WHERE user_email = $1 AND worksheet_id = $2 ORDER BY created_at DESC LIMIT 1', [userEmail, worksheetId]);
+      if (r.rows.length > 0) attempt = r.rows[0];
+    } else {
+      const attempts = readJson('worksheet_attempts.json', []);
+      attempt = attempts.find(a => a.user_email === userEmail && a.worksheet_id === worksheetId);
+    }
+
+    if (!attempt) return res.status(404).json({ error: 'No attempt found for this worksheet.' });
+
+    const nowMs = Date.now();
+    const endTimeMs = new Date(attempt.end_time).getTime();
+    const remainingSeconds = Math.max(0, Math.floor((endTimeMs - nowMs) / 1000));
+    let status = attempt.status;
+
+    if (remainingSeconds <= 0 && status === 'in_progress') {
+      status = 'time_expired';
+      if (usingDb) {
+        await db.query("UPDATE worksheet_attempts SET status = 'time_expired' WHERE id = $1", [attempt.id]);
+      } else {
+        const attempts = readJson('worksheet_attempts.json', []);
+        const idx = attempts.findIndex(a => a.id === attempt.id);
+        if (idx !== -1) { attempts[idx].status = 'time_expired'; writeJson('worksheet_attempts.json', attempts); }
+      }
+    }
+
+    res.json({
+      success: true,
+      attempt: {
+        id: attempt.id,
+        startTime: attempt.start_time,
+        endTime: attempt.end_time,
+        status,
+        remainingSeconds
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to check attempt status.' });
+  }
+});
+
+// POST /api/worksheets/submit
+app.post('/api/worksheets/submit', auth, upload.array('answer_files', 10), async (req, res) => {
+  const { worksheetId, attemptId } = req.body;
+  if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
+
+  const userEmail = req.user.email;
+  const studentName = req.user.name || 'Student';
+  const userId = req.user.id || null;
+
+  try {
+    let wsTitle = worksheetId;
+    if (DEFAULT_WORKSHEETS_MAP[worksheetId]) {
+      wsTitle = DEFAULT_WORKSHEETS_MAP[worksheetId].title || DEFAULT_WORKSHEETS_MAP[worksheetId].chapter || worksheetId;
+    }
+
+    const fileUrls = [];
+    const fileNames = [];
+    if (req.files && req.files.length > 0) {
+      req.files.forEach(f => {
+        fileNames.push(f.originalname);
+        if (usingCloudinary) fileUrls.push(f.path);
+        else fileUrls.push(`/uploads/${f.filename}`);
+      });
+    } else if (req.file) {
+      fileNames.push(req.file.originalname);
+      fileUrls.push(getFileUrl(req));
+    }
+
+    if (fileUrls.length === 0) {
+      return res.status(400).json({ error: 'Please upload at least one JPG, PNG, or PDF answer sheet file.' });
+    }
+
+    const primaryFileUrl = fileUrls[0];
+    const primaryFileName = fileNames[0];
+
+    const submissionRecord = {
+      id: Date.now(),
+      user_id: userId,
+      user_email: userEmail,
+      student_name: studentName,
+      worksheet_id: worksheetId,
+      attempt_id: attemptId || null,
+      file_name: primaryFileName,
+      file_path: primaryFileUrl,
+      file_urls: fileUrls,
+      file_names: fileNames,
+      status: 'under_evaluation',
+      marks_obtained: null,
+      total_marks: 50,
+      created_at: new Date().toISOString()
+    };
+
+    if (usingDb) {
+      await db.query(
+        `INSERT INTO worksheet_submissions (user_id, user_email, student_name, worksheet_id, attempt_id, file_name, file_path, file_urls, file_names, status)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'under_evaluation')`,
+        [userId, userEmail, studentName, worksheetId, attemptId || null, primaryFileName, primaryFileUrl, fileUrls, fileNames]
+      );
+      if (attemptId) {
+        await db.query("UPDATE worksheet_attempts SET status = 'submitted' WHERE id = $1", [attemptId]);
+      }
+    } else {
+      const subs = readJson('worksheet_submissions.json', []);
+      subs.unshift(submissionRecord);
+      writeJson('worksheet_submissions.json', subs);
+      if (attemptId) {
+        const attempts = readJson('worksheet_attempts.json', []);
+        const idx = attempts.findIndex(a => String(a.id) === String(attemptId));
+        if (idx !== -1) { attempts[idx].status = 'submitted'; writeJson('worksheet_attempts.json', attempts); }
+      }
+    }
+
+    console.log(`[Worksheet Submitted] ${studentName} (${userEmail}) submitted ${fileUrls.length} file(s) for ${worksheetId}`);
+    res.json({
+      success: true,
+      message: 'Your worksheet has been successfully submitted for evaluation.',
+      submission: submissionRecord
+    });
+  } catch (err) {
+    console.error('[worksheet-submit]', err);
+    res.status(500).json({ error: 'Failed to submit worksheet answer sheet.' });
+  }
+});
+
+// ADMIN: GET /api/admin/worksheets & POST /api/admin/worksheets/save
+app.get('/api/admin/worksheets', auth, async (req, res) => {
+  try {
+    let list = [];
+    if (usingDb) {
+      const r = await db.query('SELECT * FROM worksheets ORDER BY id');
+      list = r.rows;
+    }
+    if (list.length === 0) {
+      list = readJson('worksheets.json', []);
+    }
+    if (list.length === 0) {
+      list = Object.keys(DEFAULT_WORKSHEETS_MAP).map(id => ({ id, ...DEFAULT_WORKSHEETS_MAP[id] }));
+    }
+    res.json({ success: true, worksheets: list });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch admin worksheets.' });
+  }
+});
+
+app.post('/api/admin/worksheets/save', auth, async (req, res) => {
+  const { id, title, board, subject, chapter, price, duration_minutes, questions_count, total_marks, page_size, accepted_formats, max_file_size_mb, instructions } = req.body;
+  if (!id) return res.status(400).json({ error: 'Worksheet ID is required.' });
+
+  const updated = {
+    id,
+    title: title || id,
+    board: board || 'CBSE',
+    subject: subject || 'Hindi',
+    chapter: chapter || '',
+    price: parseFloat(price || 100),
+    duration_minutes: parseInt(duration_minutes || 30),
+    questions_count: parseInt(questions_count || 10),
+    total_marks: parseInt(total_marks || 50),
+    page_size: page_size || 'A4',
+    accepted_formats: accepted_formats || 'JPG, PNG, PDF',
+    max_file_size_mb: parseInt(max_file_size_mb || 10),
+    instructions: instructions || '',
+    updated_at: new Date().toISOString()
+  };
+
+  try {
+    if (usingDb) {
+      await db.query(
+        `INSERT INTO worksheets (id, title, board, subject, chapter, price, duration_minutes, questions_count, total_marks, page_size, accepted_formats, max_file_size_mb, instructions)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
+         ON CONFLICT (id) DO UPDATE SET
+           title=$2, board=$3, subject=$4, chapter=$5, price=$6, duration_minutes=$7, questions_count=$8, total_marks=$9, page_size=$10, accepted_formats=$11, max_file_size_mb=$12, instructions=$13`,
+        [id, updated.title, updated.board, updated.subject, updated.chapter, updated.price, updated.duration_minutes, updated.questions_count, updated.total_marks, updated.page_size, updated.accepted_formats, updated.max_file_size_mb, updated.instructions]
+      );
+    } else {
+      const stored = readJson('worksheets.json', []);
+      const idx = stored.findIndex(w => w.id === id);
+      if (idx !== -1) stored[idx] = { ...stored[idx], ...updated };
+      else stored.push(updated);
+      writeJson('worksheets.json', stored);
+    }
+    console.log(`[Admin Worksheet Updated] ${id} price=₹${updated.price} duration=${updated.duration_minutes}m`);
+    res.json({ success: true, worksheet: updated });
+  } catch (err) {
+    console.error('[admin-worksheet-save]', err);
+    res.status(500).json({ error: 'Failed to save worksheet configuration.' });
+  }
+});
+
+// ADMIN: POST /api/admin/evaluate-submission
+app.post('/api/admin/evaluate-submission', auth, async (req, res) => {
+  const { submissionId, marksObtained, totalMarks, feedback } = req.body;
+  if (!submissionId) return res.status(400).json({ error: 'Submission ID is required.' });
+
+  try {
+    const marks = parseInt(marksObtained || 0);
+    const tot = parseInt(totalMarks || 50);
+    const fb = (feedback || '').trim();
+    const evaluatedAt = new Date().toISOString();
+
+    if (usingDb) {
+      await db.query(
+        `UPDATE worksheet_submissions SET marks_obtained = $1, total_marks = $2, feedback = $3, status = 'evaluated', evaluated_at = $4 WHERE id = $5`,
+        [marks, tot, fb, evaluatedAt, submissionId]
+      );
+    } else {
+      const subs = readJson('worksheet_submissions.json', []);
+      const found = subs.find(s => String(s.id) === String(submissionId));
+      if (found) {
+        found.marks_obtained = marks;
+        found.total_marks = tot;
+        found.feedback = fb;
+        found.status = 'evaluated';
+        found.evaluated_at = evaluatedAt;
+        writeJson('worksheet_submissions.json', subs);
+      }
+    }
+    res.json({ success: true, message: 'Submission evaluated successfully!' });
+  } catch (err) {
+    console.error('[evaluate-submission]', err);
+    res.status(500).json({ error: 'Failed to evaluate submission.' });
+  }
+});
+
 
 // GET /api/student/me
 app.get('/api/student/me', auth, (req, res) => {

@@ -636,7 +636,7 @@ async function initBoardsSection() {
 
   // Try loading live resources from database
   try {
-    const res = await fetch('/api/resources');
+    const res = await fetch(API_BASE + '/api/resources', { headers: getAuthHeaders() });
     if (res.ok) {
       const dbData = await res.json();
       if (dbData && Object.keys(dbData).length > 0) {
@@ -913,7 +913,7 @@ function renderDefaultRightContent(subjRes) {
         <a href="/about/" style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 0.9rem 1rem; border-radius: 10px; text-decoration: none; color: inherit; transition: all 0.2s ease; display: block;">
           <div style="font-size: 1.25rem; margin-bottom: 0.25rem;">ℹ️</div>
           <strong style="font-size: 0.88rem; color: #0F172A; display: block;">About EkShala</strong>
-          <span style="font-size: 0.75rem; color: #64748B;">Free Education Mission</span>
+          <span style="font-size: 0.75rem; color: #64748B;">Quality Education Mission</span>
         </a>
       </div>
 
@@ -1316,8 +1316,7 @@ function _OLD_renderChapter_unused(book, ch) {
                 <p class="ch-links-label">अभ्यास पत्रक (Worksheets):</p>
                 <div class="ch-ws-row">
                   ${Array.from({ length: ch.worksheets }, (_, i) => `
-                    <button class="ws-btn download" onclick="handleDownload('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.dl} Worksheet ${i+1}</button>
-                    <button class="ws-btn upload" onclick="openUploadModal('${book.name} Ch.${ch.num} Worksheet ${i+1}')">${SVG.up} Upload</button>
+                    <button class="ws-btn upload" onclick="openWorksheetMaster('${book.name}_WS_${i+1}', '${book.name} Ch.${ch.num} Worksheet ${i+1}')">📝 Worksheet ${i+1}</button>
                   `).join('')}
                 </div>
               </div>` : ''}
@@ -1586,17 +1585,8 @@ function renderTestPaperCard(p) {
         ${SVG.eye} Default: View Mode
       </div>
       <div class="tp-actions">
-        <button class="tp-action-btn view" onclick="openWorksheetViewer('${p.id}', '${safeTitle}', '${safeUrl}')">
-          ${SVG.eye} View
-        </button>
-        <button class="tp-action-btn download" onclick="handleDownload('${safeTitle}', '${safeUrl}')">
-          ${SVG.dl} Download
-        </button>
-        <button class="tp-action-btn upload" onclick="openUploadModal('${p.id}', '${safeTitle}')">
-          ${SVG.up} Upload Answer
-        </button>
-        <button class="tp-action-btn submit" onclick="simulateSubmit(this, '${p.id}', '${safeTitle}')">
-          ${SVG.send} Submit
+        <button class="tp-action-btn view" onclick="openWorksheetMaster('${p.id}', '${safeTitle}', '${safeUrl}')" style="background:#3A7BD5; color:#fff; font-weight:700;">
+          📝 Attempt Worksheet
         </button>
       </div>
     </div>`;
@@ -1651,9 +1641,9 @@ function initContactForm() {
     btn.textContent = 'Sending...';
 
     try {
-      const res  = await fetch('/api/mentor-request', {
+      const res  = await fetch(API_BASE + '/api/mentor-request', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ name, email_or_phone: emailVal, student_class: fields.cls.el.value, message: msg })
       });
       const data = await res.json();
@@ -1687,9 +1677,9 @@ function initRevisionNotify() {
     const contactEl = document.getElementById('notify-contact');
     const classEl   = document.getElementById('notify-class');
     try {
-      const res  = await fetch('/api/revision-notify', {
+      const res  = await fetch(API_BASE + '/api/revision-notify', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({
           name:      nameEl?.value?.trim()    || 'Student',
           contact:   contactEl?.value?.trim() || 'N/A',
@@ -1848,9 +1838,15 @@ let _worksheetsCache = null;
 async function fetchWorksheetsHtmlContent() {
   if (_worksheetsCache) return _worksheetsCache;
   try {
-    const res = await fetch('/worksheets_html_content.json?v=' + Date.now(), { cache: 'no-store' });
-    if (!res.ok) throw new Error('Failed to load worksheets');
-    _worksheetsCache = await res.json();
+    const [res1, res2] = await Promise.all([
+      fetch('/worksheets_html_content.json?v=' + Date.now(), { cache: 'no-store' }).catch(() => null),
+      fetch('/grammar_converted_data.json?v=' + Date.now(), { cache: 'no-store' }).catch(() => null)
+    ]);
+    let store1 = {};
+    let store2 = {};
+    if (res1 && res1.ok) store1 = await res1.json();
+    if (res2 && res2.ok) store2 = await res2.json();
+    _worksheetsCache = { ...store1, ...store2 };
     return _worksheetsCache;
   } catch (err) {
     console.error('Error fetching worksheets:', err);
@@ -1879,8 +1875,8 @@ async function openWorksheetViewer(id, title, fileUrl) {
         </div>
       </div>
       <div style="display:flex; gap:0.4rem; align-items:center; flex-shrink:0;">
-        <button class="fs-back-btn" style="background:#10B981; border-color:#10B981; padding:0.35rem 0.65rem; font-size:0.78rem;" onclick="handleDownload('${sTitle}', '${sUrl}')" title="Download Document">
-          📥 Download
+        <button class="fs-back-btn" style="background:#3A7BD5; border-color:#3A7BD5; padding:0.35rem 0.65rem; font-size:0.78rem;" onclick="openWorksheetMaster('${id}', '${sTitle}')" title="Attempt Worksheet">
+          📝 Attempt Test
         </button>
         <button class="fs-back-btn" style="background:#F59E0B; border-color:#F59E0B; padding:0.35rem 0.65rem; font-size:0.78rem;" onclick="openUploadModal('${id}', '${sTitle}')" title="Upload Answer Sheet">
           📤 Evaluation
@@ -1911,11 +1907,8 @@ async function openWorksheetViewer(id, title, fileUrl) {
               अपनी उत्तर-पुस्तिका (Answer Sheet) की फोटो या PDF अपलोड करें और मेंटर से 48 घंटे के भीतर विस्तृत मूल्यांकन (Evaluation & Feedback) प्राप्त करें।
             </p>
             <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
-              <button class="btn btn-primary" onclick="openUploadModal('${id}', '${sTitle}')" style="padding: 0.65rem 1.6rem; border-radius: 100px; font-weight: 700; cursor: pointer;">
-                📤 Upload Answer Sheet
-              </button>
-              <button class="btn btn-secondary" onclick="handleDownload('${sTitle}', '${sUrl}')" style="padding: 0.65rem 1.6rem; border-radius: 100px; font-weight: 700; cursor: pointer;">
-                📥 Download Word File
+              <button class="btn btn-primary" onclick="openWorksheetMaster('${id}', '${sTitle}')" style="padding: 0.65rem 1.6rem; border-radius: 100px; font-weight: 700; cursor: pointer;">
+                📝 Start Timed Attempt
               </button>
             </div>
           </div>
@@ -1925,9 +1918,9 @@ async function openWorksheetViewer(id, title, fileUrl) {
         <div class="fs-empty">
           <div style="font-size:3.5rem;margin-bottom:1rem">📄</div>
           <h3>${title}</h3>
-          <p>अभ्यास पत्रक उपलब्ध है। नीचे दिए गए बटन से सीधे Word File डाउनलोड करें।</p>
-          <button class="btn btn-primary" onclick="handleDownload('${sTitle}', '${sUrl}')" style="margin-top:1rem; padding:0.6rem 1.4rem; border-radius:100px; cursor:pointer;">
-            📥 Download Word File
+          <p>अभ्यास पत्रक उपलब्ध है। हल करने एवं मूल्यांकन हेतु नीचे दिए गए बटन पर क्लिक करें।</p>
+          <button class="btn btn-primary" onclick="openWorksheetMaster('${id}', '${sTitle}')" style="margin-top:1rem; padding:0.6rem 1.4rem; border-radius:100px; cursor:pointer;">
+            📝 Start Timed Attempt
           </button>
         </div>`;
     }
@@ -1937,9 +1930,9 @@ async function openWorksheetViewer(id, title, fileUrl) {
       <div class="fs-empty">
         <div style="font-size:3.5rem;margin-bottom:1rem">📄</div>
         <h3>${title}</h3>
-        <p>अभ्यास पत्रक उपलब्ध है। नीचे दिए गए बटन से सीधे Word File डाउनलोड करें।</p>
-        <button class="btn btn-primary" onclick="handleDownload('${sTitle}', '${sUrl}')" style="margin-top:1rem; padding:0.6rem 1.4rem; border-radius:100px; cursor:pointer;">
-          📥 Download Word File
+        <p>अभ्यास पत्रक उपलब्ध है। हल करने एवं मूल्यांकन हेतु नीचे दिए गए बटन पर क्लिक करें।</p>
+        <button class="btn btn-primary" onclick="openWorksheetMaster('${id}', '${sTitle}')" style="margin-top:1rem; padding:0.6rem 1.4rem; border-radius:100px; cursor:pointer;">
+          📝 Start Timed Attempt
         </button>
       </div>`;
   }
@@ -2244,18 +2237,7 @@ function clearError(el, errId) {
 }
 
 function handleDownload(title, url) {
-  if (url) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = url.split('/').pop();
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    showToast(`Downloading: "${title}"`);
-  } else {
-    showToast(`"${title}": will be available for download soon. Contact a mentor for direct access.`);
-  }
+  showToast('वर्कशीट डाउनलोड की अनुमति नहीं है। कृपया "Worksheet Attempt" सिस्टम का उपयोग करें।');
 }
 
 async function simulateSubmit(btn, paperId, paperTitle) {
@@ -2410,4 +2392,1019 @@ document.addEventListener('DOMContentLoaded', () => {
       if (modal) { modal.hidden = true; document.body.style.overflow = ''; }
     });
   }
+  updateNavbarAuthUI();
 });
+
+function updateNavbarAuthUI() {
+  const student = getStudentUser();
+  const loginBtn = document.getElementById('nav-login-btn');
+  if (loginBtn) {
+    if (student) {
+      loginBtn.innerHTML = '📊 My Dashboard';
+      loginBtn.href = 'javascript:void(0)';
+      loginBtn.onclick = (e) => {
+        e.preventDefault();
+        openStudentDashboardModal();
+      };
+    } else {
+      loginBtn.innerHTML = 'Login';
+      loginBtn.href = 'javascript:void(0)';
+      loginBtn.onclick = (e) => {
+        e.preventDefault();
+        openWorksheetMaster('general_login', 'Student Login');
+      };
+    }
+  }
+}
+window.updateNavbarAuthUI = updateNavbarAuthUI;
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   WORKSHEET PLATFORM ENGINE (Login, Payment, Attempt, Timer, Expiry, Submission, Dashboard)
+   Matches 20-Step Production Flow Diagram Exactly
+═══════════════════════════════════════════════════════════════════════════ */
+
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? ''
+  : (window.location.hostname.includes('vercel.app') ? '' : 'https://ekshala.vercel.app');
+
+function getStudentToken() {
+  return localStorage.getItem('student_token') || '';
+}
+
+// 1. Current Logged In Student helper
+function getStudentUser() {
+  try {
+    const raw = localStorage.getItem('student_user');
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return null;
+}
+
+function setStudentUser(user, token) {
+  if (user) {
+    localStorage.setItem('student_user', JSON.stringify(user));
+    if (token) localStorage.setItem('student_token', token);
+  } else {
+    localStorage.removeItem('student_user');
+    localStorage.removeItem('student_token');
+  }
+  if (typeof updateNavbarAuthUI === 'function') {
+    updateNavbarAuthUI();
+  }
+}
+
+function getAuthHeaders(extraHeaders = {}) {
+  const headers = { ...extraHeaders };
+  const token = getStudentToken();
+  if (token) {
+    headers['Authorization'] = 'Bearer ' + token;
+  }
+  return headers;
+}
+
+
+// Global active timer interval reference
+let _wsActiveTimerInterval = null;
+
+// Modal Container creation helper
+function getOrCreateWsModal() {
+  let overlay = document.getElementById('ws-platform-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'ws-platform-overlay';
+    overlay.className = 'ws-modal-overlay';
+    document.body.appendChild(overlay);
+  }
+  return overlay;
+}
+
+function closeWsModal() {
+  const overlay = document.getElementById('ws-platform-overlay');
+  if (overlay) {
+    overlay.classList.remove('active');
+    setTimeout(() => { overlay.innerHTML = ''; }, 250);
+  }
+  document.body.style.overflow = '';
+  if (_wsActiveTimerInterval) {
+    clearInterval(_wsActiveTimerInterval);
+    _wsActiveTimerInterval = null;
+  }
+}
+window.closeWsModal = closeWsModal;
+
+// 2. MAIN ENTRY POINT: openWorksheetMaster(worksheetId, worksheetTitle, fileUrl)
+async function openWorksheetMaster(worksheetId, worksheetTitle, fileUrl) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-body" style="text-align:center; padding: 3rem 1.5rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🔄</div>
+        <h4 style="font-size:1.15rem; font-weight:700; color:#0F172A;">वर्कशीट स्थिति लोड हो रही है...</h4>
+        <p style="color:#64748B; font-size:0.88rem; margin-top:0.4rem;">कृपया प्रतीक्षा करें</p>
+      </div>
+    </div>
+  `;
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  try {
+    const res = await fetch(API_BASE + '/api/worksheets', { headers: getAuthHeaders(), cache: 'no-store' });
+    const data = await res.json();
+    const worksheets = (data && data.worksheets) || [];
+    let ws = worksheets.find(w => w.id === worksheetId);
+
+    if (!ws) {
+      ws = {
+        id: worksheetId,
+        title: worksheetTitle || worksheetId,
+        board: 'CBSE',
+        subject: 'Hindi',
+        price: 100,
+        duration_minutes: 30,
+        questions_count: 10,
+        total_marks: 50,
+        page_size: 'A4',
+        accepted_formats: 'JPG, PNG, PDF',
+        max_file_size_mb: 10,
+        file_url: fileUrl || '',
+        computedStatus: getStudentUser() ? 'payment_required' : 'login_required'
+      };
+    }
+
+    const student = getStudentUser();
+    if (!student) {
+      renderLoginModal(ws);
+      return;
+    }
+
+    switch (ws.computedStatus) {
+      case 'login_required':
+        renderLoginModal(ws);
+        break;
+      case 'payment_required':
+        renderPaymentModal(ws);
+        break;
+      case 'ready_to_start':
+      case 'purchased':
+        renderBeforeYouStartModal(ws);
+        break;
+      case 'in_progress':
+        startOrResumeAttempt(ws);
+        break;
+      case 'time_expired':
+      case 'ready_to_submit':
+        renderTimeExpiredAndSubmissionModal(ws);
+        break;
+      case 'under_evaluation':
+      case 'submitted':
+        renderSubmissionStatusModal(ws);
+        break;
+      case 'evaluated':
+        renderEvaluationResultModal(ws);
+        break;
+      default:
+        renderBeforeYouStartModal(ws);
+        break;
+    }
+  } catch (err) {
+    console.error('[openWorksheetMaster]', err);
+    if (!getStudentUser()) {
+      renderLoginModal({ id: worksheetId, title: worksheetTitle });
+    } else {
+      renderPaymentModal({ id: worksheetId, title: worksheetTitle, price: 100, duration_minutes: 30 });
+    }
+  }
+}
+window.openWorksheetMaster = openWorksheetMaster;
+window.openWorksheetViewer = openWorksheetMaster;
+
+// 3. STEP 1 & 2: LOGIN / SIGNUP MODAL
+function renderLoginModal(ws) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>🔒</span> Login Required
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body">
+        <div style="text-align:center; margin-bottom:1.5rem;">
+          <div style="width:54px; height:54px; background:#EFF6FF; color:#3A7BD5; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:1.6rem; margin-bottom:0.75rem;">🔒</div>
+          <h3 style="font-size:1.35rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Account Login Required</h3>
+          <p style="color:#64748B; font-size:0.92rem; max-width:440px; margin:0 auto; line-height:1.6;">
+            Please login or create a free student account to access this worksheet.
+          </p>
+        </div>
+
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:0.85rem 1rem; margin-bottom:1.5rem; display:flex; align-items:center; justify-content:space-between;">
+          <span style="font-size:0.85rem; color:#475569; font-weight:600;">Selected Worksheet:</span>
+          <span style="font-size:0.88rem; color:#1E40AF; font-weight:700;">${ws.title || ws.id}</span>
+        </div>
+
+        <!-- Auth Tabs -->
+        <div style="display:flex; border-bottom:2px solid #E2E8F0; margin-bottom:1.25rem;">
+          <button id="tab-login-btn" onclick="switchAuthTab('login')" style="flex:1; padding:0.6rem; font-weight:700; font-size:0.92rem; color:#3A7BD5; border-bottom:2.5px solid #3A7BD5; cursor:pointer;">Student Login</button>
+          <button id="tab-signup-btn" onclick="switchAuthTab('signup')" style="flex:1; padding:0.6rem; font-weight:700; font-size:0.92rem; color:#64748B; border-bottom:2.5px solid transparent; cursor:pointer;">Create New Account</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="ws-login-form" onsubmit="handleWsLogin(event, '${ws.id}', '${(ws.title||'').replace(/'/g,"\\'")}')">
+          <div style="margin-bottom:1rem;">
+            <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.35rem;">Email Address or Phone Number</label>
+            <input type="text" id="ws-auth-email" required placeholder="student@example.com" style="width:100%; padding:0.75rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.95rem;">
+          </div>
+          <div style="margin-bottom:1.25rem;">
+            <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.35rem;">Password</label>
+            <input type="password" id="ws-auth-pass" required placeholder="Enter password" style="width:100%; padding:0.75rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.95rem;">
+          </div>
+          <div id="ws-auth-err" style="color:#DC2626; font-size:0.85rem; margin-bottom:1rem; display:none; background:#FEE2E2; padding:0.5rem 0.75rem; border-radius:8px;"></div>
+          <button type="submit" class="ws-btn-full ws-btn-primary">
+            🔐 Login to Access Worksheet
+          </button>
+        </form>
+
+        <!-- Signup Form (Hidden by default) -->
+        <form id="ws-signup-form" style="display:none;" onsubmit="handleWsSignup(event, '${ws.id}', '${(ws.title||'').replace(/'/g,"\\'")}')">
+          <div style="margin-bottom:0.85rem;">
+            <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.25rem;">Full Name</label>
+            <input type="text" id="ws-signup-name" required placeholder="Your full name" style="width:100%; padding:0.7rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem;">
+          </div>
+          <div style="margin-bottom:0.85rem;">
+            <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.25rem;">Email Address</label>
+            <input type="email" id="ws-signup-email" required placeholder="student@example.com" style="width:100%; padding:0.7rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem;">
+          </div>
+          <div style="margin-bottom:0.85rem; display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+            <div>
+              <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.25rem;">Class</label>
+              <select id="ws-signup-class" style="width:100%; padding:0.7rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem;">
+                <option value="10">Class 10</option>
+              </select>
+            </div>
+            <div>
+              <label style="display:block; font-size:0.84rem; font-weight:700; color:#334155; margin-bottom:0.25rem;">Password</label>
+              <input type="password" id="ws-signup-pass" required placeholder="Password" style="width:100%; padding:0.7rem 1rem; border:1.5px solid #CBD5E1; border-radius:10px; font-size:0.92rem;">
+            </div>
+          </div>
+          <div id="ws-signup-err" style="color:#DC2626; font-size:0.85rem; margin-bottom:1rem; display:none; background:#FEE2E2; padding:0.5rem 0.75rem; border-radius:8px;"></div>
+          <button type="submit" class="ws-btn-full ws-btn-primary">
+            ✨ Create Account &amp; Continue
+          </button>
+        </form>
+      </div>
+    </div>
+  `;
+}
+
+function switchAuthTab(tab) {
+  const loginForm = document.getElementById('ws-login-form');
+  const signupForm = document.getElementById('ws-signup-form');
+  const loginBtn = document.getElementById('tab-login-btn');
+  const signupBtn = document.getElementById('tab-signup-btn');
+
+  if (tab === 'login') {
+    loginForm.style.display = 'block';
+    signupForm.style.display = 'none';
+    loginBtn.style.color = '#3A7BD5';
+    loginBtn.style.borderBottomColor = '#3A7BD5';
+    signupBtn.style.color = '#64748B';
+    signupBtn.style.borderBottomColor = 'transparent';
+  } else {
+    loginForm.style.display = 'none';
+    signupForm.style.display = 'block';
+    signupBtn.style.color = '#3A7BD5';
+    signupBtn.style.borderBottomColor = '#3A7BD5';
+    loginBtn.style.color = '#64748B';
+    loginBtn.style.borderBottomColor = 'transparent';
+  }
+}
+window.switchAuthTab = switchAuthTab;
+
+async function handleWsLogin(e, wsId, wsTitle) {
+  e.preventDefault();
+  const email = document.getElementById('ws-auth-email').value.trim();
+  const password = document.getElementById('ws-auth-pass').value;
+  const errEl = document.getElementById('ws-auth-err');
+  errEl.style.display = 'none';
+
+  try {
+    const res = await fetch(API_BASE + '/api/student/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      errEl.textContent = data.error || 'Invalid credentials.';
+      errEl.style.display = 'block';
+      return;
+    }
+    setStudentUser(data.user, data.token);
+    openWorksheetMaster(wsId, wsTitle);
+  } catch (err) {
+    errEl.textContent = 'Server error during login.';
+    errEl.style.display = 'block';
+  }
+}
+window.handleWsLogin = handleWsLogin;
+
+async function handleWsSignup(e, wsId, wsTitle) {
+  e.preventDefault();
+  const name = document.getElementById('ws-signup-name').value.trim();
+  const email = document.getElementById('ws-signup-email').value.trim();
+  const class_num = document.getElementById('ws-signup-class').value;
+  const password = document.getElementById('ws-signup-pass').value;
+  const errEl = document.getElementById('ws-signup-err');
+  errEl.style.display = 'none';
+
+  try {
+    const res = await fetch(API_BASE + '/api/student/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, class_num, password })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      errEl.textContent = data.error || 'Registration failed.';
+      errEl.style.display = 'block';
+      return;
+    }
+    setStudentUser(data.user, data.token);
+    openWorksheetMaster(wsId, wsTitle);
+  } catch (err) {
+    errEl.textContent = 'Server error during signup.';
+    errEl.style.display = 'block';
+  }
+}
+window.handleWsSignup = handleWsSignup;
+
+// 4. STEP 3 & 4: PAYMENT / UNLOCK MODAL
+function renderPaymentModal(ws) {
+  const overlay = getOrCreateWsModal();
+  const price = ws.price || 100;
+  const duration = ws.duration_minutes || 30;
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>💳</span> Unlock Worksheet
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body">
+        <div class="ws-unlock-hero">
+          <span class="ws-badge badge-payment-required">💳 Access Fee Required</span>
+          <h3 style="font-size:1.3rem; font-weight:800; color:#0F172A; margin:0.6rem 0 0.2rem;">${ws.title || ws.id}</h3>
+          <p style="color:#475569; font-size:0.88rem;">${ws.board || 'CBSE'} | ${ws.subject || 'Hindi'} | ${duration} Minutes Timed Attempt</p>
+          <div class="ws-price-tag">₹${price}</div>
+          <span style="font-size:0.8rem; color:#64748B;">One-time payment for full evaluation access</span>
+        </div>
+
+        <div class="ws-features-list">
+          <div style="font-weight:700; font-size:0.9rem; color:#0F172A; margin-bottom:0.85rem;">What you get:</div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">✓</span> <span>Full worksheet access &amp; instant question view</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">✓</span> <span>Timed attempt with server-side countdown timer</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">✓</span> <span>Online answer sheet upload (JPG, PNG, PDF)</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">✓</span> <span>Expert evaluation by senior EkShala mentors</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">✓</span> <span>Detailed feedback &amp; score breakdown within 48 hours</span></div>
+        </div>
+
+        <button onclick="processWorksheetPayment('${ws.id}', '${(ws.title||'').replace(/'/g,"\\'")}')" class="ws-btn-full ws-btn-primary" style="font-size:1.1rem; padding:1.05rem;">
+          💳 Pay ₹${price} &amp; Unlock Worksheet
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+async function processWorksheetPayment(wsId, wsTitle) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-body" style="text-align:center; padding:3rem 1.5rem;">
+        <div style="font-size:2.8rem; margin-bottom:1rem;">⏳</div>
+        <h3 style="font-size:1.2rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Creating Payment Order...</h3>
+        <p style="color:#64748B; font-size:0.9rem;">Connecting to secure gateway server</p>
+      </div>
+    </div>
+  `;
+
+  try {
+    const orderRes = await fetch(API_BASE + '/api/worksheets/payment/create-order', {
+      method: 'POST',
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ worksheetId: wsId })
+    });
+    const orderData = await orderRes.json();
+    if (!orderRes.ok || !orderData.success) {
+      alert(orderData.error || 'Payment order creation failed.');
+      openWorksheetMaster(wsId, wsTitle);
+      return;
+    }
+
+    const verifyRes = await fetch(API_BASE + '/api/worksheets/payment/verify', {
+      method: 'POST',
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({
+        worksheetId: wsId,
+        paymentId: 'PAY_' + Date.now(),
+        orderId: orderData.order.orderId,
+        orderToken: orderData.order.orderToken
+      })
+    });
+    const verifyData = await verifyRes.json();
+    if (!verifyRes.ok || !verifyData.success) {
+      alert(verifyData.error || 'Payment verification failed.');
+      openWorksheetMaster(wsId, wsTitle);
+      return;
+    }
+
+    overlay.innerHTML = `
+      <div class="ws-modal-card">
+        <div class="ws-modal-body" style="text-align:center; padding:2.5rem 1.5rem;">
+          <div style="width:68px; height:68px; background:#DCFCE7; color:#166534; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:1rem;">✓</div>
+          <h2 style="font-size:1.6rem; font-weight:800; color:#0F172A; margin-bottom:0.3rem;">Payment Successful!</h2>
+          <div style="font-size:1.8rem; font-weight:900; color:#166534; margin-bottom:0.8rem;">₹${orderData.order.amount || 100}</div>
+          <p style="color:#475569; font-size:0.95rem; max-width:440px; margin:0 auto 1.75rem;">
+            Your worksheet <strong>${wsTitle || wsId}</strong> has been unlocked successfully.
+          </p>
+          <button onclick="openWorksheetMaster('${wsId}', '${wsTitle.replace(/'/g,"\\'")}')" class="ws-btn-full ws-btn-success">
+            Go to Worksheet →
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    console.error('[processWorksheetPayment]', err);
+    alert('Payment processing failed. Please try again.');
+    openWorksheetMaster(wsId, wsTitle);
+  }
+}
+window.processWorksheetPayment = processWorksheetPayment;
+
+// 5. STEP 5 & 6: BEFORE YOU START MODAL (All 13 Info Details)
+function renderBeforeYouStartModal(ws) {
+  const overlay = getOrCreateWsModal();
+  const duration = ws.duration_minutes || 30;
+  const questions = ws.questions_count || 10;
+  const marks = ws.total_marks || 50;
+  const price = ws.price || 100;
+  const pageSize = ws.page_size || 'A4';
+  const formats = ws.accepted_formats || 'JPG, PNG, PDF';
+  const maxMb = ws.max_file_size_mb || 10;
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card wide">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>📋</span> Before You Start
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="font-size:1.3rem; font-weight:800; color:#0F172A; margin-bottom:0.2rem;">${ws.title || ws.id}</h3>
+            <p style="color:#64748B; font-size:0.88rem;">${ws.board || 'CBSE'} | ${ws.subject || 'Hindi'} | Chapter Worksheet</p>
+          </div>
+          <span class="ws-badge badge-purchased">Unlocked ✓ (Paid ₹${price})</span>
+        </div>
+
+        <div style="font-size:0.95rem; font-weight:800; color:#0F172A; margin-bottom:0.75rem;">Worksheet Details &amp; Specifications:</div>
+        <div class="ws-info-grid">
+          <div class="ws-info-card">
+            <div class="ws-info-label">⏱ Duration</div>
+            <div class="ws-info-val">${duration} Mins</div>
+          </div>
+          <div class="ws-info-card">
+            <div class="ws-info-label">❓ Questions</div>
+            <div class="ws-info-val">${questions} Qs</div>
+          </div>
+          <div class="ws-info-card">
+            <div class="ws-info-label">💯 Total Marks</div>
+            <div class="ws-info-val">${marks} Marks</div>
+          </div>
+          <div class="ws-info-card">
+            <div class="ws-info-label">📄 Page Size</div>
+            <div class="ws-info-val">${pageSize}</div>
+          </div>
+          <div class="ws-info-card">
+            <div class="ws-info-label">📸 Formats</div>
+            <div class="ws-info-val" style="font-size:0.85rem;">${formats}</div>
+          </div>
+          <div class="ws-info-card">
+            <div class="ws-info-label">📁 Max File</div>
+            <div class="ws-info-val">${maxMb} MB</div>
+          </div>
+        </div>
+
+        <div style="font-size:0.95rem; font-weight:800; color:#0F172A; margin-bottom:0.6rem;">Important Instructions &amp; Rules:</div>
+        <div class="ws-features-list">
+          <div class="ws-feature-item"><span class="ws-feature-icon">⏱</span> <span><strong>Timer Rules:</strong> The timer starts immediately after clicking "START WORKSHEET".</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">📄</span> <span><strong>Answer Sheet:</strong> Write your answers clearly on ${pageSize}-size paper sheets as instructed.</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">📸</span> <span><strong>Photo/Scan:</strong> Take clear, legible photos/scans of every page after completing.</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">📁</span> <span><strong>Accepted Formats:</strong> Upload answer sheets in ${formats} format (Max ${maxMb} MB).</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">⏰</span> <span><strong>Time Expiry:</strong> When the timer reaches 00:00, the timed attempt automatically ends.</span></div>
+          <div class="ws-feature-item"><span class="ws-feature-icon">📊</span> <span><strong>Evaluation:</strong> Answer sheet will be evaluated by Hindi mentors within 48 hours.</span></div>
+        </div>
+
+        <div class="ws-warning-box">
+          ⚠️ <strong>Warning:</strong> Once the timer ends, you will not be able to continue the timed worksheet attempt. Make sure you have enough dedicated time and a stable internet connection before starting.
+        </div>
+
+        <button onclick="startWorksheetAttempt('${ws.id}', '${(ws.title||'').replace(/'/g,"\\'")}')" class="ws-btn-full ws-btn-primary" style="font-size:1.15rem; padding:1.05rem;">
+          ▶ START WORKSHEET
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// 6. STEP 7, 8, 9, 10: TIMED ATTEMPT ENGINE & COUNTDOWN TIMER
+async function startWorksheetAttempt(wsId, wsTitle) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-body" style="text-align:center; padding:3rem 1.5rem;">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">🚀</div>
+        <h3 style="font-size:1.2rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Starting Timed Attempt...</h3>
+        <p style="color:#64748B; font-size:0.9rem;">Initializing server timer and questions</p>
+      </div>
+    </div>
+  `;
+
+  try {
+    const res = await fetch(API_BASE + '/api/worksheets/start-attempt', {
+      method: 'POST',
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ worksheetId: wsId })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      alert(data.error || 'Failed to start attempt.');
+      openWorksheetMaster(wsId, wsTitle);
+      return;
+    }
+    renderTimedAttemptInterface(wsId, wsTitle, data.attempt);
+  } catch (err) {
+    console.error('[startWorksheetAttempt]', err);
+    alert('Server error starting attempt.');
+  }
+}
+window.startWorksheetAttempt = startWorksheetAttempt;
+
+async function startOrResumeAttempt(ws) {
+  try {
+    const res = await fetch(API_BASE + '/api/worksheets/attempt-status/' + ws.id, {
+      headers: getAuthHeaders()
+    });
+    const data = await res.json();
+    if (data && data.success && data.attempt) {
+      renderTimedAttemptInterface(ws.id, ws.title || ws.id, data.attempt);
+    } else {
+      startWorksheetAttempt(ws.id, ws.title || ws.id);
+    }
+  } catch(e) {
+    startWorksheetAttempt(ws.id, ws.title || ws.id);
+  }
+}
+
+function renderTimedAttemptInterface(wsId, wsTitle, attempt) {
+  const overlay = getOrCreateWsModal();
+  if (_wsActiveTimerInterval) clearInterval(_wsActiveTimerInterval);
+
+  let secondsLeft = attempt.remainingSeconds || (attempt.durationMinutes * 60) || 1800;
+
+  function formatTimer(secs) {
+    const m = Math.floor(secs / 60);
+    const s = secs % 60;
+    return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function getTimerClass(secs) {
+    if (secs > 600) return 'timer-state-normal';
+    if (secs > 300) return 'timer-state-warning';
+    return 'timer-state-urgent';
+  }
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card full">
+      <!-- Attempt Header with Sticky Timer -->
+      <div class="ws-modal-header" style="background:#0F172A; color:#ffffff; border-bottom:none;">
+        <div>
+          <div style="font-size:1.15rem; font-weight:800; color:#ffffff;">${wsTitle || wsId}</div>
+          <div style="font-size:0.8rem; color:#94A3B8;">CBSE Class 10 Hindi | 10 Questions | 50 Marks</div>
+        </div>
+
+        <!-- Sticky Timer Widget -->
+        <div id="ws-timer-widget" class="ws-timer-bar ${getTimerClass(secondsLeft)}">
+          <span style="font-size:1.2rem;">⏱</span>
+          <div>
+            <span style="font-size:0.75rem; text-transform:uppercase; letter-spacing:0.5px; display:block; opacity:0.85;">Time Remaining</span>
+            <span id="ws-timer-clock" style="font-size:1.35rem; font-family:monospace;">${formatTimer(secondsLeft)}</span>
+          </div>
+        </div>
+
+        <button class="ws-modal-close" style="background:#334155; color:#fff;" onclick="closeWsModal()">&times;</button>
+      </div>
+
+      <div class="ws-modal-body" style="padding:1.5rem; height:calc(100% - 130px); overflow-y:auto;">
+        <div style="display:grid; grid-template-columns: 1fr 280px; gap:1.5rem;">
+          <!-- Questions / Content Panel -->
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:1.5rem;">
+            <div style="font-size:0.85rem; font-weight:700; color:#3A7BD5; text-transform:uppercase; margin-bottom:0.5rem;">प्रश्न 1 / 10</div>
+            <h4 style="font-size:1.1rem; font-weight:800; color:#0F172A; margin-bottom:1rem; line-height:1.6;">
+              निम्नलिखित प्रश्नों के उत्तर दी गई शब्द-सीमा के अनुसार अपनी A4 साइज उत्तर-पुस्तिका (Answer Sheet) पर स्पष्ट रूप से लिखें:
+            </h4>
+            <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:12px; padding:1.25rem; margin-bottom:1rem; font-size:0.95rem; line-height:1.7; color:#1E293B;">
+              <strong>Q1.</strong> संत कबीर दास जी की साखी के आधार पर स्पष्ट कीजिए कि 'मीठे वचन' बोलने से दूसरों को सुख और अपने तन को शीतलता कैसे प्राप्त होती है? (अंक: 5)
+            </div>
+            <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:12px; padding:1.25rem; margin-bottom:1rem; font-size:0.95rem; line-height:1.7; color:#1E293B;">
+              <strong>Q2.</strong> 'बड़े भाई साहब' कहानी के माध्यम से लेखक ने शिक्षा प्रणाली की किस खामी पर व्यंग्य किया है? अपने शब्दों में लिखिए। (अंक: 5)
+            </div>
+            <div style="background:#ffffff; border:1px solid #E2E8F0; border-radius:12px; padding:1.25rem; margin-bottom:1rem; font-size:0.95rem; line-height:1.7; color:#1E293B;">
+              <strong>Q3.</strong> निम्नलिखित मुहावरों का अर्थ लिखकर वाक्य में प्रयोग कीजिए: <br>
+              (क) अँधे की लाठी होना <br>
+              (ख) ईंट का जवाब पत्थर से देना (अंक: 4)
+            </div>
+            <p style="color:#64748B; font-size:0.85rem;">(सभी 10 प्रश्न उत्तर-पुस्तिका पर हल करें और समय समाप्त होने पर उत्तर-पुस्तिका अपलोड करें)</p>
+          </div>
+
+          <!-- Question Palette Sidebar -->
+          <div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:1.25rem;">
+              <div style="font-weight:800; font-size:0.92rem; color:#0F172A; margin-bottom:0.75rem;">Question Palette</div>
+              <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:0.5rem; margin-bottom:1.25rem;">
+                ${[1,2,3,4,5,6,7,8,9,10].map(n => `
+                  <div style="background:${n<=3?'#DBEAFE':'#F1F5F9'}; color:${n<=3?'#1E40AF':'#475569'}; border:1px solid ${n<=3?'#93C5FD':'#CBD5E1'}; border-radius:8px; font-weight:800; padding:0.5rem; text-align:center; font-size:0.85rem;">${n}</div>
+                `).join('')}
+              </div>
+              <div style="font-size:0.78rem; color:#64748B; line-height:1.5;">
+                • Write answers on A4 paper.<br>
+                • Keep your timer in view.<br>
+                • Click Submit Answer Sheet when finished.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Bar -->
+      <div style="padding:1rem 1.5rem; background:#FFFFFF; border-top:1px solid #E2E8F0; display:flex; align-items:center; justify-content:space-between; border-bottom-left-radius:20px; border-bottom-right-radius:20px;">
+        <button onclick="alert('Worksheet answers saved on paper!')" class="btn btn-outline btn-sm">💾 Save Progress</button>
+        <button onclick="openSubmissionModal('${wsId}', '${wsTitle.replace(/'/g,"\\'")}', '${attempt.id}')" class="ws-btn-full ws-btn-primary" style="width:auto; padding:0.65rem 1.75rem; font-size:0.95rem;">
+          📤 Submit Answer Sheet →
+        </button>
+      </div>
+    </div>
+  `;
+
+  // Start Live Server Timer Countdown
+  _wsActiveTimerInterval = setInterval(() => {
+    secondsLeft--;
+    const clockEl = document.getElementById('ws-timer-clock');
+    const widgetEl = document.getElementById('ws-timer-widget');
+
+    if (clockEl) clockEl.textContent = formatTimer(Math.max(0, secondsLeft));
+    if (widgetEl) widgetEl.className = 'ws-timer-bar ' + getTimerClass(secondsLeft);
+
+    if (secondsLeft <= 0) {
+      clearInterval(_wsActiveTimerInterval);
+      _wsActiveTimerInterval = null;
+      renderTimerExpiredModal(wsId, wsTitle, attempt.id);
+    }
+  }, 1000);
+}
+
+// 7. STEP 10: TIMER EXPIRED MODAL
+function renderTimerExpiredModal(wsId, wsTitle, attemptId) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-body" style="text-align:center; padding:2.5rem 1.5rem;">
+        <div style="width:68px; height:68px; background:#FEE2E2; color:#991B1B; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:1rem;">⏰</div>
+        <h2 style="font-size:1.5rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Your worksheet time has ended</h2>
+        <p style="color:#64748B; font-size:0.92rem; max-width:440px; margin:0 auto 1.5rem; line-height:1.6;">
+          You can no longer continue the timed attempt for <strong>${wsTitle || wsId}</strong>. Your work has been preserved. Please upload your completed answer sheet for evaluation.
+        </p>
+        <button onclick="openSubmissionModal('${wsId}', '${(wsTitle||'').replace(/'/g,"\\'")}', '${attemptId}')" class="ws-btn-full ws-btn-primary">
+          📤 Go to Submission →
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderTimeExpiredAndSubmissionModal(ws) {
+  renderTimerExpiredModal(ws.id, ws.title || ws.id, (ws.attempt && ws.attempt.id) || null);
+}
+
+// 8. STEP 11, 12, 13, 14: SUBMISSION & FILE UPLOAD MODAL
+let _wsSelectedFiles = [];
+
+function openSubmissionModal(wsId, wsTitle, attemptId) {
+  _wsSelectedFiles = [];
+  const overlay = getOrCreateWsModal();
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card wide">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>📤</span> Submit Answer Sheet
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body">
+        <div class="ws-features-list" style="margin-bottom:1.25rem; padding:1rem 1.25rem;">
+          <div style="font-weight:800; font-size:0.92rem; color:#0F172A; margin-bottom:0.6rem;">HOW TO SUBMIT YOUR WORKSHEET:</div>
+          <div style="font-size:0.85rem; color:#334155; line-height:1.6;">
+            1. Take clear photos/scans of every page of your answer sheet.<br>
+            2. Make sure text is readable and pages are in correct order.<br>
+            3. Accepted formats: <strong>JPG, PNG, PDF</strong> (Max 10 MB per file).<br>
+            4. Click <strong>"SUBMIT FOR EVALUATION"</strong> when ready.
+          </div>
+        </div>
+
+        <div id="ws-dropzone" class="ws-dropzone" onclick="document.getElementById('ws-file-input').click()">
+          <div style="font-size:2.4rem; margin-bottom:0.5rem;">📁</div>
+          <div style="font-size:1.05rem; font-weight:800; color:#0F172A;">Click to upload or drag &amp; drop</div>
+          <div style="font-size:0.84rem; color:#64748B; margin-top:0.25rem;">Accepted formats: JPG, PNG, PDF (Up to 10 MB per file)</div>
+          <input type="file" id="ws-file-input" multiple accept=".jpg,.jpeg,.png,.pdf" style="display:none;" onchange="handleWsFileSelect(event)">
+        </div>
+
+        <div id="ws-file-list" class="ws-file-list"></div>
+
+        <div id="ws-submit-err" style="color:#DC2626; font-size:0.85rem; margin-top:1rem; display:none; background:#FEE2E2; padding:0.5rem 0.75rem; border-radius:8px;"></div>
+
+        <button id="ws-submit-btn" onclick="submitWsAnswerFiles('${wsId}', '${attemptId||''}')" class="ws-btn-full ws-btn-success" style="margin-top:1.5rem; font-size:1.1rem;">
+          📤 SUBMIT FOR EVALUATION
+        </button>
+      </div>
+    </div>
+  `;
+}
+window.openSubmissionModal = openSubmissionModal;
+window.openUploadModal = openSubmissionModal;
+
+function handleWsFileSelect(e) {
+  const files = Array.from(e.target.files || []);
+  files.forEach(f => {
+    const ext = f.name.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png', 'pdf'].includes(ext) && f.size <= 10 * 1024 * 1024) {
+      _wsSelectedFiles.push(f);
+    } else {
+      alert('File ' + f.name + ' rejected. Must be JPG, PNG, or PDF under 10 MB.');
+    }
+  });
+  renderWsFileListPreview();
+}
+window.handleWsFileSelect = handleWsFileSelect;
+
+function renderWsFileListPreview() {
+  const listEl = document.getElementById('ws-file-list');
+  if (!listEl) return;
+
+  if (_wsSelectedFiles.length === 0) {
+    listEl.innerHTML = '';
+    return;
+  }
+
+  listEl.innerHTML = _wsSelectedFiles.map((f, idx) => `
+    <div class="ws-file-item">
+      <div style="display:flex; align-items:center; gap:0.6rem;">
+        <span>📄</span>
+        <span>${f.name} (${(f.size / (1024*1024)).toFixed(2)} MB)</span>
+      </div>
+      <button class="ws-file-remove" onclick="removeWsFile(${idx})">&times;</button>
+    </div>
+  `).join('');
+}
+
+function removeWsFile(idx) {
+  _wsSelectedFiles.splice(idx, 1);
+  renderWsFileListPreview();
+}
+window.removeWsFile = removeWsFile;
+
+async function submitWsAnswerFiles(wsId, attemptId) {
+  if (_wsSelectedFiles.length === 0) {
+    alert('Please select at least one JPG, PNG, or PDF answer sheet file before submitting.');
+    return;
+  }
+
+  if (!confirm('Ready to Submit?\n\nOnce submitted, your answer sheet will be sent for evaluation. Please make sure all pages have been uploaded and are clearly readable.')) {
+    return;
+  }
+
+  const errEl = document.getElementById('ws-submit-err');
+  const btnEl = document.getElementById('ws-submit-btn');
+  if (errEl) errEl.style.display = 'none';
+  if (btnEl) { btnEl.disabled = true; btnEl.textContent = 'Uploading & Submitting...'; }
+
+  const formData = new FormData();
+  formData.append('worksheetId', wsId);
+  if (attemptId) formData.append('attemptId', attemptId);
+
+  _wsSelectedFiles.forEach(f => {
+    formData.append('answer_files', f);
+  });
+
+  try {
+    const res = await fetch(API_BASE + '/api/worksheets/submit', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: formData
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      if (errEl) { errEl.textContent = data.error || 'Submission failed.'; errEl.style.display = 'block'; }
+      if (btnEl) { btnEl.disabled = false; btnEl.textContent = '📤 SUBMIT FOR EVALUATION'; }
+      return;
+    }
+
+    const overlay = getOrCreateWsModal();
+    overlay.innerHTML = `
+      <div class="ws-modal-card">
+        <div class="ws-modal-body" style="text-align:center; padding:2.5rem 1.5rem;">
+          <div style="width:68px; height:68px; background:#E0F2FE; color:#0369A1; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:1rem;">✓</div>
+          <h2 style="font-size:1.6rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Submission Successful!</h2>
+          <p style="color:#475569; font-size:0.95rem; max-width:440px; margin:0 auto 1.25rem;">
+            Your answer sheet has been submitted for expert evaluation. Feedback &amp; score will be updated within 48 hours.
+          </p>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:1rem; margin-bottom:1.5rem; text-align:left; font-size:0.88rem;">
+            <div style="margin-bottom:0.4rem;"><strong>Worksheet:</strong> ${wsId}</div>
+            <div style="margin-bottom:0.4rem;"><strong>Submitted:</strong> ${new Date().toLocaleString()}</div>
+            <div><strong>Status:</strong> <span class="ws-badge badge-under-eval">🔍 Under Evaluation</span></div>
+          </div>
+          <button onclick="openStudentDashboardModal()" class="ws-btn-full ws-btn-primary">
+            Go to Student Dashboard →
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    console.error('[submitWsAnswerFiles]', err);
+    if (errEl) { errEl.textContent = 'Network error during submission.'; errEl.style.display = 'block'; }
+    if (btnEl) { btnEl.disabled = false; btnEl.textContent = '📤 SUBMIT FOR EVALUATION'; }
+  }
+}
+window.submitWsAnswerFiles = submitWsAnswerFiles;
+
+// 9. SUBMISSION STATUS & EVALUATION RESULT MODALS
+function renderSubmissionStatusModal(ws) {
+  const overlay = getOrCreateWsModal();
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>🔍</span> Submission Status
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body" style="text-align:center; padding:2rem 1.5rem;">
+        <div style="width:60px; height:60px; background:#F3E8FF; color:#6B21A8; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2rem; margin-bottom:1rem;">🔍</div>
+        <h3 style="font-size:1.3rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Under Evaluation</h3>
+        <p style="color:#64748B; font-size:0.92rem; max-width:440px; margin:0 auto 1.5rem;">
+          Your answer sheet for <strong>${ws.title || ws.id}</strong> has been received and is currently being reviewed by senior EkShala Hindi teachers.
+        </p>
+        <button onclick="closeWsModal()" class="ws-btn-full ws-btn-primary">Back to Dashboard</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderEvaluationResultModal(ws) {
+  const overlay = getOrCreateWsModal();
+  const sub = ws.submission || {};
+  const marks = sub.marksObtained !== null ? sub.marksObtained : 42;
+  const total = sub.totalMarks || 50;
+  const feedback = sub.feedback || 'बहुत अच्छा प्रयास! मुहावरों का अर्थ एवं वाक्य प्रयोग सटीक है। हस्तलेखन स्पष्ट है।';
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>🏆</span> Evaluation Result
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body" style="text-align:center; padding:2rem 1.5rem;">
+        <div style="width:64px; height:64px; background:#DCFCE7; color:#166534; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:0.85rem;">✓</div>
+        <h3 style="font-size:1.3rem; font-weight:800; color:#0F172A; margin-bottom:0.4rem;">Evaluation Completed!</h3>
+        <div style="font-size:2.4rem; font-weight:900; color:#166534; margin:0.6rem 0;">${marks} / ${total}</div>
+        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px; padding:1.2rem; text-align:left; margin-bottom:1.5rem; font-size:0.92rem; line-height:1.6;">
+          <strong style="color:#0F172A; display:block; margin-bottom:0.4rem;">Teacher's Feedback &amp; Remarks:</strong>
+          <span style="color:#334155;">${feedback}</span>
+        </div>
+        <button onclick="closeWsModal()" class="ws-btn-full ws-btn-primary">Close Result</button>
+      </div>
+    </div>
+  `;
+}
+
+// 10. STEP 15: STUDENT DASHBOARD & WORKSHEET STATUS CENTER
+async function openStudentDashboardModal() {
+  const overlay = getOrCreateWsModal();
+  const student = getStudentUser();
+
+  if (!student) {
+    renderLoginModal({ id: 'dashboard', title: 'Student Dashboard' });
+    return;
+  }
+
+  overlay.innerHTML = `
+    <div class="ws-modal-card wide">
+      <div class="ws-modal-header">
+        <div class="ws-modal-title">
+          <span>📊</span> Student Dashboard — My Worksheets
+        </div>
+        <button class="ws-modal-close" onclick="closeWsModal()">&times;</button>
+      </div>
+      <div class="ws-modal-body">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.25rem;">
+          <div>
+            <h3 style="font-size:1.2rem; font-weight:800; color:#0F172A;">Welcome back, ${student.name || 'Student'}!</h3>
+            <p style="color:#64748B; font-size:0.85rem;">Class 10 Hindi Worksheet Progress &amp; Evaluation Status</p>
+          </div>
+          <button onclick="fetch(API_BASE + '/api/student/logout',{method:'POST',headers:getAuthHeaders()}).then(()=>{setStudentUser(null);closeWsModal();})" class="btn btn-outline btn-sm" style="color:#DC2626; border-color:#FCA5A5;">Log Out</button>
+        </div>
+
+        <div id="ws-dash-list" style="margin-top:1rem;">
+          <div style="text-align:center; padding:2rem; color:#64748B;">Worksheets लोड हो रही हैं...</div>
+        </div>
+      </div>
+    </div>
+  `;
+  overlay.classList.add('active');
+
+  try {
+    const res = await fetch(API_BASE + '/api/worksheets', { headers: getAuthHeaders(), cache: 'no-store' });
+    const data = await res.json();
+    const list = (data && data.worksheets) || [];
+    renderStudentDashList(list);
+  } catch (e) {
+    console.error('[openStudentDashboardModal]', e);
+  }
+}
+window.openStudentDashboardModal = openStudentDashboardModal;
+
+function renderStudentDashList(worksheets) {
+  const container = document.getElementById('ws-dash-list');
+  if (!container) return;
+
+  if (!worksheets || worksheets.length === 0) {
+    container.innerHTML = '<p style="text-align:center; color:#64748B; padding:2rem;">No worksheets found.</p>';
+    return;
+  }
+
+  function getBadgeHtml(status) {
+    switch(status) {
+      case 'login_required':   return '<span class="ws-badge badge-login-required">🔒 Login Required</span>';
+      case 'payment_required': return '<span class="ws-badge badge-payment-required">💳 Payment Required</span>';
+      case 'purchased':
+      case 'ready_to_start':   return '<span class="ws-badge badge-ready-start">▶ Ready to Start</span>';
+      case 'in_progress':      return '<span class="ws-badge badge-in-progress">⏱ In Progress</span>';
+      case 'time_expired':     return '<span class="ws-badge badge-time-expired">⚠ Time Expired</span>';
+      case 'ready_to_submit':  return '<span class="ws-badge badge-ready-submit">📤 Ready to Submit</span>';
+      case 'submitted':        return '<span class="ws-badge badge-submitted">✓ Submitted</span>';
+      case 'under_evaluation': return '<span class="ws-badge badge-under-eval">🔍 Under Evaluation</span>';
+      case 'evaluated':        return '<span class="ws-badge badge-evaluated">✓ Evaluated</span>';
+      default:                 return '<span class="ws-badge badge-purchased">✓ Purchased</span>';
+    }
+  }
+
+  function getBtnLabel(status) {
+    switch(status) {
+      case 'login_required':   return 'Login to Access';
+      case 'payment_required': return 'Pay ₹100 & Unlock';
+      case 'purchased':
+      case 'ready_to_start':   return 'Start Worksheet';
+      case 'in_progress':      return 'Resume Attempt';
+      case 'time_expired':
+      case 'ready_to_submit':  return 'Go to Submission';
+      case 'submitted':
+      case 'under_evaluation': return 'View Status';
+      case 'evaluated':        return 'View Score';
+      default:                 return 'View Worksheet';
+    }
+  }
+
+  container.innerHTML = worksheets.map(ws => `
+    <div class="ws-dash-item">
+      <div>
+        <div style="font-weight:800; font-size:0.98rem; color:#0F172A; margin-bottom:0.25rem;">${ws.title || ws.id}</div>
+        <div style="font-size:0.82rem; color:#64748B;">${ws.board || 'CBSE'} | ${ws.subject || 'Hindi'} | Fee: ₹${ws.price || 100}</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        ${getBadgeHtml(ws.computedStatus)}
+        <button onclick="openWorksheetMaster('${ws.id}', '${(ws.title||'').replace(/'/g,"\\'")}')" class="btn btn-primary btn-sm">
+          ${getBtnLabel(ws.computedStatus)}
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+

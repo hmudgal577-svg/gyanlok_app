@@ -418,6 +418,7 @@ async function loadSubmissions(showToastNotice = false) {
     container.innerHTML = data.map(sub => {
       const st = sub.status || 'Pending';
       const downloadLink = sub.download_url || sub.file_path || `/api/admin/submission-file/${sub.id}`;
+      const marksText = sub.marks_obtained !== undefined && sub.marks_obtained !== null ? ` (Marks: ${sub.marks_obtained}/${sub.total_marks || 50})` : '';
       return `
       <tr>
         <td><strong>${escapeHTML(sub.student_name || 'Student')}</strong></td>
@@ -430,7 +431,10 @@ async function loadSubmissions(showToastNotice = false) {
           </a>
         </td>
         <td>${new Date(sub.created_at).toLocaleString()}</td>
-        <td><span class="status-pill ${st.toLowerCase()}">${escapeHTML(st)}</span></td>
+        <td>
+          <span class="status-pill ${st.toLowerCase()}">${escapeHTML(st)}${marksText}</span>
+          <button onclick="promptEvaluateSubmission('${sub.id}')" style="margin-left:8px; padding:4px 8px; font-size:0.75rem; border-radius:6px; background:#3A7BD5; color:#fff; border:none; cursor:pointer;">Grade</button>
+        </td>
       </tr>
     `;
     }).join('');
@@ -443,6 +447,33 @@ async function loadSubmissions(showToastNotice = false) {
     container.innerHTML = `<tr><td colspan="6" class="no-data" style="color:red">Failed to load student submissions. Please retry.</td></tr>`;
   }
 }
+
+async function promptEvaluateSubmission(subId) {
+  const marks = prompt('Enter Marks Obtained (out of 50):', '42');
+  if (marks === null) return;
+  const feedback = prompt('Enter Teacher Feedback / Remarks:', 'बहुत अच्छा प्रयास! मुहावरों का अर्थ एवं वाक्य प्रयोग सटीक है।');
+  if (feedback === null) return;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/admin/evaluate-submission`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ submissionId: subId, marksObtained: marks, totalMarks: 50, feedback })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      alert('✓ Submission evaluated and graded successfully!');
+      loadSubmissions();
+    } else {
+      alert(data.error || 'Evaluation failed.');
+    }
+  } catch (err) {
+    alert('Network error evaluating submission.');
+  }
+}
+window.promptEvaluateSubmission = promptEvaluateSubmission;
+
 
 // ----------------------------------------------------
 // Resource Form Submissions

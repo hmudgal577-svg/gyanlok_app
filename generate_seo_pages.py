@@ -30,6 +30,9 @@ with open(os.path.join(PUBLIC_DIR, 'chapter_html_content.json'), 'r', encoding='
 with open(os.path.join(PUBLIC_DIR, 'worksheets_html_content.json'), 'r', encoding='utf-8') as f:
     WORKSHEETS_DATA = json.load(f)
 
+with open(os.path.join(WORKSPACE_DIR, 'cbse_docs_parsed.json'), 'r', encoding='utf-8') as f:
+    CBSE_DOCS_PARSED = json.load(f)
+
 # Verified Chapter Catalog
 CBSE_CHAPTERS = [
     {
@@ -1075,7 +1078,21 @@ def get_navbar(active_link=''):
         </div>
       </div>
 
-      <a href="/hindi-grammar/" class="nav-link {'active' if active_link=='grammar' else ''}">Hindi Grammar</a>
+      <!-- Hindi Grammar dropdown (Strictly 2 options: CBSE & ICSE) -->
+      <div class="nav-dropdown-wrapper">
+        <button class="nav-link dropdown-trigger {'active' if active_link=='grammar' else ''}" aria-haspopup="true" aria-expanded="false" id="grammar-trigger">
+          Hindi Grammar
+          <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="nav-dropdown-menu" id="grammar-dropdown" role="menu">
+          <a href="/hindi-grammar/cbse/" class="dropdown-item" role="menuitem">
+            <span class="di-tag cbse">C</span> CBSE
+          </a>
+          <a href="/hindi-grammar/icse/" class="dropdown-item" role="menuitem">
+            <span class="di-tag icse">I</span> ICSE
+          </a>
+        </div>
+      </div>
 
       <a href="/about/" class="nav-link {'active' if active_link=='about' else ''}">About Us</a>
       <a href="/login.html" class="nav-link nav-cta-login" id="nav-login-btn">Login</a>
@@ -1114,7 +1131,7 @@ def get_footer(extra_html="", extra_scripts=""):
           <span style="font-size:1.4rem; font-weight:800; color:#FFFFFF;">Ek<span style="color:#38BDF8;">Shala</span></span>
         </div>
         <p style="line-height:1.7; margin-bottom:1.25rem; color:#94A3B8;">
-          EkShala is a dedicated educational platform providing 100% free, high-quality study material for Class 10 Hindi students across CBSE and ICSE boards. Chapter summaries, deep revision notes, competency questions, and practice worksheets.
+          EkShala is a dedicated educational platform providing comprehensive, high-quality study material for Class 10 Hindi students across CBSE and ICSE boards. Chapter summaries, deep revision notes, competency questions, and practice worksheets.
         </p>
         <p style="font-size:0.85rem; color:#64748B;">
           Email: <a href="mailto:ektaverma09.work@gmail.com" style="color:#94A3B8;">ektaverma09.work@gmail.com</a> | Mentor Support: +91-99722-47410
@@ -1159,7 +1176,7 @@ def get_footer(extra_html="", extra_scripts=""):
     </div>
 
     <div class="ek-footer-bottom">
-      <div>&copy; 2026 EkShala. All rights reserved. Free Educational Resource for School Students.</div>
+      <div>&copy; 2026 EkShala. All rights reserved. Educational Resource for School Students.</div>
       <div style="display:flex; gap:1.25rem;">
         <a href="/about/">About</a>
         <a href="/contact/">Contact</a>
@@ -1491,7 +1508,7 @@ def generate_chapter_pages():
       <span>📖 <strong>Book:</strong> {book}</span>
       <span>🏷️ <strong>Chapter:</strong> {num} ({ch['type']})</span>
       <span>🎓 <strong>Board:</strong> {board} Class 10</span>
-      <span>✓ <strong>100% Free</strong></span>
+      <span>✓ <strong>Ad-Free Portal</strong></span>
     </div>
   </div>
 </header>"""
@@ -1715,7 +1732,7 @@ def generate_cbse_landing_page():
     </section>
 
     <!-- Syllabus & Marking Scheme Section -->
-    <section class="seo-section-card" id="syllabus-marking-scheme" style="background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);">
+    <section class="seo-section-card" id="syllabus-marking-scheme" style="background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); padding:1.75rem; border-radius:16px; margin-bottom:2rem; border:1px solid #E2E8F0; box-shadow:0 4px 20px rgba(0,0,0,0.03);">
       <div class="seo-section-header">
         <span class="seo-section-icon">📑</span>
         <h2>पाठ्यक्रम एवं अंक योजना (Syllabus &amp; Marking Scheme 2026-27)</h2>
@@ -1723,12 +1740,14 @@ def generate_cbse_landing_page():
       <p style="font-size:1.02rem; line-height:1.75; color:#334155; margin-bottom:1.5rem;">
         सीबीएसई बोर्ड परीक्षा 2026-27 के लिए कक्षा 10 हिंदी कोर्स 'बी' का आधिकारिक पाठ्यक्रम, प्रश्न-पत्र का प्रारूप और अंक विभाजन (Blueprint) यहाँ सीधे देखें व डाउनलोड करें:
       </p>
-      <div class="seo-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+
+      <!-- 2 Dedicated CBSE Cards: Syllabus Card & Marking Scheme Card -->
+      <div class="seo-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); margin-bottom:2rem;">
         <!-- Syllabus Card -->
         <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-              <span style="background:#E0F2FE; color:#0284C7; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">CBSE Official</span>
+              <span style="background:#EBF3FD; color:#156082; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">CBSE Official 2026-27</span>
               <span style="font-size:1.4rem;">📘</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0 0 0.5rem; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">CBSE Class 10 Hindi Syllabus 2026-27</h3>
@@ -1736,23 +1755,23 @@ def generate_cbse_landing_page():
               कोर्स 'बी' का संपूर्ण पाठ्य विवरण: अपठित गद्यांश (14 अंक), व्यावहारिक व्याकरण (16 अंक), पाठ्यपुस्तकें स्पर्श व संचयन (28 अंक), और रचनात्मक लेखन (22 अंक)।
             </p>
           </div>
-          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1rem;">
-            <a href="/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; justify-content:center; padding:0.6rem 1rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1.15rem; margin-top:1.25rem;">
+            <a href="/cbse/class-10/hindi/syllabus/" onclick="openCbseDocModal('syllabus'); return false;" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#156082; border-color:#156082; color:#FFFFFF;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               View Syllabus
             </a>
-            <a href="/pdf/cbse/class10/hindi/class_10_hindi_syllabus_cbse.pdf" download="class_10_hindi_syllabus_cbse.pdf" class="btn btn-outline" style="padding:0.6rem 0.9rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              PDF
+            <a href="/uploads/cbse/CBSE_Class10_Hindi_Syllabus_2026_27.docx" download="CBSE_Class10_Hindi_Syllabus_2026_27.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#156082; border-color:#BAE6FD;" title="Download Word DOCX">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download
             </a>
           </div>
         </div>
 
         <!-- Marking Scheme Card -->
-        <div style="background:#FFFFFF; border:1px solid #BBF7D0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(22,163,74,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-              <span style="background:#DCFCE7; color:#15803D; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Schema</span>
+              <span style="background:#EBF3FD; color:#156082; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">BLUEPRINT &amp; SCHEMA</span>
               <span style="font-size:1.4rem;">📊</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0 0 0.5rem; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">CBSE Hindi Marking Scheme &amp; Blueprint</h3>
@@ -1760,16 +1779,15 @@ def generate_cbse_landing_page():
               80 अंकों का विस्तृत प्रश्नवार अंक विभाजन, स्टेप-मार्किंग नियम, बहुविकल्पीय प्रश्न (MCQ) व वर्णनात्मक प्रश्नों की आधिकारिक उत्तर गाइड।
             </p>
           </div>
-          <div style="display:flex; gap:0.75rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1rem;">
-            <a href="/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; justify-content:center; padding:0.6rem 1rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#16A34A; border-color:#16A34A;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <div style="display:flex; gap:0.6rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1.15rem; margin-top:1.25rem;">
+            <a href="/cbse/class-10/hindi/marking-scheme/" onclick="openCbseDocModal('marking'); return false;" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#156082; border-color:#156082; color:#FFFFFF;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               View Marking Scheme
             </a>
-            <a href="/pdf/cbse/class10/hindi/class_10_hindi_marking_schema_cbse.pdf" download="class_10_hindi_marking_schema_cbse.pdf" class="btn btn-outline" style="padding:0.6rem 0.9rem; font-size:0.88rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              PDF
+            <a href="/uploads/cbse/CBSE_Class10_Hindi_CourseB_Marking_Scheme.docx" download="CBSE_Class10_Hindi_CourseB_Marking_Scheme.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#156082; border-color:#BAE6FD;" title="Download Word DOCX">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download
             </a>
-          </div>
         </div>
       </div>
     </section>
@@ -1799,44 +1817,119 @@ def generate_cbse_landing_page():
     <!-- Quick Links Grid -->
     <section class="seo-section-card">
       <div class="seo-section-header">
-        <span class="seo-section-icon">⚡</span>
-        <h2>व्याकरण, वर्कशीट एवं बोर्ड प्रश्न-पत्र (Related Resources)</h2>
+        <span class="seo-section-icon">📖</span>
+        <h2>CBSE हिंदी व्याकरण (CBSE Hindi Grammar)</h2>
       </div>
-      <div class="seo-grid">
-        <a href="/worksheets/" class="seo-card">
+      <div class="seo-grid" style="grid-template-columns: minmax(280px, 500px);">
+        <a href="/hindi-grammar/cbse/" class="seo-card">
           <div>
-            <span class="seo-card-badge">अभ्यास कार्य</span>
-            <h3>Class 10 Hindi Worksheets</h3>
-            <p>कक्षा 10 हिंदी के सभी 20 अभ्यास कार्य-पत्र एवं उत्तर कुंजी।</p>
+            <span class="seo-card-badge">व्याकरण संकलन</span>
+            <h3>CBSE Hindi Grammar Hub</h3>
+            <p>पदबंध, मुहावरे, समास, वाक्य रूपांतरण एवं रचनात्मक लेखन अध्ययन सामग्री।</p>
           </div>
-          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
-        </a>
-        <a href="/hindi-grammar/" class="seo-card">
-          <div>
-            <span class="seo-card-badge">व्याकरण</span>
-            <h3>Hindi Grammar Hub</h3>
-            <p>पदबंध, मुहावरे, समास एवं रचना के आधार पर वाक्य रूपांतरण।</p>
-          </div>
-          <span class="seo-card-cta">व्याकरण पढ़ें &rarr;</span>
-        </a>
-        <a href="/worksheets/#cbse-worksheets" class="seo-card">
-          <div>
-            <span class="seo-card-badge">अभ्यास पत्रक</span>
-            <h3>CBSE अभ्यास वर्कशीट्स</h3>
-            <p>पाठ आधारित 40 अंक एवं 80 अंक के अभ्यास कार्य-पत्र एवं आदर्श उत्तर।</p>
-          </div>
-          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
+          <span class="seo-card-cta">CBSE व्याकरण पेज पर जाएं &rarr;</span>
         </a>
       </div>
     </section>
   </div>
 </main>"""
 
+    cbse_syl_json = json.dumps(CBSE_DOCS_PARSED.get('cbse_syllabus_html', ''), ensure_ascii=False)
+    cbse_mrk_json = json.dumps(CBSE_DOCS_PARSED.get('cbse_marking_scheme_html', ''), ensure_ascii=False)
+
+    modal_html = f"""
+<!-- CBSE DOC MODAL -->
+<div id="cbseDocModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; z-index:99999; background:rgba(15,23,42,0.75); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:1rem;">
+  <div style="background:#FFFFFF; border-radius:16px; width:100%; max-width:960px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <div style="background:#156082; color:#FFFFFF; padding:1.15rem 1.5rem; display:flex; align-items:center; justify-content:space-between;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:1.4rem;">📑</span>
+        <div>
+          <h3 id="cbseModalTitle" style="margin:0; font-size:1.15rem; font-weight:800; color:#FFFFFF;">Document Viewer</h3>
+          <span style="font-size:0.75rem; opacity:0.85;">CBSE Class 10 Hindi Course B (2026-27)</span>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <a id="cbseModalDownloadBtn" href="#" download class="btn" style="background:#FFFFFF; color:#156082; font-weight:700; font-size:0.82rem; padding:0.4rem 0.85rem; border-radius:6px; text-decoration:none; display:inline-flex; align-items:center; gap:5px;">
+          📥 Download
+        </a>
+        <button onclick="closeCbseDocModal()" style="background:none; border:none; color:#FFFFFF; font-size:1.6rem; cursor:pointer; padding:0 0.5rem; line-height:1;">&times;</button>
+      </div>
+    </div>
+    
+    <div style="background:#F1F5F9; border-bottom:1px solid #E2E8F0; padding:0.5rem 1.5rem; display:flex; gap:0.5rem;">
+      <button id="modalTabSyllabus" onclick="switchModalTab('syllabus')" style="padding:0.5rem 1rem; border-radius:8px; font-weight:700; font-size:0.85rem; border:none; cursor:pointer; background:#156082; color:#FFFFFF;">
+        📘 CBSE Syllabus 2026-27
+      </button>
+      <button id="modalTabMarking" onclick="switchModalTab('marking')" style="padding:0.5rem 1rem; border-radius:8px; font-weight:700; font-size:0.85rem; border:none; cursor:pointer; background:transparent; color:#64748B;">
+        📊 Marking Scheme & Blueprint
+      </button>
+    </div>
+    
+    <div id="cbseModalContent" style="padding:1.5rem; overflow-y:auto; flex:1; background:#FAFAFA;">
+    </div>
+  </div>
+</div>
+
+<script>
+window.cbseSyllabusHtml = {cbse_syl_json};
+window.cbseMarkingHtml = {cbse_mrk_json};
+
+function openCbseDocModal(type) {{
+  var modal = document.getElementById('cbseDocModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  switchModalTab(type);
+}}
+
+function closeCbseDocModal() {{
+  var modal = document.getElementById('cbseDocModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}}
+
+function switchModalTab(type) {{
+  var tabSyl = document.getElementById('modalTabSyllabus');
+  var tabMrk = document.getElementById('modalTabMarking');
+  var content = document.getElementById('cbseModalContent');
+  var title = document.getElementById('cbseModalTitle');
+  var dlBtn = document.getElementById('cbseModalDownloadBtn');
+  
+  if (type === 'syllabus') {{
+    tabSyl.style.background = '#156082';
+    tabSyl.style.color = '#FFFFFF';
+    tabMrk.style.background = 'transparent';
+    tabMrk.style.color = '#64748B';
+    content.innerHTML = window.cbseSyllabusHtml;
+    title.innerText = 'CBSE Class 10 Hindi Syllabus 2026-27';
+    dlBtn.href = '/uploads/cbse/CBSE_Class10_Hindi_Syllabus_2026_27.docx';
+    dlBtn.setAttribute('download', 'CBSE_Class10_Hindi_Syllabus_2026_27.docx');
+  }} else {{
+    tabMrk.style.background = '#156082';
+    tabMrk.style.color = '#FFFFFF';
+    tabSyl.style.background = 'transparent';
+    tabSyl.style.color = '#64748B';
+    content.innerHTML = window.cbseMarkingHtml;
+    title.innerText = 'CBSE Class 10 Hindi Marking Scheme & Blueprint';
+    dlBtn.href = '/uploads/cbse/CBSE_Class10_Hindi_CourseB_Marking_Scheme.docx';
+    dlBtn.setAttribute('download', 'CBSE_Class10_Hindi_CourseB_Marking_Scheme.docx');
+  }}
+}}
+
+document.addEventListener('keydown', function(e) {{
+  if (e.key === 'Escape') closeCbseDocModal();
+}});
+</script>
+"""
+
     full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2))
     full_page += get_navbar(active_link='cbse')
     full_page += breadcrumbs_html
     full_page += hero_html
     full_page += body_html
+    full_page += modal_html
     full_page += get_footer()
     write_html_file(rel_dir, full_page)
 
@@ -1851,7 +1944,7 @@ def generate_icse_landing_page():
     ALL_CANONICAL_URLS.append(canonical_url)
 
     seo_title = "ICSE Class 10 Hindi Study Material | Notes, Worksheets & Exam Preparation | EkShala"
-    desc = "Free ICSE Class 10 Hindi study material. Sahitya Sagar (Prose), Ekanki Sanchay & Naya Raasta (Novel) chapter-wise summaries, deep notes, important questions, character sketches, worksheets & grammar."
+    desc = "Comprehensive ICSE Class 10 Hindi study material. Sahitya Sagar (Prose), Ekanki Sanchay & Naya Raasta (Novel) chapter-wise summaries, deep notes, important questions, character sketches, worksheets & grammar."
 
     sahitya_chapters = [c for c in ICSE_CHAPTERS if 'साहित्य सागर' in c['book']]
     ekanki_chapters = [c for c in ICSE_CHAPTERS if 'एकांकी' in c['book']]
@@ -1983,16 +2076,16 @@ def generate_icse_landing_page():
         </div>
 
         <!-- ICSE Marking Scheme Card -->
-        <div style="background:#FFFFFF; border:1px solid #BBF7D0; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(22,163,74,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div style="background:#FFFFFF; border:1px solid #BAE6FD; border-radius:14px; padding:1.5rem; box-shadow:0 2px 10px rgba(14,165,233,0.06); display:flex; flex-direction:column; justify-content:space-between;">
           <div>
             <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
-              <span style="background:#DCFCE7; color:#15803D; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Marks Weightage</span>
+              <span style="background:#EBF3FD; color:#156082; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:6px; text-transform:uppercase;">Blueprint &amp; Marks Weightage</span>
               <span style="font-size:1.4rem;">📊</span>
             </div>
             <h3 style="font-size:1.2rem; font-weight:700; color:#0F172A; margin:0; font-family:'Plus Jakarta Sans','Inter','Noto Sans Devanagari',sans-serif;">ICSE Hindi Marking Scheme &amp; Blueprint</h3>
           </div>
           <div style="display:flex; gap:0.6rem; flex-wrap:wrap; border-top:1px solid #F1F5F9; padding-top:1.15rem; margin-top:1.25rem;">
-            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#16A34A; border-color:#16A34A;">
+            <a href="/pdf/icse/class10/hindi/class_10_hindi_marking_schema_icse.pdf" target="_blank" rel="noopener" class="btn btn-primary" style="flex:1; min-width:140px; justify-content:center; padding:0.6rem 0.85rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; background:#156082; border-color:#156082;">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               View Marking Scheme
             </a>
@@ -2000,7 +2093,7 @@ def generate_icse_landing_page():
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               PDF
             </a>
-            <a href="/documents/icse/class10/hindi/ICSE_Class10_Hindi_Marks_Weightage.docx" download="ICSE_Class10_Hindi_Marks_Weightage.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#16A34A; border-color:#BBF7D0;" title="Download Word DOCX">
+            <a href="/documents/icse/class10/hindi/ICSE_Class10_Hindi_Marks_Weightage.docx" download="ICSE_Class10_Hindi_Marks_Weightage.docx" class="btn btn-outline" style="padding:0.6rem 0.75rem; font-size:0.86rem; border-radius:8px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:4px; color:#156082; border-color:#BAE6FD;" title="Download Word DOCX">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
               DOCX
             </a>
@@ -2045,33 +2138,17 @@ def generate_icse_landing_page():
     <!-- Quick Links Grid -->
     <section class="seo-section-card">
       <div class="seo-section-header">
-        <span class="seo-section-icon">⚡</span>
-        <h2>अभ्यास वर्कशीट एवं व्याकरण (Related ICSE Resources)</h2>
+        <span class="seo-section-icon">📖</span>
+        <h2>ICSE हिंदी व्याकरण (ICSE Hindi Grammar)</h2>
       </div>
-      <div class="seo-grid">
-        <a href="/worksheets/" class="seo-card">
+      <div class="seo-grid" style="grid-template-columns: minmax(280px, 500px);">
+        <a href="/hindi-grammar/icse/" class="seo-card">
           <div>
-            <span class="seo-card-badge">अभ्यास पत्र</span>
-            <h3>ICSE Hindi Worksheets</h3>
-            <p>ICSE मुहावरे एवं साहित्य सागर के विशेष अभ्यास कार्य-पत्र।</p>
+            <span class="seo-card-badge">व्याकरण संकलन</span>
+            <h3>ICSE Hindi Grammar Hub</h3>
+            <p>ICSE हिंदी मुहावरे (अभ्यास कार्य-पत्रक 1 से 6) एवं संपूर्ण व्याकरण अध्ययन सामग्री।</p>
           </div>
-          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
-        </a>
-        <a href="/hindi-grammar/muhavare/" class="seo-card">
-          <div>
-            <span class="seo-card-badge">व्याकरण</span>
-            <h3>ICSE मुहावरे अभ्यास (6 सेट्स)</h3>
-            <p>विगत वर्षों में पूछे गए महत्वपूर्ण मुहावरों का वाक्य प्रयोग सहित संकलन।</p>
-          </div>
-          <span class="seo-card-cta">मुहावरे पढ़ें &rarr;</span>
-        </a>
-        <a href="/worksheets/#icse-worksheets" class="seo-card">
-          <div>
-            <span class="seo-card-badge">अभ्यास पत्रक</span>
-            <h3>ICSE अभ्यास वर्कशीट्स</h3>
-            <p>साहित्य सागर और एकांकी संचय के अवतरण-आधारित अभ्यास कार्य-पत्र।</p>
-          </div>
-          <span class="seo-card-cta">वर्कशीट देखें &rarr;</span>
+          <span class="seo-card-cta">ICSE व्याकरण पेज पर जाएं &rarr;</span>
         </a>
       </div>
     </section>
@@ -2097,7 +2174,7 @@ def generate_worksheets_hub():
     ALL_CANONICAL_URLS.append(canonical_url)
 
     seo_title = "Class 10 Hindi Worksheets | CBSE, ICSE & Grammar Practice Papers | EkShala"
-    desc = "18 free Class 10 Hindi worksheets for CBSE, ICSE, and Hindi Grammar. Solved practice sheets, Muhavare, and Padbandh with instant online view and Word downloads."
+    desc = "18 practice Class 10 Hindi worksheets for CBSE, ICSE, and Hindi Grammar. Solved practice sheets, Muhavare, and Padbandh with instant online view and Word downloads."
 
     # Categorize worksheets into 3 distinct partitions
     cbse_keys = [
@@ -2152,14 +2229,8 @@ def generate_worksheets_hub():
     <p style="font-size:0.88rem; color:#64748B; line-height:1.6; margin:0 0 1.15rem;">{subtitle}</p>
   </div>
   <div style="display:flex; flex-direction:column; gap:0.55rem; border-top:1px solid #F1F5F9; padding-top:0.85rem;">
-    <div style="display:flex; gap:0.5rem;">
-      <button class="btn btn-primary" onclick="openWorksheetViewer('{k}', '{safe_title}', '{safe_url}')" style="flex:1; padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer;">
-        👁️ हल करें (View)
-      </button>
-      {f'<a href="{file_url}" download class="btn btn-outline" style="padding:0.55rem 0.9rem; font-size:0.88rem; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; text-decoration:none;" title="Download Word Document">📥 Download</a>' if file_url else ''}
-    </div>
-    <button class="btn btn-ghost" onclick="openUploadModal('{k}', '{safe_title}')" style="width:100%; padding:0.5rem 0.75rem; font-size:0.82rem; border-radius:8px; border:1px dashed #CBD5E1; color:#1E3A5F; background:#F8FAFC; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:600; cursor:pointer;">
-      📤 उत्तर पुस्तिका सबमिट करें (Evaluation)
+    <button class="btn btn-primary" onclick="openWorksheetMaster('{k}', '{safe_title}', '{safe_url}')" style="width:100%; padding:0.65rem 1rem; font-size:0.92rem; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; font-weight:700; cursor:pointer;">
+      📝 Worksheet Attempt
     </button>
   </div>
 </div>"""
@@ -2219,19 +2290,19 @@ def generate_worksheets_hub():
 
     body_html = f"""<main class="seo-content-wrap">
   <div class="container">
-    <!-- Partition Switcher Toolbar -->
-    <div class="ws-partition-nav" style="display:flex; gap:0.6rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.25rem; position:sticky; top:70px; z-index:40; background:#FFFFFF; padding:0.85rem 1.25rem; border-radius:100px; box-shadow:0 4px 16px rgba(15,43,72,0.06); border:1px solid #E2E8F0; width:fit-content; margin-left:auto; margin-right:auto;">
-      <button class="ws-partition-btn active" data-partition="all" onclick="filterPartition('all')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:700; font-size:0.88rem; cursor:pointer; border:1.5px solid #3A7BD5; background:#3A7BD5; color:#FFFFFF; transition:all 0.2s;">
-        <span>🌟 All Worksheets</span> <span style="background:rgba(255,255,255,0.25); padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem;">20</span>
+    <!-- Partition Switcher Toolbar matching exact top tab style -->
+    <div class="ws-partition-nav" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:0.75rem; margin-bottom:2.25rem;">
+      <button class="ws-partition-btn active" data-partition="all" onclick="filterPartition('all')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #156082; background:#156082; color:#FFFFFF; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem; transition:all 0.2s;">
+        <span>🌟 ALL WORKSHEETS</span> <span style="background:rgba(255,255,255,0.25); padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem;">20</span>
       </button>
-      <button class="ws-partition-btn" data-partition="cbse" onclick="filterPartition('cbse')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
-        <span>📘 CBSE Worksheets</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">6</span>
+      <button class="ws-partition-btn" data-partition="cbse" onclick="filterPartition('cbse')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem; transition:all 0.2s;">
+        <span>📘 CBSE WORKSHEETS</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">6</span>
       </button>
-      <button class="ws-partition-btn" data-partition="icse" onclick="filterPartition('icse')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
-        <span>📗 ICSE Worksheets</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">2</span>
+      <button class="ws-partition-btn" data-partition="icse" onclick="filterPartition('icse')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem; transition:all 0.2s;">
+        <span>📗 ICSE WORKSHEETS</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">2</span>
       </button>
-      <button class="ws-partition-btn" data-partition="grammar" onclick="filterPartition('grammar')" style="display:inline-flex; align-items:center; gap:0.4rem; padding:0.5rem 1.25rem; border-radius:100px; font-weight:600; font-size:0.88rem; cursor:pointer; border:1.5px solid #DCE7F3; background:#FFFFFF; color:#1E3A5F; transition:all 0.2s;">
-        <span>📙 Grammar Worksheets (व्याकरण)</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">12</span>
+      <button class="ws-partition-btn" data-partition="grammar" onclick="filterPartition('grammar')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.4rem; transition:all 0.2s;">
+        <span>📙 GRAMMAR WORKSHEETS</span> <span style="background:#EBF3FD; color:#156082; padding:0.1rem 0.5rem; border-radius:50px; font-size:0.75rem; font-weight:700;">12</span>
       </button>
     </div>
 
@@ -2339,10 +2410,10 @@ function filterPartition(p) {
   document.querySelectorAll('.ws-partition-btn').forEach(function(btn) {
     var active = btn.dataset.partition === p;
     btn.classList.toggle('active', active);
-    btn.style.background = active ? '#3A7BD5' : '#FFFFFF';
-    btn.style.color = active ? '#FFFFFF' : '#1E3A5F';
-    btn.style.borderColor = active ? '#3A7BD5' : '#DCE7F3';
-    btn.style.boxShadow = active ? '0 3px 10px rgba(58,123,213,0.25)' : 'none';
+    btn.style.background = active ? '#156082' : '#F8FAFC';
+    btn.style.color = active ? '#FFFFFF' : '#334155';
+    btn.style.borderColor = active ? '#156082' : '#E2E8F0';
+    btn.style.boxShadow = 'none';
   });
 
   document.querySelectorAll('.ws-partition-block').forEach(function(sec) {
@@ -2410,44 +2481,43 @@ document.addEventListener('DOMContentLoaded', function() {
 # ==============================================================================
 # 5. GENERATE HINDI GRAMMAR HUB & TOPIC PAGES WITH DUAL BOARD & NESTED WORKSHEET TABS
 # ==============================================================================
+# ==============================================================================
+# 5. GENERATE HINDI GRAMMAR HUB, CBSE DEDICATED PAGE & ICSE DEDICATED PAGE
+# ==============================================================================
+# ==============================================================================
+# 5. GENERATE DEDICATED HINDI GRAMMAR & WRITING PAGES (CBSE & ICSE SEPARATE URLS)
+# ==============================================================================
 def generate_grammar_pages():
-    print("\n--- Generating Hindi Grammar Hub & Topic Pages (Nested Worksheet Tabs) ---")
-    
-    # Load converted grammar worksheets from D:\Hindi Grammer
-    grammar_data_file = os.path.join(WORKSPACE_DIR, "grammar_converted_data.json")
-    g_data = {}
-    if os.path.exists(grammar_data_file):
-        with open(grammar_data_file, 'r', encoding='utf-8') as f:
-            g_data = json.load(f)
+    print("\n--- Generating Dedicated Hindi Grammar Pages (Hub, CBSE Topics, ICSE) ---")
 
-    # Hub
-    rel_dir = "hindi-grammar"
-    canonical_url = f"{BASE_URL}/{rel_dir}/"
-    ALL_CANONICAL_URLS.append(canonical_url)
+    # Load converted grammar JSON data
+    with open(os.path.join(PUBLIC_DIR, '..', 'grammar_converted_data.json'), 'r', encoding='utf-8') as f:
+        g_data = json.load(f)
 
-    seo_title = "Class 10 Hindi Grammar | CBSE & ICSE Board Notes, Muhavare & Worksheets | EkShala"
-    desc = "Complete Class 10 Hindi Grammar (व्याकरण) study material for CBSE and ICSE boards. Chapter-wise Muhavare (मुहावरे), Padbandh (पदबंध), Vakya Rupantar, and solved practice worksheets."
+    # --------------------------------------------------------------------------
+    # 1. HUB PAGE: /hindi-grammar/
+    # --------------------------------------------------------------------------
+    rel_dir_hub = "hindi-grammar"
+    canonical_hub = f"{BASE_URL}/{rel_dir_hub}/"
+    ALL_CANONICAL_URLS.append(canonical_hub)
 
-    schema_dict = {
+    seo_title_hub = "Class 10 Hindi Grammar & Writing Skills | CBSE & ICSE | EkShala"
+    desc_hub = "Class 10 Hindi Grammar & Writing Skills hub. Select CBSE or ICSE board for comprehensive notes, rules, formats, and practice worksheets."
+
+    schema_hub = {
         "@context": "https://schema.org",
         "@graph": [
             {
                 "@type": "BreadcrumbList",
                 "itemListElement": [
                     { "@type": "ListItem", "position": 1, "name": "होम", "item": f"{BASE_URL}/" },
-                    { "@type": "ListItem", "position": 2, "name": "Hindi Grammar", "item": canonical_url }
+                    { "@type": "ListItem", "position": 2, "name": "Hindi Grammar Hub", "item": canonical_hub }
                 ]
-            },
-            {
-                "@type": "Course",
-                "name": "Class 10 Hindi Grammar (हिंदी व्याकरण)",
-                "description": desc,
-                "provider": { "@type": "Organization", "name": "EkShala", "url": BASE_URL }
             }
         ]
     }
 
-    breadcrumbs_html = f"""<div class="seo-breadcrumb-bar">
+    breadcrumbs_hub = f"""<div class="seo-breadcrumb-bar">
   <div class="container">
     <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -2456,666 +2526,739 @@ def generate_grammar_pages():
       </li>
       <li class="sep">&rsaquo;</li>
       <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-        <span class="current" itemprop="name">हिंदी व्याकरण (Hindi Grammar)</span>
+        <span class="current" itemprop="name">Hindi Grammar Hub</span>
         <meta itemprop="position" content="2" />
       </li>
     </ol>
   </div>
 </div>"""
 
-    hero_html = f"""<header class="seo-hero">
+    hero_hub = f"""<header class="seo-hero">
   <div class="container">
-    <span class="seo-hero-badge">CBSE &bull; ICSE &bull; कक्षा 10 व्याकरण</span>
-    <h1>Class 10 Hindi Grammar (हिंदी व्याकरण)</h1>
-    <p class="lead">कक्षा 10 बोर्ड परीक्षा के लिए संपूर्ण हिंदी व्याकरण: पाठ-वार मुहावरे, पदबंध, रचना के आधार पर वाक्य रूपांतरण एवं अभ्यास वर्क्शीट्स। 16 में से 16 अंक सुनिश्चित करने के लिए प्रामाणिक अध्ययन सामग्री।</p>
-    <div class="seo-hero-meta">
-      <span>🏛️ <strong>CBSE &amp; ICSE बोर्ड टैब्स</strong></span>
-      <span>📖 <strong>पाठ-वार मुहावरे (Chapter-wise Idioms)</strong></span>
-      <span>🔗 <strong>पदबंध एवं वाक्य रूपांतरण</strong></span>
-      <span>📄 <strong>अभ्यास वर्क्शीट्स एवं उत्तर कुंजी</strong></span>
+    <span class="seo-hero-badge">CBSE &bull; ICSE &bull; संपूर्ण हिंदी व्याकरण</span>
+    <h1>Class 10 Hindi Grammar &amp; Writing Skills</h1>
+    <p class="lead">अपनी अध्ययन बोर्ड प्रणाली का चयन करें और विस्तृत व्याकरण नियमों, मुहावरों, पदबंध, समास, वाक्य रूपांतरण एवं रचनात्मक लेखन कौशल का अध्ययन करें:</p>
+  </div>
+</header>"""
+
+    body_hub = f"""<main class="seo-content-wrap">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-bottom:3rem;">
+      
+      <!-- CBSE Choice Card -->
+      <div style="background:#FFFFFF; border:2px solid #2563EB; border-radius:18px; padding:2rem; box-shadow:0 8px 30px rgba(37,99,235,0.08); display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <span style="background:#EFF6FF; color:#2563EB; font-weight:700; font-size:0.8rem; padding:0.35rem 0.85rem; border-radius:9999px; text-transform:uppercase; letter-spacing:0.5px;">CBSE Board</span>
+          <h2 style="font-size:1.6rem; color:#0F172A; margin:1rem 0 0.5rem; font-weight:800;">CBSE Class 10 Hindi Grammar</h2>
+          <p style="color:#475569; font-size:0.95rem; line-height:1.7; margin-bottom:1.5rem;">व्याकरण खंड (16 अंक): मुहावरे, पदबंध, समास, रचना के आधार पर वाक्य।<br/>लेखन कौशल (15 अंक): अनुच्छेद लेखन, पत्र लेखन, ईमेल लेखन उत्तर सहित।</p>
+        </div>
+        <a href="/hindi-grammar/cbse/" class="btn btn-primary" style="padding:0.85rem 1.5rem; font-weight:700; border-radius:12px; text-align:center; text-decoration:none; display:inline-block; background:#2563EB; color:#ffffff; font-size:1rem;">CBSE व्याकरण पेजेस खोलें &rarr;</a>
+      </div>
+
+      <!-- ICSE Choice Card -->
+      <div style="background:#FFFFFF; border:2px solid #059669; border-radius:18px; padding:2rem; box-shadow:0 8px 30px rgba(5,150,105,0.08); display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <span style="background:#ECFDF5; color:#059669; font-weight:700; font-size:0.8rem; padding:0.35rem 0.85rem; border-radius:9999px; text-transform:uppercase; letter-spacing:0.5px;">ICSE Board</span>
+          <h2 style="font-size:1.6rem; color:#0F172A; margin:1rem 0 0.5rem; font-weight:800;">ICSE Class 10 Hindi Grammar</h2>
+          <p style="color:#475569; font-size:0.95rem; line-height:1.7; margin-bottom:1.5rem;">आधिकारिक ICSE अंक विभाजन: निबंध लेखन (15M), पत्र लेखन (7M), अपठित गद्यांश (10M), व्याकरण (8M) एवं साहित्य सागर, एकांकी संचय व नया रास्ता के मुहावरे।</p>
+        </div>
+        <a href="/hindi-grammar/icse/" class="btn btn-success" style="padding:0.85rem 1.5rem; font-weight:700; border-radius:12px; text-align:center; text-decoration:none; display:inline-block; background:#059669; color:#ffffff; font-size:1rem;">ICSE व्याकरण पेजेस खोलें &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</main>"""
+
+    full_page_hub = get_common_head(seo_title_hub, desc_hub, canonical_hub, json.dumps(schema_hub, indent=2))
+    full_page_hub += get_navbar(active_link='grammar')
+    full_page_hub += breadcrumbs_hub
+    full_page_hub += hero_hub
+    full_page_hub += body_hub
+    full_page_hub += get_footer()
+    write_html_file(rel_dir_hub, full_page_hub)
+
+
+    # --------------------------------------------------------------------------
+    # 2. CBSE MAIN PORTAL PAGE: /hindi-grammar/cbse/
+    # --------------------------------------------------------------------------
+    rel_dir_cbse = "hindi-grammar/cbse"
+    canonical_cbse = f"{BASE_URL}/{rel_dir_cbse}/"
+    ALL_CANONICAL_URLS.append(canonical_cbse)
+
+    seo_title_cbse = "CBSE Class 10 Hindi Grammar & Writing Skills | Dedicated Topic Pages | EkShala"
+    desc_cbse = "CBSE Class 10 Hindi Grammar & Writing Skills Portal. Select dedicated pages for Muhavare, Padbandh, Samas, Vakya Bhed, Paragraph Writing, Letter Writing, and Email Writing."
+
+    breadcrumbs_cbse = f"""<div class="seo-breadcrumb-bar">
+  <div class="container">
+    <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">होम</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/hindi-grammar/" itemprop="item"><span itemprop="name">Hindi Grammar Hub</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">CBSE Hindi Grammar Portal</span>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+  </div>
+</div>"""
+
+    hero_cbse = f"""<header class="seo-hero">
+  <div class="container">
+    <span class="seo-hero-badge">CBSE CLASS 10 &bull; 31 MARKS TOTAL</span>
+    <h1>CBSE Class 10 Hindi Grammar &amp; Writing Skills</h1>
+    <p class="lead">नीचे दिए गए 2 मुख्य सेक्शन्स (व्याकरण खंड व लेखन कौशल) से अपने इच्छित विषय के समर्पित पेज पर जाएँ:</p>
+  </div>
+</header>"""
+
+    body_cbse = f"""<main class="seo-content-wrap">
+  <div class="container">
+    
+
+    <!-- TOP FEATURED 2 CARDS WITH DIRECT WORKING BUTTONS TO DEDICATED PAGES -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-bottom:3rem;">
+      
+      <!-- CARD 1: CBSE GRAMMAR TOPICS (16 MARKS) -->
+      <div style="background:#FFFFFF; border:2px solid #2563EB; border-radius:18px; padding:2rem; box-shadow:0 8px 30px rgba(37,99,235,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span style="background:#EFF6FF; color:#2563EB; font-weight:800; font-size:0.75rem; padding:0.35rem 0.85rem; border-radius:9999px;">CBSE OFFICIAL</span>
+            <span style="font-weight:700; color:#2563EB; font-size:0.9rem;">16 MARKS</span>
+          </div>
+          <h2 style="font-size:1.55rem; font-weight:800; color:#0F172A; margin:0 0 0.5rem;">1. CBSE Hindi Grammar (व्याकरण खंड)</h2>
+          <p style="font-size:0.92rem; color:#64748B; margin:0 0 1.25rem; line-height:1.6;">व्याकरण खंड के सभी 4 विषयों के समर्पित पेजेस उत्तर सहित:</p>
+          
+          <div style="display:flex; flex-direction:column; gap:0.65rem; margin-bottom:1.5rem;">
+            <a href="/hindi-grammar/cbse/muhavare/" class="btn" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>📖 मुहावरे (Muhavare)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+            <a href="/hindi-grammar/cbse/padbandh/" class="btn" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>📑 पदबंध (Padbandh)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+            <a href="/hindi-grammar/cbse/samas/" class="btn" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔗 समास (Samas)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+            <a href="/hindi-grammar/cbse/vakya/" class="btn" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔄 रचना के आधार पर वाक्य</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 2: WRITING SKILLS (15 MARKS - UNIFIED CBSE BLUE THEME) -->
+      <div style="background:#FFFFFF; border:2px solid #2563EB; border-radius:18px; padding:2rem; box-shadow:0 8px 30px rgba(37,99,235,0.06); display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+            <span style="background:#EFF6FF; color:#1D4ED8; font-weight:800; font-size:0.75rem; padding:0.35rem 0.85rem; border-radius:9999px; border:1px solid #BFDBFE;">WRITING SKILLS</span>
+            <span style="font-weight:700; color:#2563EB; font-size:0.9rem;">15 MARKS</span>
+          </div>
+          <h2 style="font-size:1.55rem; font-weight:800; color:#0F172A; margin:0 0 0.5rem;">2. Writing Skills (लेखन कौशल)</h2>
+          <p style="font-size:0.92rem; color:#64748B; margin:0 0 1.25rem; line-height:1.6;">रचनात्मक लेखन के सभी 3 विषयों के समर्पित पेजेस (प्रारूप व हल सहित उदाहरण):</p>
+          
+          <div style="display:flex; flex-direction:column; gap:0.65rem; margin-bottom:1.5rem;">
+            <a href="/hindi-grammar/cbse/paragraph-writing/" class="btn" style="background:#F8FAFC; border:1.5px solid #BFDBFE; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>📝 अनुच्छेद लेखन (Paragraph Writing)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+            <a href="/hindi-grammar/cbse/letter-writing/" class="btn" style="background:#F8FAFC; border:1.5px solid #BFDBFE; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>✉️ पत्र लेखन (Letter Writing)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+            <a href="/hindi-grammar/cbse/email-writing/" class="btn" style="background:#F8FAFC; border:1.5px solid #BFDBFE; color:#0F172A; font-weight:700; padding:0.65rem 1rem; border-radius:10px; text-decoration:none; display:flex; justify-content:space-between; align-items:center;">
+              <span>📧 ईमेल लेखन (Email Writing)</span>
+              <span style="color:#2563EB;">पेज खोलें &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>"""
+
+    full_page_cbse = get_common_head(seo_title_cbse, desc_cbse, canonical_cbse, json.dumps(schema_hub, indent=2))
+    full_page_cbse += get_navbar(active_link='grammar')
+    full_page_cbse += breadcrumbs_cbse
+    full_page_cbse += hero_cbse
+    full_page_cbse += body_cbse
+    full_page_cbse += get_footer()
+    write_html_file(rel_dir_cbse, full_page_cbse)
+
+
+    # Helper to generate individual CBSE topic page
+    def create_cbse_topic_page(slug, title, desc, inner_html):
+        rel = f"hindi-grammar/cbse/{slug}"
+        url = f"{BASE_URL}/{rel}/"
+        ALL_CANONICAL_URLS.append(url)
+        
+        bc = f"""<div class="seo-breadcrumb-bar">
+  <div class="container">
+    <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">होम</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/hindi-grammar/cbse/" itemprop="item"><span itemprop="name">CBSE Hindi Grammar</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">{title}</span>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+  </div>
+</div>"""
+
+        hero = f"""<header class="seo-hero">
+  <div class="container">
+    <span class="seo-hero-badge">CBSE CLASS 10 HINDI</span>
+    <h1>{title}</h1>
+    <p class="lead">{desc}</p>
+  </div>
+</header>"""
+
+        body = f"""<main class="seo-content-wrap">
+  <div class="container">
+    <section class="seo-section-card">
+      {inner_html}
+    </section>
+  </div>
+</main>"""
+
+        tab_script = """<script>
+function switchCbseMuhavreSub(sub) {
+  var s1 = document.getElementById('cbse-m-subpanel-1');
+  var s2 = document.getElementById('cbse-m-subpanel-2');
+  var s3 = document.getElementById('cbse-m-subpanel-3');
+  var b1 = document.getElementById('btn-cbse-m-sub1');
+  var b2 = document.getElementById('btn-cbse-m-sub2');
+  var b3 = document.getElementById('btn-cbse-m-sub3');
+  if(!s1 || !s2) return;
+  if(sub === 'sub1') {
+    s1.style.display = 'block'; s2.style.display = 'none'; if(s3) s3.style.display = 'none';
+    if(b1) { b1.style.background = '#156082'; b1.style.color = '#fff'; b1.style.border = '2px solid #156082'; }
+    if(b2) { b2.style.background = '#F8FAFC'; b2.style.color = '#334155'; b2.style.border = '2px solid #E2E8F0'; }
+    if(b3) { b3.style.background = '#F8FAFC'; b3.style.color = '#334155'; b3.style.border = '2px solid #E2E8F0'; }
+  } else if(sub === 'sub2') {
+    s1.style.display = 'none'; s2.style.display = 'block'; if(s3) s3.style.display = 'none';
+    if(b2) { b2.style.background = '#156082'; b2.style.color = '#fff'; b2.style.border = '2px solid #156082'; }
+    if(b1) { b1.style.background = '#F8FAFC'; b1.style.color = '#334155'; b1.style.border = '2px solid #E2E8F0'; }
+    if(b3) { b3.style.background = '#F8FAFC'; b3.style.color = '#334155'; b3.style.border = '2px solid #E2E8F0'; }
+  } else if(sub === 'sub3') {
+    s1.style.display = 'none'; s2.style.display = 'none'; if(s3) s3.style.display = 'block';
+    if(b3) { b3.style.background = '#156082'; b3.style.color = '#fff'; b3.style.border = '2px solid #156082'; }
+    if(b1) { b1.style.background = '#F8FAFC'; b1.style.color = '#334155'; b1.style.border = '2px solid #E2E8F0'; }
+    if(b2) { b2.style.background = '#F8FAFC'; b2.style.color = '#334155'; b2.style.border = '2px solid #E2E8F0'; }
+  }
+}
+function switchCbsePadbandhSub(sub) {
+  var s1 = document.getElementById('cbse-p-subpanel-1');
+  var s2 = document.getElementById('cbse-p-subpanel-2');
+  var b1 = document.getElementById('btn-cbse-p-sub1');
+  var b2 = document.getElementById('btn-cbse-p-sub2');
+  if(!s1 || !s2) return;
+  if(sub === 'sub1') {
+    s1.style.display = 'block'; s2.style.display = 'none';
+    if(b1) { b1.style.background = '#156082'; b1.style.color = '#fff'; b1.style.border = '2px solid #156082'; }
+    if(b2) { b2.style.background = '#F8FAFC'; b2.style.color = '#334155'; b2.style.border = '2px solid #E2E8F0'; }
+  } else {
+    s1.style.display = 'none'; s2.style.display = 'block';
+    if(b2) { b2.style.background = '#156082'; b2.style.color = '#fff'; b2.style.border = '2px solid #156082'; }
+    if(b1) { b1.style.background = '#F8FAFC'; b1.style.color = '#334155'; b1.style.border = '2px solid #E2E8F0'; }
+  }
+}
+function switchCbseSamasSub(sub) {
+  var s1 = document.getElementById('cbse-s-subpanel-1');
+  var s2 = document.getElementById('cbse-s-subpanel-2');
+  var b1 = document.getElementById('btn-cbse-s-sub1');
+  var b2 = document.getElementById('btn-cbse-s-sub2');
+  if(!s1 || !s2) return;
+  if(sub === 'sub1') {
+    s1.style.display = 'block'; s2.style.display = 'none';
+    if(b1) { b1.style.background = '#156082'; b1.style.color = '#fff'; b1.style.border = '2px solid #156082'; }
+    if(b2) { b2.style.background = '#F8FAFC'; b2.style.color = '#334155'; b2.style.border = '2px solid #E2E8F0'; }
+  } else {
+    s1.style.display = 'none'; s2.style.display = 'block';
+    if(b2) { b2.style.background = '#156082'; b2.style.color = '#fff'; b2.style.border = '2px solid #156082'; }
+    if(b1) { b1.style.background = '#F8FAFC'; b1.style.color = '#334155'; b1.style.border = '2px solid #E2E8F0'; }
+  }
+}
+function switchCbseVakyaSub(sub) {
+  var s1 = document.getElementById('cbse-v-subpanel-1');
+  var s2 = document.getElementById('cbse-v-subpanel-2');
+  var b1 = document.getElementById('btn-cbse-v-sub1');
+  var b2 = document.getElementById('btn-cbse-v-sub2');
+  if(!s1 || !s2) return;
+  if(sub === 'sub1') {
+    s1.style.display = 'block'; s2.style.display = 'none';
+    if(b1) { b1.style.background = '#156082'; b1.style.color = '#fff'; b1.style.border = '2px solid #156082'; }
+    if(b2) { b2.style.background = '#F8FAFC'; b2.style.color = '#334155'; b2.style.border = '2px solid #E2E8F0'; }
+  } else {
+    s1.style.display = 'none'; s2.style.display = 'block';
+    if(b2) { b2.style.background = '#156082'; b2.style.color = '#fff'; b2.style.border = '2px solid #156082'; }
+    if(b1) { b1.style.background = '#F8FAFC'; b1.style.color = '#334155'; b1.style.border = '2px solid #E2E8F0'; }
+  }
+}
+</script>"""
+
+        fp = get_common_head(f"{title} | CBSE Class 10 Hindi | EkShala", desc, url, "{}")
+        fp += get_navbar(active_link='grammar')
+        fp += bc
+        fp += hero
+        fp += body
+        fp += tab_script
+        fp += get_footer()
+        write_html_file(rel, fp)
+
+    # Build 17 CBSE Chapter Muhavare Cards Grid
+    cbse_muhavare_cards = []
+    for ch in CBSE_CHAPTERS:
+        url = f"/cbse/class-10/hindi/{ch['slug']}/#muhavre"
+        cbse_muhavare_cards.append(f"""<div class="seo-card" style="background:#FFFFFF; border-radius:14px; border:1px solid #E2E8F0; padding:1.25rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:0.75rem; font-weight:800; color:#156082; text-transform:uppercase; margin-bottom:0.35rem; background:#EBF3FD; padding:2px 8px; border-radius:4px; width:fit-content;">{ch['book']} &bull; Ch.{ch['num']}</div>
+            <h3 style="font-size:1.1rem; font-weight:800; color:#0F172A; margin:0.35rem 0 0.25rem;">{ch['title']}</h3>
+            <p style="font-size:0.85rem; color:#64748B; margin:0 0 1rem;">लेखक: {ch['author']}</p>
+          </div>
+          <a href="{url}" style="color:#156082; font-weight:700; font-size:0.88rem; text-decoration:none; display:inline-flex; align-items:center; gap:4px;">📖 इस पाठ के मुहावरे देखें &rarr;</a>
+        </div>""")
+
+    cbse_muhavare_grid_html = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:1.15rem; margin-top:1.25rem; margin-bottom:2rem;">' + "".join(cbse_muhavare_cards) + '</div>'
+
+    # 3. DEDICATED MUHAVARE PAGE: /hindi-grammar/cbse/muhavare/
+    create_cbse_topic_page("muhavare", "मुहावरे (Muhavare)", "कक्षा 10 हिंदी (स्पर्श व संचयन) पाठ-वार मुहावरे, अभ्यास कार्य-पत्रक एवं उत्तर सहित अतिरिक्त अभ्यास प्रश्न।", f"""
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; margin-bottom:1.5rem;">
+        <button id="btn-cbse-m-sub1" onclick="switchCbseMuhavreSub('sub1')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #156082; background:#156082; color:#ffffff; cursor:pointer;">
+          📖 CHAPTER WISE MUHAVARE
+        </button>
+        <button id="btn-cbse-m-sub2" onclick="switchCbseMuhavreSub('sub2')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer;">
+          📝 MUHAVARE WORKSHEETS
+        </button>
+        <button id="btn-cbse-m-sub3" onclick="switchCbseMuhavreSub('sub3')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer;">
+          📚 ADDITIONAL MATERIAL
+        </button>
+      </div>
+
+      <div id="cbse-m-subpanel-1" style="display:block;">
+        <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:1.5rem; border-radius:14px;">
+          <h3 style="color:#0F172A; font-size:1.25rem; font-weight:800; margin-top:0; margin-bottom:0.5rem;">📚 पाठ-वार मुहावरे (Chapter-Wise Idioms Cards)</h3>
+          <p style="color:#475569; font-size:0.92rem; margin-bottom:1rem;">कक्षा 10 हिंदी (कोर्स बी) के सभी 17 पाठों (स्पर्श एवं संचयन भाग-2) के महत्वपूर्ण मुहावरे, अर्थ व वाक्य प्रयोग के कार्ड्स (किसी भी कार्ड पर क्लिक करके उस पाठ के मुहावरे खोलें):</p>
+          {cbse_muhavare_grid_html}
+        </div>
+      </div>
+
+      <div id="cbse-m-subpanel-2" style="display:none;">
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:1.5rem; border-radius:14px;">
+          <h3 style="color:#0F172A; font-size:1.25rem; font-weight:800; margin-top:0; margin-bottom:0.5rem;">📝 CBSE मुहावरे अभ्यास कार्य-पत्रक (Worksheets 1 &amp; 2 — D:\Hindi Grammer)</h3>
+          <p style="color:#475569; font-size:0.92rem; margin-bottom:1.5rem;">40 अंकों के विस्तृत मुहावरे अभ्यास कार्य-पत्रक एवं उत्तर कुंजी:</p>
+          {g_data.get('cbse_muhavre_worksheets_all', g_data.get('cbse_muhavre_1', {}).get('html', ''))}
+        </div>
+      </div>
+
+      <div id="cbse-m-subpanel-3" style="display:none;">
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:1.5rem; border-radius:12px;">
+          <h3 style="color:#1E3A5F; font-size:1.2rem; margin-top:0;">ADDITIONAL MATERIAL (अतिरिक्त अभ्यास प्रश्न व लोकोक्तियाँ)</h3>
+          <p style="color:#475569; font-size:0.92rem;">विगत वर्षों की बोर्ड परीक्षाओं पर आधारित महत्वपूर्ण मुहावरे व अभ्यास सेट।</p>
+        </div>
+      </div>
+    """)
+
+    # 4. DEDICATED PADBANDH PAGE: /hindi-grammar/cbse/padbandh/
+    create_cbse_topic_page("padbandh", "पदबंध (Padbandh)", "पदबंध के नियम, भेद (संज्ञा, सर्वनाम, विशेषण, क्रिया, क्रिया-विशेषण) एवं कार्य-पत्रक।", f"""
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; margin-bottom:1.5rem;">
+        <button id="btn-cbse-p-sub1" onclick="switchCbsePadbandhSub('sub1')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #156082; background:#156082; color:#ffffff; cursor:pointer;">
+          📑 PADBANDH (नियम व भेद)
+        </button>
+        <button id="btn-cbse-p-sub2" onclick="switchCbsePadbandhSub('sub2')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer;">
+          📝 PADBANDH WORKSHEETS
+        </button>
+      </div>
+
+      <div id="cbse-p-subpanel-1" style="display:block;">
+        {g_data.get('cbse_padbandh_1', {}).get('html', '')}
+      </div>
+      <div id="cbse-p-subpanel-2" style="display:none;">
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:1.5rem; border-radius:14px;">
+          <h3 style="color:#0F172A; font-size:1.25rem; font-weight:800; margin-top:0; margin-bottom:0.5rem;">📝 CBSE पदबंध अभ्यास कार्य-पत्रक (Worksheets 1 &amp; 2 — D:\Hindi Grammer)</h3>
+          <p style="color:#475569; font-size:0.92rem; margin-bottom:1.5rem;">40 अंकों के विस्तृत पदबंध पहचान व रेखांकित भेद अभ्यास कार्य-पत्रक:</p>
+          {g_data.get('cbse_padbandh_worksheets_all', g_data.get('cbse_padbandh_2', {}).get('html', ''))}
+        </div>
+      </div>
+    """)
+
+    # 5. DEDICATED SAMAS PAGE: /hindi-grammar/cbse/samas/
+    create_cbse_topic_page("samas", "समास (Samas)", "समास के 6 भेद (अव्ययीभाव, तत्पुरुष, कर्मधारय, द्विगु, द्वंद्व, बहुव्रीहि) विग्रह नियम व अभ्यास कार्य-पत्रक।", f"""
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; margin-bottom:1.5rem;">
+        <button id="btn-cbse-s-sub1" onclick="switchCbseSamasSub('sub1')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #156082; background:#156082; color:#ffffff; cursor:pointer;">
+          🔗 SAMAS (6 भेद व विग्रह नियम)
+        </button>
+        <button id="btn-cbse-s-sub2" onclick="switchCbseSamasSub('sub2')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer;">
+          📝 SAMAS WORKSHEETS
+        </button>
+      </div>
+
+      <div id="cbse-s-subpanel-1" style="display:block;">
+        {g_data.get('cbse_samas_rules', {}).get('html', '')}
+      </div>
+      <div id="cbse-s-subpanel-2" style="display:none;">
+        {g_data.get('cbse_samas_worksheets', {}).get('html', '')}
+      </div>
+    """)
+
+    # 6. DEDICATED VAKYA PAGE: /hindi-grammar/cbse/vakya/
+    create_cbse_topic_page("vakya", "रचना के आधार पर वाक्य भेद (Vakya Bhed)", "सरल, संयुक्त एवं मिश्र वाक्य रूपांतरण के नियम तथा अभ्यास कार्य-पत्रक।", f"""
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:0.75rem; margin-bottom:1.5rem;">
+        <button id="btn-cbse-v-sub1" onclick="switchCbseVakyaSub('sub1')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #156082; background:#156082; color:#ffffff; cursor:pointer;">
+          🔄 RACHNA KE ADHAAR PAR VAKYA
+        </button>
+        <button id="btn-cbse-v-sub2" onclick="switchCbseVakyaSub('sub2')" style="padding:0.75rem 1rem; border-radius:10px; font-weight:700; font-size:0.88rem; border:2px solid #E2E8F0; background:#F8FAFC; color:#334155; cursor:pointer;">
+          📝 VAKYA WORKSHEETS
+        </button>
+      </div>
+
+      <div id="cbse-v-subpanel-1" style="display:block;">
+        {g_data.get('cbse_vakya_rules', {}).get('html', '')}
+      </div>
+      <div id="cbse-v-subpanel-2" style="display:none;">
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:1.5rem; border-radius:14px;">
+          <h3 style="color:#0F172A; font-size:1.25rem; font-weight:800; margin-top:0; margin-bottom:0.5rem;">📝 CBSE रचना के आधार पर वाक्य रूपांतरण कार्य-पत्रक (Worksheets 1 &amp; 2 — D:\Hindi Grammer)</h3>
+          <p style="color:#475569; font-size:0.92rem; margin-bottom:1.5rem;">40 अंकों के सरल, संयुक्त एवं मिश्र वाक्य रूपांतरण अभ्यास कार्य-पत्रक:</p>
+          {g_data.get('cbse_vakya_worksheets_all', g_data.get('cbse_vakya_worksheets', {}).get('html', ''))}
+        </div>
+      </div>
+    """)
+
+    # 7. DEDICATED PARAGRAPH WRITING PAGE: /hindi-grammar/cbse/paragraph-writing/
+    create_cbse_topic_page("paragraph-writing", "अनुच्छेद लेखन (Paragraph Writing - 5 Marks)", "अनुच्छेद लेखन के दिशानिर्देश, शब्द-सीमा (100-120 शब्द) एवं हल किए गए उत्कृष्ट उदाहरण।", f"""
+      {g_data.get('cbse_writing_paragraph', {}).get('html', '')}
+    """)
+
+    # 8. DEDICATED LETTER WRITING PAGE: /hindi-grammar/cbse/letter-writing/
+    create_cbse_topic_page("letter-writing", "पत्र लेखन (Letter Writing - 5 Marks)", "औपचारिक एवं अनौपचारिक पत्र प्रारूप, मुख्य बिंदु एवं हल प्रश्न।", f"""
+      {g_data.get('cbse_writing_letter', {}).get('html', '')}
+    """)
+
+    # 9. DEDICATED EMAIL WRITING PAGE: /hindi-grammar/cbse/email-writing/
+    create_cbse_topic_page("email-writing", "ईमेल लेखन (Email Writing - 5 Marks)", "आधिकारिक ईमेल प्रारूप (To, CC, BCC, विषय) एवं अभ्यास हेतु हल किए गए ईमेल।", f"""
+      {g_data.get('cbse_writing_email', {}).get('html', '')}
+    """)
+
+    # Dedicated CBSE Syllabus and Marking Scheme pages
+    def create_cbse_doc_page(rel_path, title, desc, doc_html, download_filename):
+        url = f"{BASE_URL}/{rel_path}/"
+        ALL_CANONICAL_URLS.append(url)
+        
+        bc = f"""<div class="seo-breadcrumb-bar">
+  <div class="container">
+    <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">होम</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/cbse/class-10/hindi/" itemprop="item"><span itemprop="name">CBSE Class 10 Hindi</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">{title}</span>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+  </div>
+</div>"""
+
+        hero = f"""<header class="seo-hero">
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+    <div>
+      <span class="seo-hero-badge">CBSE OFFICIAL DOCUMENT 2026-27</span>
+      <h1 style="margin-bottom:0.4rem;">{title}</h1>
+      <p class="lead" style="margin-bottom:0;">{desc}</p>
+    </div>
+    <div>
+      <a href="/uploads/cbse/{download_filename}" download="{download_filename}" class="btn" style="background:#FFFFFF; color:#156082; font-weight:800; font-size:0.92rem; padding:0.75rem 1.25rem; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(0,0,0,0.15);">
+        📥 Download Word (.docx) File
+      </a>
     </div>
   </div>
 </header>"""
 
-    # CBSE Chapter List with Muhavare Links
-    cbse_chapters = [
-        ("बड़े भाई साहब", "प्रेमचंद", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/bade-bhai-sahab/#muhavre"),
-        ("साखी", "कबीरदास", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/sakhi-kabir/#muhavre"),
-        ("पद", "मीराबाई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/pad-meera/#muhavre"),
-        ("तताँरा-वामीरो कथा", "लीलाधर मंडलोई", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/tatara-vamiro-katha/#muhavre"),
-        ("तीसरी कसम के शिल्पकार शैलेंद्र", "प्रहलाद अग्रवाल", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/teesri-kasam-ke-shilpkar-shailendra/#muhavre"),
-        ("अब कहाँ दूसरे के दुख से दुखी होने वाले", "निदा फ़ाज़ली", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/ab-kahan-doosre-ke-dukh-se-dukhi-hone-wale/#muhavre"),
-        ("पतझड़ में टूटी पत्तियाँ", "रवींद्र केलेकर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/patjhar-mein-tooti-pattiyan/#muhavre"),
-        ("कारतूस", "हबीब तनवीर", "स्पर्श (भाग-2)", "/cbse/class-10/hindi/kartoos/#muhavre"),
-        ("हरिहर काका", "मिथिलेश्वर", "संचयन (भाग-2)", "/cbse/class-10/hindi/harihar-kaka/#muhavre"),
-        ("सपनों के-се दिन", "गुरदयाल सिंह", "संचयन (भाग-2)", "/cbse/class-10/hindi/sapno-ke-se-din/#muhavre"),
-        ("टोपी शुक्ला", "राही मासूम रज़ा", "संचयन (भाग-2)", "/cbse/class-10/hindi/topi-shukla/#muhavre")
-    ]
+        body = f"""<main class="seo-content-wrap">
+  <div class="container">
+    <section class="seo-section-card" style="background:#FFFFFF; padding:2rem; border-radius:16px; border:1px solid #E2E8F0; box-shadow:0 4px 20px rgba(0,0,0,0.03);">
+      {doc_html}
+    </section>
+  </div>
+</main>"""
 
-    cbse_ch_cards = []
-    for title, author, book, link in cbse_chapters:
-        cbse_ch_cards.append(f"""
-        <div class="seo-card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between; border-radius:14px; padding:1.25rem; background:#FFFFFF; border:1px solid #E2E8F0; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
-          <div>
-            <span class="seo-card-badge" style="background:#E0EFFE; color:#0284C7; font-weight:700; padding:3px 8px; border-radius:6px; font-size:0.75rem;">{book}</span>
-            <h3 style="font-size:1.1rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.2rem;">{title}</h3>
-            <p style="font-size:0.85rem; color:#64748B; margin-bottom:0.75rem;">लेखक: {author}</p>
-          </div>
-          <a href="{link}" class="btn btn-outline btn-sm" style="width:100%; justify-content:center; text-decoration:none; font-size:0.85rem; padding:0.45rem 0.75rem; border-radius:8px; background:#F8FAFC; color:#1E40AF; border-color:#BFDBFE; font-weight:600; text-align:center;">
-            📖 चैप्टर मुहावरे देखें &rarr;
-          </a>
-        </div>""")
+        fp = get_common_head(f"{title} | EkShala", desc, url, "{}")
+        fp += get_navbar(active_link='cbse')
+        fp += bc
+        fp += hero
+        fp += body
+        fp += get_footer()
+        write_html_file(rel_path, fp)
 
-    # ICSE Chapter List with Muhavare Links
-    icse_chapters = [
-        ("बड़े घर की बेटी", "प्रेमचंद", "साहित्य सागर", "/icse/class-10/hindi/bade-ghar-ki-beti/#muhavre"),
-        ("भीड़ में खोया आदमी", "लीलाधर शर्मा पर्वतीय", "साहित्य सागर", "/icse/class-10/hindi/bheed-mein-khoya-aadmi/#muhavre"),
-        ("भेड़ें और भेड़िये", "हरिशंकर परसाई", "साहित्य सागर", "/icse/class-10/hindi/bhedein-aur-bhediye/#muhavre"),
-        ("दो कलाकार", "मन्नू भंडारी", "साहित्य सागर", "/icse/class-10/hindi/do-kalakar/#muhavre"),
-        ("बात अठन्नी की", "सुदर्शन", "साहित्य सागर", "/icse/class-10/hindi/sandeh/#muhavre"),
-        ("सूखी डाली", "उपेंद्रनाथ अश्क", "एकांकी संचय", "/icse/class-10/hindi/sukhi-daali/#muhavre"),
-        ("दीपदान", "डॉ. रामकुमार वर्मा", "एकांकी संचय", "/icse/class-10/hindi/deepdan/#muhavre"),
-        ("महाभारत की एक सांझ", "भारतभूषण अग्रवाल", "एकांकी संचय", "/icse/class-10/hindi/mahabharat-ki-ek-saanjh/#muhavre"),
-        ("नया रास्ता (अध्याय 14-20)", "सुषमा अग्रवाल", "नया रास्ता", "/icse/class-10/hindi/naya-rasta-chapter-16/#muhavre")
-    ]
+    create_cbse_doc_page("cbse/class-10/hindi/syllabus", "CBSE Class 10 Hindi Syllabus 2026-27", "सीबीएसई बोर्ड परीक्षा 2026-27 कक्षा 10 हिंदी (कोर्स बी 085) का संपूर्ण आधिकारिक पाठ्यक्रम एवं पुस्तक-वार विवरण।", CBSE_DOCS_PARSED.get('cbse_syllabus_html', ''), "CBSE_Class10_Hindi_Syllabus_2026_27.docx")
+    create_cbse_doc_page("cbse/class-10/hindi/marking-scheme", "CBSE Class 10 Hindi Marking Scheme & Blueprint", "सीबीएसई बोर्ड परीक्षा 2026-27 कक्षा 10 हिंदी (कोर्स बी 085) 80+20 अंक विभाजन, प्रश्न प्रारूप व उत्तर गाइड।", CBSE_DOCS_PARSED.get('cbse_marking_scheme_html', ''), "CBSE_Class10_Hindi_CourseB_Marking_Scheme.docx")
+
+    # --------------------------------------------------------------------------
+    # 10. DEDICATED ICSE PAGE: /hindi-grammar/icse/
+    # --------------------------------------------------------------------------
+    rel_dir_icse = "hindi-grammar/icse"
+    canonical_icse = f"{BASE_URL}/{rel_dir_icse}/"
+    ALL_CANONICAL_URLS.append(canonical_icse)
+
+    seo_title_icse = "ICSE Class 10 Hindi Grammar & Composition | Syllabus, Marking Scheme & Idioms | EkShala"
+    desc_icse = "ICSE Class 10 Hindi Grammar & Composition. Includes official marking scheme (Composition 15M, Letter 7M, Comprehension 10M, Grammar 8M) and chapter-wise idioms."
+
+    breadcrumbs_icse = f"""<div class="seo-breadcrumb-bar">
+  <div class="container">
+    <ol class="seo-breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/" itemprop="item"><span itemprop="name">होम</span></a>
+        <meta itemprop="position" content="1" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <a href="/hindi-grammar/" itemprop="item"><span itemprop="name">Hindi Grammar Hub</span></a>
+        <meta itemprop="position" content="2" />
+      </li>
+      <li class="sep">&rsaquo;</li>
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+        <span class="current" itemprop="name">ICSE Hindi Grammar &amp; Composition</span>
+        <meta itemprop="position" content="3" />
+      </li>
+    </ol>
+  </div>
+</div>"""
+
+    hero_icse = f"""<header class="seo-hero">
+  <div class="container">
+    <span class="seo-hero-badge">ICSE CLASS 10 &bull; GRAMMAR &amp; COMPOSITION</span>
+    <h1>ICSE Class 10 Hindi Grammar &amp; Composition</h1>
+    <p class="lead">आधिकारिक आईसीएसई हिंदी निबंध लेखन, पत्र लेखन, अपठित गद्यांश, व्याकरण अंक विभाजन एवं साहित्य सागर, एकांकी संचय व नया रास्ता के पाठ-वार मुहावरे:</p>
+  </div>
+</header>"""
 
     icse_ch_cards = []
-    for title, author, book, link in icse_chapters:
-        icse_ch_cards.append(f"""
-        <div class="seo-card" style="position:relative; display:flex; flex-direction:column; justify-content:space-between; border-radius:14px; padding:1.25rem; background:#FFFFFF; border:1px solid #E2E8F0; box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+    for ch in ICSE_CHAPTERS:
+        url = f"/icse/class-10/hindi/{ch['slug']}/#muhavre"
+        icse_ch_cards.append(f"""<div class="seo-card" style="background:#FFFFFF; border-radius:12px; border:1px solid #E2E8F0; padding:1.15rem; display:flex; flex-direction:column; justify-content:space-between;">
           <div>
-            <span class="seo-card-badge" style="background:#ECFDF5; color:#059669; font-weight:700; padding:3px 8px; border-radius:6px; font-size:0.75rem;">{book}</span>
-            <h3 style="font-size:1.1rem; font-weight:700; color:#0F172A; margin:0.4rem 0 0.2rem;">{title}</h3>
-            <p style="font-size:0.85rem; color:#64748B; margin-bottom:0.75rem;">लेखक: {author}</p>
+            <div style="font-size:0.75rem; font-weight:700; color:#059669; text-transform:uppercase; margin-bottom:0.25rem;">{ch['book']} &bull; Ch.{ch['num']}</div>
+            <h3 style="font-size:1.1rem; font-weight:700; color:#0F172A; margin:0 0 0.35rem;">{ch['title']} (मुहावरे)</h3>
+            <p style="font-size:0.85rem; color:#64748B; margin:0 0 0.85rem;">लेखक: {ch['author']}</p>
           </div>
-          <a href="{link}" class="btn btn-outline btn-sm" style="width:100%; justify-content:center; text-decoration:none; font-size:0.85rem; padding:0.45rem 0.75rem; border-radius:8px; background:#F8FAFC; color:#047857; border-color:#A7F3D0; font-weight:600; text-align:center;">
-            📖 चैप्टर मुहावरे देखें &rarr;
-          </a>
+          <a href="{url}" class="btn btn-outline" style="padding:0.45rem 0.85rem; font-size:0.84rem; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:0.4rem; color:#059669; border-color:#A7F3D0; font-weight:600;">📖 पाठ के मुहावरे देखें &rarr;</a>
         </div>""")
 
-    body_html = f"""<main class="seo-content-wrap">
+    body_icse = f"""<main class="seo-content-wrap">
   <div class="container">
     
-    <!-- Top-Level Board Switcher Tabs -->
-    <div class="board-nav-switcher" style="display:flex; justify-content:center; gap:0.75rem; margin-bottom:2rem; flex-wrap:wrap;">
-      <button class="board-tab-btn active" id="btn-tab-cbse" onclick="switchGrammarBoard('cbse')" style="padding:0.75rem 1.75rem; border-radius:12px; font-size:1.05rem; font-weight:700; cursor:pointer; border:2px solid #2563EB; background:#2563EB; color:#ffffff; transition:all 0.2s ease; box-shadow:0 4px 12px rgba(37,99,235,0.25);">
-        🏛️ CBSE Board Class 10
-      </button>
-      <button class="board-tab-btn" id="btn-tab-icse" onclick="switchGrammarBoard('icse')" style="padding:0.75rem 1.75rem; border-radius:12px; font-size:1.05rem; font-weight:700; cursor:pointer; border:2px solid #059669; background:#FFFFFF; color:#059669; transition:all 0.2s ease;">
-        🏛️ ICSE Board Class 10
-      </button>
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- PANEL 1: CBSE BOARD HINDI GRAMMAR -->
-    <!-- ========================================================================= -->
-    <div id="board-panel-cbse" class="grammar-board-panel" style="display:block;">
-      
-      <!-- CBSE Topic Sub-pills (Level 1) -->
-      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.5rem; border-bottom:1px solid #E2E8F0;">
-        <button class="subpill-btn active" id="btn-cbse-topic-ch" onclick="switchCbseTopic('ch')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer; white-space:nowrap;">
-          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
-        </button>
-        <button class="subpill-btn" id="btn-cbse-topic-muhavre" onclick="switchCbseTopic('muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे वर्क्शीट
-        </button>
-        <button class="subpill-btn" id="btn-cbse-topic-padbandh" onclick="switchCbseTopic('padbandh')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔗 पदबंध (Padbandh Worksheets)
-        </button>
-        <button class="subpill-btn" id="btn-cbse-topic-vakya" onclick="switchCbseTopic('vakya')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          🔄 रचना के आधार पर वाक्य रूपांतरण
-        </button>
-      </div>
-
-      <!-- CBSE Topic 1: Chapter-wise Muhavare Grid -->
-      <div id="cbse-topicpanel-ch" class="cbse-topicpanel" style="display:block;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">📖</span>
-            <div>
-              <h2 style="margin:0; font-size:1.35rem;">CBSE Class 10 - पाठ-वार मुहावरे (Chapter-wise Idioms)</h2>
-              <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">स्पर्श (भाग-2) एवं संचयन (भाग-2) के पाठों में दिए गए सभी मुहावरों का अर्थ एवं वाक्य प्रयोग:</p>
-            </div>
-          </div>
-          <div class="seo-grid">
-            {"".join(cbse_ch_cards)}
-          </div>
-        </section>
-      </div>
-
-      <!-- CBSE Topic 2: Muhavare Worksheets (Nested Level 2 Tabs) -->
-      <div id="cbse-topicpanel-muhavre" class="cbse-topicpanel" style="display:none;">
-        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
-          <button id="btn-cbse-m-w1" onclick="switchCbseMuhavreWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
-            📝 मुहावरे वर्क्शीट 1 (40 अंक)
-          </button>
-          <button id="btn-cbse-m-w2" onclick="switchCbseMuhavreWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
-            📝 मुहावरे वर्क्शीट 2 (40 अंक)
-          </button>
-        </div>
-
-        <div id="cbse-m-panel-w1" style="display:block;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>CBSE मुहावरे अभ्यास वर्क्शीट 1</h2></div>
-            {g_data.get('cbse_muhavre_1', {}).get('html', '')}
-          </section>
-        </div>
-
-        <div id="cbse-m-panel-w2" style="display:none;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>CBSE मुहावरे अभ्यास वर्क्शीट 2</h2></div>
-            {g_data.get('cbse_muhavre_2', {}).get('html', '')}
-          </section>
+    <section class="seo-section-card" style="margin-bottom:2.5rem; background:#F8FAFC; border:1px solid #CBD5E1; border-top:4px solid #059669;">
+      <div class="seo-section-header">
+        <span class="seo-section-icon" style="background:#ECFDF5; color:#059669;">📗</span>
+        <div>
+          <h2 style="margin:0; font-size:1.4rem; color:#0F172A;">ICSE Class 10 Hindi Syllabus &amp; Marking Scheme</h2>
+          <p style="margin:0.2rem 0 0; font-size:0.88rem; color:#64748B;">आधिकारिक आईसीएसई हिंदी व्याकरण, निबंध व पत्र अंक विभाजन:</p>
         </div>
       </div>
 
-      <!-- CBSE Topic 3: Padbandh Worksheets (Nested Level 2 Tabs) -->
-      <div id="cbse-topicpanel-padbandh" class="cbse-topicpanel" style="display:none;">
-        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
-          <button id="btn-cbse-p-w1" onclick="switchCbsePadbandhWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
-            🔗 पदबंध वर्क्शीट 1 (40 अंक)
-          </button>
-          <button id="btn-cbse-p-w2" onclick="switchCbsePadbandhWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
-            🔗 पदबंध वर्क्शीट 2 (40 अंक)
-          </button>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1rem; margin-top:1.25rem;">
+        <div style="background:#FFFFFF; padding:1.15rem; border-radius:10px; border:1px solid #E2E8F0;">
+          <h4 style="margin:0 0 0.4rem; color:#059669; font-size:1rem;">&bull; Composition (15 Marks)</h4>
+          <p style="margin:0; font-size:0.86rem; color:#475569; line-height:1.6;">Candidates will be required to write one composition (approx 250 words) from a choice of varied subjects, short explanations, directions, descriptions, narratives, or picture stimuli.</p>
         </div>
-
-        <div id="cbse-p-panel-w1" style="display:block;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">🔗</span><h2>CBSE पदबंध अभ्यास वर्क्शीट 1</h2></div>
-            {g_data.get('cbse_padbandh_1', {}).get('html', '')}
-          </section>
+        <div style="background:#FFFFFF; padding:1.15rem; border-radius:10px; border:1px solid #E2E8F0;">
+          <h4 style="margin:0 0 0.4rem; color:#059669; font-size:1rem;">&bull; Letter Writing (7 Marks)</h4>
+          <p style="margin:0; font-size:0.86rem; color:#475569; line-height:1.6;">One letter from a choice of two subjects (Formal or Informal letter, approx 120 words). Layout with address, introduction, body, and conclusion form part of assessment.</p>
         </div>
-
-        <div id="cbse-p-panel-w2" style="display:none;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">🔗</span><h2>CBSE पदबंध अभ्यास वर्क्शीट 2</h2></div>
-            {g_data.get('cbse_padbandh_2', {}).get('html', '')}
-          </section>
+        <div style="background:#FFFFFF; padding:1.15rem; border-radius:10px; border:1px solid #E2E8F0;">
+          <h4 style="margin:0 0 0.4rem; color:#059669; font-size:1rem;">&bull; Comprehension (10 Marks)</h4>
+          <p style="margin:0; font-size:0.86rem; color:#475569; line-height:1.6;">An unseen passage of about 250 words in Hindi with 5 questions (2 marks each) testing understanding in the candidate's own words.</p>
+        </div>
+        <div style="background:#FFFFFF; padding:1.15rem; border-radius:10px; border:1px solid #E2E8F0;">
+          <h4 style="margin:0 0 0.4rem; color:#059669; font-size:1rem;">&bull; Grammar (8 Marks)</h4>
+          <p style="margin:0; font-size:0.86rem; color:#475569; line-height:1.6;">Tests in language vocabulary, syntax, idioms, sentence synthesis, abstract nouns, antonyms/synonyms, correct word forms (8 MCQs).</p>
         </div>
       </div>
 
-      <!-- CBSE Topic 4: Vakya Rupantar Worksheets (Nested Level 2 Tabs) -->
-      <div id="cbse-topicpanel-vakya" class="cbse-topicpanel" style="display:none;">
-        <div style="display:flex; gap:0.5rem; margin-bottom:1.25rem;">
-          <button id="btn-cbse-v-w1" onclick="switchCbseVakyaWs('w1')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #2563EB; background:#2563EB; color:#ffffff; cursor:pointer;">
-            🔄 वाक्य रूपांतरण वर्क्शीट 1 (40 अंक)
-          </button>
-          <button id="btn-cbse-v-w2" onclick="switchCbseVakyaWs('w2')" style="padding:0.45rem 1rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer;">
-            🔄 वाक्य रूपांतरण वर्क्शीट 2 (40 अंक)
-          </button>
-        </div>
+      <div style="margin-top:1.25rem; background:#ECFDF5; border:1px solid #A7F3D0; padding:0.85rem 1.15rem; border-radius:8px; font-size:0.88rem; color:#065F46;">
+        <strong>Recommended Grammar Book:</strong> <em>Saras Hindi Vyakaran (Evergreen Publications, New Delhi)</em>
+      </div>
+    </section>
 
-        <div id="cbse-v-panel-w1" style="display:block;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">🔄</span><h2>CBSE वाक्य रूपांतरण वर्क्शीट 1</h2></div>
-            {g_data.get('cbse_vakya_1', {}).get('html', '')}
-          </section>
-        </div>
-
-        <div id="cbse-v-panel-w2" style="display:none;">
-          <section class="seo-section-card">
-            <div class="seo-section-header"><span class="seo-section-icon">🔄</span><h2>CBSE वाक्य रूपांतरण वर्क्शीट 2</h2></div>
-            {g_data.get('cbse_vakya_2', {}).get('html', '')}
-          </section>
+    <section class="seo-section-card" style="margin-bottom:2.5rem;">
+      <div class="seo-section-header">
+        <span class="seo-section-icon">📖</span>
+        <div>
+          <h2 style="margin:0; font-size:1.35rem;">ICSE Class 10 - पाठ-वार मुहावरे (Chapter-wise Idioms)</h2>
+          <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">साहित्य सागर, एकांकी संचय एवं नया रास्ता के पाठों के मुहावरे:</p>
         </div>
       </div>
-
-    </div>
-
-    <!-- ========================================================================= -->
-    <!-- PANEL 2: ICSE BOARD HINDI GRAMMAR -->
-    <!-- ========================================================================= -->
-    <div id="board-panel-icse" class="grammar-board-panel" style="display:none;">
-      
-      <!-- ICSE Topic Sub-pills (Level 1) -->
-      <div class="grammar-subpills" style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.5rem; margin-bottom:1.5rem; border-bottom:1px solid #E2E8F0;">
-        <button class="subpill-btn active" id="btn-icse-topic-ch" onclick="switchIcseTopic('ch')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
-          📖 पाठ-वार मुहावरे (Chapter-wise Muhavare)
-        </button>
-        <button class="subpill-btn" id="btn-icse-topic-muhavre" onclick="switchIcseTopic('muhavre')" style="padding:0.55rem 1.15rem; border-radius:9999px; font-weight:600; font-size:0.9rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-          ✍️ मुहावरे अभ्यास वर्क्शीट्स
-        </button>
+      <div class="seo-grid">
+        {"".join(icse_ch_cards)}
       </div>
+    </section>
 
-      <!-- ICSE Topic 1: Chapter-wise Muhavare Grid -->
-      <div id="icse-topicpanel-ch" class="icse-topicpanel" style="display:block;">
-        <section class="seo-section-card">
-          <div class="seo-section-header">
-            <span class="seo-section-icon">📖</span>
-            <div>
-              <h2 style="margin:0; font-size:1.35rem;">ICSE Class 10 - पाठ-वार मुहावरे (Chapter-wise Idioms)</h2>
-              <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">साहित्य सागर, एकांकी संचय एवं नया रास्ता के पाठों के मुहावरे:</p>
-            </div>
-          </div>
-          <div class="seo-grid">
-            {"".join(icse_ch_cards)}
-          </div>
-        </section>
-      </div>
-
-      <!-- ICSE Topic 2: Muhavare Worksheets (Nested Level 2 Tabs 1 to 6) -->
-      <div id="icse-topicpanel-muhavre" class="icse-topicpanel" style="display:none;">
-        <div style="display:flex; gap:0.4rem; overflow-x:auto; padding-bottom:0.4rem; margin-bottom:1.25rem;">
-          <button id="btn-icse-m-w1" onclick="switchIcseMuhavreWs('w1')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #059669; background:#059669; color:#ffffff; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 1
-          </button>
-          <button id="btn-icse-m-w2" onclick="switchIcseMuhavreWs('w2')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 2
-          </button>
-          <button id="btn-icse-m-w3" onclick="switchIcseMuhavreWs('w3')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 3
-          </button>
-          <button id="btn-icse-m-w4" onclick="switchIcseMuhavreWs('w4')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 4
-          </button>
-          <button id="btn-icse-m-w5" onclick="switchIcseMuhavreWs('w5')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 5
-          </button>
-          <button id="btn-icse-m-w6" onclick="switchIcseMuhavreWs('w6')" style="padding:0.45rem 0.9rem; border-radius:8px; font-weight:600; font-size:0.85rem; border:1px solid #CBD5E1; background:#FFFFFF; color:#334155; cursor:pointer; white-space:nowrap;">
-            📝 वर्क्शीट 6
-          </button>
-        </div>
-
-        <div id="icse-m-panel-w1" style="display:block;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 1</h2></div>{g_data.get('icse_muhavre_1', {}).get('html', '')}</section>
-        </div>
-        <div id="icse-m-panel-w2" style="display:none;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 2</h2></div>{g_data.get('icse_muhavre_2', {}).get('html', '')}</section>
-        </div>
-        <div id="icse-m-panel-w3" style="display:none;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 3</h2></div>{g_data.get('icse_muhavre_3', {}).get('html', '')}</section>
-        </div>
-        <div id="icse-m-panel-w4" style="display:none;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 4</h2></div>{g_data.get('icse_muhavre_4', {}).get('html', '')}</section>
-        </div>
-        <div id="icse-m-panel-w5" style="display:none;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 5</h2></div>{g_data.get('icse_muhavre_5', {}).get('html', '')}</section>
-        </div>
-        <div id="icse-m-panel-w6" style="display:none;">
-          <section class="seo-section-card"><div class="seo-section-header"><span class="seo-section-icon">✍️</span><h2>ICSE मुहावरे अभ्यास वर्क्शीट 6</h2></div>{g_data.get('icse_muhavre_6', {}).get('html', '')}</section>
+    <section class="seo-section-card">
+      <div class="seo-section-header">
+        <span class="seo-section-icon" style="background:#ECFDF5; color:#059669;">📝</span>
+        <div>
+          <h2 style="margin:0; font-size:1.35rem; color:#0F172A;">ICSE मुहावरे अभ्यास कार्य-पत्रक (Worksheets 1 to 6 — D:\Hindi Grammer)</h2>
+          <p style="margin:0.2rem 0 0; font-size:0.9rem; color:#64748B;">ICSE कक्षा 10 हिंदी मुहावरे अभ्यास सेट (1 से 6) डाउनलोड DOCX एवं उत्तर कुंजी सहित:</p>
         </div>
       </div>
-
-    </div>
+      <div style="background:#FFFFFF; border:1px solid #E2E8F0; padding:1.5rem; border-radius:14px; margin-top:1.25rem;">
+        {g_data.get('icse_muhavre_worksheets_all', '')}
+      </div>
+    </section>
 
   </div>
-</main>
+</main>"""
 
-<script>
-  function switchGrammarBoard(board) {{
-    const cbseBtn = document.getElementById('btn-tab-cbse');
-    const icseBtn = document.getElementById('btn-tab-icse');
-    const cbsePanel = document.getElementById('board-panel-cbse');
-    const icsePanel = document.getElementById('board-panel-icse');
-
-    if (board === 'cbse') {{
-      cbseBtn.style.background = '#2563EB';
-      cbseBtn.style.color = '#ffffff';
-      cbseBtn.style.borderColor = '#2563EB';
-      icseBtn.style.background = '#FFFFFF';
-      icseBtn.style.color = '#059669';
-      icseBtn.style.borderColor = '#059669';
-      cbsePanel.style.display = 'block';
-      icsePanel.style.display = 'none';
-    }} else {{
-      icseBtn.style.background = '#059669';
-      icseBtn.style.color = '#ffffff';
-      icseBtn.style.borderColor = '#059669';
-      cbseBtn.style.background = '#FFFFFF';
-      cbseBtn.style.color = '#2563EB';
-      cbseBtn.style.borderColor = '#2563EB';
-      icsePanel.style.display = 'block';
-      cbsePanel.style.display = 'none';
-    }}
-  }}
-
-  // CBSE Level 1 Topic Switcher
-  function switchCbseTopic(topicKey) {{
-    const topics = ['ch', 'muhavre', 'padbandh', 'vakya'];
-    topics.forEach(t => {{
-      const btn = document.getElementById('btn-cbse-topic-' + t);
-      const panel = document.getElementById('cbse-topicpanel-' + t);
-      if (t === topicKey) {{
-        btn.style.background = '#2563EB';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#2563EB';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-
-  // CBSE Level 2 Worksheet Switchers
-  function switchCbseMuhavreWs(wsKey) {{
-    ['w1', 'w2'].forEach(k => {{
-      const btn = document.getElementById('btn-cbse-m-' + k);
-      const panel = document.getElementById('cbse-m-panel-' + k);
-      if (k === wsKey) {{
-        btn.style.background = '#2563EB';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#2563EB';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-
-  function switchCbsePadbandhWs(wsKey) {{
-    ['w1', 'w2'].forEach(k => {{
-      const btn = document.getElementById('btn-cbse-p-' + k);
-      const panel = document.getElementById('cbse-p-panel-' + k);
-      if (k === wsKey) {{
-        btn.style.background = '#2563EB';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#2563EB';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-
-  function switchCbseVakyaWs(wsKey) {{
-    ['w1', 'w2'].forEach(k => {{
-      const btn = document.getElementById('btn-cbse-v-' + k);
-      const panel = document.getElementById('cbse-v-panel-' + k);
-      if (k === wsKey) {{
-        btn.style.background = '#2563EB';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#2563EB';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-
-  // ICSE Level 1 Topic Switcher
-  function switchIcseTopic(topicKey) {{
-    ['ch', 'muhavre'].forEach(t => {{
-      const btn = document.getElementById('btn-icse-topic-' + t);
-      const panel = document.getElementById('icse-topicpanel-' + t);
-      if (t === topicKey) {{
-        btn.style.background = '#059669';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#059669';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-
-  // ICSE Level 2 Worksheet Switcher (w1 to w6)
-  function switchIcseMuhavreWs(wsKey) {{
-    ['w1', 'w2', 'w3', 'w4', 'w5', 'w6'].forEach(k => {{
-      const btn = document.getElementById('btn-icse-m-' + k);
-      const panel = document.getElementById('icse-m-panel-' + k);
-      if (k === wsKey) {{
-        btn.style.background = '#059669';
-        btn.style.color = '#ffffff';
-        btn.style.borderColor = '#059669';
-        panel.style.display = 'block';
-      }} else {{
-        btn.style.background = '#FFFFFF';
-        btn.style.color = '#334155';
-        btn.style.borderColor = '#CBD5E1';
-        panel.style.display = 'none';
-      }}
-    }});
-  }}
-</script>
-"""
-
-    full_page = get_common_head(seo_title, desc, canonical_url, json.dumps(schema_dict, ensure_ascii=False, indent=2))
-    full_page += get_navbar(active_link='grammar')
-    full_page += breadcrumbs_html
-    full_page += hero_html
-    full_page += body_html
-    full_page += get_footer()
-    write_html_file(rel_dir, full_page)
-
-    # Topic 1: Muhavare
-    rel_dir_muh = "hindi-grammar/muhavare"
-    can_muh = f"{BASE_URL}/{rel_dir_muh}/"
-    ALL_CANONICAL_URLS.append(can_muh)
-
-    muh_page = get_common_head("Class 10 Hindi Muhavare (मुहावरे) | अर्थ, वाक्य प्रयोग एवं अभ्यास | EkShala", 
-        "Class 10 Hindi Muhavare (मुहावरे) notes, important list with meanings and sentences, CBSE & ICSE board practice worksheets and questions.", 
-        can_muh, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": "Class 10 Hindi Muhavare Notes & Practice Worksheets",
-            "description": "Comprehensive list and practice exercises for Hindi Muhavare for Class 10 board exams.",
-            "mainEntityOfPage": can_muh,
-            "inLanguage": "hi"
-        }))
-    muh_page += get_navbar(active_link='grammar')
-    muh_page += breadcrumbs_html
-    muh_page += hero_html
-    muh_page += body_html
-    muh_page += get_footer()
-    write_html_file(rel_dir_muh, muh_page)
-
-    # Topic 2: Padbandh
-    rel_dir_pad = "hindi-grammar/padbandh"
-    can_pad = f"{BASE_URL}/{rel_dir_pad}/"
-    ALL_CANONICAL_URLS.append(can_pad)
-
-    pad_page = get_common_head("Class 10 Hindi Padbandh (पदबंध) | भेद, नियम एवं अभ्यास प्रश्न | EkShala",
-        "Class 10 Hindi Padbandh (पदबंध) notes, types, identification rules and practice worksheets.",
-        can_pad, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": "Class 10 Hindi Padbandh Rules, Notes & Worksheets",
-            "description": "Rules, examples, and worksheets for Padbandh in Class 10 Hindi.",
-            "mainEntityOfPage": can_pad,
-            "inLanguage": "hi"
-        }))
-    pad_page += get_navbar(active_link='grammar')
-    pad_page += breadcrumbs_html
-    pad_page += hero_html
-    pad_page += body_html
-    pad_page += get_footer()
-    write_html_file(rel_dir_pad, pad_page)
-
-
+    full_page_icse = get_common_head(seo_title_icse, desc_icse, canonical_icse, json.dumps(schema_hub, indent=2))
+    full_page_icse += get_navbar(active_link='grammar')
+    full_page_icse += breadcrumbs_icse
+    full_page_icse += hero_icse
+    full_page_icse += body_icse
+    full_page_icse += get_footer()
+    write_html_file(rel_dir_icse, full_page_icse)
 
 # ==============================================================================
-# 7. GENERATE TRUST & LEGAL PAGES (About, Contact, Privacy, Terms, 404)
+# 7. GENERATE TRUST & LEGAL PAGES
 # ==============================================================================
 def generate_trust_and_legal_pages():
     print("\n--- Generating Trust & Legal Pages ---")
+    
+    # 1. ABOUT US PAGE (/about/)
+    about_rel = "about"
+    about_url = f"{BASE_URL}/{about_rel}/"
+    ALL_CANONICAL_URLS.append(about_url)
+    about_title = "About Us | Know the Founder & Mentor | EkShala"
+    about_desc = "With a Postgraduate degree in Computer Science, 12+ years of IT experience, and 8 years of teaching experience, EkShala founder brings technology and education together for Class 10 Hindi learning."
 
-    # About Page
-    can_about = f"{BASE_URL}/about/"
-    ALL_CANONICAL_URLS.append(can_about)
-    about_page = get_common_head("About EkShala | Empowering Class 10 Hindi Students Across India",
-        "Learn about EkShala's mission to provide 100% free, high-quality Class 10 Hindi study material, worksheets, and personal mentor guidance for CBSE & ICSE boards.",
-        can_about, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "AboutPage",
-            "name": "About EkShala",
-            "description": "About EkShala Educational Platform",
-            "mainEntityOfPage": can_about
-        }))
-    about_page += get_navbar(active_link='about')
-    about_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li class="current">About Us</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <span class="seo-hero-badge">Our Educational Mission</span>
-  <h1>About EkShala (एकशाला)</h1>
-  <p class="lead">Empowering Class 10 students across India with completely free, ad-free, high-quality Hindi literature and grammar resources, curated by dedicated educators.</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card">
-    <div class="seo-section-header"><span class="seo-section-icon">🎯</span><h2>Our Vision &amp; Pedagogy</h2></div>
-    <p style="font-size:1.05rem; line-height:1.8; color:#334155;">
-      EkShala was founded with a singular purpose: to make Hindi learning intuitive, engaging, and deeply fulfilling for secondary school students. Hindi is often seen as a scoring yet challenging subject due to strict spelling standards, complex literary expressions, and subjective evaluation. EkShala bridges this gap by offering:
-    </p>
-    <ul style="font-size:1.02rem; line-height:1.8; color:#334155; margin-left:1.5rem;">
-      <li><strong>Authentic NCERT &amp; ICSE Alignment:</strong> Word-by-word fidelity to board curriculum (Sparsh, Sanchayan, Sahitya Sagar, Ekanki Sanchay).</li>
-      <li><strong>Structured Learning:</strong> Chapter summary, word meanings, revision notes, competency questions, and practice worksheets in one cohesive flow.</li>
-      <li><strong>100% Free Access:</strong> No hidden paywalls, subscriptions, or intrusive advertisements.</li>
-      <li><strong>Mentor Feedback:</strong> Direct answer evaluation and guidance from experienced Hindi educators.</li>
-    </ul>
-  </section>
-</div></main>"""
-    about_page += get_footer()
-    write_html_file("about", about_page)
+    about_content = f"""
+<main class="seo-content-wrap" style="font-family: 'Plus Jakarta Sans', 'Noto Sans Devanagari', sans-serif;">
+  <div class="container" style="max-width: 960px; margin: 0 auto; padding: 2rem 1rem;">
+    
+    <!-- Hero Header -->
+    <section class="seo-section-card" style="background: linear-gradient(135deg, #0F172A 0%, #156082 100%); color: #FFFFFF; border-radius: 20px; padding: 2.5rem 2rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(15,96,130,0.15); text-align: center;">
+      <span style="background: rgba(255,255,255,0.15); color: #FFFFFF; font-weight: 800; font-size: 0.78rem; padding: 4px 12px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px;">About EkShala</span>
+      <h1 style="font-size: 2.2rem; font-weight: 800; margin: 0.75rem 0 0.5rem; color: #FFFFFF;">About Us & Our Mission</h1>
+      <p style="font-size: 1.05rem; color: #E2E8F0; max-width: 720px; margin: 0 auto; line-height: 1.6;">
+        EkShala is an educational platform designed to provide students with clear explanations, quality learning resources, worksheets, practice material, and exam-oriented guidance in one place.
+      </p>
+    </section>
 
-    # Contact Page
-    can_contact = f"{BASE_URL}/contact/"
-    ALL_CANONICAL_URLS.append(can_contact)
-    contact_page = get_common_head("Contact EkShala | Mentor Support & Student Guidance",
-        "Get in touch with EkShala mentors for Class 10 Hindi guidance, answer evaluation, worksheet feedback, or technical queries.",
-        can_contact, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "ContactPage",
-            "name": "Contact EkShala",
-            "mainEntityOfPage": can_contact
-        }))
-    contact_page += get_navbar(active_link='contact')
-    contact_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li class="current">Contact Us</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <span class="seo-hero-badge">We're Here to Help</span>
-  <h1>Contact EkShala</h1>
-  <p class="lead">Have a doubt in a chapter? Need answer sheet feedback? Reach out to our dedicated Hindi academic mentors.</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card" style="max-width:800px; margin:0 auto;">
-    <div class="seo-section-header"><span class="seo-section-icon">💬</span><h2>Get in Touch with Our Mentors</h2></div>
-    <div style="font-size:1.05rem; line-height:1.8; color:#334155;">
-      <p><strong>Email:</strong> <a href="mailto:ektaverma09.work@gmail.com" style="color:#156082;">ektaverma09.work@gmail.com</a></p>
-      <p><strong>WhatsApp / Helpline:</strong> <a href="tel:+919972247410" style="color:#156082;">+91-99722-47410</a></p>
-      <p><strong>Address:</strong> EkShala Academic Resource Center, Bangalore, Karnataka, India</p>
-      <p><strong>Working Hours:</strong> Monday – Saturday: 9:00 AM – 7:00 PM IST</p>
-      <div style="margin-top:2rem; padding:1.5rem; background:#F8FAFC; border-radius:12px; border:1px solid #E2E8F0;">
-        <h3 style="font-size:1.15rem; margin-top:0;">Need Answer Sheet Evaluation?</h3>
-        <p style="margin-bottom:1rem; font-size:0.95rem; color:#64748B;">Upload your solved worksheet through the student portal, and our teachers will evaluate your answers within 48 hours.</p>
-        <a href="/login.html" class="btn btn-primary" style="padding:0.6rem 1.25rem;">Go to Student Portal &rarr;</a>
+    <!-- Know the Founder & Mentor Section -->
+    <section class="seo-section-card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2.5rem 2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.03);">
+      
+      <!-- Section Header -->
+      <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.75rem; border-bottom: 2px solid #F1F5F9; padding-bottom: 1.25rem;">
+        <div style="width: 56px; height: 56px; border-radius: 14px; background: #EBF3FD; color: #156082; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; flex-shrink: 0;">
+          🎓
+        </div>
+        <div>
+          <span style="font-size: 0.78rem; font-weight: 800; color: #156082; text-transform: uppercase; letter-spacing: 0.5px;">Leadership & Vision</span>
+          <h2 style="font-size: 1.6rem; font-weight: 800; color: #0F172A; margin: 0.2rem 0 0;">Know the Founder & Mentor</h2>
+        </div>
       </div>
-    </div>
-  </section>
-</div></main>"""
-    contact_page += get_footer()
-    write_html_file("contact", contact_page)
 
-    # Privacy Policy
-    can_privacy = f"{BASE_URL}/privacy-policy/"
-    ALL_CANONICAL_URLS.append(can_privacy)
-    priv_page = get_common_head("Privacy Policy | EkShala",
-        "EkShala student privacy policy: How we collect, safeguard, and respect student and parent data.",
-        can_privacy, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Privacy Policy"
-        }))
-    priv_page += get_navbar()
-    priv_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li class="current">Privacy Policy</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <h1>Privacy Policy</h1>
-  <p class="lead">Your privacy is fundamental to our educational mission. Read how EkShala safeguards student information.</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card" style="max-width:860px; margin:0 auto; line-height:1.8; color:#334155;">
-    <h2>1. Student Data Protection</h2>
-    <p>EkShala is designed for school students. We strictly minimize data collection. We only collect names, phone numbers, or email addresses when voluntarily submitted for mentor feedback, answer sheet review, or account creation.</p>
-    <h2>2. Non-Commercialization of Data</h2>
-    <p>We do NOT sell, rent, monetize, or share student personal information, answer sheets, or contact data with any third-party advertisers or commercial entities.</p>
-    <h2>3. Search Engine Safety</h2>
-    <p>All private student records, submissions, passwords, and evaluation reports are protected by authentication and strictly configured with <code>noindex</code> directives, ensuring search engines never index private student data.</p>
-    <h2>4. Contact</h2>
-    <p>For any privacy inquiries, please contact our data grievance officer at <a href="mailto:ektaverma09.work@gmail.com">ektaverma09.work@gmail.com</a>.</p>
-  </section>
-</div></main>"""
-    priv_page += get_footer()
-    write_html_file("privacy-policy", priv_page)
+      <!-- Experience Highlights Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.75rem;">
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 800; color: #156082;">Computer Science</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 2px;">Postgraduate Degree</div>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 800; color: #156082;">12+ Years</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 2px;">IT Industry Experience</div>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; padding: 1rem; text-align: center;">
+          <div style="font-size: 1.25rem; font-weight: 800; color: #156082;">8 Years</div>
+          <div style="font-size: 0.82rem; color: #64748B; font-weight: 600; margin-top: 2px;">Teaching Experience</div>
+        </div>
+      </div>
 
-    # Terms and Conditions
-    can_terms = f"{BASE_URL}/terms-and-conditions/"
-    ALL_CANONICAL_URLS.append(can_terms)
-    terms_page = get_common_head("Terms and Conditions | EkShala",
-        "Terms and conditions for using EkShala free educational resources, worksheets, and study material.",
-        can_terms, json.dumps({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "Terms and Conditions"
-        }))
-    terms_page += get_navbar()
-    terms_page += f"""<div class="seo-breadcrumb-bar"><div class="container">
-  <ol class="seo-breadcrumbs"><li><a href="/">होम</a></li><li class="sep">&rsaquo;</li><li class="current">Terms &amp; Conditions</li></ol>
-</div></div>
-<header class="seo-hero"><div class="container">
-  <h1>Terms and Conditions</h1>
-  <p class="lead">Rules and guidelines for accessing EkShala educational materials.</p>
-</div></header>
-<main class="seo-content-wrap"><div class="container">
-  <section class="seo-section-card" style="max-width:860px; margin:0 auto; line-height:1.8; color:#334155;">
-    <h2>1. Educational Use Only</h2>
-    <p>All study materials, summaries, notes, worksheets, and sample papers available on EkShala are provided solely for non-commercial personal education and board examination preparation.</p>
-    <h2>2. Intellectual Property</h2>
-    <p>Content created by EkShala is copyrighted. Students and teachers may download and print worksheets for personal classroom study, but unauthorized commercial republication or resale is strictly prohibited.</p>
-    <h2>3. Accuracy &amp; Board Syllabi</h2>
-    <p>We strive to keep all materials aligned with the latest CBSE and ICSE syllabus guidelines for Class 10 Hindi.</p>
-  </section>
-</div></main>"""
-    terms_page += get_footer()
-    write_html_file("terms-and-conditions", terms_page)
+      <!-- Founder Bio Content -->
+      <div style="color: #334155; font-size: 1.02rem; line-height: 1.8; display: flex; flex-direction: column; gap: 1.25rem;">
+        <p style="margin: 0;">
+          With a Postgraduate degree in Computer Science, 12+ years of experience in the IT industry, and 8 years of teaching experience, I bring together technology and education to create meaningful learning experiences.
+        </p>
+        <p style="margin: 0;">
+          Over the years, I have developed a strong passion for teaching and for helping students understand concepts rather than simply memorize them. I believe that when learning material is presented in a simple, systematic, and student-friendly manner, even challenging topics can become easier to understand.
+        </p>
+        <p style="margin: 0;">
+          This passion led to the creation of <strong>EkShala</strong> — an educational platform designed to provide students with clear explanations, quality learning resources, worksheets, practice material, and exam-oriented guidance in one place. Here students can learn at their own pace, practise regularly, clarify their concepts, and approach their examinations with greater confidence.
+        </p>
+        
+        <!-- Mission Quote Callout -->
+        <div style="background: #EBF3FD; border-left: 4px solid #156082; padding: 1.25rem 1.5rem; border-radius: 0 14px 14px 0; margin-top: 0.5rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: #156082; margin: 0 0 0.35rem;">🎯 My Mission</h3>
+          <p style="margin: 0; font-weight: 700; color: #0F172A; font-size: 1.05rem;">
+            My mission is simple — to make learning accessible, engaging, and effective for every student.
+          </p>
+        </div>
+      </div>
 
-    # Custom 404 Page
-    four_o_four = get_common_head("404: Page Not Found | EkShala",
-        "The page you are looking for does not exist on EkShala. Explore CBSE Class 10 Hindi, ICSE Class 10 Hindi, worksheets, or grammar.",
-        f"{BASE_URL}/404.html", json.dumps({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "404 Page Not Found"
-        }))
-    four_o_four += get_navbar()
-    four_o_four += f"""<main class="seo-content-wrap" style="text-align:center; padding:5rem 0;">
-  <div class="container" style="max-width:680px;">
-    <div style="font-size:5rem; font-weight:900; color:#156082; line-height:1; margin-bottom:1rem;">404</div>
-    <h1 style="font-size:2rem; font-weight:800; color:#0F172A; margin-bottom:1rem;">पृष्ठ नहीं मिला (Page Not Found)</h1>
-    <p style="font-size:1.1rem; color:#64748B; line-height:1.7; margin-bottom:2.5rem;">
-      माफ़ कीजिए, जिस पृष्ठ की आप खोज कर रहे हैं वह उपलब्ध नहीं है या उसका पता बदल गया है। कृपया नीचे दिए गए मुख्य लिंक देखें:
-    </p>
-    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:3rem;">
-      <a href="/" class="btn btn-primary">मुख्य पृष्ठ (Home)</a>
-      <a href="/cbse/class-10/hindi/" class="btn btn-outline">CBSE Class 10</a>
-      <a href="/icse/class-10/hindi/" class="btn btn-outline">ICSE Class 10</a>
-      <a href="/worksheets/" class="btn btn-outline">Worksheets</a>
-      <a href="/hindi-grammar/" class="btn btn-outline">Hindi Grammar</a>
-    </div>
+    </section>
+
+    <!-- Platform Highlights Grid -->
+    <section class="seo-section-card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; padding: 2.25rem 2rem; box-shadow: 0 6px 20px rgba(0,0,0,0.03);">
+      <h3 style="font-size: 1.35rem; font-weight: 800; color: #0F172A; margin: 0 0 1.25rem;">What We Offer at EkShala</h3>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.25rem;">
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📖</div>
+          <h4 style="font-size: 1.1rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem;">Systematic Concept Learning</h4>
+          <p style="font-size: 0.88rem; color: #64748B; margin: 0; line-height: 1.5;">Clear explanations for CBSE & ICSE Class 10 Hindi literature and grammar topics.</p>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📝</div>
+          <h4 style="font-size: 1.1rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem;">Quality Practice Material</h4>
+          <p style="font-size: 0.88rem; color: #64748B; margin: 0; line-height: 1.5;">Solved worksheets, RTC extracts, grammar exercises, and past board papers.</p>
+        </div>
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 1.25rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🎯</div>
+          <h4 style="font-size: 1.1rem; font-weight: 700; color: #0F172A; margin: 0 0 0.35rem;">Exam-Oriented Guidance</h4>
+          <p style="font-size: 0.88rem; color: #64748B; margin: 0; line-height: 1.5;">Personalized evaluation feedback, marking scheme insights, and confidence building.</p>
+        </div>
+      </div>
+    </section>
+
   </div>
-</main>"""
-    four_o_four += get_footer()
-    with open(os.path.join(PUBLIC_DIR, '404.html'), 'w', encoding='utf-8') as f:
-        f.write(four_o_four)
-    print(f"  ✓ Generated: 404.html ({len(four_o_four):,} bytes)")
+</main>
+"""
+    full_about = get_common_head(about_title, about_desc, about_url, "{}") + get_navbar(active_link='about') + about_content + get_footer()
+    write_html_file(about_rel, full_about)
 
+    # 2. OTHER LEGAL PAGES (contact, privacy-policy, terms-and-conditions)
+    other_pages = [
+        ("contact", "Contact Us & Mentor Support | EkShala", "Get in touch with EkShala mentors for study guidance, material feedback, or free educational support."),
+        ("privacy-policy", "Privacy Policy | EkShala", "EkShala Privacy Policy outlining how student data, cookies, and privacy are protected on our platform."),
+        ("terms-and-conditions", "Terms and Conditions | EkShala", "Terms and Conditions governing the use of EkShala free study resources and web platform.")
+    ]
+    for rel_dir, title, desc in other_pages:
+        canonical_url = f"{BASE_URL}/{rel_dir}/"
+        ALL_CANONICAL_URLS.append(canonical_url)
+        content = f"""<main class="seo-content-wrap"><div class="container"><section class="seo-section-card"><h1>{title}</h1><p>{desc}</p></section></div></main>"""
+        full_page = get_common_head(title, desc, canonical_url, "{}") + get_navbar(active_link=rel_dir) + content + get_footer()
+        write_html_file(rel_dir, full_page)
 
 # ==============================================================================
 # 8. GENERATE SITEMAP.XML & ROBOTS.TXT
