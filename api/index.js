@@ -11,5 +11,10 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
+  // Ensure req.url starts with /api so Express routes match correctly
+  if (req.url && !req.url.startsWith('/api/')) {
+    req.url = '/api' + (req.url.startsWith('/') ? '' : '/') + req.url;
+  }
+
   return app(req, res);
 };
