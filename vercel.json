@@ -1,26 +1,43 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/index.js?__path=/:path*"
+      "src": "api/index.js",
+      "use": "@vercel/node"
     },
     {
-      "source": "/login",
-      "destination": "/login.html"
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js?__path=$1"
     },
     {
-      "source": "/admin",
-      "destination": "/admin.html"
+      "handle": "filesystem"
     },
     {
-      "source": "/admin-dashboard",
-      "destination": "/admin-dashboard.html"
+      "src": "/login",
+      "dest": "/public/login.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/public/admin.html"
+    },
+    {
+      "src": "/admin-dashboard",
+      "dest": "/public/admin-dashboard.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
     }
   ],
   "headers": [
     {
-      "source": "/api/:path*",
+      "source": "/api/(.*)",
       "headers": [
         { "key": "Access-Control-Allow-Credentials", "value": "true" },
         { "key": "Access-Control-Allow-Origin", "value": "*" },
