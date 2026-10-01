@@ -579,12 +579,9 @@ const DEFAULT_WORKSHEETS_MAP = {
   'WS_ICSE_10_MUH_06': { title: 'Worksheet 6: मुहावरे (ICSE अभ्यास पत्र 6)', board: 'ICSE', subject: 'Hindi Grammar', chapter: 'मुहावरे (ICSE अभ्यास पत्र 6)', price: 100, duration_minutes: 30, questions_count: 10, total_marks: 40, page_size: 'A4', accepted_formats: 'JPG, PNG, PDF', max_file_size_mb: 10 }
 };
 
-// GET /api/worksheets & /api/ws-api
-app.get(['/api/ws-api', '/ws-api', '/api/worksheets', '/worksheets'], async (req, res) => {
-  return res.json({ success: true, message: "WS API REACHED!", worksheets: [
-    { id: 'WS_CBSE_10_01', title: 'Worksheet 1: Hindi (अभ्यास कार्य-पत्र 1)', board: 'CBSE', subject: 'Hindi', price: 100 }
-  ] });
-    let user = null;
+// GET & POST /api/worksheets & /api/ws-api
+app.all(['/api/ws-api', '/ws-api', '/api/worksheets', '/worksheets'], async (req, res) => {
+  try {
     const token = req.cookies?.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
     if (token) {
       try { user = jwt.verify(token, JWT_SECRET); } catch(e) {}

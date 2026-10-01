@@ -1,21 +1,17 @@
 {
   "version": 2,
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/ws-api",
-      "destination": "/api/ws-api.js"
+      "src": "/api/ws-api(.*)",
+      "dest": "/api/ws-api.js"
     },
     {
-      "source": "/api/ws-api/:path*",
-      "destination": "/api/ws-api/[...slug].js?slug=:path*"
+      "src": "/api/student(.*)",
+      "dest": "/api/student.js"
     },
     {
-      "source": "/api/student",
-      "destination": "/api/student.js"
-    },
-    {
-      "source": "/api/student/:path*",
-      "destination": "/api/student/[...slug].js?slug=:path*"
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
     }
   ],
   "headers": [
