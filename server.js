@@ -696,7 +696,7 @@ app.get('/api/worksheets/:id', async (req, res) => {
 });
 
 // POST /api/worksheets/payment/create-order
-app.post('/api/worksheets/payment/create-order', auth, async (req, res) => {
+app.post(['/api/worksheets/payment/create-order', '/worksheets/payment/create-order'], auth, async (req, res) => {
   const { worksheetId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
@@ -741,7 +741,7 @@ app.post('/api/worksheets/payment/create-order', auth, async (req, res) => {
 });
 
 // POST /api/worksheets/payment/verify
-app.post('/api/worksheets/payment/verify', auth, async (req, res) => {
+app.post(['/api/worksheets/payment/verify', '/worksheets/payment/verify'], auth, async (req, res) => {
   const { worksheetId, paymentId, orderId, orderToken } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID required.' });
 
@@ -798,7 +798,7 @@ app.post('/api/worksheets/payment/verify', auth, async (req, res) => {
 });
 
 // POST /api/worksheets/start-attempt
-app.post('/api/worksheets/start-attempt', auth, async (req, res) => {
+app.post(['/api/worksheets/start-attempt', '/worksheets/start-attempt'], auth, async (req, res) => {
   const { worksheetId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
@@ -906,7 +906,7 @@ app.post('/api/worksheets/start-attempt', auth, async (req, res) => {
 });
 
 // GET /api/worksheets/attempt-status/:worksheetId
-app.get('/api/worksheets/attempt-status/:worksheetId', auth, async (req, res) => {
+app.get(['/api/worksheets/attempt-status/:worksheetId', '/worksheets/attempt-status/:worksheetId'], auth, async (req, res) => {
   const { worksheetId } = req.params;
   const userEmail = req.user.email;
 
@@ -954,7 +954,7 @@ app.get('/api/worksheets/attempt-status/:worksheetId', auth, async (req, res) =>
 });
 
 // POST /api/worksheets/submit
-app.post('/api/worksheets/submit', auth, upload.array('answer_files', 10), async (req, res) => {
+app.post(['/api/worksheets/submit', '/worksheets/submit'], auth, upload.array('answer_files', 10), async (req, res) => {
   const { worksheetId, attemptId } = req.body;
   if (!worksheetId) return res.status(400).json({ error: 'Worksheet ID is required.' });
 
